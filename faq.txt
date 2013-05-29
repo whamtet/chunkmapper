@@ -1,0 +1,39 @@
+What's Chunkmapper?
+
+Chunkmapper is a free program that generates realistic 3D maps anywhere on earth for viewing and exploring in Minecraft.  The maps include many interesting features such as rivers, railways, lakes, cities and about 20 kinds of terrain.  The railways power minecarts so Chunkmapper also doubles as a train simulator.
+
+How does it work?
+
+You select a start point anywhere on earth using a google-maps style viewer.  Chunkmapper generates a Minecraft saved game which you can explore the real world in.  The only limits to your exploration are the north and south poles and the international dateline.
+
+How big are the maps?
+
+Too big to generate all at once.  The scale is 30:1, 30 metres in real life is reduced to 1 metre in Minecraft.  To put this in perspective, a trip around the equator is about 1.3 million blocks.
+
+What are the system requirements?
+
+Java 1.6, Minecraft and a continuously available internet connection.  If you already have Minecraft installed you're good to go.
+
+Installation?
+
+Chunkmapper is a standalone program so just download and run it.  The initial map is only a few thousand blocks wide and if you want to explore further you must keep Chunkmapper running the whole time.  Chunkmapper will detect your position and add to the map as you go.
+
+Limitations?
+
+The program is reasonably new so bad stuff may occasionally happen.  If so, just quit and restart Chunkmapper.  The main point of weakness is that the mapping data is taken from third party servers which could be removed at any time.  In the future more servers will be included to defend against this problem.
+
+Is Chunkmapper a Minecraft mod?
+
+No.  Chunkmapper is a standalone program that runs in vanilla Minecraft.  It generates maps by creating new saved games and does not affect any of your existing games or settings.
+
+Oh no!  I quit Chunkmapper.  What will happen to my map?
+
+If you restart Chunkmapper it can continue adding to existing maps without any problems.  The only caveat is if you get to the edge of a generated map and see a sudden wall of ocean.  In this event it's advised that you quit viewing the map in Minecraft to prevent memory clashes between Minecraft and Chunkmapper.  Chunkmapper will normally add to the map beyond your view bounds.
+
+Does Chunkmapper support Minecraft multi-player mode?
+
+Not yet.  If you'd like to discuss this please contact the developer below.
+
+Who made it?
+
+A Brisbane based developer called Matt.  Visit his website, www.matthewmolloy.me.
