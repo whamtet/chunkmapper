@@ -2,7 +2,6 @@ package com.chunkmapper;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -48,7 +47,18 @@ public class ManagingThread implements Runnable {
 		File chunkmapperDir = prepareDir(new File(gameFolder, "chunkmapper"), false);
 		File regionFolder = prepareDir(new File(gameFolder, "region"), false);
 
-		Point rootPoint = getRootPoint(lat, lon, chunkmapperDir);
+		File metaInfoFile = new File(chunkmapperDir, "meta.txt");
+		GameMetaInfo gameMetainfo;
+		if (metaInfoFile.exists()) {
+			try {
+			gameMetainfo = new GameMetaInfo(metaInfoFile);
+			} catch (IOException e) {
+				e.printStackTrace();
+				throw new RuntimeException();
+			}
+		} else {
+			gameMetainfo = new GameMetaInfo(metaInfoFile, lat, lon);
+		}
 
 		File loadedLevelDatFile = new File(gameFolder, "level.dat");
 		if (!loadedLevelDatFile.exists()) {
@@ -64,7 +74,7 @@ public class ManagingThread implements Runnable {
 		LoadedLevelDat loadedLevelDat = new LoadedLevelDat(loadedLevelDatFile);
 		if (reteleport) {
 			loadedLevelDat.setName(gameName);
-			loadedLevelDat.setPlayerPosition(lon * 3600 - rootPoint.x * 512, 250, - lat * 3600 - rootPoint.z * 512);
+			loadedLevelDat.setPlayerPosition(lon * 3600 - gameMetainfo.rootPoint.x * 512, 250, - lat * 3600 - gameMetainfo.rootPoint.z * 512);
 		}
 		try {
 			loadedLevelDat.save();
@@ -77,17 +87,17 @@ public class ManagingThread implements Runnable {
 
 		//now we need to create all our downloaders;
 		PointManager pointManager = new PointManager(chunkmapperDir);
-		RegionWriter regionWriter = new RegionWriter(pointManager, rootPoint, regionFolder);
+		RegionWriter regionWriter = new RegionWriter(pointManager, gameMetainfo.rootPoint, regionFolder);
 
 		//now we loop for ETERNITY!!!
 		while (true) {
-			HashSet<Point> pointsToWrite = pointManager.getNewPoints(gameFolder, rootPoint, chunkmapperDir);
+			HashSet<Point> pointsToWrite = pointManager.getNewPoints(gameFolder, gameMetainfo.rootPoint, chunkmapperDir);
 			if (pointsToWrite.size() == 0) {
 //				System.out.println("nothing to write now");
 			}
 			for (Point p : pointsToWrite) {
 //				System.out.println(p);
-				UberDownloader.addRegionToDownload(p.x + rootPoint.x, p.z + rootPoint.z);
+				UberDownloader.addRegionToDownload(p.x + gameMetainfo.rootPoint.x, p.z + gameMetainfo.rootPoint.z);
 				regionWriter.addTask(p.x, p.z);
 			}
 			double minDistance = pointManager.getDistanceToEdge(gameFolder);
@@ -105,41 +115,6 @@ public class ManagingThread implements Runnable {
 
 
 	}
-	private static Point getRootPoint(double lat, double lon, File chunkmapperDir) {
-		//gets a root point, saving it as necessary.
-		File store = new File(chunkmapperDir, "roots.txt");
-		Point out = null;
-		if (store.exists()) {
-			//read it in
-			try {
-				BufferedReader reader = new BufferedReader(new FileReader(store));
-				int x = Integer.parseInt(reader.readLine());
-				int z = Integer.parseInt(reader.readLine());
-				out = new Point(x, z);
-				reader.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		if (out == null) {
-			int x = (int) Math.floor(lon * 3600 / 512);
-			int z = (int) Math.floor(-lat * 3600 / 512);
-			out = new Point(x, z);
-			System.out.println(out);
-			//and write it back
-			try {
-				PrintWriter writer = new PrintWriter(store);
-				writer.println(x);
-				writer.println(z);
-				writer.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		return out;
-
-	}
-	//	private static void recordRoots(File chunkmapperDir, int rootRegionx, int rootRegionz)
 
 	/**
 	 * @param args

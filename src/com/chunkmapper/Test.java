@@ -13,8 +13,8 @@ public class Test {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		File f = new File("/Library/Caches/Chunkmapper3/heights/f_1214_306_520");
-		System.out.println(f.length());
+		String s = String.format("hi there %.3f¼", 2.3);
+		System.out.println(s);
 
 	}
 

@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import com.chunkmapper.Point;
 import com.mojang.nbt.CompoundTag;
 import com.mojang.nbt.DoubleTag;
 import com.mojang.nbt.ListTag;
@@ -51,6 +52,14 @@ public class LoadedLevelDat {
 		Pos.add(new DoubleTag("", y));
 		Pos.add(new DoubleTag("", z));
 		Player.put("Pos", Pos);
+	}
+	public Point getPlayerPosition() {
+		CompoundTag Data = data.getCompound("Data");
+		CompoundTag Player = Data.getCompound("Player");
+		ListTag<DoubleTag> Pos = (ListTag<DoubleTag>) Player.getList("Pos");
+		double x = Pos.get(0).data;
+		double z = Pos.get(2).data;
+		return new Point((int) x, (int) z);
 	}
 	public void setName(String name) {
 		System.out.println("setting player name");
