@@ -86,7 +86,7 @@ public class ManagingThread implements Runnable {
 //				System.out.println("nothing to write now");
 			}
 			for (Point p : pointsToWrite) {
-				System.out.println(p);
+//				System.out.println(p);
 				UberDownloader.addRegionToDownload(p.x + rootPoint.x, p.z + rootPoint.z);
 				regionWriter.addTask(p.x, p.z);
 			}
@@ -161,8 +161,8 @@ public class ManagingThread implements Runnable {
 //			FileUtils.deleteDirectory(f);
 //		}
 		
-		double[] latlon = geocode.core.placeToCoords("london");
-//		double[] latlon = geocode.core.placeToCoords("lyttelton, nz");
+//		double[] latlon = geocode.core.placeToCoords("london");
+		double[] latlon = geocode.core.placeToCoords("nelson, nz");
 //		double[] latlon = getLatLon(); //get last recorded place
 		boolean forceReload = true;
 		boolean reteleport = false;

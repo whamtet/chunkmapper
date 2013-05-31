@@ -18,8 +18,8 @@ public class LoadedLevelDat {
 	private final CompoundTag data;
 	private final File f;
 
-	public LoadedLevelDat(File f) {
-		this.f = f;
+	public LoadedLevelDat(File loadedLevelDatFile) {
+		this.f = loadedLevelDatFile;
 		CompoundTag data;
 		try {
 			InputStream in = new BufferedInputStream(new FileInputStream(f));
@@ -46,7 +46,7 @@ public class LoadedLevelDat {
 		Player.putInt("SpawnY", (int) y);
 		Player.putInt("SpawnZ", (int) z);
 
-		ListTag Pos = new ListTag("Pos");
+		ListTag<DoubleTag> Pos = new ListTag<DoubleTag>("Pos");
 		Pos.add(new DoubleTag("", x));
 		Pos.add(new DoubleTag("", y));
 		Pos.add(new DoubleTag("", z));
@@ -56,5 +56,9 @@ public class LoadedLevelDat {
 		System.out.println("setting player name");
 		CompoundTag Data = data.getCompound("Data");
 		Data.putString("LevelName", name);
+	}
+	public String getGameName() {
+		CompoundTag Data = data.getCompound("Data");
+		return Data.getString("LevelName");
 	}
 }

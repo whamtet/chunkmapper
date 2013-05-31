@@ -13,6 +13,7 @@ import com.chunkmapper.column.Bare;
 import com.chunkmapper.column.BroadleafEvergreen;
 import com.chunkmapper.column.ClosedBroadleafDeciduous;
 import com.chunkmapper.column.ClosedNeedleleafEvergreen;
+import com.chunkmapper.column.Coast;
 import com.chunkmapper.column.CroplandWithVegetation;
 import com.chunkmapper.column.FloodedGrassland;
 import com.chunkmapper.column.ForestShrublandWithGrass;
@@ -52,7 +53,7 @@ public class GlobcoverManager {
 	private final HeightsReader heightsReader;
 	//	private final FlightgearRailReader railReader;
 	private final XapiRailReader railReader;
-	private XapiReader xapiReader;
+	private final XapiReader xapiReader;
 	public final boolean allWater;
 	public final int regionx, regionz;
 	public static final TriangleZonator snowLinator;
@@ -72,30 +73,39 @@ public class GlobcoverManager {
 		allWater = heightsReader.allWater;
 		if (allWater) {
 			railReader = null;
+			xapiReader = null;
 			return;
 		}
 		GlobcoverReader coverReader = new GlobcoverReader(regionx, regionz);
 
 		LakeReader lakeReader = new LakeReader(regionx, regionz, heightsReader);
 		RiverReader riverReader = new RiverReader(regionx, regionz, heightsReader);
-//		try {
-			railReader = new XapiRailReader(regionx, regionz, heightsReader);
-//		} catch (FileNotYetAvailableException e) {
-//			UberDownloader.redownloadXapi(regionx, regionz);
-//			throw e;
-//		}
+		//		try {
+					railReader = new XapiRailReader(regionx, regionz, heightsReader);
+//		railReader = null;
+		//		} catch (FileNotYetAvailableException e) {
+		//			UberDownloader.redownloadXapi(regionx, regionz);
+		//			throw e;
+		//		}
 		FarmTypeReader farmTypeReader = new FarmTypeReader();
-		xapiReader = new XapiReader(regionx, regionz);
+				xapiReader = new XapiReader(regionx, regionz);
+//		xapiReader = null;
 
 		NoaaGshhsReader noaaGshhsReader = new NoaaGshhsReader(regionx, regionz);
 
 		for (int i = 0; i < 512; i++) {
 			for (int j = 0; j < 512; j++) {
 				int absx = j + regionx*512, absz = i + regionz*512;
-				if (noaaGshhsReader.hasOceanij(i, j)) {
+				
+				switch(noaaGshhsReader.getVal(i, j)) {
+				case NoaaGshhsReader.OCEAN:
 					columns[i][j] = new Ocean(absx, absz);
 					continue;
+				case NoaaGshhsReader.COAST:
+					columns[i][j] = new Coast(absx, absz);
+					continue;
 				}
+				
 				final int h = heightsReader.getHeightij(i, j);
 				//				if (h < 4) h = 4;
 				//				if (h < 0) {
@@ -251,11 +261,12 @@ public class GlobcoverManager {
 		//			ArtifactWriter.addSign(chunk, h, cornerz, cornerx, ss);
 		//		}
 		//and signs for actual places
-		xapiReader.addSigns(chunk);
+		if (xapiReader != null)
+			xapiReader.addSigns(chunk);
 
 		//finally add rail
 		boolean chunkHasRail = false;
-		if (railReader.hasRails) {
+		if (railReader != null && railReader.hasRails) {
 			for (int i = 0; i < 16; i++) {
 				for (int j = 0; j < 16; j++) {
 					int x = j + chunkx*16, z = i + chunkz*16;

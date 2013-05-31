@@ -18,7 +18,6 @@ public class UberDownloader {
 		System.out.println("adding region " + regionx + ", " + regionz);
 		//obligatory sources
 		int numAttempts = -1;
-//		flightgearRailDownloader.addTask(regionx, regionz);
 		globcoverDownloader.addTask(regionx, regionz);
 		noaaGshhsDownloader.addTask(regionx, regionz);
 		heightsDownloader.addTask(regionx, regionz);
@@ -29,8 +28,6 @@ public class UberDownloader {
 		riverDownloader.addTask(regionx, regionz);
 		xapiDownloader.addTask(regionx, regionz);
 		xapiRailDownloader.addTask(regionx, regionz);
-//		xapiDownloader.addForceDownload(regionx, regionz);
-//		xapiRailDownloader.addForceDownload(regionx, regionz);
 	}
 
 }
