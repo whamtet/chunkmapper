@@ -27,6 +27,7 @@ public class LoadedLevelDat {
 			data = NbtIo.readCompressed(in);
 			in.close();
 		} catch (IOException e) {
+			e.printStackTrace();
 			data = null;
 		}
 		this.data = data;

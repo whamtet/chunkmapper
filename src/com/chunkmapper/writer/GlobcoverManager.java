@@ -80,23 +80,16 @@ public class GlobcoverManager {
 
 		LakeReader lakeReader = new LakeReader(regionx, regionz, heightsReader);
 		RiverReader riverReader = new RiverReader(regionx, regionz, heightsReader);
-		//		try {
-					railReader = new XapiRailReader(regionx, regionz, heightsReader);
-//		railReader = null;
-		//		} catch (FileNotYetAvailableException e) {
-		//			UberDownloader.redownloadXapi(regionx, regionz);
-		//			throw e;
-		//		}
+		railReader = new XapiRailReader(regionx, regionz, heightsReader);
 		FarmTypeReader farmTypeReader = new FarmTypeReader();
-				xapiReader = new XapiReader(regionx, regionz);
-//		xapiReader = null;
+		xapiReader = new XapiReader(regionx, regionz);
 
 		NoaaGshhsReader noaaGshhsReader = new NoaaGshhsReader(regionx, regionz);
 
 		for (int i = 0; i < 512; i++) {
 			for (int j = 0; j < 512; j++) {
 				int absx = j + regionx*512, absz = i + regionz*512;
-				
+
 				switch(noaaGshhsReader.getVal(i, j)) {
 				case NoaaGshhsReader.OCEAN:
 					columns[i][j] = new Ocean(absx, absz);
@@ -105,7 +98,7 @@ public class GlobcoverManager {
 					columns[i][j] = new Coast(absx, absz);
 					continue;
 				}
-				
+
 				final int h = heightsReader.getHeightij(i, j);
 				//				if (h < 4) h = 4;
 				//				if (h < 0) {

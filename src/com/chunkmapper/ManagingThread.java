@@ -14,7 +14,7 @@ import com.chunkmapper.rail.HeightsCache;
 import com.chunkmapper.writer.LoadedLevelDat;
 import com.chunkmapper.writer.RegionWriter;
 
-public class ManagingThread implements Runnable {
+public class ManagingThread extends Thread {
 	private final double lat, lon;
 	private final String gameName;
 	private final boolean forceRestart;
@@ -48,16 +48,16 @@ public class ManagingThread implements Runnable {
 		File regionFolder = prepareDir(new File(gameFolder, "region"), false);
 
 		File metaInfoFile = new File(chunkmapperDir, "meta.txt");
-		GameMetaInfo gameMetainfo;
+		GameMetaInfo gameMetaInfo;
 		if (metaInfoFile.exists()) {
 			try {
-			gameMetainfo = new GameMetaInfo(metaInfoFile);
+				gameMetaInfo = new GameMetaInfo(metaInfoFile);
 			} catch (IOException e) {
 				e.printStackTrace();
 				throw new RuntimeException();
 			}
 		} else {
-			gameMetainfo = new GameMetaInfo(metaInfoFile, lat, lon);
+			gameMetaInfo = new GameMetaInfo(metaInfoFile, lat, lon);
 		}
 
 		File loadedLevelDatFile = new File(gameFolder, "level.dat");
@@ -74,43 +74,45 @@ public class ManagingThread implements Runnable {
 		LoadedLevelDat loadedLevelDat = new LoadedLevelDat(loadedLevelDatFile);
 		if (reteleport) {
 			loadedLevelDat.setName(gameName);
-			loadedLevelDat.setPlayerPosition(lon * 3600 - gameMetainfo.rootPoint.x * 512, 250, - lat * 3600 - gameMetainfo.rootPoint.z * 512);
+			loadedLevelDat.setPlayerPosition(lon * 3600 - gameMetaInfo.rootPoint.x * 512, 250, - lat * 3600 - gameMetaInfo.rootPoint.z * 512);
 		}
 		try {
 			loadedLevelDat.save();
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 			return;
 		}
 		HeightsCache.deleteCache();
 
 		//now we need to create all our downloaders;
-		PointManager pointManager = new PointManager(chunkmapperDir);
-		RegionWriter regionWriter = new RegionWriter(pointManager, gameMetainfo.rootPoint, regionFolder);
+		RegionWriter regionWriter = null;
+		try {
+			PointManager pointManager = new PointManager(chunkmapperDir);
+			regionWriter = new RegionWriter(pointManager, gameMetaInfo.rootPoint, regionFolder, gameMetaInfo);
 
-		//now we loop for ETERNITY!!!
-		while (true) {
-			HashSet<Point> pointsToWrite = pointManager.getNewPoints(gameFolder, gameMetainfo.rootPoint, chunkmapperDir);
-			if (pointsToWrite.size() == 0) {
-//				System.out.println("nothing to write now");
-			}
-			for (Point p : pointsToWrite) {
-//				System.out.println(p);
-				UberDownloader.addRegionToDownload(p.x + gameMetainfo.rootPoint.x, p.z + gameMetainfo.rootPoint.z);
-				regionWriter.addTask(p.x, p.z);
-			}
-			double minDistance = pointManager.getDistanceToEdge(gameFolder);
-			if (minDistance < 512) {
-				System.err.println("Warning: minDistance " + minDistance);
-			}
-			try {
+			//now we loop for ETERNITY!!!
+			while (true) {
+				HashSet<Point> pointsToWrite = pointManager.getNewPoints(gameFolder, gameMetaInfo.rootPoint, chunkmapperDir);
+				if (pointsToWrite.size() == 0) {
+					//				System.out.println("nothing to write now");
+				}
+				for (Point p : pointsToWrite) {
+					//				System.out.println(p);
+					UberDownloader.addRegionToDownload(p.x + gameMetaInfo.rootPoint.x, p.z + gameMetaInfo.rootPoint.z);
+					regionWriter.addTask(p.x, p.z);
+				}
+				double minDistance = pointManager.getDistanceToEdge(gameFolder);
+				if (minDistance < 512) {
+					System.err.println("Warning: minDistance " + minDistance);
+				}
 				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-				return;
 			}
-//			break;
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+			UberDownloader.shutdown();
+			if (regionWriter != null)
+				regionWriter.blockingShutdown();
+			return;
 		}
 
 
@@ -129,20 +131,31 @@ public class ManagingThread implements Runnable {
 		reader.close();
 		return out;
 	}
+	public void shutDown() {
+		this.interrupt();
+		while(this.isAlive()) {
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
 	public static void main(String[] args) throws Exception {
-//		File f = new File("/Library/Caches/Chunkmapper2");
-//		if (f.exists()) {
-//			System.out.println("deleting cache");
-//			FileUtils.deleteDirectory(f);
-//		}
-		
-//		double[] latlon = geocode.core.placeToCoords("london");
+		//		double[] latlon = geocode.core.placeToCoords("london");
 		double[] latlon = geocode.core.placeToCoords("nelson, nz");
-//		double[] latlon = getLatLon(); //get last recorded place
+		//		double[] latlon = getLatLon(); //get last recorded place
 		boolean forceReload = true;
 		boolean reteleport = false;
 		ManagingThread thread = new ManagingThread(latlon[0], latlon[1], "world", forceReload, reteleport);
-		thread.run();
+		thread.start();
+		Thread.sleep(3000);
+		thread.interrupt();
+		while(thread.isAlive()) {
+			System.out.println("waiting shutdown");
+			Thread.sleep(100);
+		}
 
 	}
 

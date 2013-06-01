@@ -10,20 +10,6 @@ public abstract class ResourceInfo {
 	public final URL url;
 	public final int regionx, regionz;
 	
-	
-//	protected ResourceInfo(String address, File cacheDirectory, String fileName, String suffix, int regionx, int regionz) {
-//		this.regionx = regionx;
-//		this.regionz = regionz;
-//		file = new File(cacheDirectory, fileName + suffix);
-//		URL url2 = null;
-//		try {
-//			url2 = new URL(address);
-//		} catch (MalformedURLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		url = url2;
-//	}
 	protected ResourceInfo(String address, File cacheDirectory, String fileName, int regionx, int regionz) {
 		this.regionx = regionx;
 		this.regionz = regionz;

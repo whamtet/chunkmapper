@@ -5,6 +5,7 @@ import java.io.File;
 
 import net.minecraft.world.level.chunk.storage.RegionFile;
 
+import com.chunkmapper.GameMetaInfo;
 import com.chunkmapper.Point;
 import com.chunkmapper.PointManager;
 import com.chunkmapper.Tasker;
@@ -16,8 +17,8 @@ public class RegionWriter extends Tasker {
 	public final Point rootPoint;
 	public final File regionFolder;
 
-	public RegionWriter(PointManager pointManager, Point rootPoint, File regionFolder) {
-		super(NUM_WRITING_THREADS, pointManager);
+	public RegionWriter(PointManager pointManager, Point rootPoint, File regionFolder, GameMetaInfo metaInfo) {
+		super(NUM_WRITING_THREADS, pointManager, metaInfo);
 		this.rootPoint = rootPoint;
 		this.regionFolder = regionFolder;
 	}

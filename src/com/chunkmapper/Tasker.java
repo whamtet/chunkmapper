@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import com.chunkmapper.reader.FileNotYetAvailableException;
 
@@ -19,6 +20,16 @@ public abstract class Tasker {
 
 	public void shutdown() {
 		executorService.shutdownNow();
+		System.out.println("shut down " + this.getClass().toString());
+	}
+	public void blockingShutdown() {
+		executorService.shutdownNow();
+		try {
+			executorService.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	public void addTask(int regionx, int regionz) {
 		synchronized(lock) {
@@ -31,12 +42,16 @@ public abstract class Tasker {
 	}
 
 
-	public Tasker(int numThreads, final PointManager pointManager) {
+	public Tasker(int numThreads, final PointManager pointManager, final GameMetaInfo metaInfo) {
 		executorService = Executors.newFixedThreadPool(numThreads);
 		for (int i = 0; i < numThreads; i++) {
 			executorService.execute(new Runnable() {
 				public void run() {
 					while(true) {
+						if (Thread.interrupted()) {
+							System.err.println("shutting down now");
+							return;
+						}
 						Point task = null;
 						synchronized(lock) {
 							task = taskQueue.poll();
@@ -55,6 +70,11 @@ public abstract class Tasker {
 								if (pointManager != null) {
 									pointManager.updateStore(task);
 								}
+								if (metaInfo != null) {
+									metaInfo.incrementChunksMade();
+								}
+							} catch (InterruptedException e) {
+								return;
 							} catch (FileNotYetAvailableException e) {
 //								e.printStackTrace();
 								try {

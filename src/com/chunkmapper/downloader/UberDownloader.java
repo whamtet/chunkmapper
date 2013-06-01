@@ -29,5 +29,14 @@ public class UberDownloader {
 		xapiDownloader.addTask(regionx, regionz);
 		xapiRailDownloader.addTask(regionx, regionz);
 	}
+	public static void shutdown() {
+		globcoverDownloader.shutdown();
+		lakeDownloader.shutdown();
+		noaaGshhsDownloader.shutdown();
+		riverDownloader.shutdown();
+		xapiDownloader.shutdown();
+		heightsDownloader.shutdown();
+		xapiRailDownloader.shutdown();
+	}
 
 }
