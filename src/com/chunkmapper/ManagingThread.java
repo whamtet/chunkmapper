@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.HashSet;
 
 import org.apache.commons.io.FileUtils;
@@ -19,8 +18,10 @@ public class ManagingThread extends Thread {
 	private final String gameName;
 	private final boolean forceRestart;
 	private boolean reteleport;
+	private final ProgressManager progressManager;
 
-	public ManagingThread(double lat, double lon, String gameName, boolean forceRestart, boolean reteleport) {
+	public ManagingThread(double lat, double lon, String gameName, boolean forceRestart, boolean reteleport, ProgressManager progressManager) {
+		this.progressManager = progressManager;
 		this.lat = lat;
 		this.lon = lon;
 		this.gameName = gameName;
@@ -88,7 +89,7 @@ public class ManagingThread extends Thread {
 		RegionWriter regionWriter = null;
 		try {
 			PointManager pointManager = new PointManager(chunkmapperDir);
-			regionWriter = new RegionWriter(pointManager, gameMetaInfo.rootPoint, regionFolder, gameMetaInfo);
+			regionWriter = new RegionWriter(pointManager, gameMetaInfo.rootPoint, regionFolder, gameMetaInfo, progressManager);
 
 			//now we loop for ETERNITY!!!
 			while (true) {
@@ -98,6 +99,7 @@ public class ManagingThread extends Thread {
 				}
 				for (Point p : pointsToWrite) {
 					//				System.out.println(p);
+					progressManager.incrementTotalTasks();
 					UberDownloader.addRegionToDownload(p.x + gameMetaInfo.rootPoint.x, p.z + gameMetaInfo.rootPoint.z);
 					regionWriter.addTask(p.x, p.z);
 				}
@@ -131,7 +133,9 @@ public class ManagingThread extends Thread {
 		reader.close();
 		return out;
 	}
-	public void shutDown() {
+	public synchronized void shutDown() {
+		if (!this.isAlive())
+			return;
 		this.interrupt();
 		while(this.isAlive()) {
 			try {
@@ -148,7 +152,7 @@ public class ManagingThread extends Thread {
 		//		double[] latlon = getLatLon(); //get last recorded place
 		boolean forceReload = true;
 		boolean reteleport = false;
-		ManagingThread thread = new ManagingThread(latlon[0], latlon[1], "world", forceReload, reteleport);
+		ManagingThread thread = new ManagingThread(latlon[0], latlon[1], "world", forceReload, reteleport, null);
 		thread.start();
 		Thread.sleep(3000);
 		thread.interrupt();

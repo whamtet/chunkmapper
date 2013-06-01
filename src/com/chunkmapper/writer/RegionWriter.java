@@ -8,6 +8,7 @@ import net.minecraft.world.level.chunk.storage.RegionFile;
 import com.chunkmapper.GameMetaInfo;
 import com.chunkmapper.Point;
 import com.chunkmapper.PointManager;
+import com.chunkmapper.ProgressManager;
 import com.chunkmapper.Tasker;
 import com.chunkmapper.chunk.Chunk;
 import com.mojang.nbt.NbtIo;
@@ -17,8 +18,8 @@ public class RegionWriter extends Tasker {
 	public final Point rootPoint;
 	public final File regionFolder;
 
-	public RegionWriter(PointManager pointManager, Point rootPoint, File regionFolder, GameMetaInfo metaInfo) {
-		super(NUM_WRITING_THREADS, pointManager, metaInfo);
+	public RegionWriter(PointManager pointManager, Point rootPoint, File regionFolder, GameMetaInfo metaInfo, ProgressManager progressManager) {
+		super(NUM_WRITING_THREADS, pointManager, metaInfo, progressManager);
 		this.rootPoint = rootPoint;
 		this.regionFolder = regionFolder;
 	}

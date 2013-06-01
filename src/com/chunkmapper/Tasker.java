@@ -42,7 +42,7 @@ public abstract class Tasker {
 	}
 
 
-	public Tasker(int numThreads, final PointManager pointManager, final GameMetaInfo metaInfo) {
+	public Tasker(int numThreads, final PointManager pointManager, final GameMetaInfo metaInfo, final ProgressManager progressManager) {
 		executorService = Executors.newFixedThreadPool(numThreads);
 		for (int i = 0; i < numThreads; i++) {
 			executorService.execute(new Runnable() {
@@ -72,6 +72,9 @@ public abstract class Tasker {
 								}
 								if (metaInfo != null) {
 									metaInfo.incrementChunksMade();
+								}
+								if (progressManager != null) {
+									progressManager.incrementProgress();
 								}
 							} catch (InterruptedException e) {
 								return;
