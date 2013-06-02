@@ -20,7 +20,7 @@ public abstract class Tasker {
 
 	public void shutdown() {
 		executorService.shutdownNow();
-		System.out.println("shut down " + this.getClass().toString());
+		System.err.println("shut down " + this.getClass().toString());
 	}
 	public void blockingShutdown() {
 		executorService.shutdownNow();
@@ -30,6 +30,7 @@ public abstract class Tasker {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		System.err.println("shut down " + this.getClass().toString());
 	}
 	public void addTask(int regionx, int regionz) {
 		synchronized(lock) {
@@ -49,7 +50,6 @@ public abstract class Tasker {
 				public void run() {
 					while(true) {
 						if (Thread.interrupted()) {
-							System.err.println("shutting down now");
 							return;
 						}
 						Point task = null;
@@ -60,8 +60,6 @@ public abstract class Tasker {
 							try {
 								Thread.sleep(1000);
 							} catch (InterruptedException e) {
-								// TODO Auto-generated catch block
-								System.err.println("shutting down now");
 								return;
 							}
 						} else {

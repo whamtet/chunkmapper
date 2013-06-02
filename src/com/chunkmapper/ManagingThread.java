@@ -9,6 +9,7 @@ import java.util.HashSet;
 import org.apache.commons.io.FileUtils;
 
 import com.chunkmapper.downloader.UberDownloader;
+import com.chunkmapper.gui.swing.GameInfoPanel;
 import com.chunkmapper.rail.HeightsCache;
 import com.chunkmapper.writer.LoadedLevelDat;
 import com.chunkmapper.writer.RegionWriter;
@@ -18,10 +19,10 @@ public class ManagingThread extends Thread {
 	private final String gameName;
 	private final boolean forceRestart;
 	private boolean reteleport;
-	private final ProgressManager progressManager;
+	private final GameInfoPanel gameInfoPanel;
 
-	public ManagingThread(double lat, double lon, String gameName, boolean forceRestart, boolean reteleport, ProgressManager progressManager) {
-		this.progressManager = progressManager;
+	public ManagingThread(double lat, double lon, String gameName, boolean forceRestart, boolean reteleport, GameInfoPanel gameInfoPanel) {
+		this.gameInfoPanel = gameInfoPanel;
 		this.lat = lat;
 		this.lon = lon;
 		this.gameName = gameName;
@@ -89,7 +90,7 @@ public class ManagingThread extends Thread {
 		RegionWriter regionWriter = null;
 		try {
 			PointManager pointManager = new PointManager(chunkmapperDir);
-			regionWriter = new RegionWriter(pointManager, gameMetaInfo.rootPoint, regionFolder, gameMetaInfo, progressManager);
+			regionWriter = new RegionWriter(pointManager, gameMetaInfo.rootPoint, regionFolder, gameMetaInfo, gameInfoPanel.progressManager);
 
 			//now we loop for ETERNITY!!!
 			while (true) {
@@ -98,8 +99,10 @@ public class ManagingThread extends Thread {
 					//				System.out.println("nothing to write now");
 				}
 				for (Point p : pointsToWrite) {
-					//				System.out.println(p);
-					progressManager.incrementTotalTasks();
+					if (gameInfoPanel != null) {
+						gameInfoPanel.progressManager.incrementTotalTasks();
+					}
+					
 					UberDownloader.addRegionToDownload(p.x + gameMetaInfo.rootPoint.x, p.z + gameMetaInfo.rootPoint.z);
 					regionWriter.addTask(p.x, p.z);
 				}
@@ -133,19 +136,6 @@ public class ManagingThread extends Thread {
 		reader.close();
 		return out;
 	}
-	public synchronized void shutDown() {
-		if (!this.isAlive())
-			return;
-		this.interrupt();
-		while(this.isAlive()) {
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-	}
 	public static void main(String[] args) throws Exception {
 		//		double[] latlon = geocode.core.placeToCoords("london");
 		double[] latlon = geocode.core.placeToCoords("nelson, nz");
@@ -155,10 +145,18 @@ public class ManagingThread extends Thread {
 		ManagingThread thread = new ManagingThread(latlon[0], latlon[1], "world", forceReload, reteleport, null);
 		thread.start();
 		Thread.sleep(3000);
+		blockingShutDown(thread);
+	}
+	public static void blockingShutDown(ManagingThread thread) {
 		thread.interrupt();
 		while(thread.isAlive()) {
-			System.out.println("waiting shutdown");
-			Thread.sleep(100);
+//			System.out.println("waiting shutdown");
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 	}

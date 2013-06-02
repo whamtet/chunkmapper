@@ -18,6 +18,7 @@ public class ProgressManager {
 		totalTasks++;
 	}
 	public synchronized void incrementProgress() {
+		System.out.println(totalTasks);
 		numTasksDone++;
 		int j;
 		if (totalTasks < 1) {
