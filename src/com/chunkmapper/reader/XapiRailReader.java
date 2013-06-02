@@ -9,6 +9,7 @@ import nu.xom.ValidityException;
 
 import com.chunkmapper.FileValidator;
 import com.chunkmapper.Point;
+import com.chunkmapper.downloader.UberDownloader;
 import com.chunkmapper.enumeration.CircleRail;
 import com.chunkmapper.enumeration.StraightRail;
 import com.chunkmapper.rail.HeightsManager;
@@ -72,7 +73,7 @@ public class XapiRailReader {
 		this.railType[z][x] = railType;
 	}
 
-	public XapiRailReader(int regionx, int regionz, HeightsReader heightsReader) throws IllegalArgumentException, NoSuchElementException, IOException, InterruptedException, FileNotYetAvailableException, ValidityException, ParsingException {
+	public XapiRailReader(int regionx, int regionz, HeightsReader heightsReader, UberDownloader uberDownloader) throws IllegalArgumentException, NoSuchElementException, IOException, InterruptedException, FileNotYetAvailableException, ValidityException, ParsingException {
 		x0 = regionx * 512; z0 = regionz * 512;
 		XapiRailResourceInfo info = new XapiRailResourceInfo(regionx, regionz);
 		if (!FileValidator.checkValid(info.file)) {
@@ -84,7 +85,7 @@ public class XapiRailReader {
 		if (!hasRails) {
 			return;
 		}
-		HeightsManager heightsManager = new HeightsManager();
+		HeightsManager heightsManager = new HeightsManager(uberDownloader);
 //		if (true)
 //			return;
 

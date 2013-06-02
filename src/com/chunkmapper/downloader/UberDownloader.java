@@ -2,19 +2,19 @@ package com.chunkmapper.downloader;
 
 public class UberDownloader {
 //	private staticFlightgearRailDownloader flightgearRailDownloader = new FlightgearRailDownloader();
-	private static GlobcoverDownloader globcoverDownloader = new GlobcoverDownloader();
-	private static LakeDownloader lakeDownloader = new LakeDownloader();
-	private static NoaaGshhsDownloader noaaGshhsDownloader = new NoaaGshhsDownloader();
-	private static RiverDownloader riverDownloader = new RiverDownloader();
-	private static XapiDownloader xapiDownloader = new XapiDownloader();
-	public static HeightsDownloader heightsDownloader = new HeightsDownloader();
-	private static XapiRailDownloader xapiRailDownloader = new XapiRailDownloader();
+	private GlobcoverDownloader globcoverDownloader = new GlobcoverDownloader();
+	private LakeDownloader lakeDownloader = new LakeDownloader();
+	private NoaaGshhsDownloader noaaGshhsDownloader = new NoaaGshhsDownloader();
+	private RiverDownloader riverDownloader = new RiverDownloader();
+	private XapiDownloader xapiDownloader = new XapiDownloader();
+	public HeightsDownloader heightsDownloader = new HeightsDownloader();
+	private XapiRailDownloader xapiRailDownloader = new XapiRailDownloader();
 	
 //	public static void redownloadXapi(int regionx, int regionz) {
 //		xapiRailDownloader.addForceDownload(regionx, regionz);
 //	}
 
-	public static void addRegionToDownload(int regionx, int regionz) {
+	public void addRegionToDownload(int regionx, int regionz) {
 		System.out.println("adding region " + regionx + ", " + regionz);
 		//obligatory sources
 		int numAttempts = -1;
@@ -29,7 +29,7 @@ public class UberDownloader {
 		xapiDownloader.addTask(regionx, regionz);
 		xapiRailDownloader.addTask(regionx, regionz);
 	}
-	public static void shutdown() {
+	public void shutdown() {
 		globcoverDownloader.shutdown();
 		lakeDownloader.shutdown();
 		noaaGshhsDownloader.shutdown();

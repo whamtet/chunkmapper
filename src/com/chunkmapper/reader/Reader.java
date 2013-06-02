@@ -66,9 +66,9 @@ public abstract class Reader {
 		}
 	}
 
-	protected Reader(ResourceInfo resourceInfo) throws InterruptedException, IOException, FileNotYetAvailableException {
+	protected Reader(ResourceInfo resourceInfo, UberDownloader uberDownloader) throws InterruptedException, IOException, FileNotYetAvailableException {
 		if (!FileValidator.checkValid(resourceInfo.file)) {
-			UberDownloader.heightsDownloader.addTask(resourceInfo.regionx, resourceInfo.regionz);
+			uberDownloader.heightsDownloader.addTask(resourceInfo.regionx, resourceInfo.regionz);
 			throw new FileNotYetAvailableException();
 		}
 

@@ -11,17 +11,21 @@ import com.chunkmapper.PointManager;
 import com.chunkmapper.ProgressManager;
 import com.chunkmapper.Tasker;
 import com.chunkmapper.chunk.Chunk;
+import com.chunkmapper.downloader.UberDownloader;
 import com.mojang.nbt.NbtIo;
 
 public class RegionWriter extends Tasker {
 	public static final int NUM_WRITING_THREADS = Runtime.getRuntime().availableProcessors() + 1;
 	public final Point rootPoint;
 	public final File regionFolder;
+	private final UberDownloader uberDownloader;
 
-	public RegionWriter(PointManager pointManager, Point rootPoint, File regionFolder, GameMetaInfo metaInfo, ProgressManager progressManager) {
+	public RegionWriter(PointManager pointManager, Point rootPoint, File regionFolder, 
+			GameMetaInfo metaInfo, ProgressManager progressManager, UberDownloader uberDownloader) {
 		super(NUM_WRITING_THREADS, pointManager, metaInfo, progressManager);
 		this.rootPoint = rootPoint;
 		this.regionFolder = regionFolder;
+		this.uberDownloader = uberDownloader;
 	}
 	public void addRegion(int regionx, int regionz) {
 		super.addTask(regionx, regionz);
@@ -34,7 +38,7 @@ public class RegionWriter extends Tasker {
 		
 		File f = new File(regionFolder, "r." + a + "." + b + ".mca");
 		System.out.println("trying to write chunk " + a + ", " + b);
-		GlobcoverManager coverManager = new GlobcoverManager(regionx, regionz);
+		GlobcoverManager coverManager = new GlobcoverManager(regionx, regionz, uberDownloader);
 		
 		if (coverManager.allWater) {
 			System.out.println("all water: skipping");

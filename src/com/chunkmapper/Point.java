@@ -12,6 +12,11 @@ public class Point extends java.awt.Point {
 	public static Point getRegionPoint(int x, int z) {
 		return new Point(com.chunkmapper.math.Matthewmatics.div(x, 512), com.chunkmapper.math.Matthewmatics.div(z, 512));
 	}
+	public static Point getRegionPoint(double lat, double lon) {
+		int x = (int) Math.floor(lon * 3600 / 512);
+		int z = (int) Math.floor(-lat * 3600 / 512);
+		return new Point(x, z);
+	}
 	
 
 	public final int z;

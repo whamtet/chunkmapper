@@ -3,15 +3,20 @@ package com.chunkmapper.rail;
 import java.io.IOException;
 
 import com.chunkmapper.Point;
+import com.chunkmapper.downloader.UberDownloader;
 import com.chunkmapper.reader.FileNotYetAvailableException;
 import com.vividsolutions.jts.geom.Coordinate;
 
 public class HeightsManager {
 	private HeightsCache cache;
 	private RailTypeCache railTypeCache;
+	private final UberDownloader uberDownloader;
 
 	private int numReloads = 0;
 
+	public HeightsManager(UberDownloader uberDownloader) {
+		this.uberDownloader = uberDownloader;
+	}
 	public short getHeight(int x, int z) throws IOException, InterruptedException, FileNotYetAvailableException {
 		Point neededPoint = Point.getRegionPoint(x, z);
 		if (cache != null && neededPoint.equals(cache.regionPoint)) {
@@ -20,7 +25,7 @@ public class HeightsManager {
 			if (cache != null)
 				cache.save();
 			numReloads++;
-			cache = new HeightsCache(neededPoint);
+			cache = new HeightsCache(neededPoint, uberDownloader);
 			return cache.getHeight(x, z);
 		}
 	}
@@ -31,7 +36,7 @@ public class HeightsManager {
 		} else {
 			if (cache != null)
 				cache.save();
-			cache = new HeightsCache(neededPoint);
+			cache = new HeightsCache(neededPoint, uberDownloader);
 			cache.setHeight(x, z, h);
 		}
 	}

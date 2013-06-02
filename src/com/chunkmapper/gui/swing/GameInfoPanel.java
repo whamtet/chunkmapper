@@ -34,6 +34,7 @@ public class GameInfoPanel extends JPanel {
 	private JLabel lblGameName, lblPlayerLocation;
 	private JProgressBar progressBar;
 	public ProgressManager progressManager;
+	private double lat, lon;
 	
 	
 	public void shutDown() {
@@ -74,6 +75,7 @@ public class GameInfoPanel extends JPanel {
 	 */
 	
 	public GameInfoPanel(File gameFolder, final double lat, final double lon, final String gameName, final MapMakingDialog mapMakingDialog) throws IOException {
+		this.lat = lat; this.lon = lon;
 		setPreferredSize(new Dimension(369, 174));
 		loadedLevelDat = new LoadedLevelDat(new File(gameFolder, "level.dat"));
 		File chunkmapperDir = new File(gameFolder, "chunkmapper");
@@ -137,7 +139,7 @@ public class GameInfoPanel extends JPanel {
 			public void actionPerformed(ActionEvent arg0) {
 				
 				try {
-					URI uri = new URI("http://www.google.com");
+					URI uri = new URI(String.format("https://maps.google.com.au/?q=loc:%s+%s", lat, lon));
 					java.awt.Desktop.getDesktop().browse(uri);
 				} catch (URISyntaxException e) {
 					e.printStackTrace();
@@ -205,6 +207,7 @@ public class GameInfoPanel extends JPanel {
 		lblPlayerLocation.setEnabled(false);
 		progressBar.setEnabled(false);
 		this.lblMapChunksGenerated.setEnabled(false);
+		
 	}
 	public void activate() {
 		btnGenerateMap.setEnabled(generateMapEnabled);

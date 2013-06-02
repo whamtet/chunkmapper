@@ -34,6 +34,7 @@ import com.chunkmapper.column.Snow;
 import com.chunkmapper.column.SparseVegetation;
 import com.chunkmapper.column.Urban;
 import com.chunkmapper.column.VegetationWithCropland;
+import com.chunkmapper.downloader.UberDownloader;
 import com.chunkmapper.enumeration.Block;
 import com.chunkmapper.enumeration.FarmType;
 import com.chunkmapper.enumeration.Globcover;
@@ -66,10 +67,10 @@ public class GlobcoverManager {
 
 	private final AbstractColumn[][] columns = new AbstractColumn[512][512];
 
-	public GlobcoverManager(int regionx, int regionz) throws FileNotYetAvailableException, IOException, IllegalArgumentException, NoSuchElementException, InterruptedException, ParsingException {
+	public GlobcoverManager(int regionx, int regionz, UberDownloader uberDownloader) throws FileNotYetAvailableException, IOException, IllegalArgumentException, NoSuchElementException, InterruptedException, ParsingException {
 		this.regionx = regionx; this.regionz = regionz;
 
-		heightsReader = new HeightsReader(regionx, regionz);
+		heightsReader = new HeightsReader(regionx, regionz, uberDownloader);
 		allWater = heightsReader.allWater;
 		if (allWater) {
 			railReader = null;
@@ -80,7 +81,7 @@ public class GlobcoverManager {
 
 		LakeReader lakeReader = new LakeReader(regionx, regionz, heightsReader);
 		RiverReader riverReader = new RiverReader(regionx, regionz, heightsReader);
-		railReader = new XapiRailReader(regionx, regionz, heightsReader);
+		railReader = new XapiRailReader(regionx, regionz, heightsReader, uberDownloader);
 		FarmTypeReader farmTypeReader = new FarmTypeReader();
 		xapiReader = new XapiReader(regionx, regionz);
 

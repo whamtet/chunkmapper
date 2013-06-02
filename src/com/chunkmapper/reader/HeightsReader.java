@@ -3,14 +3,15 @@ package com.chunkmapper.reader;
 import java.io.IOException;
 
 import com.chunkmapper.Utila;
+import com.chunkmapper.downloader.UberDownloader;
 import com.chunkmapper.resourceinfo.HeightsResourceInfo;
 
 public class HeightsReader extends Reader {
 	private final int x0, z0;
 	
-	public HeightsReader(int regionx, int regionz)
+	public HeightsReader(int regionx, int regionz, UberDownloader uberDownloader)
 			throws InterruptedException, IOException, FileNotYetAvailableException {
-		super(new HeightsResourceInfo(regionx, regionz));
+		super(new HeightsResourceInfo(regionx, regionz), uberDownloader);
 		x0 = regionx*512 - Utila.CHUNK_START;
 		z0 = regionz*512 - Utila.CHUNK_START;
 	}
