@@ -50,7 +50,6 @@ public class LakeReader {
 	public LakeReader(int regionx, int regionz, HeightsReader heightsReader) throws IOException, FileNotYetAvailableException {
 		LakeResourceInfo info = new LakeResourceInfo(regionx, regionz);
 		//lets just assume that the water info become available earlier
-		try {
 			BufferedImage image = ImageIO.read(info.file);
 			if (!FileValidator.checkValid(info.file))
 				throw new FileNotYetAvailableException();
@@ -151,9 +150,7 @@ public class LakeReader {
 			}
 
 
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		
 	}
 	private static class MedianCalculator {
 		private HashMap<Integer, Integer> data = new HashMap<Integer, Integer>();

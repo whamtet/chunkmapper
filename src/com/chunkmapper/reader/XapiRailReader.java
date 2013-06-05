@@ -12,8 +12,8 @@ import com.chunkmapper.Point;
 import com.chunkmapper.downloader.UberDownloader;
 import com.chunkmapper.enumeration.CircleRail;
 import com.chunkmapper.enumeration.StraightRail;
+import com.chunkmapper.parser.RailParser;
 import com.chunkmapper.rail.HeightsManager;
-import com.chunkmapper.rail.MyParser;
 import com.chunkmapper.rail.RailSection;
 import com.chunkmapper.resourceinfo.XapiRailResourceInfo;
 
@@ -79,7 +79,7 @@ public class XapiRailReader {
 		if (!FileValidator.checkValid(info.file)) {
 			throw new FileNotYetAvailableException();
 		}
-		ArrayList<RailSection> allSections = MyParser.getRailSections(info.file); 
+		ArrayList<RailSection> allSections = RailParser.getRailSections(info.file); 
 
 		hasRails = allSections.size() > 0;
 		if (!hasRails) {

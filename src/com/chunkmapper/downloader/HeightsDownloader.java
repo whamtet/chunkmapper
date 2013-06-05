@@ -19,8 +19,10 @@ public class HeightsDownloader extends Downloader {
 	protected void download(Point task) throws Exception {
 
 		HeightsResourceInfo fileToDownload = new HeightsResourceInfo(task.x, task.z);
-		if (FileValidator.checkValid(fileToDownload.file))
+		if (FileValidator.checkValid(fileToDownload.file)) {
+			System.out.println(fileToDownload.file.toString() + " is valid");
 			return;
+		}
 
 		System.out.println("downloading " + fileToDownload.url);
 		HttpGet httpGet = new HttpGet(fileToDownload.url.toURI());

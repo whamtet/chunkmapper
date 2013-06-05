@@ -92,9 +92,12 @@ public class ManagingThread extends Thread {
 		try {
 			PointManager pointManager = new PointManager(chunkmapperDir);
 			uberDownloader = new UberDownloader();
+			ProgressManager progressManager = null;
+			if (gameInfoPanel != null)
+				progressManager = gameInfoPanel.progressManager;
 			regionWriter = new RegionWriter(pointManager, gameMetaInfo.rootPoint, regionFolder, 
-					gameMetaInfo, gameInfoPanel.progressManager, uberDownloader);
-			
+					gameMetaInfo, progressManager, uberDownloader);
+
 
 			//now we loop for ETERNITY!!!
 			while (true) {
@@ -106,7 +109,7 @@ public class ManagingThread extends Thread {
 					if (gameInfoPanel != null) {
 						gameInfoPanel.progressManager.incrementTotalTasks();
 					}
-					
+
 					uberDownloader.addRegionToDownload(p.x + gameMetaInfo.rootPoint.x, p.z + gameMetaInfo.rootPoint.z);
 					regionWriter.addTask(p.x, p.z);
 				}
@@ -118,9 +121,10 @@ public class ManagingThread extends Thread {
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
-			uberDownloader.shutdown();
+			if (uberDownloader != null)
+				uberDownloader.shutdown();
 			if (regionWriter != null)
-				regionWriter.blockingShutdown();
+				regionWriter.blockingShutdownNow();
 			return;
 		}
 
@@ -141,20 +145,17 @@ public class ManagingThread extends Thread {
 		return out;
 	}
 	public static void main(String[] args) throws Exception {
-		//		double[] latlon = geocode.core.placeToCoords("london");
-		double[] latlon = geocode.core.placeToCoords("nelson, nz");
+		double[] latlon = geocode.core.placeToCoords("granity, nz");
 		//		double[] latlon = getLatLon(); //get last recorded place
-		boolean forceReload = true;
+		boolean forceReload = false;
 		boolean reteleport = false;
 		ManagingThread thread = new ManagingThread(latlon[0], latlon[1], "world", forceReload, reteleport, null);
 		thread.start();
-		Thread.sleep(3000);
-		blockingShutDown(thread);
 	}
 	public static void blockingShutDown(ManagingThread thread) {
 		thread.interrupt();
 		while(thread.isAlive()) {
-//			System.out.println("waiting shutdown");
+			//			System.out.println("waiting shutdown");
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {

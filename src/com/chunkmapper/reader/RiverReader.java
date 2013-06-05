@@ -35,6 +35,7 @@ public class RiverReader {
 			this.j = j;		
 		}
 	}
+
 	private static byte[][] pointsToMask(Point[][] points, int[][] heights) {
 		byte[][] mask = new byte[512][512];
 		//need to initialize explicitly

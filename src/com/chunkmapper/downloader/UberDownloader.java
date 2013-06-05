@@ -1,11 +1,11 @@
 package com.chunkmapper.downloader;
 
 public class UberDownloader {
-//	private staticFlightgearRailDownloader flightgearRailDownloader = new FlightgearRailDownloader();
 	private GlobcoverDownloader globcoverDownloader = new GlobcoverDownloader();
 	private LakeDownloader lakeDownloader = new LakeDownloader();
 	private NoaaGshhsDownloader noaaGshhsDownloader = new NoaaGshhsDownloader();
-	private RiverDownloader riverDownloader = new RiverDownloader();
+//	private RiverDownloader riverDownloader = new RiverDownloader();
+	private XapiRiverDownloader riverDownloader = new XapiRiverDownloader();
 	private XapiDownloader xapiDownloader = new XapiDownloader();
 	public HeightsDownloader heightsDownloader = new HeightsDownloader();
 	private XapiRailDownloader xapiRailDownloader = new XapiRailDownloader();
@@ -17,7 +17,6 @@ public class UberDownloader {
 	public void addRegionToDownload(int regionx, int regionz) {
 		System.out.println("adding region " + regionx + ", " + regionz);
 		//obligatory sources
-		int numAttempts = -1;
 		globcoverDownloader.addTask(regionx, regionz);
 		noaaGshhsDownloader.addTask(regionx, regionz);
 		heightsDownloader.addTask(regionx, regionz);
@@ -30,13 +29,13 @@ public class UberDownloader {
 		xapiRailDownloader.addTask(regionx, regionz);
 	}
 	public void shutdown() {
-		globcoverDownloader.shutdown();
-		lakeDownloader.shutdown();
-		noaaGshhsDownloader.shutdown();
-		riverDownloader.shutdown();
-		xapiDownloader.shutdown();
-		heightsDownloader.shutdown();
-		xapiRailDownloader.shutdown();
+		globcoverDownloader.shutdownNow();
+		lakeDownloader.shutdownNow();
+		noaaGshhsDownloader.shutdownNow();
+		riverDownloader.shutdownNow();
+		xapiDownloader.shutdownNow();
+		heightsDownloader.shutdownNow();
+		xapiRailDownloader.shutdownNow();
 	}
 
 }

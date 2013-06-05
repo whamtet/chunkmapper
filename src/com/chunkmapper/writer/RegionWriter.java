@@ -49,7 +49,6 @@ public class RegionWriter extends Tasker {
 
 		System.out.println("writing chunk " + a + ", " + b);
 		//
-		ArtifactWriter artifactWriter = new ArtifactWriter();
 		for (int x = 0; x < 32; x++) {
 			for (int z = 0; z < 32; z++) {
 				if (Thread.interrupted()) {
@@ -57,7 +56,7 @@ public class RegionWriter extends Tasker {
 					f.delete();
 					throw new InterruptedException();
 				}
-				Chunk chunk = coverManager.getChunk(x + regionx*32, z + regionz*32, x + a*32, z + b*32, artifactWriter);
+				Chunk chunk = coverManager.getChunk(x + regionx*32, z + regionz*32, x + a*32, z + b*32);
 				DataOutputStream stream = regionFile.getChunkDataOutputStream(x, z);
 				NbtIo.write(chunk.getTag(), stream);
 				stream.close();

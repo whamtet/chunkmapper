@@ -46,9 +46,9 @@ import com.chunkmapper.reader.GlobcoverReader;
 import com.chunkmapper.reader.HeightsReader;
 import com.chunkmapper.reader.LakeReader;
 import com.chunkmapper.reader.NoaaGshhsReader;
-import com.chunkmapper.reader.RiverReader;
 import com.chunkmapper.reader.XapiRailReader;
 import com.chunkmapper.reader.XapiReader;
+import com.chunkmapper.reader.XapiRiverReader;
 
 public class GlobcoverManager {
 	private final HeightsReader heightsReader;
@@ -56,6 +56,7 @@ public class GlobcoverManager {
 	private final XapiRailReader railReader;
 	private final XapiReader xapiReader;
 	public final boolean allWater;
+	private final ArtifactWriter artifactWriter = new ArtifactWriter();
 	public final int regionx, regionz;
 	public static final TriangleZonator snowLinator;
 	public final Random RANDOM = new Random();
@@ -80,7 +81,8 @@ public class GlobcoverManager {
 		GlobcoverReader coverReader = new GlobcoverReader(regionx, regionz);
 
 		LakeReader lakeReader = new LakeReader(regionx, regionz, heightsReader);
-		RiverReader riverReader = new RiverReader(regionx, regionz, heightsReader);
+//		RiverReader riverReader = new RiverReader(regionx, regionz, heightsReader);
+		XapiRiverReader riverReader = new XapiRiverReader(regionx, regionz);
 		railReader = new XapiRailReader(regionx, regionz, heightsReader, uberDownloader);
 		FarmTypeReader farmTypeReader = new FarmTypeReader();
 		xapiReader = new XapiReader(regionx, regionz);
@@ -206,7 +208,7 @@ public class GlobcoverManager {
 
 	}
 
-	public Chunk getChunk(int abschunkx, int abschunkz, int relchunkx, int relchunkz, ArtifactWriter artifactWriter) {
+	public Chunk getChunk(int abschunkx, int abschunkz, int relchunkx, int relchunkz) {
 		int chunkx = Matthewmatics.mod(abschunkx, 32);
 		int chunkz = Matthewmatics.mod(abschunkz, 32);
 		Chunk chunk = new Chunk(abschunkx, abschunkz, heightsReader.getHeights(chunkx, chunkz), relchunkx, relchunkz);

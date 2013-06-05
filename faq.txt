@@ -4,7 +4,7 @@ Chunkmapper is a free program that generates realistic 3D maps anywhere on earth
 
 How does it work?
 
-You select a start point anywhere on earth using a google-maps style viewer.  Chunkmapper generates a Minecraft saved game which you can explore the real world in.  The only limits to your exploration are the north and south poles and the international dateline.
+You select a start point anywhere on earth using a google-maps style viewer.  Chunkmapper generates a Minecraft saved game which you can explore the real world in.  The only limits to your exploration are the international dateline and the north and south poles.
 
 How big are the maps?
 
@@ -28,7 +28,7 @@ No.  Chunkmapper is a standalone program that runs in vanilla Minecraft.  It gen
 
 Oh no!  I quit Chunkmapper.  What will happen to my map?
 
-If you restart Chunkmapper it can continue adding to existing maps without any problems.  The only caveat is if you get to the edge of a generated map and see a sudden wall of ocean.  In this event it's advised that you quit viewing the map in Minecraft to prevent memory clashes between Minecraft and Chunkmapper.  Chunkmapper will normally add to the map beyond your view bounds.
+If you restart Chunkmapper it can continue adding to existing maps without any problems.  The only caveat is if you get to the edge of a generated map and see a sudden wall of ocean.  In this event it's advised that you quit viewing the map in Minecraft to prevent memory clashes between Minecraft and Chunkmapper.  Chunkmapper can then safely generate the map until its beyond your view bounds again.
 
 Does Chunkmapper support Minecraft multi-player mode?
 

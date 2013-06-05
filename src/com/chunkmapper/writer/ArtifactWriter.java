@@ -3,6 +3,7 @@ package com.chunkmapper.writer;
 import com.chunkmapper.chunk.Chunk;
 import com.chunkmapper.enumeration.Block;
 import com.chunkmapper.enumeration.Blocka;
+import com.chunkmapper.enumeration.CircleRail;
 import com.chunkmapper.enumeration.DataSource;
 import com.chunkmapper.enumeration.LadderWallsignFurnaceChest;
 import com.chunkmapper.enumeration.Stairs;
@@ -48,6 +49,7 @@ public class ArtifactWriter {
 			for (int z = z0; z < z0 + length; z++) {
 				for (int x = x0; x < x0 + width; x++) {
 					chunk.Blocks[y][z][x] = 0;
+					chunk.Data[y][z][x] = 0;
 				}
 			}
 		}
@@ -101,7 +103,7 @@ public class ArtifactWriter {
 			warning[0] = "Your eye";
 			warning[1] = "shall not";
 			warning[2] = "pity him";
-			warning[3] = "";
+			warning[3] = " ";
 			break;
 		case 4:
 			warning[0] = "If anyone kills";
@@ -152,7 +154,8 @@ public class ArtifactWriter {
 			warning[3] = "submissiveness";
 			break;
 		}
-		ArtifactWriter.addSign(chunk, h, z0 + length + 1, x0 + 2, warning);
+		String[] warning2 = {"ok"};
+		ArtifactWriter.addSign(chunk, h, chunk.zr + z0 + length + 1, chunk.xr + x0 + 2, warning);
 
 	}
 	public static void addTunnelIntoTheUnknown(Chunk chunk) {
@@ -392,7 +395,7 @@ public class ArtifactWriter {
 
 
 	}
-	public void placeRail(int x, int z, Chunk chunk, short railHeight, byte railType, boolean usePlanks,
+	public void placeRail(int x, int z, Chunk chunk, int railHeight, byte railType, boolean usePlanks,
 			boolean placeSpecial) {
 		byte foundation = usePlanks ? Block.Planks.val : Block.Cobblestone.val;
 
@@ -432,27 +435,35 @@ public class ArtifactWriter {
 				chunk.Blocks[h][z][x] = Block.Gold_Block.val;
 			}
 		}
-		if (railType == StraightRail.North.val || railType == StraightRail.East.val)
+		if (spacesTillNextPoweredRail > 0)
 			spacesTillNextPoweredRail--;
+		boolean canBePlaced = railType == StraightRail.North.val || railType == StraightRail.East.val;
 
-		if (spacesTillNextPoweredRail == 0) {
-			spacesTillNextPoweredRail = 6;
-
-			chunk.Blocks[railHeight-1][z][x] = foundation;
-			chunk.Blocks[railHeight][z][x] = Block.Powered_Rail.val;
-			chunk.Data[railHeight][z][x] = (byte) (railType + 8);
-
-			if (railType == StraightRail.North.val){
+		if (spacesTillNextPoweredRail == 0 && canBePlaced) {
+			if (railType == StraightRail.North.val) {
+				chunk.Blocks[railHeight-1][z][x] = foundation;
+				chunk.Blocks[railHeight][z][x] = Block.Powered_Rail.val;
+				chunk.Data[railHeight][z][x] = (byte) (railType + 8);
+				
 				int xPosition = x == 15 ? 14 : x + 1;
 				chunk.Blocks[railHeight-1][z][xPosition] = foundation;
 				chunk.Blocks[railHeight][z][xPosition] = Block.Redstone_Torch_Lit.val;
 				chunk.Data[railHeight][z][xPosition] = 0;
-			} else {
+				spacesTillNextPoweredRail = 6;
+			}
+			if (railType == StraightRail.East.val) {
+				chunk.Blocks[railHeight-1][z][x] = foundation;
+				chunk.Blocks[railHeight][z][x] = Block.Powered_Rail.val;
+				chunk.Data[railHeight][z][x] = (byte) (railType + 8);
+				
 				int zPosition = z == 15 ? 14 : z + 1;
 				chunk.Blocks[railHeight-1][zPosition][x] = foundation;
 				chunk.Blocks[railHeight][zPosition][x] = Block.Redstone_Torch_Lit.val;
 				chunk.Data[railHeight][zPosition][x] = 0;
+				spacesTillNextPoweredRail = 6;
 			}
+			
+			
 		} else {
 			chunk.Blocks[railHeight-1][z][x] = foundation;
 			chunk.Blocks[railHeight][z][x] = Block.Rail.val;

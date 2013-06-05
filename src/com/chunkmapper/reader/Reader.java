@@ -68,15 +68,16 @@ public abstract class Reader {
 
 	protected Reader(ResourceInfo resourceInfo, UberDownloader uberDownloader) throws InterruptedException, IOException, FileNotYetAvailableException {
 		if (!FileValidator.checkValid(resourceInfo.file)) {
-			uberDownloader.heightsDownloader.addTask(resourceInfo.regionx, resourceInfo.regionz);
+			if (uberDownloader != null)
+				uberDownloader.heightsDownloader.addTask(resourceInfo.regionx, resourceInfo.regionz);
 			throw new FileNotYetAvailableException();
 		}
 
 		//now we're ready to download
-			BufferedInputStream in = new BufferedInputStream(new FileInputStream(resourceInfo.file));
-			byte[] data = new byte[HeightsResourceInfo.FILE_LENGTH];
-			in.read(data);
-			in.close();
+		BufferedInputStream in = new BufferedInputStream(new FileInputStream(resourceInfo.file));
+		byte[] data = new byte[HeightsResourceInfo.FILE_LENGTH];
+		in.read(data);
+		in.close();
 
 		ShortBuffer shortBuffer = ByteBuffer.wrap(data).order(ByteOrder.LITTLE_ENDIAN).asShortBuffer();
 		boolean allWater = true;

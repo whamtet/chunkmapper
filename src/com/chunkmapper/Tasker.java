@@ -1,5 +1,6 @@
 package com.chunkmapper;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -17,12 +18,18 @@ public abstract class Tasker {
 	private final LinkedList<Point> taskQueue = new LinkedList<Point>();
 	private final HashSet<Point> pointsAdded = new HashSet<Point>();
 	protected Object lock = new Object();
-
+	private boolean shutdown = false;
+	
 	public void shutdown() {
+		shutdown = true;
+		executorService.shutdown();
+	}
+
+	public void shutdownNow() {
 		executorService.shutdownNow();
 		System.err.println("shut down " + this.getClass().toString());
 	}
-	public void blockingShutdown() {
+	public void blockingShutdownNow() {
 		executorService.shutdownNow();
 		try {
 			executorService.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
@@ -48,6 +55,7 @@ public abstract class Tasker {
 		for (int i = 0; i < numThreads; i++) {
 			executorService.execute(new Runnable() {
 				public void run() {
+					
 					while(true) {
 						if (Thread.interrupted()) {
 							return;
@@ -57,6 +65,8 @@ public abstract class Tasker {
 							task = taskQueue.poll();
 						}
 						if (task == null) {
+							if (shutdown)
+								return;
 							try {
 								Thread.sleep(1000);
 							} catch (InterruptedException e) {
@@ -77,7 +87,7 @@ public abstract class Tasker {
 							} catch (InterruptedException e) {
 								return;
 							} catch (FileNotYetAvailableException e) {
-//								e.printStackTrace();
+								e.printStackTrace();
 								try {
 									Thread.sleep(1000);
 								} catch (InterruptedException e1) {
@@ -88,7 +98,18 @@ public abstract class Tasker {
 								synchronized(lock) {
 									taskQueue.add(task);
 								}
-
+							} catch (IOException e) {
+								e.printStackTrace();
+								System.err.println(task);
+								try {
+									Thread.sleep(1000);
+								} catch (InterruptedException e1) {
+									e1.printStackTrace();
+									return;
+								}
+								synchronized(lock) {
+									taskQueue.add(task);
+								}
 							} catch (Exception e) {
 								e.printStackTrace();
 								try {
