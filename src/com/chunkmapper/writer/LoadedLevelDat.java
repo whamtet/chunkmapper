@@ -17,13 +17,13 @@ import com.mojang.nbt.NbtIo;
 
 public class LoadedLevelDat {
 	private final CompoundTag data;
-	private final File f;
+	public final File store;
 
 	public LoadedLevelDat(File loadedLevelDatFile) {
-		this.f = loadedLevelDatFile;
+		this.store = loadedLevelDatFile;
 		CompoundTag data;
 		try {
-			InputStream in = new BufferedInputStream(new FileInputStream(f));
+			InputStream in = new BufferedInputStream(new FileInputStream(store));
 			data = NbtIo.readCompressed(in);
 			in.close();
 		} catch (IOException e) {
@@ -33,7 +33,7 @@ public class LoadedLevelDat {
 		this.data = data;
 	}
 	public void save() throws IOException {
-		OutputStream out = new BufferedOutputStream(new FileOutputStream(f));
+		OutputStream out = new BufferedOutputStream(new FileOutputStream(store));
 		NbtIo.writeCompressed(data, out);
 		out.close();
 	}
