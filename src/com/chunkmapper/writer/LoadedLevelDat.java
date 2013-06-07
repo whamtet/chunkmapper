@@ -19,17 +19,12 @@ public class LoadedLevelDat {
 	private final CompoundTag data;
 	public final File store;
 
-	public LoadedLevelDat(File loadedLevelDatFile) {
+	public LoadedLevelDat(File loadedLevelDatFile) throws IOException {
 		this.store = loadedLevelDatFile;
 		CompoundTag data;
-		try {
 			InputStream in = new BufferedInputStream(new FileInputStream(store));
 			data = NbtIo.readCompressed(in);
 			in.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-			data = null;
-		}
 		this.data = data;
 	}
 	public void save() throws IOException {

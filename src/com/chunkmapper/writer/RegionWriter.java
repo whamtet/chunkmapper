@@ -6,6 +6,7 @@ import java.io.File;
 import net.minecraft.world.level.chunk.storage.RegionFile;
 
 import com.chunkmapper.GameMetaInfo;
+import com.chunkmapper.MappedSquareManager;
 import com.chunkmapper.Point;
 import com.chunkmapper.PointManager;
 import com.chunkmapper.ProgressManager;
@@ -19,13 +20,19 @@ public class RegionWriter extends Tasker {
 	public final Point rootPoint;
 	public final File regionFolder;
 	private final UberDownloader uberDownloader;
+	private final GameMetaInfo gameMetaInfo;
+	private final MappedSquareManager mappedSquareManager;
+	private final PointManager pointManager;
 
 	public RegionWriter(PointManager pointManager, Point rootPoint, File regionFolder, 
-			GameMetaInfo metaInfo, ProgressManager progressManager, UberDownloader uberDownloader) {
-		super(NUM_WRITING_THREADS, pointManager, metaInfo, progressManager);
+			GameMetaInfo metaInfo, MappedSquareManager mappedSquareManager, UberDownloader uberDownloader) {
+		super(NUM_WRITING_THREADS);
 		this.rootPoint = rootPoint;
 		this.regionFolder = regionFolder;
 		this.uberDownloader = uberDownloader;
+		this.gameMetaInfo = metaInfo;
+		this.mappedSquareManager = mappedSquareManager;
+		this.pointManager = pointManager;
 	}
 	public void addRegion(int regionx, int regionz) {
 		super.addTask(regionx, regionz);
@@ -35,13 +42,14 @@ public class RegionWriter extends Tasker {
 	protected void doTask(Point task) throws Exception {
 		int a = task.x, b = task.z;
 		int regionx = task.x + rootPoint.x, regionz = task.z + rootPoint.z;
-		
+
 		File f = new File(regionFolder, "r." + a + "." + b + ".mca");
 		System.out.println("trying to write chunk " + a + ", " + b);
 		GlobcoverManager coverManager = new GlobcoverManager(regionx, regionz, uberDownloader);
-		
+
 		if (coverManager.allWater) {
 			System.out.println("all water: skipping");
+			pointManager.updateStore(task);
 			return;
 		}
 
@@ -63,8 +71,12 @@ public class RegionWriter extends Tasker {
 			}
 		}
 		regionFile.close();
-		
+
 		System.out.println("finished chunk " + a + ", " + b);
+		
+		pointManager.updateStore(task);
+		gameMetaInfo.incrementChunksMade();
+		mappedSquareManager.addPoint(new Point(task.x + rootPoint.x, task.z + rootPoint.z));
 	}
 
 }

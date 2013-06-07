@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Collection;
 
+import com.chunkmapper.FileValidator;
 import com.chunkmapper.Point;
 import com.chunkmapper.downloader.XapiRiverDownloader;
 import com.chunkmapper.parser.RiverParser;
@@ -59,7 +60,7 @@ public class XapiRiverReader {
 
 	public XapiRiverReader(int regionx, int regionz) throws FileNotYetAvailableException, IOException {
 		XapiRiverResourceInfo info = new XapiRiverResourceInfo(regionx, regionz);
-		if (!info.file.exists())
+		if (!FileValidator.checkValid(info.file))
 			throw new FileNotYetAvailableException();
 		//lets just assume that the water info become available earlier
 		Collection<RiverSection> riverSections = RiverParser.getRiverSections(info.file);
@@ -96,30 +97,5 @@ public class XapiRiverReader {
 	}
 
 
-	public static void main(String[] args) throws Exception {
-		double[] latlon = geocode.core.placeToCoords("brisbane");
-		int regionx = (int) (latlon[1] * 3600 / 512);
-		int regionz = -(int) (latlon[0] * 3600 / 512);
-
-		XapiRiverResourceInfo info = new XapiRiverResourceInfo(regionx, regionz);
-		System.out.println(info.file);
-		System.exit(0);
-		
-//				XapiRiverDownloader downloader = new XapiRiverDownloader();
-//				downloader.addTask(regionx, regionz);
-//				Thread.sleep(5000);
-//				System.exit(0);
-
-//		XapiRiverReader reader = new XapiRiverReader(regionx, regionz);
-//
-//		PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter("/Users/matthewmolloy/python/wms/data.csv")));
-//		for (int i = 0; i < 512; i++) {
-//			for (int j = 0; j < 512; j++) {
-//				pw.println(reader.mask[i][j]);
-//			}
-//		}
-//		pw.close();
-//		System.out.println("done");
-	}
 
 }

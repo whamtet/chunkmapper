@@ -4,9 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
-import nu.xom.ParsingException;
-import nu.xom.ValidityException;
-
 import com.chunkmapper.FileValidator;
 import com.chunkmapper.Point;
 import com.chunkmapper.downloader.UberDownloader;
@@ -73,7 +70,7 @@ public class XapiRailReader {
 		this.railType[z][x] = railType;
 	}
 
-	public XapiRailReader(int regionx, int regionz, HeightsReader heightsReader, UberDownloader uberDownloader) throws IllegalArgumentException, NoSuchElementException, IOException, InterruptedException, FileNotYetAvailableException, ValidityException, ParsingException {
+	public XapiRailReader(int regionx, int regionz, HeightsReader heightsReader, UberDownloader uberDownloader) throws IllegalArgumentException, NoSuchElementException, IOException, InterruptedException, FileNotYetAvailableException {
 		x0 = regionx * 512; z0 = regionz * 512;
 		XapiRailResourceInfo info = new XapiRailResourceInfo(regionx, regionz);
 		if (!FileValidator.checkValid(info.file)) {

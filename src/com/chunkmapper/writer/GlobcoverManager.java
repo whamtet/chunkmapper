@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.util.Random;
 
-import nu.xom.ParsingException;
-
 import com.chunkmapper.Utila;
 import com.chunkmapper.chunk.Chunk;
 import com.chunkmapper.column.AbstractColumn;
@@ -68,7 +66,7 @@ public class GlobcoverManager {
 
 	private final AbstractColumn[][] columns = new AbstractColumn[512][512];
 
-	public GlobcoverManager(int regionx, int regionz, UberDownloader uberDownloader) throws FileNotYetAvailableException, IOException, IllegalArgumentException, NoSuchElementException, InterruptedException, ParsingException {
+	public GlobcoverManager(int regionx, int regionz, UberDownloader uberDownloader) throws FileNotYetAvailableException, IOException, IllegalArgumentException, NoSuchElementException, InterruptedException {
 		this.regionx = regionx; this.regionz = regionz;
 
 		heightsReader = new HeightsReader(regionx, regionz, uberDownloader);
@@ -81,7 +79,6 @@ public class GlobcoverManager {
 		GlobcoverReader coverReader = new GlobcoverReader(regionx, regionz);
 
 		LakeReader lakeReader = new LakeReader(regionx, regionz, heightsReader);
-//		RiverReader riverReader = new RiverReader(regionx, regionz, heightsReader);
 		XapiRiverReader riverReader = new XapiRiverReader(regionx, regionz);
 		railReader = new XapiRailReader(regionx, regionz, heightsReader, uberDownloader);
 		FarmTypeReader farmTypeReader = new FarmTypeReader();
@@ -103,11 +100,6 @@ public class GlobcoverManager {
 				}
 
 				final int h = heightsReader.getHeightij(i, j);
-				//				if (h < 4) h = 4;
-				//				if (h < 0) {
-				//					columns[i][j] = new Ocean(absx, absz);
-				//					continue;
-				//				}
 				if (lakeReader.hasWaterij(i, j, h)) {
 					columns[i][j] = new Lake(absx, absz, heightsReader);
 					continue;

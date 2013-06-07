@@ -35,12 +35,5 @@ public class XapiResourceInfo extends ResourceInfo {
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) {
-		double[] latlon = geocode.core.placeToCoords("takanini, nz");
-		int regionx = (int) (latlon[1] * 3600 / 512);
-		int regionz = -(int) (latlon[0] * 3600 / 512);
-		XapiResourceInfo info = new XapiResourceInfo(regionx, regionz);
-		System.out.println(info.url);
-	}
 
 }

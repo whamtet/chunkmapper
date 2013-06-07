@@ -35,12 +35,5 @@ public class XapiRiverResourceInfo extends ResourceInfo {
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) {
-		double[] latlon = geocode.core.placeToCoords("hamilton, nz");
-		int regionx = (int) (latlon[1] * 3600 / 512);
-		int regionz = -(int) (latlon[0] * 3600 / 512);
-		XapiRiverResourceInfo info = new XapiRiverResourceInfo(regionx, regionz);
-		System.out.println(info.url);
-	}
 
 }

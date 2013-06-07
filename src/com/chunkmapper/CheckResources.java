@@ -54,11 +54,5 @@ public class CheckResources {
 		if (!f.exists())
 			System.out.println(f);
 	}
-	public static void main(String[] args) throws Exception {
-		double[] latlon = geocode.core.placeToCoords("london");
-		checkResource(latlon[0], latlon[1]);
-//		CheckResources.printUnavailableResources(latlon[0], latlon[1]);
-		System.out.println(latlon[0] + ", " + latlon[1]);
-	}
 
 }

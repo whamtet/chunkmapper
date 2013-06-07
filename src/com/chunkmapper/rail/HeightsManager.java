@@ -5,7 +5,6 @@ import java.io.IOException;
 import com.chunkmapper.Point;
 import com.chunkmapper.downloader.UberDownloader;
 import com.chunkmapper.reader.FileNotYetAvailableException;
-import com.vividsolutions.jts.geom.Coordinate;
 
 public class HeightsManager {
 	private HeightsCache cache;

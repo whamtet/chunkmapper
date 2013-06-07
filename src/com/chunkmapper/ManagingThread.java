@@ -4,30 +4,29 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URL;
 import java.util.HashSet;
 
 import org.apache.commons.io.FileUtils;
 
 import com.chunkmapper.downloader.UberDownloader;
-import com.chunkmapper.gui.swing.GameInfoPanel;
 import com.chunkmapper.rail.HeightsCache;
 import com.chunkmapper.writer.LoadedLevelDat;
 import com.chunkmapper.writer.RegionWriter;
 
 public class ManagingThread extends Thread {
 	private final double lat, lon;
-	private final String gameName;
-	private final boolean forceRestart;
-	private boolean reteleport;
-	private final GameInfoPanel gameInfoPanel;
-
-	public ManagingThread(double lat, double lon, String gameName, boolean forceRestart, boolean reteleport, GameInfoPanel gameInfoPanel) {
-		this.gameInfoPanel = gameInfoPanel;
+	private final File gameFolder;
+	private final MappedSquareManager mappedSquareManager;
+	private final PlayerIconManager playerIconManager;
+	
+	public ManagingThread(double lat, double lon, File gameFolder, MappedSquareManager mappedSquareManager,
+			PlayerIconManager playerIconManager) {
+		this.mappedSquareManager = mappedSquareManager;
+		this.playerIconManager = playerIconManager;
 		this.lat = lat;
 		this.lon = lon;
-		this.gameName = gameName;
-		this.forceRestart = forceRestart;
-		this.reteleport = reteleport;
+		this.gameFolder = gameFolder;
 	}
 	private static File prepareDir(File f, boolean delete) {
 		if (delete && f.exists()) {
@@ -45,7 +44,9 @@ public class ManagingThread extends Thread {
 
 	@Override
 	public void run() {
-		File gameFolder = prepareDir(new File(Utila.SAVES_FOLDER, gameName), this.forceRestart);
+		if (!gameFolder.exists()) {
+			gameFolder.mkdirs();
+		}
 		File chunkmapperDir = prepareDir(new File(gameFolder, "chunkmapper"), false);
 		File regionFolder = prepareDir(new File(gameFolder, "region"), false);
 
@@ -64,51 +65,39 @@ public class ManagingThread extends Thread {
 
 		File loadedLevelDatFile = new File(gameFolder, "level.dat");
 		if (!loadedLevelDatFile.exists()) {
-			File src = new File("resources/level.dat");
-			reteleport = true;
 			try {
-				FileUtils.copyFile(src, loadedLevelDatFile);
+				URL src = ManagingThread.class.getResource("/config/level.dat");
+				FileUtils.copyURLToFile(src, loadedLevelDatFile);
+				LoadedLevelDat loadedLevelDat = new LoadedLevelDat(loadedLevelDatFile);
+				String gameName = gameFolder.getName();
+				loadedLevelDat.setName(gameName);
+				loadedLevelDat.setPlayerPosition(lon * 3600 - gameMetaInfo.rootPoint.x * 512, 250, - lat * 3600 - gameMetaInfo.rootPoint.z * 512);
+				loadedLevelDat.save();
 			} catch (IOException e) {
 				e.printStackTrace();
 				return;
 			}
 		}
-		LoadedLevelDat loadedLevelDat = new LoadedLevelDat(loadedLevelDatFile);
-		if (reteleport) {
-			loadedLevelDat.setName(gameName);
-			loadedLevelDat.setPlayerPosition(lon * 3600 - gameMetaInfo.rootPoint.x * 512, 250, - lat * 3600 - gameMetaInfo.rootPoint.z * 512);
-		}
-		try {
-			loadedLevelDat.save();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-			return;
-		}
+		
 		HeightsCache.deleteCache();
 
 		//now we need to create all our downloaders;
 		RegionWriter regionWriter = null;
 		UberDownloader uberDownloader = null;
 		try {
-			PointManager pointManager = new PointManager(chunkmapperDir);
+			PointManager pointManager = new PointManager(chunkmapperDir, mappedSquareManager, gameMetaInfo.rootPoint);
 			uberDownloader = new UberDownloader();
-			ProgressManager progressManager = null;
-			if (gameInfoPanel != null)
-				progressManager = gameInfoPanel.progressManager;
 			regionWriter = new RegionWriter(pointManager, gameMetaInfo.rootPoint, regionFolder, 
-					gameMetaInfo, progressManager, uberDownloader);
+					gameMetaInfo, mappedSquareManager, uberDownloader);
 
 
 			//now we loop for ETERNITY!!!
 			while (true) {
-				HashSet<Point> pointsToWrite = pointManager.getNewPoints(gameFolder, gameMetaInfo.rootPoint, chunkmapperDir);
+				HashSet<Point> pointsToWrite = pointManager.getNewPoints(gameFolder, gameMetaInfo.rootPoint, chunkmapperDir, playerIconManager);
 				if (pointsToWrite.size() == 0) {
 					//				System.out.println("nothing to write now");
 				}
 				for (Point p : pointsToWrite) {
-					if (gameInfoPanel != null) {
-						gameInfoPanel.progressManager.incrementTotalTasks();
-					}
 
 					uberDownloader.addRegionToDownload(p.x + gameMetaInfo.rootPoint.x, p.z + gameMetaInfo.rootPoint.z);
 					regionWriter.addTask(p.x, p.z);
@@ -143,14 +132,6 @@ public class ManagingThread extends Thread {
 		out[1] = Double.parseDouble(reader.readLine());
 		reader.close();
 		return out;
-	}
-	public static void main(String[] args) throws Exception {
-		double[] latlon = geocode.core.placeToCoords("granity, nz");
-		//		double[] latlon = getLatLon(); //get last recorded place
-		boolean forceReload = false;
-		boolean reteleport = false;
-		ManagingThread thread = new ManagingThread(latlon[0], latlon[1], "world", forceReload, reteleport, null);
-		thread.start();
 	}
 	public static void blockingShutDown(ManagingThread thread) {
 		thread.interrupt();

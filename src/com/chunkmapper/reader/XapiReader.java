@@ -3,47 +3,44 @@ package com.chunkmapper.reader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import nu.xom.Builder;
-import nu.xom.Document;
-import nu.xom.Element;
-import nu.xom.Node;
-import nu.xom.ParsingException;
-import nu.xom.ValidityException;
-
 import com.chunkmapper.FileValidator;
 import com.chunkmapper.chunk.Chunk;
+import com.chunkmapper.parser.Parser;
+import com.chunkmapper.parser.RailParser;
 import com.chunkmapper.resourceinfo.XapiResourceInfo;
 import com.chunkmapper.writer.ArtifactWriter;
 
-public class XapiReader {
-	private ArrayList<Place> data;
+public class XapiReader extends Parser {
+	private ArrayList<Place> data = new ArrayList<Place>();
 
-	public XapiReader(int regionx, int regionz) throws ValidityException, ParsingException, IOException, FileNotYetAvailableException {
+	public XapiReader(int regionx, int regionz) throws IOException, FileNotYetAvailableException {
 		XapiResourceInfo info = new XapiResourceInfo(regionx, regionz);
 		if (!FileValidator.checkValid(info.file)) {
 			throw new FileNotYetAvailableException();
-			//			System.out.println("xapi file not found");
-			//			return;
 		}
-			Builder parser = new Builder();
-			Document doc = parser.build(info.file);
-			Node osm = doc.getChild(0);
-			int numChildren = osm.getChildCount();
-			data = new ArrayList<Place>(numChildren);
-
-			for (int i = 0; i < numChildren; i++) {
-				Node child = osm.getChild(i);
-				if (child instanceof Element) {
-					Element el = (Element) child;
-					if (el.getLocalName().equals("node")) {
-						data.add(new Place(el));
-					}
-				}
+		ArrayList<String> lines = Parser.getLines(info.file);
+		String placeName = null, latStr = null, lonStr = null;
+		for (String line : lines) {
+			String tag = RailParser.getTag(line);
+			if (tag == null)
+				continue;
+			if (tag.equals("node")) {
+				latStr = Parser.getValue(line, "lat");
+				lonStr = Parser.getValue(line, "lon");
 			}
-		//		for (Place place : data) {
-		//			System.out.println(place);
-		//		}
-
+			if (tag.equals("tag") && Parser.getValue(line, "k").equals("name")) {
+				placeName = Parser.getValue(line, "v");
+			}
+			if (tag.equals("/node")) {
+				if (latStr != null && lonStr != null && placeName != null) {
+					data.add(new Place(latStr, lonStr, placeName));
+				}
+				latStr = null;
+				lonStr = null;
+				placeName = null;
+			}
+			
+		}
 
 	}
 	public void addSigns(Chunk chunk) {
@@ -55,7 +52,7 @@ public class XapiReader {
 			if (0 <= offsetx && offsetx < 16 && 0 <= offsetz && offsetz < 16) {
 				int h = chunk.getHeights(offsetx, offsetz);
 				if (h < 0) h = 4;
-				ArtifactWriter.addSign(chunk, h, chunk.zr + offsetz, chunk.xr + offsetx, new String[] {place.name});
+				ArtifactWriter.addSign(chunk, h, chunk.zr + offsetz, chunk.xr + offsetx, place.name.split(" "));
 			}
 		}
 
@@ -63,24 +60,13 @@ public class XapiReader {
 	private static class Place {
 		public final int absx, absz;
 		public final String name;
-		public Place(Element el) {
-			double lat = Double.parseDouble(el.getAttributeValue("lat"));
-			double lon = Double.parseDouble(el.getAttributeValue("lon"));
+		public Place(String latStr, String lonStr, String placeName) {
+			double lat = Double.parseDouble(latStr);
+			double lon = Double.parseDouble(lonStr);
 			absx = (int) (3600 * lon);
 			absz = (int) (-3600 * lat);
-
-			String name2 = "";
-			for (int i = 0; i < el.getChildCount(); i++) {
-				Node child = el.getChild(i);
-				if (child instanceof Element) {
-					Element el2 = (Element) child;
-					if (el2.getAttributeValue("k").equals("name")) {
-						name2 = el2.getAttributeValue("v");
-						break;
-					}
-				}
-			}
-			name = name2;
+			
+			name = placeName;
 		}
 		public String toString() {
 			return name + " at " + absx + ", " + absz;
@@ -91,16 +77,4 @@ public class XapiReader {
 	/**
 	 * @param args
 	 */
-	//	public static void main(String[] args) throws Exception {
-	//		double[] latlon = geocode.core.placeToCoords("takanini, auckland");
-	//		double lat = latlon[0], lon = latlon[1];
-	//		int regionx = (int) (lon * 3600 / 512);
-	//		int regionz = -(int) (lat * 3600 / 512);
-	//		long l1 = System.currentTimeMillis();
-	//		XapiReader xapiReader = new XapiReader(regionx, regionz);
-	//		long l2 = System.currentTimeMillis();
-	//		System.out.println(l2 - l1);
-	//
-	//	}
-
 }
