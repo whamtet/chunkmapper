@@ -10,10 +10,12 @@ public class HeightsManager {
 	private HeightsCache cache;
 	private RailTypeCache railTypeCache;
 	private final UberDownloader uberDownloader;
+	private final int verticalExaggeration;
 
 	private int numReloads = 0;
 
-	public HeightsManager(UberDownloader uberDownloader) {
+	public HeightsManager(UberDownloader uberDownloader, int verticalExaggeration) {
+		this.verticalExaggeration = verticalExaggeration;
 		this.uberDownloader = uberDownloader;
 	}
 	public short getHeight(int x, int z) throws IOException, InterruptedException, FileNotYetAvailableException {
@@ -24,7 +26,7 @@ public class HeightsManager {
 			if (cache != null)
 				cache.save();
 			numReloads++;
-			cache = new HeightsCache(neededPoint, uberDownloader);
+			cache = new HeightsCache(neededPoint, uberDownloader, verticalExaggeration);
 			return cache.getHeight(x, z);
 		}
 	}
@@ -35,7 +37,7 @@ public class HeightsManager {
 		} else {
 			if (cache != null)
 				cache.save();
-			cache = new HeightsCache(neededPoint, uberDownloader);
+			cache = new HeightsCache(neededPoint, uberDownloader, verticalExaggeration);
 			cache.setHeight(x, z, h);
 		}
 	}

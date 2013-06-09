@@ -70,7 +70,7 @@ public class XapiRailReader {
 		this.railType[z][x] = railType;
 	}
 
-	public XapiRailReader(int regionx, int regionz, HeightsReader heightsReader, UberDownloader uberDownloader) throws IllegalArgumentException, NoSuchElementException, IOException, InterruptedException, FileNotYetAvailableException {
+	public XapiRailReader(int regionx, int regionz, HeightsReader heightsReader, UberDownloader uberDownloader, int verticalExaggeration) throws IllegalArgumentException, NoSuchElementException, IOException, InterruptedException, FileNotYetAvailableException {
 		x0 = regionx * 512; z0 = regionz * 512;
 		XapiRailResourceInfo info = new XapiRailResourceInfo(regionx, regionz);
 		if (!FileValidator.checkValid(info.file)) {
@@ -82,7 +82,7 @@ public class XapiRailReader {
 		if (!hasRails) {
 			return;
 		}
-		HeightsManager heightsManager = new HeightsManager(uberDownloader);
+		HeightsManager heightsManager = new HeightsManager(uberDownloader, verticalExaggeration);
 //		if (true)
 //			return;
 

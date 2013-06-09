@@ -19,9 +19,11 @@ public class ManagingThread extends Thread {
 	private final File gameFolder;
 	private final MappedSquareManager mappedSquareManager;
 	private final PlayerIconManager playerIconManager;
+	private final int verticalExaggeration;
 	
 	public ManagingThread(double lat, double lon, File gameFolder, MappedSquareManager mappedSquareManager,
-			PlayerIconManager playerIconManager) {
+			PlayerIconManager playerIconManager, int verticalExaggeration) {
+		this.verticalExaggeration = verticalExaggeration;
 		this.mappedSquareManager = mappedSquareManager;
 		this.playerIconManager = playerIconManager;
 		this.lat = lat;
@@ -60,7 +62,7 @@ public class ManagingThread extends Thread {
 				throw new RuntimeException();
 			}
 		} else {
-			gameMetaInfo = new GameMetaInfo(metaInfoFile, lat, lon);
+			gameMetaInfo = new GameMetaInfo(metaInfoFile, lat, lon, verticalExaggeration);
 		}
 
 		File loadedLevelDatFile = new File(gameFolder, "level.dat");
@@ -88,7 +90,7 @@ public class ManagingThread extends Thread {
 			PointManager pointManager = new PointManager(chunkmapperDir, mappedSquareManager, gameMetaInfo.rootPoint);
 			uberDownloader = new UberDownloader();
 			regionWriter = new RegionWriter(pointManager, gameMetaInfo.rootPoint, regionFolder, 
-					gameMetaInfo, mappedSquareManager, uberDownloader);
+					gameMetaInfo, mappedSquareManager, uberDownloader, gameMetaInfo.verticalExaggeration);
 
 
 			//now we loop for ETERNITY!!!

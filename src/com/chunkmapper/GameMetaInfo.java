@@ -13,21 +13,31 @@ public class GameMetaInfo {
 	public final Point rootPoint;
 	private int numChunksMade;
 	public final static String STORE_NAME = "meta.txt";
-	
+	public final int verticalExaggeration;
+
 	public int getNumChunksMade() {
 		return numChunksMade;
 	}
-	
+
 	public GameMetaInfo(File store) throws IOException {
 		this.store = store;
 		BufferedReader reader = new BufferedReader(new FileReader(store));
 		int x = Integer.parseInt(reader.readLine());
 		int z = Integer.parseInt(reader.readLine());
 		numChunksMade = Integer.parseInt(reader.readLine());
+		
+		String verticalExaggerationString = reader.readLine();
+		if (verticalExaggerationString == null) {
+			verticalExaggeration = 1;
+		} else {
+			verticalExaggeration = Integer.parseInt(verticalExaggerationString);
+		}
+		
 		rootPoint = new Point(x, z);
 		reader.close();
 	}
-	public GameMetaInfo(File store, double lat, double lon) {
+	public GameMetaInfo(File store, double lat, double lon, int verticalExaggeration) {
+		this.verticalExaggeration = verticalExaggeration;
 		this.store = store;
 		int x = (int) Math.floor(lon * 3600 / 512);
 		int z = (int) Math.floor(-lat * 3600 / 512);
@@ -40,6 +50,7 @@ public class GameMetaInfo {
 			pw.println(rootPoint.x);
 			pw.println(rootPoint.z);
 			pw.println(numChunksMade);
+			pw.println(verticalExaggeration);
 			pw.close();
 		} catch (IOException e) {
 			e.printStackTrace();

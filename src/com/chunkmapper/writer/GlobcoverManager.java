@@ -56,20 +56,14 @@ public class GlobcoverManager {
 	public final boolean allWater;
 	private final ArtifactWriter artifactWriter = new ArtifactWriter();
 	public final int regionx, regionz;
-	public static final TriangleZonator snowLinator;
 	public final Random RANDOM = new Random();
-
-	static {
-		snowLinator = new TriangleZonator();
-		snowLinator.addPoint(4000, 75);
-	}
 
 	private final AbstractColumn[][] columns = new AbstractColumn[512][512];
 
-	public GlobcoverManager(int regionx, int regionz, UberDownloader uberDownloader) throws FileNotYetAvailableException, IOException, IllegalArgumentException, NoSuchElementException, InterruptedException {
+	public GlobcoverManager(int regionx, int regionz, UberDownloader uberDownloader, int verticalExaggeration) throws FileNotYetAvailableException, IOException, IllegalArgumentException, NoSuchElementException, InterruptedException {
 		this.regionx = regionx; this.regionz = regionz;
 
-		heightsReader = new HeightsReader(regionx, regionz, uberDownloader);
+		heightsReader = new HeightsReader(regionx, regionz, uberDownloader, verticalExaggeration);
 		allWater = heightsReader.allWater;
 		if (allWater) {
 			railReader = null;
@@ -80,7 +74,7 @@ public class GlobcoverManager {
 
 		LakeReader lakeReader = new LakeReader(regionx, regionz, heightsReader);
 		XapiRiverReader riverReader = new XapiRiverReader(regionx, regionz);
-		railReader = new XapiRailReader(regionx, regionz, heightsReader, uberDownloader);
+		railReader = new XapiRailReader(regionx, regionz, heightsReader, uberDownloader, verticalExaggeration);
 		FarmTypeReader farmTypeReader = new FarmTypeReader();
 		xapiReader = new XapiReader(regionx, regionz);
 
@@ -108,9 +102,10 @@ public class GlobcoverManager {
 					columns[i][j] = new River(absx, absz, heightsReader);
 					continue;
 				}
-				int absLat = absz > 0 ? absz / 3600 : -absz / 3600;
-				int snowLine = snowLinator.getFirstCutOff(absLat);
-				if (h >= snowLine) {
+				double absLat = absz > 0 ? absz / 3600. : -absz / 3600.;
+				double snowLine = 4000 * (75 - absLat) / 75.;
+				int realHeight = heightsReader.getRealHeightij(i, j);
+				if (realHeight >= snowLine) {
 					columns[i][j] = new Snow(absx, absz, heightsReader);
 					continue;
 				}

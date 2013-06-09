@@ -23,10 +23,12 @@ public class RegionWriter extends Tasker {
 	private final GameMetaInfo gameMetaInfo;
 	private final MappedSquareManager mappedSquareManager;
 	private final PointManager pointManager;
+	private final int verticalExaggeration;
 
 	public RegionWriter(PointManager pointManager, Point rootPoint, File regionFolder, 
-			GameMetaInfo metaInfo, MappedSquareManager mappedSquareManager, UberDownloader uberDownloader) {
+			GameMetaInfo metaInfo, MappedSquareManager mappedSquareManager, UberDownloader uberDownloader, int verticalExaggeration) {
 		super(NUM_WRITING_THREADS);
+		this.verticalExaggeration = verticalExaggeration;
 		this.rootPoint = rootPoint;
 		this.regionFolder = regionFolder;
 		this.uberDownloader = uberDownloader;
@@ -45,7 +47,7 @@ public class RegionWriter extends Tasker {
 
 		File f = new File(regionFolder, "r." + a + "." + b + ".mca");
 		System.out.println("trying to write chunk " + a + ", " + b);
-		GlobcoverManager coverManager = new GlobcoverManager(regionx, regionz, uberDownloader);
+		GlobcoverManager coverManager = new GlobcoverManager(regionx, regionz, uberDownloader, verticalExaggeration);
 
 		if (coverManager.allWater) {
 			System.out.println("all water: skipping");

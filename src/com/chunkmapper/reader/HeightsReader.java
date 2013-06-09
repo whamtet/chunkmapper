@@ -7,11 +7,12 @@ import com.chunkmapper.downloader.UberDownloader;
 import com.chunkmapper.resourceinfo.HeightsResourceInfo;
 
 public class HeightsReader extends Reader {
-	private final int x0, z0;
+	private final int x0, z0, verticalExaggeration;
 	
-	public HeightsReader(int regionx, int regionz, UberDownloader uberDownloader)
+	public HeightsReader(int regionx, int regionz, UberDownloader uberDownloader, int verticalExaggeration)
 			throws InterruptedException, IOException, FileNotYetAvailableException {
 		super(new HeightsResourceInfo(regionx, regionz), uberDownloader);
+		this.verticalExaggeration = verticalExaggeration;
 		x0 = regionx*512 - Utila.CHUNK_START;
 		z0 = regionz*512 - Utila.CHUNK_START;
 	}
@@ -24,7 +25,7 @@ public class HeightsReader extends Reader {
 		for (int x = 0; x < size; x++) {
 			for (int z = 0; z < size; z++) {
 				int h = cache[z + offsetz][x + offsetx];
-				h = h < 0 ? 4 : h / Utila.Y_SCALE + 4;
+				h = h < 0 ? 4 : h * verticalExaggeration / Utila.Y_SCALE + 4;
 				if (h > 250)
 					h = 250;
 				out[x][z] = h;
@@ -35,7 +36,7 @@ public class HeightsReader extends Reader {
 	public short getHeightxz(int absx, int absz) {
 		absx -= x0; absz -= z0;
 		short h = cache[absz][absx];
-		h = h < 0 ? 4 : (short) (h / Utila.Y_SCALE + 4);
+		h = h < 0 ? 4 : (short) (h * verticalExaggeration / Utila.Y_SCALE + 4);
 		if (h > 250)
 			h = 250;
 		return h;
@@ -44,28 +45,11 @@ public class HeightsReader extends Reader {
 		
 		//note reversed order
 		short h = cache[i + Utila.CHUNK_START][j + Utila.CHUNK_START];
-		h = h < 0 ? 4 : (short) (h / Utila.Y_SCALE + 4);
+		h = h < 0 ? 4 : (short) (h * verticalExaggeration / Utila.Y_SCALE + 4);
 		if (h > 250)
 			h = 250;
 		return h;
 	}
-
-
-//	public void setHeight(int i, int j, short h) {
-//		cache[i + Utila.CHUNK_START][j + Utila.CHUNK_START] = h;
-//		
-//	}
-
-//	public int[][] getOneRing() {
-//		int w = 514;
-//		int[][] out = new int[w][w];
-//		for (int i = Utila.CHUNK_START - 1; i < Utila.CHUNK_START + w - 1; i++) {
-//			for (int j = Utila.CHUNK_START - 1; j < Utila.CHUNK_START + w - 1; j++) {
-//				out[i-Utila.CHUNK_START + 1][j - Utila.CHUNK_START + 1] = cache[i][j];
-//			}
-//		}
-//		return out;
-//	}
 
 	public int[][] getAllHeights() {
 		int[][] out = new int [512][512];
@@ -75,6 +59,10 @@ public class HeightsReader extends Reader {
 			}
 		}
 		return out;
+	}
+
+	public int getRealHeightij(int i, int j) {
+		return cache[i + Utila.CHUNK_START][j + Utila.CHUNK_START];
 	}
 
 }
