@@ -1,6 +1,9 @@
 package com.chunkmapper.reader;
 
+import geocode.core;
+
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -8,7 +11,6 @@ import java.util.Collection;
 
 import com.chunkmapper.FileValidator;
 import com.chunkmapper.Point;
-import com.chunkmapper.downloader.XapiRiverDownloader;
 import com.chunkmapper.parser.RiverParser;
 import com.chunkmapper.parser.RiverParser.RiverSection;
 import com.chunkmapper.resourceinfo.XapiRiverResourceInfo;
@@ -65,6 +67,7 @@ public class XapiRiverReader {
 		//lets just assume that the water info become available earlier
 		Collection<RiverSection> riverSections = RiverParser.getRiverSections(info.file);
 
+		System.out.println(riverSections.size());
 		for (RiverSection riverSection : riverSections) {
 			for (int i = 0; i < riverSection.points.size() - 1; i++) {
 				Point p1 = riverSection.points.get(i), p2 = riverSection.points.get(i+1);
@@ -96,6 +99,20 @@ public class XapiRiverReader {
 		}
 	}
 
+	public static void main(String[] args) throws Exception {
+		double[] latlon = core.placeToCoords("waitara, nz");
+		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
+		int regionz = (int) Math.floor(latlon[0] * 3600 / -512);
+		
+		XapiRiverReader reader = new XapiRiverReader(regionx, regionz);
+		PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(new File("/Users/matthewmolloy/python/wms/data.csv"))));
+		for (int i = 0; i < 512; i++) {
+			for (int j = 0; j < 512; j++) {
+				writer.println(reader.hasWaterij(i, j) ? 1 : 0);
+			}
+		}
+		writer.close();
+	}
 
 
 }

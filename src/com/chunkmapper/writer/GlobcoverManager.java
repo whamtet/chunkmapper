@@ -75,7 +75,8 @@ public class GlobcoverManager {
 		LakeReader lakeReader = new LakeReader(regionx, regionz, heightsReader);
 		XapiRiverReader riverReader = new XapiRiverReader(regionx, regionz);
 		railReader = new XapiRailReader(regionx, regionz, heightsReader, uberDownloader, verticalExaggeration);
-		FarmTypeReader farmTypeReader = new FarmTypeReader();
+		boolean includeLivestock = !railReader.hasRails;
+		FarmTypeReader farmTypeReader = new FarmTypeReader(includeLivestock);
 		xapiReader = new XapiReader(regionx, regionz);
 
 		NoaaGshhsReader noaaGshhsReader = new NoaaGshhsReader(regionx, regionz);

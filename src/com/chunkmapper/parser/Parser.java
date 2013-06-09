@@ -16,13 +16,27 @@ public class Parser {
 		if (j == -1) j = s.indexOf(">", i);
 		return i >= 0 && i < j ? s.substring(i, j) : null;
 	}
-	protected static String getValue(String s, String key) {
-		key += "=\"";
+	protected static String getValue(String s, String key, String quote) {
+		key += "=" + quote;
 		int i = s.indexOf(key);
 		if (i == -1)
 			return null;
-		int j = s.indexOf("\"", i + key.length());
+		int j = s.indexOf(quote, i + key.length());
 		return s.substring(i + key.length(), j);
+	}
+	protected static String getValue(String s, String key) {
+		String value = getValue(s, key, "\"");
+		if (value == null) {
+			return getValue(s, key, "'");
+		} else {
+			return value;
+		}
+//		key += "=\"";
+//		int i = s.indexOf(key);
+//		if (i == -1)
+//			return null;
+//		int j = s.indexOf("\"", i + key.length());
+//		return s.substring(i + key.length(), j);
 	}
 	protected static ArrayList<String> getLines(File f) throws IOException {
 		ArrayList<String> lines = new ArrayList<String>();
@@ -58,5 +72,6 @@ public class Parser {
 			throw new FileNotYetAvailableException();
 		}
 	}
+
 
 }

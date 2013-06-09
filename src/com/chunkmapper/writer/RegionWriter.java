@@ -2,6 +2,7 @@ package com.chunkmapper.writer;
 
 import java.io.DataOutputStream;
 import java.io.File;
+import java.util.LinkedList;
 
 import net.minecraft.world.level.chunk.storage.RegionFile;
 
@@ -9,7 +10,6 @@ import com.chunkmapper.GameMetaInfo;
 import com.chunkmapper.MappedSquareManager;
 import com.chunkmapper.Point;
 import com.chunkmapper.PointManager;
-import com.chunkmapper.ProgressManager;
 import com.chunkmapper.Tasker;
 import com.chunkmapper.chunk.Chunk;
 import com.chunkmapper.downloader.UberDownloader;
@@ -35,6 +35,27 @@ public class RegionWriter extends Tasker {
 		this.gameMetaInfo = metaInfo;
 		this.mappedSquareManager = mappedSquareManager;
 		this.pointManager = pointManager;
+	}
+	
+	
+	protected Point getTask() {
+		Point playerPosition = PointManager.getCurrentPlayerPosition(); 
+		synchronized(lock) {
+			Point chosenPoint = null;
+			double bestDistance = Double.MAX_VALUE;
+			for (Point candidatePoint : taskQueue) {
+				Point candidatePointPosition = new Point(candidatePoint.x * 512, candidatePoint.z * 512);
+				double currentDistance = candidatePointPosition.distance(playerPosition);
+				if (currentDistance < bestDistance) {
+					chosenPoint = candidatePoint;
+					bestDistance = currentDistance;
+				}
+			}
+			if (chosenPoint != null) {
+				taskQueue.remove(chosenPoint);
+			}
+			return chosenPoint;
+		}
 	}
 	public void addRegion(int regionx, int regionz) {
 		super.addTask(regionx, regionz);

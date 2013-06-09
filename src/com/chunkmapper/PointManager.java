@@ -29,6 +29,11 @@ public class PointManager {
 	private final HashSet<Point> pointsAssigned = new HashSet<Point>();
 	private final File store;
 	public final static int RAD = 2, LON_RAD = 180 * 3600 / 512;
+	private static volatile Point currentPlayerPosition;
+	
+	public static Point getCurrentPlayerPosition() {
+		return currentPlayerPosition;
+	}
 
 	public PointManager(File chunkmapperFolder, MappedSquareManager mappedSquareManager, Point rootPoint) {
 
@@ -98,30 +103,15 @@ public class PointManager {
 	}
 	public HashSet<Point> getNewPoints(File gameFolder, Point rootPoint, File chunkmapperDir, PlayerIconManager playerIconManager) {
 		Point playerPosition = readPosition(gameFolder);
+		//need to update playerPosition
+		currentPlayerPosition = playerPosition;
 		updateIconManager(playerPosition, rootPoint, playerIconManager);
 		int regionx0 = Matthewmatics.div(playerPosition.x, 512);
 		int regionz0 = Matthewmatics.div(playerPosition.z, 512);
 
 		return getSurroundingPoints(regionx0, regionz0);
 	}
-//	private static void recordLink(Point playerPosition, Point rootPoint, File chunkmapperDir) {
-//		//writes an html file with a 
-//		double lon = (playerPosition.x + rootPoint.x*512) / 3600., lat = -(playerPosition.z + rootPoint.z*512) / 3600.;
-//		String s = "<a href=\"https://maps.google.com.au/?q=loc:%s+%s\" target=\"_blank\">View Google map<a />";
-//		s = String.format(s, lat, lon);
-//		try {
-//			FileWriter writer = new FileWriter(new File(chunkmapperDir, "location.html"));
-//			writer.write(s);
-//			writer.close();
-//			
-//			PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter("location.txt")));
-//			pw.println(lat);
-//			pw.println(lon);
-//			pw.close();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//	}
+
 	private HashSet<Point> getSurroundingPoints(int regionx0, int regionz0) {
 
 		HashSet<Point> newPoints = new HashSet<Point>();
@@ -159,9 +149,5 @@ public class PointManager {
 			e.printStackTrace();
 		}
 	}
-	//	public static void main(String[] args) {
-	//		PointManager manager = new PointManager(new File("."));
-	//		System.out.println(manager.getSurroundingPoints(0, 0));
-	//	}
 
 }

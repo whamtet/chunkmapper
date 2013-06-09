@@ -1,5 +1,7 @@
 package com.chunkmapper.resourceinfo;
 
+import geocode.core;
+
 import java.io.File;
 
 import com.chunkmapper.Utila;
@@ -27,11 +29,15 @@ public class XapiRiverResourceInfo extends ResourceInfo {
 		return String.format(FORMAT_URL, lon1, lat1, lon2, lat2);
 	}
 
-//	public XapiResourceInfo(String address, File cacheDirectory, String fileName) {
-//		super(address, cacheDirectory, fileName);
-//		// TODO Auto-generated constructor stub
-//	}
 
+	public static void main(String[] args) {
+		double[] latlon = core.placeToCoords("waitara, nz");
+		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
+		int regionz = (int) Math.floor(latlon[0] * 3600 / -512);
+		XapiRiverResourceInfo info = new XapiRiverResourceInfo(regionx, regionz);
+		
+		System.out.println(info.url);
+	}
 	/**
 	 * @param args
 	 */

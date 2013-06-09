@@ -15,7 +15,7 @@ public abstract class Tasker {
 	private final ExecutorService executorService;
 	//	private final ConcurrentLinkedQueue<Task> taskQueue = new ConcurrentLinkedQueue<Task>();
 //	protected final HashSet<Point> taskQueue = new HashSet<Point>(), doneAlready = new HashSet<Point>();
-	private final LinkedList<Point> taskQueue = new LinkedList<Point>();
+	protected final LinkedList<Point> taskQueue = new LinkedList<Point>();
 	private final HashSet<Point> pointsAdded = new HashSet<Point>();
 	protected Object lock = new Object();
 	private boolean shutdown = false;
@@ -48,6 +48,11 @@ public abstract class Tasker {
 			}
 		}
 	}
+	protected Point getTask() {
+		synchronized(lock) {
+			return taskQueue.poll();
+		}
+	}
 
 
 	public Tasker(int numThreads) {
@@ -60,10 +65,7 @@ public abstract class Tasker {
 						if (Thread.interrupted()) {
 							return;
 						}
-						Point task = null;
-						synchronized(lock) {
-							task = taskQueue.poll();
-						}
+						Point task = getTask();
 						if (task == null) {
 							if (shutdown)
 								return;

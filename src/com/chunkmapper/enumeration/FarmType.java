@@ -7,5 +7,8 @@ public enum FarmType {
 		return new FarmType[] {Cows, Chicken, Sheep, Wheat, Wheat, Wheat, Potatoes, Potatoes, Potatoes, 
 				Carrots, Carrots, Carrots};
 		}
+	public static FarmType[] getVegetarianFarmTypes() {
+		return new FarmType[] {Wheat, Potatoes, Carrots};
+	}
 
 }

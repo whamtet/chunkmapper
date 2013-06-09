@@ -17,7 +17,8 @@ public class RailParser extends Parser {
 		HashMap<Long, Point> locations = RailParser.getLocations(lines);
 		ArrayList<RailSection> railSections = new ArrayList<RailSection>();
 		ArrayList<Point> currentPoints = null;
-		boolean addThisSection = false;
+		boolean isRail = false;
+		boolean isPreserved = false;
 		boolean hasBridge = false;
 		boolean hasCutting = false;
 		boolean hasEmbankment = false;
@@ -28,7 +29,8 @@ public class RailParser extends Parser {
 				continue;
 			if (tag.equals("way")) {
 				currentPoints = new ArrayList<Point>();
-				addThisSection = false;
+				isRail = false;
+				isPreserved = false;
 				hasBridge = false;
 				hasCutting = false;
 				hasEmbankment= false;
@@ -40,30 +42,20 @@ public class RailParser extends Parser {
 			}
 			if (tag.equals("tag")) {
 				String k = getValue(line, "k"), v = getValue(line, "v");
-				addThisSection |= k.equals("railway") && v.equals("rail");
+				isRail |= k.equals("railway") && v.equals("rail");
+				isPreserved |= k.equals("railway") && v.equals("preserved");
 				
 				hasBridge |= k.equals("bridge") && v.equals("yes");
 				hasCutting |= k.equals("cutting") && v.equals("yes");
 				hasEmbankment |= k.equals("embankment") && v.equals("yes");
 				hasTunnel |= k.equals("tunnel") && v.equals("yes");
 			}
-			if (tag.equals("/way") && addThisSection) {
+			if (tag.equals("/way") && (isRail || isPreserved)) {
 				boolean allowAscend = !hasTunnel && !hasCutting;
 				boolean allowDescend = !hasBridge && !hasEmbankment;
-				railSections.add(new RailSection(currentPoints, allowAscend, allowDescend));
+				railSections.add(new RailSection(currentPoints, allowAscend, allowDescend, isPreserved));
 			}
 		}
 		return railSections;
 	}
-	//	public static void main(String[] args) throws Exception {
-	//		File f = new File("/Library/Caches/Chunkmapper/xapirail/f_-1_-361.xml");
-	//		ArrayList<String> lines = MyParser.getLines(f);
-	//		for (String line : lines) {
-	//			String tag = MyParser.getTag(line);
-	//			if (tag != null) {
-	//				if (tag.endsWith("way"))
-	//					System.out.println(tag);
-	//			}
-	//		}
-	//	}
 }
