@@ -6,7 +6,7 @@ import com.chunkmapper.resourceinfo.LakeResourceInfo;
 public class LakeDownloader extends PngDownloader {
 
 	@Override
-	protected void download(Point task) throws Exception {
+	protected void download(Point task, boolean useBackupServer) throws Exception {
 		super.downloadPng(new LakeResourceInfo(task.x, task.z));
 
 	}

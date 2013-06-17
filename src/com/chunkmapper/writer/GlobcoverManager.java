@@ -178,11 +178,7 @@ public class GlobcoverManager {
 					columns[i][j] = new Bare(absx, absz, heightsReader);
 					break;
 				case Water:
-					//					if (h == 4) {
-					//						columns[i][j] = new Ocean(absx, absz);
-					//					} else {
 					columns[i][j] = new Grassland(absx, absz, heightsReader);
-					//					}
 					break;
 				case Snow:
 					columns[i][j] = new Snow(absx, absz, heightsReader);
@@ -213,12 +209,6 @@ public class GlobcoverManager {
 				chunkHasUrban |= col.IS_URBAN;
 				chunkAllForest &= col.IS_FOREST;
 				chunkHasWater |= col.HAS_WATER;
-				//				if (col instanceof Lake) {
-				//					int h = chunk.getHeights(j, i);
-				//					for (int y = h + 5; y < h + 6; y++) {
-				//						chunk.Blocks[y][i][j] = Blocka.Glass;
-				//					}
-				//				}
 			}
 		}
 		//now add trees

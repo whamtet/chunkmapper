@@ -51,9 +51,9 @@ public class RailParser extends Parser {
 				hasTunnel |= k.equals("tunnel") && v.equals("yes");
 			}
 			if (tag.equals("/way") && (isRail || isPreserved)) {
-				boolean allowAscend = !hasTunnel && !hasCutting;
-				boolean allowDescend = !hasBridge && !hasEmbankment;
-				railSections.add(new RailSection(currentPoints, allowAscend, allowDescend, isPreserved));
+				
+				railSections.add(new RailSection(currentPoints, 
+						isPreserved, hasBridge, hasCutting, hasEmbankment, hasTunnel));
 			}
 		}
 		return railSections;

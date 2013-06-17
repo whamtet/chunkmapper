@@ -6,7 +6,7 @@ import com.chunkmapper.resourceinfo.GlobcoverResourceInfo;
 public class GlobcoverDownloader extends PngDownloader {
 
 	@Override
-	protected void download(Point task) throws Exception {
+	protected void download(Point task, boolean useBackupServer) throws Exception {
 		super.downloadPng(new GlobcoverResourceInfo(task.x, task.z));
 	}
 

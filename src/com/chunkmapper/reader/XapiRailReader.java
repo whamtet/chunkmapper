@@ -87,6 +87,9 @@ public class XapiRailReader {
 //			return;
 
 		for (RailSection railSection : allSections) {
+			boolean allowAscend = !railSection.hasTunnel && !railSection.hasCutting;
+			boolean allowDescend = !railSection.hasBridge && !railSection.hasEmbankment;
+			
 			if (railSection.points.size() < 2)
 				continue;
 
@@ -187,12 +190,12 @@ public class XapiRailReader {
 						//						boolean noRutAtStart = j + x - startPoint.x >= MIN_RUT_SIZE;
 						//						boolean noBumpAtEnd = endPoint.x - x - j >= MIN_BUMP_SIZE;
 						//						if (notRiseUpOnTurn && noRutAtStart && noBumpAtEnd && targetHeight > h)
-						if (notRiseUpOnTurn && targetHeight > h && railSection.allowAscend)
+						if (notRiseUpOnTurn && targetHeight > h && allowAscend)
 							h++;
 						//						boolean noBumpAtStart = j + x - startPoint.x >= MIN_BUMP_SIZE;
 						//						boolean noRutAtEnd = endPoint.x - x - j >= MIN_RUT_SIZE;
 						//						if (noBumpAtStart && noRutAtEnd && targetHeight < h)
-						if (targetHeight < h && railSection.allowDescend)
+						if (targetHeight < h && allowDescend)
 							h--;
 						heights[j] = h;
 					}
@@ -218,12 +221,12 @@ public class XapiRailReader {
 						//						boolean noRutAtStart = j + z - startPoint.z >= MIN_RUT_SIZE;
 						//						boolean noBumpAtEnd = endPoint.z - z - j >= MIN_BUMP_SIZE;
 						//						if (noRutAtStart && noBumpAtEnd && targetHeight > h)
-						if (j > 0 && targetHeight > h && railSection.allowAscend)
+						if (j > 0 && targetHeight > h && allowAscend)
 							h++;
 						//						boolean noBumpAtStart = j + z - startPoint.z >= MIN_BUMP_SIZE;
 						//						boolean noRutAtEnd = endPoint.z - z - j >= MIN_RUT_SIZE;
 						//						if (noBumpAtStart && noRutAtEnd && targetHeight < h)
-						if (j > 0 && targetHeight < h && railSection.allowDescend)
+						if (j > 0 && targetHeight < h && allowDescend)
 							h--;
 						heights[j] = h;
 					}

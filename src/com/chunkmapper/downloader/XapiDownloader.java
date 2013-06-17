@@ -6,7 +6,7 @@ import com.chunkmapper.resourceinfo.XapiResourceInfo;
 public class XapiDownloader extends XmlDownloader {
 
 	@Override
-	protected void download(Point task) throws Exception {
+	protected void download(Point task, boolean useBackupServer) throws Exception {
 		XapiResourceInfo fileToDownload = new XapiResourceInfo(task.x, task.z);
 		super.downloadXml(fileToDownload);
 	}

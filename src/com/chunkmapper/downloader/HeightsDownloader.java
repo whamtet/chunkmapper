@@ -16,7 +16,7 @@ import com.chunkmapper.resourceinfo.HeightsResourceInfo;
 public class HeightsDownloader extends Downloader {
 
 	@Override
-	protected void download(Point task) throws Exception {
+	protected void download(Point task, boolean useBackupServer) throws Exception {
 
 		HeightsResourceInfo fileToDownload = new HeightsResourceInfo(task.x, task.z);
 		if (FileValidator.checkValid(fileToDownload.file)) {
