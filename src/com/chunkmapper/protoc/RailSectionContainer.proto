@@ -1,0 +1,13 @@
+syntax = "proto2";
+
+import "PointContainer.proto";
+
+message RailSection {
+	repeated Point points = 1;
+	//public final boolean isPreserved, hasBridge, hasCutting, hasEmbankment, hasTunnel;
+	optional bool is_preserved = 2;
+	optional bool has_bridge = 3;
+	optional bool has_cutting = 4;
+	optional bool has_embankment = 5;
+	optional bool has_tunnel = 6;
+}

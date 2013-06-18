@@ -2,7 +2,8 @@ package com.chunkmapper.writer;
 
 import java.io.DataOutputStream;
 import java.io.File;
-import java.util.LinkedList;
+import java.util.Comparator;
+import java.util.concurrent.PriorityBlockingQueue;
 
 import net.minecraft.world.level.chunk.storage.RegionFile;
 
@@ -24,6 +25,23 @@ public class RegionWriter extends Tasker {
 	private final MappedSquareManager mappedSquareManager;
 	private final PointManager pointManager;
 	private final int verticalExaggeration;
+	private final PriorityBlockingQueue<Point> taskQueue2 = new PriorityBlockingQueue<Point>(11, 
+			new Comparator<Point>() {
+		public int compare(Point a, Point b) {
+			// TODO Auto-generated method stub
+			Point playerPosition = PointManager.getCurrentPlayerPosition();
+			
+			a = new Point(a.x * 512, a.z * 512);
+			b = new Point(b.x * 512, b.z * 512);
+			if (playerPosition == null) {
+				return 0;
+			}
+			System.out.println(a.distance(playerPosition) + ", " + b.distance(playerPosition));
+
+			return a.distance(playerPosition) < b.distance(playerPosition) ? -1 : 1;
+		}
+
+	});
 
 	public RegionWriter(PointManager pointManager, Point rootPoint, File regionFolder, 
 			GameMetaInfo metaInfo, MappedSquareManager mappedSquareManager, UberDownloader uberDownloader, int verticalExaggeration) {
@@ -36,27 +54,22 @@ public class RegionWriter extends Tasker {
 		this.mappedSquareManager = mappedSquareManager;
 		this.pointManager = pointManager;
 	}
-	
-	
-	protected Point getTask() {
-		Point playerPosition = PointManager.getCurrentPlayerPosition(); 
-		synchronized(lock) {
-			Point chosenPoint = null;
-			double bestDistance = Double.MAX_VALUE;
-			for (Point candidatePoint : taskQueue) {
-				Point candidatePointPosition = new Point(candidatePoint.x * 512, candidatePoint.z * 512);
-				double currentDistance = candidatePointPosition.distance(playerPosition);
-				if (currentDistance < bestDistance) {
-					chosenPoint = candidatePoint;
-					bestDistance = currentDistance;
-				}
-			}
-			if (chosenPoint != null) {
-				taskQueue.remove(chosenPoint);
-			}
-			return chosenPoint;
+
+	protected Point getTask() throws InterruptedException {
+		return taskQueue2.take();
+	}
+	protected void addTask(Point p) throws InterruptedException {
+		if (p != null)
+			taskQueue2.add(p);
+	}
+	public synchronized void addTask(int regionx, int regionz) {
+		Point p = new Point(regionx, regionz);
+		if (!pointsAdded.contains(p)) {
+			pointsAdded.add(p);
+			taskQueue2.add(p);
 		}
 	}
+
 	public void addRegion(int regionx, int regionz) {
 		super.addTask(regionx, regionz);
 		//always try, and try again buddy
@@ -67,18 +80,15 @@ public class RegionWriter extends Tasker {
 		int regionx = task.x + rootPoint.x, regionz = task.z + rootPoint.z;
 
 		File f = new File(regionFolder, "r." + a + "." + b + ".mca");
-		System.out.println("trying to write chunk " + a + ", " + b);
 		GlobcoverManager coverManager = new GlobcoverManager(regionx, regionz, uberDownloader, verticalExaggeration);
 
 		if (coverManager.allWater) {
-			System.out.println("all water: skipping");
 			pointManager.updateStore(task);
 			return;
 		}
 
 		RegionFile regionFile = new RegionFile(f);
 
-		System.out.println("writing chunk " + a + ", " + b);
 		//
 		for (int x = 0; x < 32; x++) {
 			for (int z = 0; z < 32; z++) {
@@ -95,8 +105,7 @@ public class RegionWriter extends Tasker {
 		}
 		regionFile.close();
 
-		System.out.println("finished chunk " + a + ", " + b);
-		
+
 		pointManager.updateStore(task);
 		gameMetaInfo.incrementChunksMade();
 		mappedSquareManager.addPoint(new Point(task.x + rootPoint.x, task.z + rootPoint.z));

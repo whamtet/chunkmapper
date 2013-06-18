@@ -15,7 +15,6 @@ public class UberDownloader {
 //	}
 
 	public void addRegionToDownload(int regionx, int regionz) {
-		System.out.println("adding region " + regionx + ", " + regionz);
 		//obligatory sources
 		globcoverDownloader.addTask(regionx, regionz);
 		noaaGshhsDownloader.addTask(regionx, regionz);

@@ -104,10 +104,10 @@ public class ManagingThread extends Thread {
 					uberDownloader.addRegionToDownload(p.x + gameMetaInfo.rootPoint.x, p.z + gameMetaInfo.rootPoint.z);
 					regionWriter.addTask(p.x, p.z);
 				}
-				double minDistance = pointManager.getDistanceToEdge(gameFolder);
-				if (minDistance < 512) {
-					System.err.println("Warning: minDistance " + minDistance);
-				}
+//				double minDistance = pointManager.getDistanceToEdge(gameFolder);
+//				if (minDistance < 512) {
+//					System.err.println("Warning: minDistance " + minDistance);
+//				}
 				Thread.sleep(1000);
 			}
 		} catch (InterruptedException e) {

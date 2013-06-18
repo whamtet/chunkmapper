@@ -1,20 +1,18 @@
 package com.chunkmapper;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import java.util.Comparator;
+import java.util.concurrent.PriorityBlockingQueue;
 
 
 public class Test {
 
 	public static void main(String[] args) throws Exception {
-		File f = new File("hi");
-		f.isFile();
+		String t = "ok";
+		doNothing(t);
+		System.out.println(t);
 	}
-
-	/**
-	 * @param args
-	 */
-
+	private static void doNothing(String s) {
+		s = "hi";
+	}
 
 }

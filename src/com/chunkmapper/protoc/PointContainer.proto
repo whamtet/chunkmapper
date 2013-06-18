@@ -1,0 +1,6 @@
+syntax = "proto2";
+
+message Point {
+	required int32 x = 1;
+	required int32 z = 2;
+}

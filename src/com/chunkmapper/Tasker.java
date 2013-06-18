@@ -2,10 +2,9 @@ package com.chunkmapper;
 
 import java.io.IOException;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 import com.chunkmapper.reader.FileNotYetAvailableException;
@@ -13,17 +12,9 @@ import com.chunkmapper.reader.FileNotYetAvailableException;
 
 public abstract class Tasker {
 	private final ExecutorService executorService;
-	//	private final ConcurrentLinkedQueue<Task> taskQueue = new ConcurrentLinkedQueue<Task>();
-//	protected final HashSet<Point> taskQueue = new HashSet<Point>(), doneAlready = new HashSet<Point>();
-	protected final LinkedList<Point> taskQueue = new LinkedList<Point>();
-	private final HashSet<Point> pointsAdded = new HashSet<Point>();
-	protected Object lock = new Object();
+	private LinkedBlockingQueue<Point> taskQueue = new LinkedBlockingQueue<Point>();
+	protected final HashSet<Point> pointsAdded = new HashSet<Point>();
 	private boolean shutdown = false;
-	
-	public void shutdown() {
-		shutdown = true;
-		executorService.shutdown();
-	}
 
 	public void shutdownNow() {
 		executorService.shutdownNow();
@@ -39,19 +30,18 @@ public abstract class Tasker {
 		}
 		System.err.println("shut down " + this.getClass().toString());
 	}
-	public void addTask(int regionx, int regionz) {
-		synchronized(lock) {
-			Point p = new Point(regionx, regionz);
-			if (!pointsAdded.contains(p)) {
-				pointsAdded.add(p);
-				taskQueue.add(p);
-			}
+	public synchronized void addTask(int regionx, int regionz) {
+		Point p = new Point(regionx, regionz);
+		if (!pointsAdded.contains(p)) {
+			pointsAdded.add(p);
+			taskQueue.add(p);
 		}
 	}
-	protected Point getTask() {
-		synchronized(lock) {
-			return taskQueue.poll();
-		}
+	protected Point getTask() throws InterruptedException {
+		return taskQueue.take();
+	}
+	protected void addTask(Point p) throws InterruptedException {
+		taskQueue.add(p);
 	}
 
 
@@ -60,72 +50,48 @@ public abstract class Tasker {
 		for (int i = 0; i < numThreads; i++) {
 			executorService.execute(new Runnable() {
 				public void run() {
-					
+
 					while(true) {
-						if (Thread.interrupted()) {
+						Point task = null;
+						try {
+							task = getTask();
+							if (task == null)
+								throw new RuntimeException("impossible");
+							doTask(task);
+
+						} catch (InterruptedException e) {
 							return;
-						}
-						Point task = getTask();
-						if (task == null) {
-							if (shutdown)
-								return;
+						} catch (FileNotYetAvailableException e) {
+							e.printStackTrace();
 							try {
 								Thread.sleep(1000);
-							} catch (InterruptedException e) {
+								addTask(task);
+							} catch (InterruptedException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
 								return;
 							}
-						} else {
+							
+						} catch (Exception e) {
+							e.printStackTrace();
 							try {
-								doTask(task);
-								
-							} catch (InterruptedException e) {
+								Thread.sleep(1000);
+								addTask(task);
+							} catch (InterruptedException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
 								return;
-							} catch (FileNotYetAvailableException e) {
-								e.printStackTrace();
-								try {
-									Thread.sleep(1000);
-								} catch (InterruptedException e1) {
-									// TODO Auto-generated catch block
-									e1.printStackTrace();
-									return;
-								}
-								synchronized(lock) {
-									taskQueue.add(task);
-								}
-							} catch (IOException e) {
-								e.printStackTrace();
-								System.err.println(task);
-								try {
-									Thread.sleep(1000);
-								} catch (InterruptedException e1) {
-									e1.printStackTrace();
-									return;
-								}
-								synchronized(lock) {
-									taskQueue.add(task);
-								}
-							} catch (Exception e) {
-								e.printStackTrace();
-								try {
-									Thread.sleep(1000);
-								} catch (InterruptedException e1) {
-									// TODO Auto-generated catch block
-									e1.printStackTrace();
-									return;
-								}
-								synchronized(lock) {
-									taskQueue.add(task);
-								}
-							} catch (Error e) {
-								e.printStackTrace();
 							}
+
+						} catch (Error e) {
+							e.printStackTrace();
 						}
 					}
 				}
-			});
-		}
+		});
 	}
-	protected abstract void doTask(Point p) throws Exception;
+}
+protected abstract void doTask(Point p) throws Exception;
 
 
 }

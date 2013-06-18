@@ -21,5 +21,9 @@ public class Point extends java.awt.Point {
 		super(x, z);
 		this.z = z;
 	}
+//	public Point(com.chunkmapper.protoc.PointContainer.Point p) {
+//		super(p.getX(), p.getZ());
+//		this.z = p.getZ();
+//	}
 
 }
