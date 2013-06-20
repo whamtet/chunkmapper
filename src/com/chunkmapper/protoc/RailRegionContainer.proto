@@ -1,7 +1,8 @@
 syntax = "proto2";
 
-import "RailSectionContainer.proto";
+import 'RailSectionContainer.proto';
 
+option optimize_for = LITE_RUNTIME;
 message RailRegion {
-	repeated RailSection railSections = 1;
+	repeated RailSection rail_sections = 1;
 }

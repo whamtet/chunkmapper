@@ -55,8 +55,6 @@ public abstract class Tasker {
 						Point task = null;
 						try {
 							task = getTask();
-							if (task == null)
-								throw new RuntimeException("impossible");
 							doTask(task);
 
 						} catch (InterruptedException e) {

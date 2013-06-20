@@ -5,10 +5,10 @@ package com.chunkmapper.protoc;
 public final class RailSectionContainer {
   private RailSectionContainer() {}
   public static void registerAllExtensions(
-      com.google.protobuf.ExtensionRegistry registry) {
+      com.google.protobuf.ExtensionRegistryLite registry) {
   }
   public interface RailSectionOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+      extends com.google.protobuf.MessageLiteOrBuilder {
 
     // repeated .Point points = 1;
     /**
@@ -24,16 +24,6 @@ public final class RailSectionContainer {
      * <code>repeated .Point points = 1;</code>
      */
     int getPointsCount();
-    /**
-     * <code>repeated .Point points = 1;</code>
-     */
-    java.util.List<? extends PointContainer.PointOrBuilder> 
-        getPointsOrBuilderList();
-    /**
-     * <code>repeated .Point points = 1;</code>
-     */
-    PointContainer.PointOrBuilder getPointsOrBuilder(
-        int index);
 
     // optional bool is_preserved = 2;
     /**
@@ -97,14 +87,14 @@ public final class RailSectionContainer {
    * Protobuf type {@code RailSection}
    */
   public static final class RailSection extends
-      com.google.protobuf.GeneratedMessage
+      com.google.protobuf.GeneratedMessageLite
       implements RailSectionOrBuilder {
     // Use RailSection.newBuilder() to construct.
-    private RailSection(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+    private RailSection(com.google.protobuf.GeneratedMessageLite.Builder builder) {
       super(builder);
-      this.unknownFields = builder.getUnknownFields();
+
     }
-    private RailSection(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+    private RailSection(boolean noInit) {}
 
     private static final RailSection defaultInstance;
     public static RailSection getDefaultInstance() {
@@ -115,20 +105,12 @@ public final class RailSectionContainer {
       return defaultInstance;
     }
 
-    private final com.google.protobuf.UnknownFieldSet unknownFields;
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-        getUnknownFields() {
-      return this.unknownFields;
-    }
     private RailSection(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       initFields();
       int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -138,7 +120,7 @@ public final class RailSectionContainer {
               done = true;
               break;
             default: {
-              if (!parseUnknownField(input, unknownFields,
+              if (!parseUnknownField(input,
                                      extensionRegistry, tag)) {
                 done = true;
               }
@@ -188,22 +170,9 @@ public final class RailSectionContainer {
         if (((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
           points_ = java.util.Collections.unmodifiableList(points_);
         }
-        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return RailSectionContainer.internal_static_RailSection_descriptor;
-    }
-
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return RailSectionContainer.internal_static_RailSection_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              RailSectionContainer.RailSection.class, RailSectionContainer.RailSection.Builder.class);
-    }
-
     public static com.google.protobuf.Parser<RailSection> PARSER =
         new com.google.protobuf.AbstractParser<RailSection>() {
       public RailSection parsePartialFrom(
@@ -388,7 +357,6 @@ public final class RailSectionContainer {
       if (((bitField0_ & 0x00000010) == 0x00000010)) {
         output.writeBool(6, hasTunnel_);
       }
-      getUnknownFields().writeTo(output);
     }
 
     private int memoizedSerializedSize = -1;
@@ -421,7 +389,6 @@ public final class RailSectionContainer {
         size += com.google.protobuf.CodedOutputStream
           .computeBoolSize(6, hasTunnel_);
       }
-      size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
       return size;
     }
@@ -493,44 +460,19 @@ public final class RailSectionContainer {
     }
     public Builder toBuilder() { return newBuilder(this); }
 
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
     /**
      * Protobuf type {@code RailSection}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements RailSectionContainer.RailSectionOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return RailSectionContainer.internal_static_RailSection_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return RailSectionContainer.internal_static_RailSection_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                RailSectionContainer.RailSection.class, RailSectionContainer.RailSection.Builder.class);
-      }
-
+        com.google.protobuf.GeneratedMessageLite.Builder<
+          RailSectionContainer.RailSection, Builder>
+        implements RailSectionContainer.RailSectionOrBuilder {
       // Construct using RailSectionContainer.RailSection.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
 
-      private Builder(
-          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
       private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-          getPointsFieldBuilder();
-        }
       }
       private static Builder create() {
         return new Builder();
@@ -538,12 +480,8 @@ public final class RailSectionContainer {
 
       public Builder clear() {
         super.clear();
-        if (pointsBuilder_ == null) {
-          points_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000001);
-        } else {
-          pointsBuilder_.clear();
-        }
+        points_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000001);
         isPreserved_ = false;
         bitField0_ = (bitField0_ & ~0x00000002);
         hasBridge_ = false;
@@ -559,11 +497,6 @@ public final class RailSectionContainer {
 
       public Builder clone() {
         return create().mergeFrom(buildPartial());
-      }
-
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return RailSectionContainer.internal_static_RailSection_descriptor;
       }
 
       public RailSectionContainer.RailSection getDefaultInstanceForType() {
@@ -582,15 +515,11 @@ public final class RailSectionContainer {
         RailSectionContainer.RailSection result = new RailSectionContainer.RailSection(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
-        if (pointsBuilder_ == null) {
-          if (((bitField0_ & 0x00000001) == 0x00000001)) {
-            points_ = java.util.Collections.unmodifiableList(points_);
-            bitField0_ = (bitField0_ & ~0x00000001);
-          }
-          result.points_ = points_;
-        } else {
-          result.points_ = pointsBuilder_.build();
+        if (((bitField0_ & 0x00000001) == 0x00000001)) {
+          points_ = java.util.Collections.unmodifiableList(points_);
+          bitField0_ = (bitField0_ & ~0x00000001);
         }
+        result.points_ = points_;
         if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
           to_bitField0_ |= 0x00000001;
         }
@@ -612,46 +541,20 @@ public final class RailSectionContainer {
         }
         result.hasTunnel_ = hasTunnel_;
         result.bitField0_ = to_bitField0_;
-        onBuilt();
         return result;
-      }
-
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof RailSectionContainer.RailSection) {
-          return mergeFrom((RailSectionContainer.RailSection)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
       }
 
       public Builder mergeFrom(RailSectionContainer.RailSection other) {
         if (other == RailSectionContainer.RailSection.getDefaultInstance()) return this;
-        if (pointsBuilder_ == null) {
-          if (!other.points_.isEmpty()) {
-            if (points_.isEmpty()) {
-              points_ = other.points_;
-              bitField0_ = (bitField0_ & ~0x00000001);
-            } else {
-              ensurePointsIsMutable();
-              points_.addAll(other.points_);
-            }
-            onChanged();
+        if (!other.points_.isEmpty()) {
+          if (points_.isEmpty()) {
+            points_ = other.points_;
+            bitField0_ = (bitField0_ & ~0x00000001);
+          } else {
+            ensurePointsIsMutable();
+            points_.addAll(other.points_);
           }
-        } else {
-          if (!other.points_.isEmpty()) {
-            if (pointsBuilder_.isEmpty()) {
-              pointsBuilder_.dispose();
-              pointsBuilder_ = null;
-              points_ = other.points_;
-              bitField0_ = (bitField0_ & ~0x00000001);
-              pointsBuilder_ = 
-                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
-                   getPointsFieldBuilder() : null;
-            } else {
-              pointsBuilder_.addAllMessages(other.points_);
-            }
-          }
+          
         }
         if (other.hasIsPreserved()) {
           setIsPreserved(other.getIsPreserved());
@@ -668,7 +571,6 @@ public final class RailSectionContainer {
         if (other.hasHasTunnel()) {
           setHasTunnel(other.getHasTunnel());
         }
-        this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
 
@@ -711,54 +613,35 @@ public final class RailSectionContainer {
          }
       }
 
-      private com.google.protobuf.RepeatedFieldBuilder<
-          PointContainer.Point, PointContainer.Point.Builder, PointContainer.PointOrBuilder> pointsBuilder_;
-
       /**
        * <code>repeated .Point points = 1;</code>
        */
       public java.util.List<PointContainer.Point> getPointsList() {
-        if (pointsBuilder_ == null) {
-          return java.util.Collections.unmodifiableList(points_);
-        } else {
-          return pointsBuilder_.getMessageList();
-        }
+        return java.util.Collections.unmodifiableList(points_);
       }
       /**
        * <code>repeated .Point points = 1;</code>
        */
       public int getPointsCount() {
-        if (pointsBuilder_ == null) {
-          return points_.size();
-        } else {
-          return pointsBuilder_.getCount();
-        }
+        return points_.size();
       }
       /**
        * <code>repeated .Point points = 1;</code>
        */
       public PointContainer.Point getPoints(int index) {
-        if (pointsBuilder_ == null) {
-          return points_.get(index);
-        } else {
-          return pointsBuilder_.getMessage(index);
-        }
+        return points_.get(index);
       }
       /**
        * <code>repeated .Point points = 1;</code>
        */
       public Builder setPoints(
           int index, PointContainer.Point value) {
-        if (pointsBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensurePointsIsMutable();
-          points_.set(index, value);
-          onChanged();
-        } else {
-          pointsBuilder_.setMessage(index, value);
+        if (value == null) {
+          throw new NullPointerException();
         }
+        ensurePointsIsMutable();
+        points_.set(index, value);
+
         return this;
       }
       /**
@@ -766,29 +649,21 @@ public final class RailSectionContainer {
        */
       public Builder setPoints(
           int index, PointContainer.Point.Builder builderForValue) {
-        if (pointsBuilder_ == null) {
-          ensurePointsIsMutable();
-          points_.set(index, builderForValue.build());
-          onChanged();
-        } else {
-          pointsBuilder_.setMessage(index, builderForValue.build());
-        }
+        ensurePointsIsMutable();
+        points_.set(index, builderForValue.build());
+
         return this;
       }
       /**
        * <code>repeated .Point points = 1;</code>
        */
       public Builder addPoints(PointContainer.Point value) {
-        if (pointsBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensurePointsIsMutable();
-          points_.add(value);
-          onChanged();
-        } else {
-          pointsBuilder_.addMessage(value);
+        if (value == null) {
+          throw new NullPointerException();
         }
+        ensurePointsIsMutable();
+        points_.add(value);
+
         return this;
       }
       /**
@@ -796,16 +671,12 @@ public final class RailSectionContainer {
        */
       public Builder addPoints(
           int index, PointContainer.Point value) {
-        if (pointsBuilder_ == null) {
-          if (value == null) {
-            throw new NullPointerException();
-          }
-          ensurePointsIsMutable();
-          points_.add(index, value);
-          onChanged();
-        } else {
-          pointsBuilder_.addMessage(index, value);
+        if (value == null) {
+          throw new NullPointerException();
         }
+        ensurePointsIsMutable();
+        points_.add(index, value);
+
         return this;
       }
       /**
@@ -813,13 +684,9 @@ public final class RailSectionContainer {
        */
       public Builder addPoints(
           PointContainer.Point.Builder builderForValue) {
-        if (pointsBuilder_ == null) {
-          ensurePointsIsMutable();
-          points_.add(builderForValue.build());
-          onChanged();
-        } else {
-          pointsBuilder_.addMessage(builderForValue.build());
-        }
+        ensurePointsIsMutable();
+        points_.add(builderForValue.build());
+
         return this;
       }
       /**
@@ -827,13 +694,9 @@ public final class RailSectionContainer {
        */
       public Builder addPoints(
           int index, PointContainer.Point.Builder builderForValue) {
-        if (pointsBuilder_ == null) {
-          ensurePointsIsMutable();
-          points_.add(index, builderForValue.build());
-          onChanged();
-        } else {
-          pointsBuilder_.addMessage(index, builderForValue.build());
-        }
+        ensurePointsIsMutable();
+        points_.add(index, builderForValue.build());
+
         return this;
       }
       /**
@@ -841,104 +704,28 @@ public final class RailSectionContainer {
        */
       public Builder addAllPoints(
           java.lang.Iterable<? extends PointContainer.Point> values) {
-        if (pointsBuilder_ == null) {
-          ensurePointsIsMutable();
-          super.addAll(values, points_);
-          onChanged();
-        } else {
-          pointsBuilder_.addAllMessages(values);
-        }
+        ensurePointsIsMutable();
+        super.addAll(values, points_);
+
         return this;
       }
       /**
        * <code>repeated .Point points = 1;</code>
        */
       public Builder clearPoints() {
-        if (pointsBuilder_ == null) {
-          points_ = java.util.Collections.emptyList();
-          bitField0_ = (bitField0_ & ~0x00000001);
-          onChanged();
-        } else {
-          pointsBuilder_.clear();
-        }
+        points_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000001);
+
         return this;
       }
       /**
        * <code>repeated .Point points = 1;</code>
        */
       public Builder removePoints(int index) {
-        if (pointsBuilder_ == null) {
-          ensurePointsIsMutable();
-          points_.remove(index);
-          onChanged();
-        } else {
-          pointsBuilder_.remove(index);
-        }
+        ensurePointsIsMutable();
+        points_.remove(index);
+
         return this;
-      }
-      /**
-       * <code>repeated .Point points = 1;</code>
-       */
-      public PointContainer.Point.Builder getPointsBuilder(
-          int index) {
-        return getPointsFieldBuilder().getBuilder(index);
-      }
-      /**
-       * <code>repeated .Point points = 1;</code>
-       */
-      public PointContainer.PointOrBuilder getPointsOrBuilder(
-          int index) {
-        if (pointsBuilder_ == null) {
-          return points_.get(index);  } else {
-          return pointsBuilder_.getMessageOrBuilder(index);
-        }
-      }
-      /**
-       * <code>repeated .Point points = 1;</code>
-       */
-      public java.util.List<? extends PointContainer.PointOrBuilder> 
-           getPointsOrBuilderList() {
-        if (pointsBuilder_ != null) {
-          return pointsBuilder_.getMessageOrBuilderList();
-        } else {
-          return java.util.Collections.unmodifiableList(points_);
-        }
-      }
-      /**
-       * <code>repeated .Point points = 1;</code>
-       */
-      public PointContainer.Point.Builder addPointsBuilder() {
-        return getPointsFieldBuilder().addBuilder(
-            PointContainer.Point.getDefaultInstance());
-      }
-      /**
-       * <code>repeated .Point points = 1;</code>
-       */
-      public PointContainer.Point.Builder addPointsBuilder(
-          int index) {
-        return getPointsFieldBuilder().addBuilder(
-            index, PointContainer.Point.getDefaultInstance());
-      }
-      /**
-       * <code>repeated .Point points = 1;</code>
-       */
-      public java.util.List<PointContainer.Point.Builder> 
-           getPointsBuilderList() {
-        return getPointsFieldBuilder().getBuilderList();
-      }
-      private com.google.protobuf.RepeatedFieldBuilder<
-          PointContainer.Point, PointContainer.Point.Builder, PointContainer.PointOrBuilder> 
-          getPointsFieldBuilder() {
-        if (pointsBuilder_ == null) {
-          pointsBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
-              PointContainer.Point, PointContainer.Point.Builder, PointContainer.PointOrBuilder>(
-                  points_,
-                  ((bitField0_ & 0x00000001) == 0x00000001),
-                  getParentForChildren(),
-                  isClean());
-          points_ = null;
-        }
-        return pointsBuilder_;
       }
 
       // optional bool is_preserved = 2;
@@ -973,7 +760,7 @@ public final class RailSectionContainer {
       public Builder setIsPreserved(boolean value) {
         bitField0_ |= 0x00000002;
         isPreserved_ = value;
-        onChanged();
+        
         return this;
       }
       /**
@@ -986,7 +773,7 @@ public final class RailSectionContainer {
       public Builder clearIsPreserved() {
         bitField0_ = (bitField0_ & ~0x00000002);
         isPreserved_ = false;
-        onChanged();
+        
         return this;
       }
 
@@ -1010,7 +797,7 @@ public final class RailSectionContainer {
       public Builder setHasBridge(boolean value) {
         bitField0_ |= 0x00000004;
         hasBridge_ = value;
-        onChanged();
+        
         return this;
       }
       /**
@@ -1019,7 +806,7 @@ public final class RailSectionContainer {
       public Builder clearHasBridge() {
         bitField0_ = (bitField0_ & ~0x00000004);
         hasBridge_ = false;
-        onChanged();
+        
         return this;
       }
 
@@ -1043,7 +830,7 @@ public final class RailSectionContainer {
       public Builder setHasCutting(boolean value) {
         bitField0_ |= 0x00000008;
         hasCutting_ = value;
-        onChanged();
+        
         return this;
       }
       /**
@@ -1052,7 +839,7 @@ public final class RailSectionContainer {
       public Builder clearHasCutting() {
         bitField0_ = (bitField0_ & ~0x00000008);
         hasCutting_ = false;
-        onChanged();
+        
         return this;
       }
 
@@ -1076,7 +863,7 @@ public final class RailSectionContainer {
       public Builder setHasEmbankment(boolean value) {
         bitField0_ |= 0x00000010;
         hasEmbankment_ = value;
-        onChanged();
+        
         return this;
       }
       /**
@@ -1085,7 +872,7 @@ public final class RailSectionContainer {
       public Builder clearHasEmbankment() {
         bitField0_ = (bitField0_ & ~0x00000010);
         hasEmbankment_ = false;
-        onChanged();
+        
         return this;
       }
 
@@ -1109,7 +896,7 @@ public final class RailSectionContainer {
       public Builder setHasTunnel(boolean value) {
         bitField0_ |= 0x00000020;
         hasTunnel_ = value;
-        onChanged();
+        
         return this;
       }
       /**
@@ -1118,7 +905,7 @@ public final class RailSectionContainer {
       public Builder clearHasTunnel() {
         bitField0_ = (bitField0_ & ~0x00000020);
         hasTunnel_ = false;
-        onChanged();
+        
         return this;
       }
 
@@ -1133,45 +920,8 @@ public final class RailSectionContainer {
     // @@protoc_insertion_point(class_scope:RailSection)
   }
 
-  private static com.google.protobuf.Descriptors.Descriptor
-    internal_static_RailSection_descriptor;
-  private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_RailSection_fieldAccessorTable;
 
-  public static com.google.protobuf.Descriptors.FileDescriptor
-      getDescriptor() {
-    return descriptor;
-  }
-  private static com.google.protobuf.Descriptors.FileDescriptor
-      descriptor;
   static {
-    java.lang.String[] descriptorData = {
-      "\n\032RailSectionContainer.proto\032\024PointConta" +
-      "iner.proto\"\220\001\n\013RailSection\022\026\n\006points\030\001 \003" +
-      "(\0132\006.Point\022\024\n\014is_preserved\030\002 \001(\010\022\022\n\nhas_" +
-      "bridge\030\003 \001(\010\022\023\n\013has_cutting\030\004 \001(\010\022\026\n\016has" +
-      "_embankment\030\005 \001(\010\022\022\n\nhas_tunnel\030\006 \001(\010"
-    };
-    com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-      new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
-        public com.google.protobuf.ExtensionRegistry assignDescriptors(
-            com.google.protobuf.Descriptors.FileDescriptor root) {
-          descriptor = root;
-          internal_static_RailSection_descriptor =
-            getDescriptor().getMessageTypes().get(0);
-          internal_static_RailSection_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_RailSection_descriptor,
-              new java.lang.String[] { "Points", "IsPreserved", "HasBridge", "HasCutting", "HasEmbankment", "HasTunnel", });
-          return null;
-        }
-      };
-    com.google.protobuf.Descriptors.FileDescriptor
-      .internalBuildGeneratedFileFrom(descriptorData,
-        new com.google.protobuf.Descriptors.FileDescriptor[] {
-          PointContainer.getDescriptor(),
-        }, assigner);
   }
 
   // @@protoc_insertion_point(outer_class_scope)

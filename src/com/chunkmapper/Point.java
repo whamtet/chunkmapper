@@ -1,5 +1,7 @@
 package com.chunkmapper;
 
+import com.chunkmapper.protoc.PointContainer;
+
 
 
 public class Point extends java.awt.Point {
@@ -14,6 +16,13 @@ public class Point extends java.awt.Point {
 		int z = (int) Math.floor(-lat * 3600 / 512);
 		return new Point(x, z);
 	}
+//	public static Point getPoint(double lat, double lon) {
+//		int x = (int) (lon * 3600);
+//		int z = (int) (-lat * 3600);
+//		return new Point(x, z);
+//	}
+	
+//	public static PointContainer.Point getProtocPoint(double lat, double lon)
 	
 
 	public final int z;

@@ -24,7 +24,7 @@ The program is reasonably new so bad stuff may occasionally happen.  If so, just
 
 Is Chunkmapper a Minecraft mod?
 
-No.  Chunkmapper is a standalone program that runs in vanilla Minecraft.  It generates maps by creating new saved games and does not affect any of your existing games or settings.
+No.  Chunkmapper is a standalone program that runs alongside vanilla Minecraft.  It generates maps by creating new saved games and does not affect any of your existing games or settings.
 
 Oh no!  I quit Chunkmapper.  What will happen to my map?
 

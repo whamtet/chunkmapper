@@ -30,14 +30,12 @@ public class RegionWriter extends Tasker {
 		public int compare(Point a, Point b) {
 			// TODO Auto-generated method stub
 			Point playerPosition = PointManager.getCurrentPlayerPosition();
-			
-			a = new Point(a.x * 512, a.z * 512);
-			b = new Point(b.x * 512, b.z * 512);
 			if (playerPosition == null) {
 				return 0;
 			}
-			System.out.println(a.distance(playerPosition) + ", " + b.distance(playerPosition));
-
+			a = new Point(a.x * 512, a.z * 512);
+			b = new Point(b.x * 512, b.z * 512);
+			
 			return a.distance(playerPosition) < b.distance(playerPosition) ? -1 : 1;
 		}
 
