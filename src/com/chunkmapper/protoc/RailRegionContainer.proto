@@ -1,6 +1,9 @@
 syntax = "proto2";
 
+option java_package = "com.chunkmapper.protoc";
+
 import 'RailSectionContainer.proto';
+import "RectangleContainer.proto";
 
 option optimize_for = LITE_RUNTIME;
 message RailRegion {

@@ -1,9 +1,9 @@
 syntax = "proto2";
 
 option java_package = "com.chunkmapper.protoc";
-
-option optimize_for = LITE_RUNTIME;
-message Point {
+message Rectangle {
 	required int32 x = 1;
 	required int32 z = 2;
+	required int32 width = 3;
+	required int32 height = 4;
 }

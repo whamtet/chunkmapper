@@ -1,7 +1,9 @@
 syntax = "proto2";
 
 option optimize_for = LITE_RUNTIME;
+option java_package = "com.chunkmapper.protoc";
 import "PointContainer.proto";
+import "RectangleContainer.proto";
 
 message RailSection {
 	repeated Point points = 1;
@@ -11,4 +13,5 @@ message RailSection {
 	optional bool has_cutting = 4;
 	optional bool has_embankment = 5;
 	optional bool has_tunnel = 6;
+	required Rectangle bbox = 7;
 }
