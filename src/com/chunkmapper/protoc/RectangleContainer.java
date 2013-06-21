@@ -6,10 +6,10 @@ package com.chunkmapper.protoc;
 public final class RectangleContainer {
   private RectangleContainer() {}
   public static void registerAllExtensions(
-      com.google.protobuf.ExtensionRegistry registry) {
+      com.google.protobuf.ExtensionRegistryLite registry) {
   }
   public interface RectangleOrBuilder
-      extends com.google.protobuf.MessageOrBuilder {
+      extends com.google.protobuf.MessageLiteOrBuilder {
 
     // required int32 x = 1;
     /**
@@ -55,14 +55,14 @@ public final class RectangleContainer {
    * Protobuf type {@code Rectangle}
    */
   public static final class Rectangle extends
-      com.google.protobuf.GeneratedMessage
+      com.google.protobuf.GeneratedMessageLite
       implements RectangleOrBuilder {
     // Use Rectangle.newBuilder() to construct.
-    private Rectangle(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+    private Rectangle(com.google.protobuf.GeneratedMessageLite.Builder builder) {
       super(builder);
-      this.unknownFields = builder.getUnknownFields();
+
     }
-    private Rectangle(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+    private Rectangle(boolean noInit) {}
 
     private static final Rectangle defaultInstance;
     public static Rectangle getDefaultInstance() {
@@ -73,20 +73,12 @@ public final class RectangleContainer {
       return defaultInstance;
     }
 
-    private final com.google.protobuf.UnknownFieldSet unknownFields;
-    @java.lang.Override
-    public final com.google.protobuf.UnknownFieldSet
-        getUnknownFields() {
-      return this.unknownFields;
-    }
     private Rectangle(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       initFields();
       int mutable_bitField0_ = 0;
-      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
-          com.google.protobuf.UnknownFieldSet.newBuilder();
       try {
         boolean done = false;
         while (!done) {
@@ -96,7 +88,7 @@ public final class RectangleContainer {
               done = true;
               break;
             default: {
-              if (!parseUnknownField(input, unknownFields,
+              if (!parseUnknownField(input,
                                      extensionRegistry, tag)) {
                 done = true;
               }
@@ -130,22 +122,9 @@ public final class RectangleContainer {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e.getMessage()).setUnfinishedMessage(this);
       } finally {
-        this.unknownFields = unknownFields.build();
         makeExtensionsImmutable();
       }
     }
-    public static final com.google.protobuf.Descriptors.Descriptor
-        getDescriptor() {
-      return com.chunkmapper.protoc.RectangleContainer.internal_static_Rectangle_descriptor;
-    }
-
-    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-        internalGetFieldAccessorTable() {
-      return com.chunkmapper.protoc.RectangleContainer.internal_static_Rectangle_fieldAccessorTable
-          .ensureFieldAccessorsInitialized(
-              com.chunkmapper.protoc.RectangleContainer.Rectangle.class, com.chunkmapper.protoc.RectangleContainer.Rectangle.Builder.class);
-    }
-
     public static com.google.protobuf.Parser<Rectangle> PARSER =
         new com.google.protobuf.AbstractParser<Rectangle>() {
       public Rectangle parsePartialFrom(
@@ -272,7 +251,6 @@ public final class RectangleContainer {
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         output.writeInt32(4, height_);
       }
-      getUnknownFields().writeTo(output);
     }
 
     private int memoizedSerializedSize = -1;
@@ -297,7 +275,6 @@ public final class RectangleContainer {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(4, height_);
       }
-      size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
       return size;
     }
@@ -369,43 +346,19 @@ public final class RectangleContainer {
     }
     public Builder toBuilder() { return newBuilder(this); }
 
-    @java.lang.Override
-    protected Builder newBuilderForType(
-        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-      Builder builder = new Builder(parent);
-      return builder;
-    }
     /**
      * Protobuf type {@code Rectangle}
      */
     public static final class Builder extends
-        com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.chunkmapper.protoc.RectangleContainer.RectangleOrBuilder {
-      public static final com.google.protobuf.Descriptors.Descriptor
-          getDescriptor() {
-        return com.chunkmapper.protoc.RectangleContainer.internal_static_Rectangle_descriptor;
-      }
-
-      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
-          internalGetFieldAccessorTable() {
-        return com.chunkmapper.protoc.RectangleContainer.internal_static_Rectangle_fieldAccessorTable
-            .ensureFieldAccessorsInitialized(
-                com.chunkmapper.protoc.RectangleContainer.Rectangle.class, com.chunkmapper.protoc.RectangleContainer.Rectangle.Builder.class);
-      }
-
+        com.google.protobuf.GeneratedMessageLite.Builder<
+          com.chunkmapper.protoc.RectangleContainer.Rectangle, Builder>
+        implements com.chunkmapper.protoc.RectangleContainer.RectangleOrBuilder {
       // Construct using com.chunkmapper.protoc.RectangleContainer.Rectangle.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
 
-      private Builder(
-          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
-        super(parent);
-        maybeForceBuilderInitialization();
-      }
       private void maybeForceBuilderInitialization() {
-        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
-        }
       }
       private static Builder create() {
         return new Builder();
@@ -426,11 +379,6 @@ public final class RectangleContainer {
 
       public Builder clone() {
         return create().mergeFrom(buildPartial());
-      }
-
-      public com.google.protobuf.Descriptors.Descriptor
-          getDescriptorForType() {
-        return com.chunkmapper.protoc.RectangleContainer.internal_static_Rectangle_descriptor;
       }
 
       public com.chunkmapper.protoc.RectangleContainer.Rectangle getDefaultInstanceForType() {
@@ -466,17 +414,7 @@ public final class RectangleContainer {
         }
         result.height_ = height_;
         result.bitField0_ = to_bitField0_;
-        onBuilt();
         return result;
-      }
-
-      public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.chunkmapper.protoc.RectangleContainer.Rectangle) {
-          return mergeFrom((com.chunkmapper.protoc.RectangleContainer.Rectangle)other);
-        } else {
-          super.mergeFrom(other);
-          return this;
-        }
       }
 
       public Builder mergeFrom(com.chunkmapper.protoc.RectangleContainer.Rectangle other) {
@@ -493,7 +431,6 @@ public final class RectangleContainer {
         if (other.hasHeight()) {
           setHeight(other.getHeight());
         }
-        this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
 
@@ -556,7 +493,7 @@ public final class RectangleContainer {
       public Builder setX(int value) {
         bitField0_ |= 0x00000001;
         x_ = value;
-        onChanged();
+        
         return this;
       }
       /**
@@ -565,7 +502,7 @@ public final class RectangleContainer {
       public Builder clearX() {
         bitField0_ = (bitField0_ & ~0x00000001);
         x_ = 0;
-        onChanged();
+        
         return this;
       }
 
@@ -589,7 +526,7 @@ public final class RectangleContainer {
       public Builder setZ(int value) {
         bitField0_ |= 0x00000002;
         z_ = value;
-        onChanged();
+        
         return this;
       }
       /**
@@ -598,7 +535,7 @@ public final class RectangleContainer {
       public Builder clearZ() {
         bitField0_ = (bitField0_ & ~0x00000002);
         z_ = 0;
-        onChanged();
+        
         return this;
       }
 
@@ -622,7 +559,7 @@ public final class RectangleContainer {
       public Builder setWidth(int value) {
         bitField0_ |= 0x00000004;
         width_ = value;
-        onChanged();
+        
         return this;
       }
       /**
@@ -631,7 +568,7 @@ public final class RectangleContainer {
       public Builder clearWidth() {
         bitField0_ = (bitField0_ & ~0x00000004);
         width_ = 0;
-        onChanged();
+        
         return this;
       }
 
@@ -655,7 +592,7 @@ public final class RectangleContainer {
       public Builder setHeight(int value) {
         bitField0_ |= 0x00000008;
         height_ = value;
-        onChanged();
+        
         return this;
       }
       /**
@@ -664,7 +601,7 @@ public final class RectangleContainer {
       public Builder clearHeight() {
         bitField0_ = (bitField0_ & ~0x00000008);
         height_ = 0;
-        onChanged();
+        
         return this;
       }
 
@@ -679,42 +616,481 @@ public final class RectangleContainer {
     // @@protoc_insertion_point(class_scope:Rectangle)
   }
 
-  private static com.google.protobuf.Descriptors.Descriptor
-    internal_static_Rectangle_descriptor;
-  private static
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_Rectangle_fieldAccessorTable;
+  public interface RectangleListOrBuilder
+      extends com.google.protobuf.MessageLiteOrBuilder {
 
-  public static com.google.protobuf.Descriptors.FileDescriptor
-      getDescriptor() {
-    return descriptor;
+    // repeated .Rectangle rectangles = 1;
+    /**
+     * <code>repeated .Rectangle rectangles = 1;</code>
+     */
+    java.util.List<com.chunkmapper.protoc.RectangleContainer.Rectangle> 
+        getRectanglesList();
+    /**
+     * <code>repeated .Rectangle rectangles = 1;</code>
+     */
+    com.chunkmapper.protoc.RectangleContainer.Rectangle getRectangles(int index);
+    /**
+     * <code>repeated .Rectangle rectangles = 1;</code>
+     */
+    int getRectanglesCount();
   }
-  private static com.google.protobuf.Descriptors.FileDescriptor
-      descriptor;
-  static {
-    java.lang.String[] descriptorData = {
-      "\n\030RectangleContainer.proto\"@\n\tRectangle\022" +
-      "\t\n\001x\030\001 \002(\005\022\t\n\001z\030\002 \002(\005\022\r\n\005width\030\003 \002(\005\022\016\n\006" +
-      "height\030\004 \002(\005B\030\n\026com.chunkmapper.protoc"
-    };
-    com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
-      new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
-        public com.google.protobuf.ExtensionRegistry assignDescriptors(
-            com.google.protobuf.Descriptors.FileDescriptor root) {
-          descriptor = root;
-          internal_static_Rectangle_descriptor =
-            getDescriptor().getMessageTypes().get(0);
-          internal_static_Rectangle_fieldAccessorTable = new
-            com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_Rectangle_descriptor,
-              new java.lang.String[] { "X", "Z", "Width", "Height", });
-          return null;
+  /**
+   * Protobuf type {@code RectangleList}
+   */
+  public static final class RectangleList extends
+      com.google.protobuf.GeneratedMessageLite
+      implements RectangleListOrBuilder {
+    // Use RectangleList.newBuilder() to construct.
+    private RectangleList(com.google.protobuf.GeneratedMessageLite.Builder builder) {
+      super(builder);
+
+    }
+    private RectangleList(boolean noInit) {}
+
+    private static final RectangleList defaultInstance;
+    public static RectangleList getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public RectangleList getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private RectangleList(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+                rectangles_ = new java.util.ArrayList<com.chunkmapper.protoc.RectangleContainer.Rectangle>();
+                mutable_bitField0_ |= 0x00000001;
+              }
+              rectangles_.add(input.readMessage(com.chunkmapper.protoc.RectangleContainer.Rectangle.PARSER, extensionRegistry));
+              break;
+            }
+          }
         }
-      };
-    com.google.protobuf.Descriptors.FileDescriptor
-      .internalBuildGeneratedFileFrom(descriptorData,
-        new com.google.protobuf.Descriptors.FileDescriptor[] {
-        }, assigner);
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+          rectangles_ = java.util.Collections.unmodifiableList(rectangles_);
+        }
+        makeExtensionsImmutable();
+      }
+    }
+    public static com.google.protobuf.Parser<RectangleList> PARSER =
+        new com.google.protobuf.AbstractParser<RectangleList>() {
+      public RectangleList parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new RectangleList(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<RectangleList> getParserForType() {
+      return PARSER;
+    }
+
+    // repeated .Rectangle rectangles = 1;
+    public static final int RECTANGLES_FIELD_NUMBER = 1;
+    private java.util.List<com.chunkmapper.protoc.RectangleContainer.Rectangle> rectangles_;
+    /**
+     * <code>repeated .Rectangle rectangles = 1;</code>
+     */
+    public java.util.List<com.chunkmapper.protoc.RectangleContainer.Rectangle> getRectanglesList() {
+      return rectangles_;
+    }
+    /**
+     * <code>repeated .Rectangle rectangles = 1;</code>
+     */
+    public java.util.List<? extends com.chunkmapper.protoc.RectangleContainer.RectangleOrBuilder> 
+        getRectanglesOrBuilderList() {
+      return rectangles_;
+    }
+    /**
+     * <code>repeated .Rectangle rectangles = 1;</code>
+     */
+    public int getRectanglesCount() {
+      return rectangles_.size();
+    }
+    /**
+     * <code>repeated .Rectangle rectangles = 1;</code>
+     */
+    public com.chunkmapper.protoc.RectangleContainer.Rectangle getRectangles(int index) {
+      return rectangles_.get(index);
+    }
+    /**
+     * <code>repeated .Rectangle rectangles = 1;</code>
+     */
+    public com.chunkmapper.protoc.RectangleContainer.RectangleOrBuilder getRectanglesOrBuilder(
+        int index) {
+      return rectangles_.get(index);
+    }
+
+    private void initFields() {
+      rectangles_ = java.util.Collections.emptyList();
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized != -1) return isInitialized == 1;
+
+      for (int i = 0; i < getRectanglesCount(); i++) {
+        if (!getRectangles(i).isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      for (int i = 0; i < rectangles_.size(); i++) {
+        output.writeMessage(1, rectangles_.get(i));
+      }
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      for (int i = 0; i < rectangles_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, rectangles_.get(i));
+      }
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.chunkmapper.protoc.RectangleContainer.RectangleList parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.chunkmapper.protoc.RectangleContainer.RectangleList parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.chunkmapper.protoc.RectangleContainer.RectangleList parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.chunkmapper.protoc.RectangleContainer.RectangleList parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.chunkmapper.protoc.RectangleContainer.RectangleList parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.chunkmapper.protoc.RectangleContainer.RectangleList parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.chunkmapper.protoc.RectangleContainer.RectangleList parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.chunkmapper.protoc.RectangleContainer.RectangleList parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.chunkmapper.protoc.RectangleContainer.RectangleList parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.chunkmapper.protoc.RectangleContainer.RectangleList parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.chunkmapper.protoc.RectangleContainer.RectangleList prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    /**
+     * Protobuf type {@code RectangleList}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessageLite.Builder<
+          com.chunkmapper.protoc.RectangleContainer.RectangleList, Builder>
+        implements com.chunkmapper.protoc.RectangleContainer.RectangleListOrBuilder {
+      // Construct using com.chunkmapper.protoc.RectangleContainer.RectangleList.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private void maybeForceBuilderInitialization() {
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        rectangles_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.chunkmapper.protoc.RectangleContainer.RectangleList getDefaultInstanceForType() {
+        return com.chunkmapper.protoc.RectangleContainer.RectangleList.getDefaultInstance();
+      }
+
+      public com.chunkmapper.protoc.RectangleContainer.RectangleList build() {
+        com.chunkmapper.protoc.RectangleContainer.RectangleList result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.chunkmapper.protoc.RectangleContainer.RectangleList buildPartial() {
+        com.chunkmapper.protoc.RectangleContainer.RectangleList result = new com.chunkmapper.protoc.RectangleContainer.RectangleList(this);
+        int from_bitField0_ = bitField0_;
+        if (((bitField0_ & 0x00000001) == 0x00000001)) {
+          rectangles_ = java.util.Collections.unmodifiableList(rectangles_);
+          bitField0_ = (bitField0_ & ~0x00000001);
+        }
+        result.rectangles_ = rectangles_;
+        return result;
+      }
+
+      public Builder mergeFrom(com.chunkmapper.protoc.RectangleContainer.RectangleList other) {
+        if (other == com.chunkmapper.protoc.RectangleContainer.RectangleList.getDefaultInstance()) return this;
+        if (!other.rectangles_.isEmpty()) {
+          if (rectangles_.isEmpty()) {
+            rectangles_ = other.rectangles_;
+            bitField0_ = (bitField0_ & ~0x00000001);
+          } else {
+            ensureRectanglesIsMutable();
+            rectangles_.addAll(other.rectangles_);
+          }
+          
+        }
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        for (int i = 0; i < getRectanglesCount(); i++) {
+          if (!getRectangles(i).isInitialized()) {
+            
+            return false;
+          }
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.chunkmapper.protoc.RectangleContainer.RectangleList parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.chunkmapper.protoc.RectangleContainer.RectangleList) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      // repeated .Rectangle rectangles = 1;
+      private java.util.List<com.chunkmapper.protoc.RectangleContainer.Rectangle> rectangles_ =
+        java.util.Collections.emptyList();
+      private void ensureRectanglesIsMutable() {
+        if (!((bitField0_ & 0x00000001) == 0x00000001)) {
+          rectangles_ = new java.util.ArrayList<com.chunkmapper.protoc.RectangleContainer.Rectangle>(rectangles_);
+          bitField0_ |= 0x00000001;
+         }
+      }
+
+      /**
+       * <code>repeated .Rectangle rectangles = 1;</code>
+       */
+      public java.util.List<com.chunkmapper.protoc.RectangleContainer.Rectangle> getRectanglesList() {
+        return java.util.Collections.unmodifiableList(rectangles_);
+      }
+      /**
+       * <code>repeated .Rectangle rectangles = 1;</code>
+       */
+      public int getRectanglesCount() {
+        return rectangles_.size();
+      }
+      /**
+       * <code>repeated .Rectangle rectangles = 1;</code>
+       */
+      public com.chunkmapper.protoc.RectangleContainer.Rectangle getRectangles(int index) {
+        return rectangles_.get(index);
+      }
+      /**
+       * <code>repeated .Rectangle rectangles = 1;</code>
+       */
+      public Builder setRectangles(
+          int index, com.chunkmapper.protoc.RectangleContainer.Rectangle value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureRectanglesIsMutable();
+        rectangles_.set(index, value);
+
+        return this;
+      }
+      /**
+       * <code>repeated .Rectangle rectangles = 1;</code>
+       */
+      public Builder setRectangles(
+          int index, com.chunkmapper.protoc.RectangleContainer.Rectangle.Builder builderForValue) {
+        ensureRectanglesIsMutable();
+        rectangles_.set(index, builderForValue.build());
+
+        return this;
+      }
+      /**
+       * <code>repeated .Rectangle rectangles = 1;</code>
+       */
+      public Builder addRectangles(com.chunkmapper.protoc.RectangleContainer.Rectangle value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureRectanglesIsMutable();
+        rectangles_.add(value);
+
+        return this;
+      }
+      /**
+       * <code>repeated .Rectangle rectangles = 1;</code>
+       */
+      public Builder addRectangles(
+          int index, com.chunkmapper.protoc.RectangleContainer.Rectangle value) {
+        if (value == null) {
+          throw new NullPointerException();
+        }
+        ensureRectanglesIsMutable();
+        rectangles_.add(index, value);
+
+        return this;
+      }
+      /**
+       * <code>repeated .Rectangle rectangles = 1;</code>
+       */
+      public Builder addRectangles(
+          com.chunkmapper.protoc.RectangleContainer.Rectangle.Builder builderForValue) {
+        ensureRectanglesIsMutable();
+        rectangles_.add(builderForValue.build());
+
+        return this;
+      }
+      /**
+       * <code>repeated .Rectangle rectangles = 1;</code>
+       */
+      public Builder addRectangles(
+          int index, com.chunkmapper.protoc.RectangleContainer.Rectangle.Builder builderForValue) {
+        ensureRectanglesIsMutable();
+        rectangles_.add(index, builderForValue.build());
+
+        return this;
+      }
+      /**
+       * <code>repeated .Rectangle rectangles = 1;</code>
+       */
+      public Builder addAllRectangles(
+          java.lang.Iterable<? extends com.chunkmapper.protoc.RectangleContainer.Rectangle> values) {
+        ensureRectanglesIsMutable();
+        super.addAll(values, rectangles_);
+
+        return this;
+      }
+      /**
+       * <code>repeated .Rectangle rectangles = 1;</code>
+       */
+      public Builder clearRectangles() {
+        rectangles_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000001);
+
+        return this;
+      }
+      /**
+       * <code>repeated .Rectangle rectangles = 1;</code>
+       */
+      public Builder removeRectangles(int index) {
+        ensureRectanglesIsMutable();
+        rectangles_.remove(index);
+
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:RectangleList)
+    }
+
+    static {
+      defaultInstance = new RectangleList(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:RectangleList)
+  }
+
+
+  static {
   }
 
   // @@protoc_insertion_point(outer_class_scope)

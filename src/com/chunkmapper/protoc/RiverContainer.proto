@@ -1,0 +1,16 @@
+syntax = "proto2";
+
+option optimize_for = LITE_RUNTIME;
+option java_package = "com.chunkmapper.protoc";
+
+import "PointContainer.proto";
+import "RectangleContainer.proto";
+
+message RiverSection {
+	repeated Point points = 1;
+	required Rectangle bbox = 2;
+}
+
+message RiverRegion {
+	repeated RiverSection river_sections = 2;
+}
