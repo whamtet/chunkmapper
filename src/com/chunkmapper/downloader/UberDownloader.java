@@ -1,5 +1,7 @@
 package com.chunkmapper.downloader;
 
+import com.chunkmapper.downloader.binary.BinaryRailsDownloader;
+
 public class UberDownloader {
 	private GlobcoverDownloader globcoverDownloader = new GlobcoverDownloader();
 	private LakeDownloader lakeDownloader = new LakeDownloader();
@@ -8,7 +10,6 @@ public class UberDownloader {
 	private XapiRiverDownloader riverDownloader = new XapiRiverDownloader();
 	private XapiDownloader xapiDownloader = new XapiDownloader();
 	public HeightsDownloader heightsDownloader = new HeightsDownloader();
-	private XapiRailDownloader xapiRailDownloader = new XapiRailDownloader();
 	
 //	public static void redownloadXapi(int regionx, int regionz) {
 //		xapiRailDownloader.addForceDownload(regionx, regionz);
@@ -25,7 +26,7 @@ public class UberDownloader {
 		lakeDownloader.addTask(regionx, regionz);
 		riverDownloader.addTask(regionx, regionz);
 		xapiDownloader.addTask(regionx, regionz);
-		xapiRailDownloader.addTask(regionx, regionz);
+//		xapiRailDownloader.addTask(regionx, regionz);
 	}
 	public void shutdown() {
 		globcoverDownloader.shutdownNow();
@@ -34,7 +35,7 @@ public class UberDownloader {
 		riverDownloader.shutdownNow();
 		xapiDownloader.shutdownNow();
 		heightsDownloader.shutdownNow();
-		xapiRailDownloader.shutdownNow();
+//		xapiRailDownloader.shutdownNow();
 	}
 
 }

@@ -1,4 +1,4 @@
-package com.chunkmapper.protoc;
+package com.chunkmapper.protoc.admin;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -7,14 +7,15 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import com.chunkmapper.protoc.ServerInfoContainer;
 import com.chunkmapper.protoc.ServerInfoContainer.ServerInfo;
+import com.chunkmapper.protoc.ServerInfoContainer.ServerInfo.Builder;
 
 public class ServerInfoManager {
 	private static ServerInfo serverInfo;
 	
 	public static void main(String[] args) throws Exception {
-		ServerInfo info = getServerInfo();
-		System.out.println(info.getRailAddress());
+		writeToStagingDirectory();
 	}
 	private static void writeToStagingDirectory() throws IOException {
 		ServerInfo.Builder builder = ServerInfo.newBuilder();

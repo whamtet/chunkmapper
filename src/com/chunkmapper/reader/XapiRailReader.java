@@ -1,15 +1,16 @@
 package com.chunkmapper.reader;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
 import com.chunkmapper.FileValidator;
 import com.chunkmapper.Point;
+import com.chunkmapper.binaryparser.BinaryRailParser;
 import com.chunkmapper.downloader.UberDownloader;
 import com.chunkmapper.enumeration.CircleRail;
 import com.chunkmapper.enumeration.StraightRail;
-import com.chunkmapper.parser.RailParser;
 import com.chunkmapper.rail.HeightsManager;
 import com.chunkmapper.rail.RailSection;
 import com.chunkmapper.resourceinfo.XapiRailResourceInfo;
@@ -70,13 +71,13 @@ public class XapiRailReader {
 		this.railType[z][x] = railType;
 	}
 
-	public XapiRailReader(int regionx, int regionz, HeightsReader heightsReader, UberDownloader uberDownloader, int verticalExaggeration) throws IllegalArgumentException, NoSuchElementException, IOException, InterruptedException, FileNotYetAvailableException {
+	public XapiRailReader(int regionx, int regionz, HeightsReader heightsReader, UberDownloader uberDownloader, int verticalExaggeration) throws IllegalArgumentException, NoSuchElementException, IOException, InterruptedException, FileNotYetAvailableException, URISyntaxException {
 		x0 = regionx * 512; z0 = regionz * 512;
-		XapiRailResourceInfo info = new XapiRailResourceInfo(regionx, regionz);
-		if (!FileValidator.checkValid(info.file)) {
-			throw new FileNotYetAvailableException();
-		}
-		ArrayList<RailSection> allSections = RailParser.getRailSections(info.file); 
+//		XapiRailResourceInfo info = new XapiRailResourceInfo(regionx, regionz);
+//		if (!FileValidator.checkValid(info.file)) {
+//			throw new FileNotYetAvailableException();
+//		}
+		ArrayList<RailSection> allSections = BinaryRailParser.getRailSections(regionx, regionz); 
 
 		hasRails = allSections.size() > 0;
 		if (!hasRails) {

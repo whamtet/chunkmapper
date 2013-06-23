@@ -1,0 +1,13 @@
+syntax = "proto2";
+
+option optimize_for = LITE_RUNTIME;
+option java_package = "com.chunkmapper.protoc";
+
+message FileInfo {
+	required string parent = 1;
+	required string file = 2;
+}
+
+message FileList {
+	repeated FileInfo files = 1;
+}
