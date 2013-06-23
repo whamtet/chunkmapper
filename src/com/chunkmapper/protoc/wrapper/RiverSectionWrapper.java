@@ -2,6 +2,7 @@ package com.chunkmapper.protoc.wrapper;
 
 import java.awt.Rectangle;
 
+import com.chunkmapper.protoc.RectangleContainer;
 import com.chunkmapper.protoc.RegionBuilder;
 import com.chunkmapper.protoc.RiverContainer.RiverRegion;
 import com.chunkmapper.protoc.RiverContainer.RiverSection;
@@ -17,7 +18,7 @@ public class RiverSectionWrapper implements SectionWrapper {
 
 	@Override
 	public Rectangle getBbox() {
-		com.chunkmapper.protoc.RectangleContainer.Rectangle r = riverSection.getBbox();
+		RectangleContainer.Rectangle r = riverSection.getBbox();
 		return new Rectangle(r.getX(), r.getZ(), r.getWidth(), r.getHeight());
 	}
 

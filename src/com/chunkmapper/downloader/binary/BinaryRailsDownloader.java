@@ -8,7 +8,7 @@ import com.chunkmapper.Point;
 import com.chunkmapper.Utila;
 import com.chunkmapper.protoc.FileContainer.FileList;
 import com.chunkmapper.protoc.ServerInfoContainer.ServerInfo;
-import com.chunkmapper.protoc.admin.RailInfoManager;
+import com.chunkmapper.protoc.admin.FileListManager;
 import com.chunkmapper.protoc.admin.ServerInfoManager;
 import com.chunkmapper.protoc.wrapper.RailRegionBuilder;
 
@@ -16,8 +16,8 @@ public class BinaryRailsDownloader extends BinaryDownloader {
 
 	@Override
 	protected void download(Point p, boolean useBackupServer) throws Exception {
-		FileList fileList = RailInfoManager.getFileList();
-		ServerInfo info = ServerInfoManager.getServerInfo();
+		FileList fileList = FileListManager.railFileList;
+		ServerInfo info = ServerInfoManager.serverInfo;
 		String rootURL = info.getRailAddress() + "data/";
 		RailRegionBuilder regionBuilder = new RailRegionBuilder();
 		File parentFile = new File(Utila.CACHE, "myrails");

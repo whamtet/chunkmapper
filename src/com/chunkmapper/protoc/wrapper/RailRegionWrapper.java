@@ -33,7 +33,7 @@ public class RailRegionWrapper implements RegionWrapper {
 
 	@Override
 	public RegionBuilder newBuilder() {
-		return new RailRegionBuilder(railRegion.newBuilder());
+		return new RailRegionBuilder();
 	}
 
 }

@@ -25,6 +25,21 @@ public final class ServerInfoContainer {
      */
     com.google.protobuf.ByteString
         getRailAddressBytes();
+
+    // optional string river_address = 2;
+    /**
+     * <code>optional string river_address = 2;</code>
+     */
+    boolean hasRiverAddress();
+    /**
+     * <code>optional string river_address = 2;</code>
+     */
+    java.lang.String getRiverAddress();
+    /**
+     * <code>optional string river_address = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getRiverAddressBytes();
   }
   /**
    * Protobuf type {@code ServerInfo}
@@ -72,6 +87,11 @@ public final class ServerInfoContainer {
             case 10: {
               bitField0_ |= 0x00000001;
               railAddress_ = input.readBytes();
+              break;
+            }
+            case 18: {
+              bitField0_ |= 0x00000002;
+              riverAddress_ = input.readBytes();
               break;
             }
           }
@@ -144,8 +164,52 @@ public final class ServerInfoContainer {
       }
     }
 
+    // optional string river_address = 2;
+    public static final int RIVER_ADDRESS_FIELD_NUMBER = 2;
+    private java.lang.Object riverAddress_;
+    /**
+     * <code>optional string river_address = 2;</code>
+     */
+    public boolean hasRiverAddress() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>optional string river_address = 2;</code>
+     */
+    public java.lang.String getRiverAddress() {
+      java.lang.Object ref = riverAddress_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          riverAddress_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string river_address = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getRiverAddressBytes() {
+      java.lang.Object ref = riverAddress_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        riverAddress_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private void initFields() {
       railAddress_ = "";
+      riverAddress_ = "";
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -162,6 +226,9 @@ public final class ServerInfoContainer {
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         output.writeBytes(1, getRailAddressBytes());
       }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(2, getRiverAddressBytes());
+      }
     }
 
     private int memoizedSerializedSize = -1;
@@ -173,6 +240,10 @@ public final class ServerInfoContainer {
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(1, getRailAddressBytes());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, getRiverAddressBytes());
       }
       memoizedSerializedSize = size;
       return size;
@@ -267,6 +338,8 @@ public final class ServerInfoContainer {
         super.clear();
         railAddress_ = "";
         bitField0_ = (bitField0_ & ~0x00000001);
+        riverAddress_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
         return this;
       }
 
@@ -294,6 +367,10 @@ public final class ServerInfoContainer {
           to_bitField0_ |= 0x00000001;
         }
         result.railAddress_ = railAddress_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.riverAddress_ = riverAddress_;
         result.bitField0_ = to_bitField0_;
         return result;
       }
@@ -303,6 +380,11 @@ public final class ServerInfoContainer {
         if (other.hasRailAddress()) {
           bitField0_ |= 0x00000001;
           railAddress_ = other.railAddress_;
+          
+        }
+        if (other.hasRiverAddress()) {
+          bitField0_ |= 0x00000002;
+          riverAddress_ = other.riverAddress_;
           
         }
         return this;
@@ -401,6 +483,80 @@ public final class ServerInfoContainer {
   }
   bitField0_ |= 0x00000001;
         railAddress_ = value;
+        
+        return this;
+      }
+
+      // optional string river_address = 2;
+      private java.lang.Object riverAddress_ = "";
+      /**
+       * <code>optional string river_address = 2;</code>
+       */
+      public boolean hasRiverAddress() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional string river_address = 2;</code>
+       */
+      public java.lang.String getRiverAddress() {
+        java.lang.Object ref = riverAddress_;
+        if (!(ref instanceof java.lang.String)) {
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          riverAddress_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string river_address = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getRiverAddressBytes() {
+        java.lang.Object ref = riverAddress_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          riverAddress_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string river_address = 2;</code>
+       */
+      public Builder setRiverAddress(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        riverAddress_ = value;
+        
+        return this;
+      }
+      /**
+       * <code>optional string river_address = 2;</code>
+       */
+      public Builder clearRiverAddress() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        riverAddress_ = getDefaultInstance().getRiverAddress();
+        
+        return this;
+      }
+      /**
+       * <code>optional string river_address = 2;</code>
+       */
+      public Builder setRiverAddressBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        riverAddress_ = value;
         
         return this;
       }
