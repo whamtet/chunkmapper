@@ -56,7 +56,7 @@ public class BinaryRiverParser {
 		Rectangle currentRectangle = new Rectangle(regionx * 512, regionz * 512, 512, 512);
 
 		ArrayList<RiverSection> out = new ArrayList<RiverSection>();
-		File parent = new File("/Users/matthewmolloy/Downloads/osmosis-master/output/myrivers2");
+		File parent = new File("/Users/matthewmolloy/Downloads/osmosis-master/output/myrivers");
 		for (File f : parent.listFiles()) {
 			if (f.getName().startsWith("f_")) {
 				String[] split = f.getName().split("_");

@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.util.zip.DataFormatException;
 
 import org.apache.commons.io.FileUtils;
 
@@ -12,7 +13,7 @@ import com.chunkmapper.protoc.FileContainer.FileInfo;
 import com.chunkmapper.protoc.FileContainer.FileList;
 
 public class CopyOver {
-	private static void prepareFiles(String name) throws IOException {
+	private static void prepareFiles(String name) throws IOException, DataFormatException {
 		File parent = new File("/Users/matthewmolloy/Downloads/osmosis-master/output/" + name);
 		File[] filesToCopy = parent.listFiles(new FilenameFilter() {
 			@Override
@@ -31,7 +32,7 @@ public class CopyOver {
 			directory.mkdirs();
 
 			File src = filesToCopy[i];
-			FileUtils.copyFile(src, new File(directory, src.getName()));
+			ZipOver.zipOver(src, new File(directory, src.getName()));
 			FileInfo info = FileInfo.newBuilder().setFile(src.getName()).setParent(directory.getName() + "/").build();
 			fileListBuilder.addFiles(info);
 		}
@@ -74,8 +75,8 @@ public class CopyOver {
 	}
 
 	public static void main(String[] args) throws Exception {
-		copyBack();
-//		prepareFiles("myrivers");
+//		copyBack();
+		prepareFiles("myrails");
 //		checkPrepare();
 	}
 

@@ -53,7 +53,7 @@ public class BinaryRailParser {
 		Rectangle currentRectangle = new Rectangle(regionx * 512, regionz * 512, 512, 512);
 		
 		ArrayList<RailSection> out = new ArrayList<RailSection>();
-		File parent = new File("/Users/matthewmolloy/workspace/chunkmapper_static/public/myrails/data");
+		File parent = new File("/Users/matthewmolloy/Downloads/osmosis-master/output/myrails");
 		for (File f : parent.listFiles()) {
 			if (f.getName().startsWith("f_")) {
 				String[] split = f.getName().split("_");
@@ -79,8 +79,14 @@ public class BinaryRailParser {
 //							public RailSection(ArrayList<Point> points,
 //									boolean isPreserved, boolean hasBridge, boolean hasCutting, boolean hasEmbankment, boolean hasTunnel) {
 							ArrayList<Point> points = new ArrayList<Point>();
+							Point rootPoint = null;
 							for (PointContainer.Point point : railSection.getPointsList()) {
-								points.add(new Point(point.getX(), point.getZ()));
+								if (rootPoint == null) {
+									rootPoint = new Point(point.getX(), point.getZ());
+									points.add(rootPoint);
+								} else {
+									points.add(new Point(point.getX() + rootPoint.x, point.getZ() + rootPoint.z));
+								}
 							}
 							out.add(new RailSection(points, railSection.getIsPreserved(), railSection.getHasBridge(),
 									railSection.getHasCutting(), railSection.getHasEmbankment(), railSection.getHasTunnel()));

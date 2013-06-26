@@ -77,7 +77,7 @@ public class XapiRailReader {
 //		if (!FileValidator.checkValid(info.file)) {
 //			throw new FileNotYetAvailableException();
 //		}
-		ArrayList<RailSection> allSections = BinaryRailParser.getRailSections(regionx, regionz); 
+		ArrayList<RailSection> allSections = BinaryRailParser.getOfflineRailSections(regionx, regionz); 
 
 		hasRails = allSections.size() > 0;
 		if (!hasRails) {

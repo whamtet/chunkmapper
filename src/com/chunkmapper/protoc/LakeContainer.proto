@@ -10,6 +10,8 @@ message Lake {
 	repeated Point points = 1;
 	required Rectangle bbox = 2;
 	optional bool is_inner = 3;
+	optional bool is_cove = 4;
+	optional bool is_lagoon = 5;
 }
 
 message LakeRegion {

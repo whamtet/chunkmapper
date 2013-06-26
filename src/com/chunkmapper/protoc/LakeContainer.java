@@ -45,6 +45,26 @@ public final class LakeContainer {
      * <code>optional bool is_inner = 3;</code>
      */
     boolean getIsInner();
+
+    // optional bool is_cove = 4;
+    /**
+     * <code>optional bool is_cove = 4;</code>
+     */
+    boolean hasIsCove();
+    /**
+     * <code>optional bool is_cove = 4;</code>
+     */
+    boolean getIsCove();
+
+    // optional bool is_lagoon = 5;
+    /**
+     * <code>optional bool is_lagoon = 5;</code>
+     */
+    boolean hasIsLagoon();
+    /**
+     * <code>optional bool is_lagoon = 5;</code>
+     */
+    boolean getIsLagoon();
   }
   /**
    * Protobuf type {@code Lake}
@@ -113,6 +133,16 @@ public final class LakeContainer {
             case 24: {
               bitField0_ |= 0x00000002;
               isInner_ = input.readBool();
+              break;
+            }
+            case 32: {
+              bitField0_ |= 0x00000004;
+              isCove_ = input.readBool();
+              break;
+            }
+            case 40: {
+              bitField0_ |= 0x00000008;
+              isLagoon_ = input.readBool();
               break;
             }
           }
@@ -213,10 +243,44 @@ public final class LakeContainer {
       return isInner_;
     }
 
+    // optional bool is_cove = 4;
+    public static final int IS_COVE_FIELD_NUMBER = 4;
+    private boolean isCove_;
+    /**
+     * <code>optional bool is_cove = 4;</code>
+     */
+    public boolean hasIsCove() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional bool is_cove = 4;</code>
+     */
+    public boolean getIsCove() {
+      return isCove_;
+    }
+
+    // optional bool is_lagoon = 5;
+    public static final int IS_LAGOON_FIELD_NUMBER = 5;
+    private boolean isLagoon_;
+    /**
+     * <code>optional bool is_lagoon = 5;</code>
+     */
+    public boolean hasIsLagoon() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional bool is_lagoon = 5;</code>
+     */
+    public boolean getIsLagoon() {
+      return isLagoon_;
+    }
+
     private void initFields() {
       points_ = java.util.Collections.emptyList();
       bbox_ = com.chunkmapper.protoc.RectangleContainer.Rectangle.getDefaultInstance();
       isInner_ = false;
+      isCove_ = false;
+      isLagoon_ = false;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -253,6 +317,12 @@ public final class LakeContainer {
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         output.writeBool(3, isInner_);
       }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeBool(4, isCove_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeBool(5, isLagoon_);
+      }
     }
 
     private int memoizedSerializedSize = -1;
@@ -272,6 +342,14 @@ public final class LakeContainer {
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBoolSize(3, isInner_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(4, isCove_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(5, isLagoon_);
       }
       memoizedSerializedSize = size;
       return size;
@@ -370,6 +448,10 @@ public final class LakeContainer {
         bitField0_ = (bitField0_ & ~0x00000002);
         isInner_ = false;
         bitField0_ = (bitField0_ & ~0x00000004);
+        isCove_ = false;
+        bitField0_ = (bitField0_ & ~0x00000008);
+        isLagoon_ = false;
+        bitField0_ = (bitField0_ & ~0x00000010);
         return this;
       }
 
@@ -406,6 +488,14 @@ public final class LakeContainer {
           to_bitField0_ |= 0x00000002;
         }
         result.isInner_ = isInner_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.isCove_ = isCove_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.isLagoon_ = isLagoon_;
         result.bitField0_ = to_bitField0_;
         return result;
       }
@@ -427,6 +517,12 @@ public final class LakeContainer {
         }
         if (other.hasIsInner()) {
           setIsInner(other.getIsInner());
+        }
+        if (other.hasIsCove()) {
+          setIsCove(other.getIsCove());
+        }
+        if (other.hasIsLagoon()) {
+          setIsLagoon(other.getIsLagoon());
         }
         return this;
       }
@@ -683,6 +779,72 @@ public final class LakeContainer {
       public Builder clearIsInner() {
         bitField0_ = (bitField0_ & ~0x00000004);
         isInner_ = false;
+        
+        return this;
+      }
+
+      // optional bool is_cove = 4;
+      private boolean isCove_ ;
+      /**
+       * <code>optional bool is_cove = 4;</code>
+       */
+      public boolean hasIsCove() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional bool is_cove = 4;</code>
+       */
+      public boolean getIsCove() {
+        return isCove_;
+      }
+      /**
+       * <code>optional bool is_cove = 4;</code>
+       */
+      public Builder setIsCove(boolean value) {
+        bitField0_ |= 0x00000008;
+        isCove_ = value;
+        
+        return this;
+      }
+      /**
+       * <code>optional bool is_cove = 4;</code>
+       */
+      public Builder clearIsCove() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        isCove_ = false;
+        
+        return this;
+      }
+
+      // optional bool is_lagoon = 5;
+      private boolean isLagoon_ ;
+      /**
+       * <code>optional bool is_lagoon = 5;</code>
+       */
+      public boolean hasIsLagoon() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>optional bool is_lagoon = 5;</code>
+       */
+      public boolean getIsLagoon() {
+        return isLagoon_;
+      }
+      /**
+       * <code>optional bool is_lagoon = 5;</code>
+       */
+      public Builder setIsLagoon(boolean value) {
+        bitField0_ |= 0x00000010;
+        isLagoon_ = value;
+        
+        return this;
+      }
+      /**
+       * <code>optional bool is_lagoon = 5;</code>
+       */
+      public Builder clearIsLagoon() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        isLagoon_ = false;
         
         return this;
       }
