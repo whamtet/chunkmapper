@@ -46,8 +46,14 @@ public class BinaryRiverCache {
 		
 		for (RiverContainer.RiverSection rawRiverSection : riverRegion.getRiverSectionsList()) {
 			ArrayList<Point> points = new ArrayList<Point>();
+			Point rootPoint = null;
 			for (PointContainer.Point rawPoint : rawRiverSection.getPointsList()) {
-				points.add(new Point(rawPoint.getX(), rawPoint.getZ()));
+				if (rootPoint == null) {
+					rootPoint = new Point(rawPoint.getX(), rawPoint.getZ());
+					points.add(rootPoint);
+				} else {
+					points.add(new Point(rawPoint.getX() + rootPoint.x, rawPoint.getZ() + rootPoint.z));
+				}
 			}
 			RectangleContainer.Rectangle r = rawRiverSection.getBbox();
 			Rectangle bbox = new Rectangle(r.getX(), r.getZ(), r.getWidth(), r.getHeight());

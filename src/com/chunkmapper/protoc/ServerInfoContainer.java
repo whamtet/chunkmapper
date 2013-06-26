@@ -40,6 +40,21 @@ public final class ServerInfoContainer {
      */
     com.google.protobuf.ByteString
         getRiverAddressBytes();
+
+    // optional string lake_address = 3;
+    /**
+     * <code>optional string lake_address = 3;</code>
+     */
+    boolean hasLakeAddress();
+    /**
+     * <code>optional string lake_address = 3;</code>
+     */
+    java.lang.String getLakeAddress();
+    /**
+     * <code>optional string lake_address = 3;</code>
+     */
+    com.google.protobuf.ByteString
+        getLakeAddressBytes();
   }
   /**
    * Protobuf type {@code ServerInfo}
@@ -92,6 +107,11 @@ public final class ServerInfoContainer {
             case 18: {
               bitField0_ |= 0x00000002;
               riverAddress_ = input.readBytes();
+              break;
+            }
+            case 26: {
+              bitField0_ |= 0x00000004;
+              lakeAddress_ = input.readBytes();
               break;
             }
           }
@@ -207,9 +227,53 @@ public final class ServerInfoContainer {
       }
     }
 
+    // optional string lake_address = 3;
+    public static final int LAKE_ADDRESS_FIELD_NUMBER = 3;
+    private java.lang.Object lakeAddress_;
+    /**
+     * <code>optional string lake_address = 3;</code>
+     */
+    public boolean hasLakeAddress() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional string lake_address = 3;</code>
+     */
+    public java.lang.String getLakeAddress() {
+      java.lang.Object ref = lakeAddress_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          lakeAddress_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string lake_address = 3;</code>
+     */
+    public com.google.protobuf.ByteString
+        getLakeAddressBytes() {
+      java.lang.Object ref = lakeAddress_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        lakeAddress_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private void initFields() {
       railAddress_ = "";
       riverAddress_ = "";
+      lakeAddress_ = "";
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -229,6 +293,9 @@ public final class ServerInfoContainer {
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         output.writeBytes(2, getRiverAddressBytes());
       }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeBytes(3, getLakeAddressBytes());
+      }
     }
 
     private int memoizedSerializedSize = -1;
@@ -244,6 +311,10 @@ public final class ServerInfoContainer {
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(2, getRiverAddressBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(3, getLakeAddressBytes());
       }
       memoizedSerializedSize = size;
       return size;
@@ -340,6 +411,8 @@ public final class ServerInfoContainer {
         bitField0_ = (bitField0_ & ~0x00000001);
         riverAddress_ = "";
         bitField0_ = (bitField0_ & ~0x00000002);
+        lakeAddress_ = "";
+        bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
 
@@ -371,6 +444,10 @@ public final class ServerInfoContainer {
           to_bitField0_ |= 0x00000002;
         }
         result.riverAddress_ = riverAddress_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.lakeAddress_ = lakeAddress_;
         result.bitField0_ = to_bitField0_;
         return result;
       }
@@ -385,6 +462,11 @@ public final class ServerInfoContainer {
         if (other.hasRiverAddress()) {
           bitField0_ |= 0x00000002;
           riverAddress_ = other.riverAddress_;
+          
+        }
+        if (other.hasLakeAddress()) {
+          bitField0_ |= 0x00000004;
+          lakeAddress_ = other.lakeAddress_;
           
         }
         return this;
@@ -557,6 +639,80 @@ public final class ServerInfoContainer {
   }
   bitField0_ |= 0x00000002;
         riverAddress_ = value;
+        
+        return this;
+      }
+
+      // optional string lake_address = 3;
+      private java.lang.Object lakeAddress_ = "";
+      /**
+       * <code>optional string lake_address = 3;</code>
+       */
+      public boolean hasLakeAddress() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>optional string lake_address = 3;</code>
+       */
+      public java.lang.String getLakeAddress() {
+        java.lang.Object ref = lakeAddress_;
+        if (!(ref instanceof java.lang.String)) {
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          lakeAddress_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string lake_address = 3;</code>
+       */
+      public com.google.protobuf.ByteString
+          getLakeAddressBytes() {
+        java.lang.Object ref = lakeAddress_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          lakeAddress_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string lake_address = 3;</code>
+       */
+      public Builder setLakeAddress(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        lakeAddress_ = value;
+        
+        return this;
+      }
+      /**
+       * <code>optional string lake_address = 3;</code>
+       */
+      public Builder clearLakeAddress() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        lakeAddress_ = getDefaultInstance().getLakeAddress();
+        
+        return this;
+      }
+      /**
+       * <code>optional string lake_address = 3;</code>
+       */
+      public Builder setLakeAddressBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        lakeAddress_ = value;
         
         return this;
       }

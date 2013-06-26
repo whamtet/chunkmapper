@@ -56,9 +56,26 @@ public class CopyOver {
 			}
 		}
 	}
+	
+	private static void copyBack() throws IOException {
+		File parentSrc = new File("/Users/matthewmolloy/workspace/chunkmapper_static/public/myrivers/data");
+		File dest = new File("/Users/matthewmolloy/Downloads/osmosis-master/output/myrivers");
+		System.out.println(parentSrc.exists());
+		dest.mkdirs();
+		for (File folder : parentSrc.listFiles()) {
+			if (folder.isDirectory()) {
+				for (File src : folder.listFiles()) {
+					if (src.getName().startsWith("f_")) {
+						FileUtils.copyFile(src, new File(dest, src.getName()));
+					}
+				}
+			}
+		}
+	}
 
 	public static void main(String[] args) throws Exception {
-		prepareFiles("myrivers");
+		copyBack();
+//		prepareFiles("myrivers");
 //		checkPrepare();
 	}
 

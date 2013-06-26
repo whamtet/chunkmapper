@@ -56,7 +56,7 @@ public class BinaryRiverParser {
 		Rectangle currentRectangle = new Rectangle(regionx * 512, regionz * 512, 512, 512);
 
 		ArrayList<RiverSection> out = new ArrayList<RiverSection>();
-		File parent = new File("/Users/matthewmolloy/Downloads/osmosis-master/output/myrivers");
+		File parent = new File("/Users/matthewmolloy/Downloads/osmosis-master/output/myrivers2");
 		for (File f : parent.listFiles()) {
 			if (f.getName().startsWith("f_")) {
 				String[] split = f.getName().split("_");
@@ -80,8 +80,14 @@ public class BinaryRiverParser {
 						if (sectionBbox2.intersects(currentRectangle)) {
 
 							ArrayList<Point> points = new ArrayList<Point>();
+							Point rootPoint = null;
 							for (PointContainer.Point point : riverSection.getPointsList()) {
-								points.add(new Point(point.getX(), point.getZ()));
+								if (rootPoint == null) {
+									rootPoint = new Point(point.getX(), point.getZ());
+									points.add(rootPoint);
+								} else {
+									points.add(new Point(point.getX() + rootPoint.x, point.getZ() + rootPoint.z));
+								}
 							}
 							out.add(new RiverSection(points));
 						}
@@ -93,11 +99,6 @@ public class BinaryRiverParser {
 
 		return out;
 	}
-	public static void main(String[] args) throws IOException, URISyntaxException {
-		double[] latlon = core.placeToCoords("auckland, nz");
-		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
-		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
 
-	}
 
 }

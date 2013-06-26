@@ -36,6 +36,7 @@ public class ServerInfoManager {
 		ServerInfo.Builder builder = ServerInfo.newBuilder();
 		builder.setRailAddress("http://chunkmapper-static.appspot.com/myrails/");
 		builder.setRiverAddress("http://chunkmapper-static.appspot.com/myrivers/");
+		builder.setLakeAddress("http://chunkmapper-static.appspot.com/mylakes/");
 		File outFile = new File("/Users/matthewmolloy/workspace/chunkmapper_static/public/ServerInfo.pbf");
 		FileOutputStream out = new FileOutputStream(outFile);
 		out.write(builder.build().toByteArray());
