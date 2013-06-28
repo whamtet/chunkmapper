@@ -73,11 +73,27 @@ public class CopyOver {
 			}
 		}
 	}
+	private static class CopyOverThread extends Thread {
+		private final String name;
+		public CopyOverThread(String name) {
+			this.name = name;
+		}
+		public void run() {
+			try {
+				prepareFiles(name);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (DataFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
 
 	public static void main(String[] args) throws Exception {
-//		copyBack();
-		prepareFiles("myrails");
-//		checkPrepare();
+		(new CopyOverThread("myrails")).start();
+		(new CopyOverThread("myrivers")).start();
 	}
 
 }

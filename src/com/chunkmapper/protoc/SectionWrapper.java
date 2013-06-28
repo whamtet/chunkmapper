@@ -1,6 +1,5 @@
 package com.chunkmapper.protoc;
 
-import com.chunkmapper.protoc.RailSectionContainer.RailSection;
 import com.google.protobuf.InvalidProtocolBufferException;
 
 public interface SectionWrapper {
