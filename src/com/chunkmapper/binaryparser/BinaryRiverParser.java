@@ -1,7 +1,5 @@
 package com.chunkmapper.binaryparser;
 
-import geocode.core;
-
 import java.awt.Rectangle;
 import java.io.DataInputStream;
 import java.io.File;
@@ -9,28 +7,26 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.zip.DataFormatException;
 
 import com.chunkmapper.Point;
 import com.chunkmapper.parser.RiverParser.RiverSection;
 import com.chunkmapper.protoc.FileContainer.FileInfo;
 import com.chunkmapper.protoc.PointContainer;
-import com.chunkmapper.protoc.RailRegionContainer.RailRegion;
-import com.chunkmapper.protoc.RailSectionContainer;
 import com.chunkmapper.protoc.RectangleContainer;
 import com.chunkmapper.protoc.RiverContainer;
 import com.chunkmapper.protoc.RiverContainer.RiverRegion;
-import com.chunkmapper.protoc.admin.FileListManager;
-import com.chunkmapper.rail.RailSection;
+import com.chunkmapper.protoc.admin.OfflineFileListManager;
 
 public class BinaryRiverParser {
 
-	public static ArrayList<RiverSection> getRiverSections(int regionx, int regionz) throws IOException, URISyntaxException {
+	public static ArrayList<RiverSection> getRiverSections(int regionx, int regionz) throws IOException, URISyntaxException, DataFormatException {
 		Rectangle myRectangle = new Rectangle(regionx * 512, regionz*512, 512, 512);
-		BinaryRiverCache cache = new BinaryRiverCache();
+		BinaryRiverCache cache = new BinaryRiverCache(true);
 
 		ArrayList<RiverSection> out = new ArrayList<RiverSection>();
 		
-		for (FileInfo info : FileListManager.railFileList.getFilesList()) {
+		for (FileInfo info : OfflineFileListManager.riverFileList.getFilesList()) {
 			String[] split = info.getFile().split("_");
 
 			int x = Integer.parseInt(split[1]);

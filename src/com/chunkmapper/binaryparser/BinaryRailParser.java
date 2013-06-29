@@ -27,7 +27,7 @@ public class BinaryRailParser {
 		BinaryRailCache binaryRailCache = new BinaryRailCache();
 		
 		ArrayList<RailSection> out = new ArrayList<RailSection>();
-		for (FileInfo info : FileListManager.railFileList.getFilesList()) {
+		for (FileInfo info : FileListManager.getRailFileList().getFilesList()) {
 			String[] split = info.getFile().split("_");
 			
 			int x = Integer.parseInt(split[1]);

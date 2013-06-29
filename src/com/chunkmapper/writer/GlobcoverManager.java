@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.NoSuchElementException;
 import java.util.Random;
+import java.util.zip.DataFormatException;
 
 import com.chunkmapper.Utila;
 import com.chunkmapper.chunk.Chunk;
@@ -61,7 +62,7 @@ public class GlobcoverManager {
 
 	private final AbstractColumn[][] columns = new AbstractColumn[512][512];
 
-	public GlobcoverManager(int regionx, int regionz, UberDownloader uberDownloader, int verticalExaggeration) throws FileNotYetAvailableException, IOException, IllegalArgumentException, NoSuchElementException, InterruptedException, URISyntaxException {
+	public GlobcoverManager(int regionx, int regionz, UberDownloader uberDownloader, int verticalExaggeration) throws FileNotYetAvailableException, IOException, IllegalArgumentException, NoSuchElementException, InterruptedException, URISyntaxException, DataFormatException {
 		this.regionx = regionx; this.regionz = regionz;
 
 		heightsReader = new HeightsReader(regionx, regionz, uberDownloader, verticalExaggeration);

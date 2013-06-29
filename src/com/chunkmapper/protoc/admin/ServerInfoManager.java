@@ -12,9 +12,16 @@ import com.chunkmapper.protoc.ServerInfoContainer.ServerInfo;
 import com.chunkmapper.protoc.ServerInfoContainer.ServerInfo.Builder;
 
 public class ServerInfoManager {
-	public static final ServerInfo serverInfo;
+	private static ServerInfo serverInfo;
+	
+	public static synchronized ServerInfo getServerInfo() {
+		if (serverInfo == null) {
+			serverInfo = doGetServerInfo();
+		}
+		return serverInfo;
+	}
 
-	static {
+	private static ServerInfo doGetServerInfo() {
 		ServerInfo info = null;
 		try {
 			URL url = new URL("http://chunkmapper-static.appspot.com/ServerInfo.pbf");
@@ -26,7 +33,7 @@ public class ServerInfoManager {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		serverInfo = info;
+		return info;
 	}
 
 	public static void main(String[] args) throws Exception {

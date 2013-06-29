@@ -16,8 +16,8 @@ public class BinaryRailsDownloader extends BinaryDownloader {
 
 	@Override
 	protected void download(Point p, boolean useBackupServer) throws Exception {
-		FileList fileList = FileListManager.railFileList;
-		ServerInfo info = ServerInfoManager.serverInfo;
+		FileList fileList = FileListManager.getRailFileList();
+		ServerInfo info = ServerInfoManager.getServerInfo();
 		String rootURL = info.getRailAddress() + "data/";
 		RailRegionBuilder regionBuilder = new RailRegionBuilder();
 		File parentFile = new File(Utila.CACHE, "myrails");

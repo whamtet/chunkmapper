@@ -73,6 +73,10 @@ public class XapiRailReader {
 
 	public XapiRailReader(int regionx, int regionz, HeightsReader heightsReader, UberDownloader uberDownloader, int verticalExaggeration) throws IllegalArgumentException, NoSuchElementException, IOException, InterruptedException, FileNotYetAvailableException, URISyntaxException {
 		x0 = regionx * 512; z0 = regionz * 512;
+		if (true) {
+			hasRails = false;
+			return;
+		}
 //		XapiRailResourceInfo info = new XapiRailResourceInfo(regionx, regionz);
 //		if (!FileValidator.checkValid(info.file)) {
 //			throw new FileNotYetAvailableException();

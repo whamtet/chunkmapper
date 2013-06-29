@@ -36,7 +36,7 @@ public class BinaryRailCache {
 			in.readFully(data);
 			in.close();
 		} else {
-			ServerInfo info = ServerInfoManager.serverInfo;
+			ServerInfo info = ServerInfoManager.getServerInfo();
 			String address = info.getRailAddress() + "data/" + info2.getParent() + info2.getFile();
 			data = downloader.downloadToFile(address, cacheFile);
 		}

@@ -7,7 +7,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.zip.DataFormatException;
 
 import com.chunkmapper.FileValidator;
 import com.chunkmapper.Point;
@@ -60,13 +62,13 @@ public class XapiRiverReader {
 
 
 
-	public XapiRiverReader(int regionx, int regionz) throws FileNotYetAvailableException, IOException {
+	public XapiRiverReader(int regionx, int regionz) throws FileNotYetAvailableException, IOException, URISyntaxException, DataFormatException {
 		XapiRiverResourceInfo info = new XapiRiverResourceInfo(regionx, regionz);
 		if (!FileValidator.checkValid(info.file))
 			throw new FileNotYetAvailableException();
 		//lets just assume that the water info become available earlier
 //		Collection<RiverSection> riverSections = RiverParser.getRiverSections(info.file);
-		ArrayList<RiverSection> riverSections = BinaryRiverParser.getOfflineRiverSections(regionx, regionz);
+		ArrayList<RiverSection> riverSections = BinaryRiverParser.getRiverSections(regionx, regionz);
 
 		System.out.println(riverSections.size());
 		for (RiverSection riverSection : riverSections) {

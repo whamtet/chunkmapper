@@ -15,30 +15,30 @@ import com.chunkmapper.Point;
 import com.chunkmapper.Utila;
 import com.chunkmapper.Zip;
 import com.chunkmapper.downloader.SynchronousDownloader;
-import com.chunkmapper.parser.RiverParser.RiverSection;
 import com.chunkmapper.protoc.FileContainer.FileInfo;
+import com.chunkmapper.protoc.LakeContainer;
+import com.chunkmapper.protoc.LakeContainer.LakeRegion;
 import com.chunkmapper.protoc.PointContainer;
 import com.chunkmapper.protoc.RectangleContainer;
-import com.chunkmapper.protoc.RiverContainer;
-import com.chunkmapper.protoc.RiverContainer.RiverRegion;
 import com.chunkmapper.protoc.ServerInfoContainer.ServerInfo;
 import com.chunkmapper.protoc.admin.ServerInfoManager;
+import com.chunkmapper.sections.Lake;
 
-public class BinaryRiverCache {
+public class BinaryLakeCache {
 	private SynchronousDownloader downloader = new SynchronousDownloader();
 	private final boolean offline;
-	public BinaryRiverCache(boolean offline) {
+	public BinaryLakeCache(boolean offline) {
 		this.offline = offline;
 	}
 	
-	public ArrayList<RiverSection> getSections(FileInfo info2) throws IOException, URISyntaxException, DataFormatException {
-		File CACHE = new File(Utila.CACHE, "myrails");
+	public ArrayList<Lake> getSections(FileInfo info2) throws IOException, URISyntaxException, DataFormatException {
+		File CACHE = new File(Utila.CACHE, "mylakes");
 		CACHE.mkdirs();
 		File cacheFile = new File(CACHE, info2.getFile());
 		
 		InputStream in;
 		if (offline) {
-			File f = new File("/Users/matthewmolloy/workspace/chunkmapper_static/public/myrivers/data/" + info2.getParent() + info2.getFile());
+			File f = new File("/Users/matthewmolloy/workspace/chunkmapper_static/public/mylakes/data/" + info2.getParent() + info2.getFile());
 			in = new FileInputStream(f);
 		} else if (FileValidator.checkValid(cacheFile)) {
 			in = new FileInputStream(cacheFile);
@@ -50,13 +50,13 @@ public class BinaryRiverCache {
 		}
 		
 		byte[] data = Zip.inflate(in);
-		RiverRegion riverRegion = RiverRegion.parseFrom(data);
-		ArrayList<RiverSection> out = new ArrayList<RiverSection>();
+		LakeRegion lakeRegion = LakeRegion.parseFrom(data);
+		ArrayList<Lake> out = new ArrayList<Lake>();
 		
-		for (RiverContainer.RiverSection rawRiverSection : riverRegion.getRiverSectionsList()) {
+		for (LakeContainer.Lake rawLake : lakeRegion.getLakesList()) {
 			ArrayList<Point> points = new ArrayList<Point>();
 			Point rootPoint = null;
-			for (PointContainer.Point rawPoint : rawRiverSection.getPointsList()) {
+			for (PointContainer.Point rawPoint : rawLake.getPointsList()) {
 				if (rootPoint == null) {
 					rootPoint = new Point(rawPoint.getX(), rawPoint.getZ());
 					points.add(rootPoint);
@@ -64,9 +64,9 @@ public class BinaryRiverCache {
 					points.add(new Point(rawPoint.getX() + rootPoint.x, rawPoint.getZ() + rootPoint.z));
 				}
 			}
-			RectangleContainer.Rectangle r = rawRiverSection.getBbox();
+			RectangleContainer.Rectangle r = rawLake.getBbox();
 			Rectangle bbox = new Rectangle(r.getX(), r.getZ(), r.getWidth(), r.getHeight());
-			out.add(new RiverSection(points, bbox));
+			out.add(new Lake(points, bbox, rawLake.getIsInner(), rawLake.getIsCove(), rawLake.getIsLagoon()));
 		}
 
 		return out;
