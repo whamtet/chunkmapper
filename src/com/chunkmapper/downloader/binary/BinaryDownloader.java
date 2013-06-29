@@ -14,9 +14,9 @@ import com.chunkmapper.Point;
 import com.chunkmapper.downloader.Downloader;
 import com.chunkmapper.protoc.FileContainer.FileInfo;
 import com.chunkmapper.protoc.FileContainer.FileList;
-import com.chunkmapper.protoc.RegionBuilder;
-import com.chunkmapper.protoc.RegionWrapper;
-import com.chunkmapper.protoc.SectionWrapper;
+import com.chunkmapper.protoc.wrapper.RegionBuilder;
+import com.chunkmapper.protoc.wrapper.RegionWrapper;
+import com.chunkmapper.protoc.wrapper.SectionWrapper;
 
 public abstract class BinaryDownloader extends Downloader {
 

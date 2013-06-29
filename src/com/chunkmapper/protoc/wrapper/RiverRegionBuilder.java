@@ -3,11 +3,9 @@ package com.chunkmapper.protoc.wrapper;
 import java.io.IOException;
 import java.io.InputStream;
 
-import com.chunkmapper.protoc.RegionBuilder;
-import com.chunkmapper.protoc.RegionWrapper;
 import com.chunkmapper.protoc.RiverContainer.RiverRegion;
 import com.chunkmapper.protoc.RiverContainer.RiverRegion.Builder;
-import com.chunkmapper.protoc.SectionWrapper;
+import com.google.protobuf.InvalidProtocolBufferException;
 
 
 public class RiverRegionBuilder implements RegionBuilder {
@@ -41,6 +39,11 @@ public class RiverRegionBuilder implements RegionBuilder {
 	@Override
 	public RegionWrapper getRegionWrapper(InputStream in) throws IOException {
 		return new RiverRegionWrapper(RiverRegion.parseFrom(in));
+	}
+	@Override
+	public RegionWrapper getRegionWrapper(byte[] data)
+			throws InvalidProtocolBufferException {
+		return new RiverRegionWrapper(RiverRegion.parseFrom(data));
 	}
 
 }

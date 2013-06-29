@@ -3,11 +3,8 @@ package com.chunkmapper.protoc.wrapper;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.chunkmapper.protoc.RegionBuilder;
-import com.chunkmapper.protoc.RegionWrapper;
 import com.chunkmapper.protoc.RiverContainer.RiverRegion;
 import com.chunkmapper.protoc.RiverContainer.RiverSection;
-import com.chunkmapper.protoc.SectionWrapper;
 
 
 public class RiverRegionWrapper implements RegionWrapper {

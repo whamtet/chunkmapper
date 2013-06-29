@@ -5,8 +5,6 @@ import java.awt.Rectangle;
 import com.chunkmapper.protoc.LakeContainer.Lake;
 import com.chunkmapper.protoc.LakeContainer.LakeRegion;
 import com.chunkmapper.protoc.RectangleContainer;
-import com.chunkmapper.protoc.RegionBuilder;
-import com.chunkmapper.protoc.SectionWrapper;
 import com.google.protobuf.InvalidProtocolBufferException;
 
 public class LakeWrapper implements SectionWrapper {

@@ -5,8 +5,6 @@ import java.awt.Rectangle;
 import com.chunkmapper.protoc.RailRegionContainer.RailRegion;
 import com.chunkmapper.protoc.RailSectionContainer.RailSection;
 import com.chunkmapper.protoc.RectangleContainer;
-import com.chunkmapper.protoc.RegionBuilder;
-import com.chunkmapper.protoc.SectionWrapper;
 import com.google.protobuf.InvalidProtocolBufferException;
 
 public class RailSectionWrapper implements SectionWrapper {

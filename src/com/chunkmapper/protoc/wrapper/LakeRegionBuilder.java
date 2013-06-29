@@ -5,9 +5,7 @@ import java.io.InputStream;
 
 import com.chunkmapper.protoc.LakeContainer.LakeRegion;
 import com.chunkmapper.protoc.LakeContainer.LakeRegion.Builder;
-import com.chunkmapper.protoc.RegionBuilder;
-import com.chunkmapper.protoc.RegionWrapper;
-import com.chunkmapper.protoc.SectionWrapper;
+import com.google.protobuf.InvalidProtocolBufferException;
 
 public class LakeRegionBuilder implements RegionBuilder {
 	public LakeRegion.Builder builder;
@@ -39,6 +37,12 @@ public class LakeRegionBuilder implements RegionBuilder {
 	@Override
 	public RegionWrapper getRegionWrapper(InputStream in) throws IOException {
 		return new LakeRegionWrapper(LakeRegion.parseFrom(in));
+	}
+
+
+	@Override
+	public RegionWrapper getRegionWrapper(byte[] data) throws InvalidProtocolBufferException {
+		return new LakeRegionWrapper(LakeRegion.parseFrom(data));
 	}
 
 }

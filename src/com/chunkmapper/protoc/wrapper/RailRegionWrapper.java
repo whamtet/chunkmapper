@@ -5,9 +5,6 @@ import java.util.List;
 
 import com.chunkmapper.protoc.RailRegionContainer.RailRegion;
 import com.chunkmapper.protoc.RailSectionContainer.RailSection;
-import com.chunkmapper.protoc.RegionBuilder;
-import com.chunkmapper.protoc.RegionWrapper;
-import com.chunkmapper.protoc.SectionWrapper;
 
 
 public class RailRegionWrapper implements RegionWrapper {

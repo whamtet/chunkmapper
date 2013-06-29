@@ -5,9 +5,7 @@ import java.io.InputStream;
 
 import com.chunkmapper.protoc.RailRegionContainer.RailRegion;
 import com.chunkmapper.protoc.RailRegionContainer.RailRegion.Builder;
-import com.chunkmapper.protoc.RegionBuilder;
-import com.chunkmapper.protoc.RegionWrapper;
-import com.chunkmapper.protoc.SectionWrapper;
+import com.google.protobuf.InvalidProtocolBufferException;
 
 
 
@@ -42,6 +40,11 @@ public class RailRegionBuilder implements RegionBuilder {
 	@Override
 	public RegionWrapper getRegionWrapper(InputStream in) throws IOException {
 		return new RailRegionWrapper(RailRegion.parseFrom(in));
+	}
+	@Override
+	public RegionWrapper getRegionWrapper(byte[] data)
+			throws InvalidProtocolBufferException {
+		return new RailRegionWrapper(RailRegion.parseFrom(data));
 	}
 
 }

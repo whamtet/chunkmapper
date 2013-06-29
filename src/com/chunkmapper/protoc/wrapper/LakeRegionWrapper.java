@@ -5,9 +5,6 @@ import java.util.List;
 
 import com.chunkmapper.protoc.LakeContainer.Lake;
 import com.chunkmapper.protoc.LakeContainer.LakeRegion;
-import com.chunkmapper.protoc.RegionBuilder;
-import com.chunkmapper.protoc.RegionWrapper;
-import com.chunkmapper.protoc.SectionWrapper;
 
 public class LakeRegionWrapper implements RegionWrapper {
 	public final LakeRegion lakeRegion;

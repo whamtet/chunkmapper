@@ -1,4 +1,4 @@
-package com.chunkmapper.protoc;
+package com.chunkmapper.protoc.wrapper;
 
 import java.util.ArrayList;
 import java.util.List;

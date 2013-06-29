@@ -1,4 +1,4 @@
-package com.chunkmapper.protoc;
+package com.chunkmapper.protoc.wrapper;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 

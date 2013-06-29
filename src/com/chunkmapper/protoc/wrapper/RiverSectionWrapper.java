@@ -3,10 +3,8 @@ package com.chunkmapper.protoc.wrapper;
 import java.awt.Rectangle;
 
 import com.chunkmapper.protoc.RectangleContainer;
-import com.chunkmapper.protoc.RegionBuilder;
 import com.chunkmapper.protoc.RiverContainer.RiverRegion;
 import com.chunkmapper.protoc.RiverContainer.RiverSection;
-import com.chunkmapper.protoc.SectionWrapper;
 import com.google.protobuf.InvalidProtocolBufferException;
 
 public class RiverSectionWrapper implements SectionWrapper {
