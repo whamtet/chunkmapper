@@ -39,13 +39,12 @@ import com.chunkmapper.enumeration.Block;
 import com.chunkmapper.enumeration.FarmType;
 import com.chunkmapper.enumeration.Globcover;
 import com.chunkmapper.math.Matthewmatics;
-import com.chunkmapper.math.TriangleZonator;
 import com.chunkmapper.reader.FarmTypeReader;
 import com.chunkmapper.reader.FileNotYetAvailableException;
 import com.chunkmapper.reader.GlobcoverReader;
 import com.chunkmapper.reader.HeightsReader;
-import com.chunkmapper.reader.LakeReader;
 import com.chunkmapper.reader.NoaaGshhsReader;
+import com.chunkmapper.reader.XapiLakeReader;
 import com.chunkmapper.reader.XapiRailReader;
 import com.chunkmapper.reader.XapiReader;
 import com.chunkmapper.reader.XapiRiverReader;
@@ -74,7 +73,8 @@ public class GlobcoverManager {
 		}
 		GlobcoverReader coverReader = new GlobcoverReader(regionx, regionz);
 
-		LakeReader lakeReader = new LakeReader(regionx, regionz, heightsReader);
+//		LakeReader lakeReader = new LakeReader(regionx, regionz, heightsReader);
+		XapiLakeReader lakeReader = new XapiLakeReader(regionx, regionz);
 		XapiRiverReader riverReader = new XapiRiverReader(regionx, regionz);
 		railReader = new XapiRailReader(regionx, regionz, heightsReader, uberDownloader, verticalExaggeration);
 		boolean includeLivestock = !railReader.hasRails;
@@ -97,7 +97,7 @@ public class GlobcoverManager {
 				}
 
 				final int h = heightsReader.getHeightij(i, j);
-				if (lakeReader.hasWaterij(i, j, h)) {
+				if (lakeReader.hasWaterij(i, j)) {
 					columns[i][j] = new Lake(absx, absz, heightsReader);
 					continue;
 				}

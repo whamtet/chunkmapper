@@ -24,7 +24,6 @@ public class OfflineFileListManager {
 			
 			return FileList.parseFrom(data);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return null;
 		}
 	}

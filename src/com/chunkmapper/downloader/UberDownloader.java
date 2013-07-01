@@ -4,7 +4,7 @@ import com.chunkmapper.downloader.binary.BinaryRailsDownloader;
 
 public class UberDownloader {
 	private GlobcoverDownloader globcoverDownloader = new GlobcoverDownloader();
-	private LakeDownloader lakeDownloader = new LakeDownloader();
+//	private LakeDownloader lakeDownloader = new LakeDownloader();
 	private NoaaGshhsDownloader noaaGshhsDownloader = new NoaaGshhsDownloader();
 //	private RiverDownloader riverDownloader = new RiverDownloader();
 	private XapiRiverDownloader riverDownloader = new XapiRiverDownloader();
@@ -23,14 +23,14 @@ public class UberDownloader {
 		
 		//third time lucky
 //		numAttempts = 3;
-		lakeDownloader.addTask(regionx, regionz);
+//		lakeDownloader.addTask(regionx, regionz);
 		riverDownloader.addTask(regionx, regionz);
 		xapiDownloader.addTask(regionx, regionz);
 //		xapiRailDownloader.addTask(regionx, regionz);
 	}
 	public void shutdown() {
 		globcoverDownloader.shutdownNow();
-		lakeDownloader.shutdownNow();
+//		lakeDownloader.shutdownNow();
 		noaaGshhsDownloader.shutdownNow();
 		riverDownloader.shutdownNow();
 		xapiDownloader.shutdownNow();
