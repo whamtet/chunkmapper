@@ -22,17 +22,10 @@ public class Nominatim extends Parser {
 		in.close();
 		return out;
 	}
-	public static DoublePoint getPoint(String q) throws MalformedURLException, URISyntaxException, IOException {
+	public static double[] getPoint(String q) throws MalformedURLException, URISyntaxException, IOException {
 		String response = getString(q);
 		String latStr = getValue(response, "lat"), lonStr = getValue(response, "lon");
-		return new DoublePoint(latStr, lonStr);
-	}
-	public static class DoublePoint {
-		public final double lat, lon;
-		
-		public DoublePoint(String latStr, String lonStr) {
-			lat = Double.parseDouble(latStr);
-			lon = Double.parseDouble(lonStr);
-		}
+		double lat = Double.parseDouble(latStr), lon = Double.parseDouble(lonStr);
+		return new double[] {lat, lon};
 	}
 }
