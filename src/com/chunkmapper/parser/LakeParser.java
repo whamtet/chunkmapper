@@ -6,15 +6,15 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import com.chunkmapper.Point;
-import com.chunkmapper.parser.RiverParser.RiverSection;
 import com.chunkmapper.resourceinfo.XapiLakeResourceInfo;
 import com.chunkmapper.sections.Lake;
 
 public class LakeParser extends Parser {
 
-	public static ArrayList<Lake> getLakes(int regionx, int regionz) throws IOException {
+	public static HashSet<Lake> getLakes(int regionx, int regionz) throws IOException {
 		XapiLakeResourceInfo info = new XapiLakeResourceInfo(regionx, regionz);
 		System.out.println(info.url);
 		BufferedReader reader = new BufferedReader(new InputStreamReader(info.url.openStream()));
@@ -25,8 +25,7 @@ public class LakeParser extends Parser {
 		}
 		reader.close();
 		HashMap<Long, Point> locations = getLocations(lines);
-		System.out.println(locations.size());
-		ArrayList<Lake> lakes = new ArrayList<Lake>();
+		HashSet<Lake> lakes = new HashSet<Lake>();
 		
 		boolean isLake = false;
 		boolean isCove = false;
@@ -70,7 +69,7 @@ public class LakeParser extends Parser {
 				isRiver |= k.equals("water") && v.equals("river");
 				
 			}
-			if (tag.equals("/way") && isLake && !isRiver) {
+			if (tag.equals("/way")) {
 				//public Lake(ArrayList<Point> points, Rectangle bbox, boolean isInner, boolean isCove, boolean isLagoon) {
 				Rectangle bbox = new Rectangle(minx, minz, maxx - minx, maxz - minz);
 				lakes.add(new Lake(currentPoints, bbox, false, isCove, isLagoon));

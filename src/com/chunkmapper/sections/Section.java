@@ -3,38 +3,34 @@ package com.chunkmapper.sections;
 import com.chunkmapper.Point;
 
 public class Section {
-	private Point a, b;
-	private boolean aEnd, bEnd;
 	public final boolean isHorizontal;
-	
-	public Section(Point p, Point a, Point b, Point n) {
+	private Point a, b;
+	private boolean includeA;
+	public Section(Point p, Point a, Point b) {
 		isHorizontal = a.z == b.z;
 		if (isHorizontal)
 			return;
-		if (a.z < b.z) {
-			//need to swap
-			Point c = b;
-			b = a;
-			a = c;
-		}
+		
+		int previousSign = p.z > a.z ? -1 : 1;
+		int thisSign = a.z > b.z ? -1 : 1;
+		includeA = previousSign == thisSign;
+		
 		this.a = a;
 		this.b = b;
 		
-		aEnd = a.z < p.z && a.z < b.z || a.z > p.z && a.z > b.z;
-		bEnd = b.z < a.z && b.z < n.z || b.z > a.z && b.z > n.z;
-		
 	}
-
 	public Integer getIntersection(int absz) {
-		if (absz > a.z || absz < b.z)
+		if (absz > a.z && absz > b.z)
 			return null;
-		if (absz == a.z && aEnd)
+		if (absz < a.z && absz < b.z)
 			return null;
-		if (absz == b.z && bEnd)
+		if (absz == a.z && !includeA)
+			return null;
+		if (absz == b.z)
 			return null;
 		
-		return b.x + (a.x - b.x) * (absz - b.z) / (a.z - b.z); 
+		return a.x + (b.x - a.x) * (absz - a.z) / (b.z - a.z);  
+		
 	}
-	
 
 }

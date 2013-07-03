@@ -27,6 +27,7 @@ import com.chunkmapper.sections.Lake;
 public class BinaryLakeCache {
 	private SynchronousDownloader downloader = new SynchronousDownloader();
 	private final boolean offline;
+	
 	public BinaryLakeCache(boolean offline) {
 		this.offline = offline;
 	}

@@ -7,27 +7,25 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.zip.DataFormatException;
 
 import com.chunkmapper.Point;
-import com.chunkmapper.parser.RiverParser.RiverSection;
+import com.chunkmapper.protoc.FileContainer.FileInfo;
 import com.chunkmapper.protoc.LakeContainer;
+import com.chunkmapper.protoc.LakeContainer.LakeRegion;
 import com.chunkmapper.protoc.PointContainer;
 import com.chunkmapper.protoc.RectangleContainer;
-import com.chunkmapper.protoc.RiverContainer;
-import com.chunkmapper.protoc.FileContainer.FileInfo;
-import com.chunkmapper.protoc.LakeContainer.LakeRegion;
-import com.chunkmapper.protoc.RiverContainer.RiverRegion;
 import com.chunkmapper.protoc.admin.OfflineFileListManager;
 import com.chunkmapper.sections.Lake;
 
 public class BinaryLakeParser {
 
-	public static ArrayList<Lake> getLakes(int regionx, int regionz) throws IOException, URISyntaxException, DataFormatException {
+	public static HashSet<Lake> getLakes(int regionx, int regionz) throws IOException, URISyntaxException, DataFormatException {
 		Rectangle myRectangle = new Rectangle(regionx * 512, regionz * 512, 512, 512);
 		BinaryLakeCache cache = new BinaryLakeCache(true);
 
-		ArrayList<Lake> out = new ArrayList<Lake>();
+		HashSet<Lake> out = new HashSet<Lake>();
 		
 		for (FileInfo info : OfflineFileListManager.lakeFileList.getFilesList()) {
 			String[] split = info.getFile().split("_");
