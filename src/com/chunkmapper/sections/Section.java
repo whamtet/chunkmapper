@@ -3,13 +3,9 @@ package com.chunkmapper.sections;
 import com.chunkmapper.Point;
 
 public class Section {
-	public final boolean isHorizontal;
 	private Point a, b;
 	private boolean includeA;
 	public Section(Point p, Point a, Point b) {
-		isHorizontal = a.z == b.z;
-		if (isHorizontal)
-			return;
 		
 		int previousSign = p.z > a.z ? -1 : 1;
 		int thisSign = a.z > b.z ? -1 : 1;

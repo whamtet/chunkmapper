@@ -86,7 +86,7 @@ public class BinaryLakeParser {
 								}
 							}
 							//public Lake(ArrayList<Point> points, Rectangle bbox, boolean isInner, boolean isCove, boolean isLagoon) {
-							out.add(new Lake(points, sectionBbox2, rawLake.getIsInner(), rawLake.getIsCove(), rawLake.getIsLagoon()));
+							out.add(new Lake(points, sectionBbox2, rawLake.getIsCove(), rawLake.getIsLagoon()));
 						}
 					}
 				}

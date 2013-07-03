@@ -1,18 +1,19 @@
 package com.chunkmapper;
 
-import java.util.Comparator;
-import java.util.concurrent.PriorityBlockingQueue;
+import java.util.ArrayList;
 
 
 public class Test {
 
 	public static void main(String[] args) throws Exception {
-		String t = "ok";
-		doNothing(t);
-		System.out.println(t);
-	}
-	private static void doNothing(String s) {
-		s = "hi";
+		ArrayList<Integer> arr = new ArrayList<Integer>();
+		arr.add(0);
+		arr.add(0);
+		for (int i = 0; i < arr.size(); i++) {
+			arr.remove(i);
+			i--;
+		}
+		System.out.println(arr.size());
 	}
 
 }

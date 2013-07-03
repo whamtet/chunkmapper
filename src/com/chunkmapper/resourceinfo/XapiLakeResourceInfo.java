@@ -9,7 +9,7 @@ import com.chunkmapper.Utila;
 
 public class XapiLakeResourceInfo extends ResourceInfo {
 	public static final String FORMAT_URL = "http://www.overpass-api.de/api/xapi?way[natural=water][bbox=%s,%s,%s,%s]";
-	public static final File CACHE_DIRECTORY = new File(Utila.CACHE, "xapirivers");
+	public static final File CACHE_DIRECTORY = new File(Utila.CACHE, "xapilakes");
 	static {
 		if (!CACHE_DIRECTORY.exists())
 			CACHE_DIRECTORY.mkdirs();
@@ -31,7 +31,7 @@ public class XapiLakeResourceInfo extends ResourceInfo {
 
 
 	public static void main(String[] args) {
-		double[] latlon = core.placeToCoords("waitara, nz");
+		double[] latlon = core.placeToCoords("taupo, nz");
 		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
 		int regionz = (int) Math.floor(latlon[0] * 3600 / -512);
 		XapiLakeResourceInfo info = new XapiLakeResourceInfo(regionx, regionz);

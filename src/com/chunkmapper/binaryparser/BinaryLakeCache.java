@@ -67,7 +67,7 @@ public class BinaryLakeCache {
 			}
 			RectangleContainer.Rectangle r = rawLake.getBbox();
 			Rectangle bbox = new Rectangle(r.getX(), r.getZ(), r.getWidth(), r.getHeight());
-			out.add(new Lake(points, bbox, rawLake.getIsInner(), rawLake.getIsCove(), rawLake.getIsLagoon()));
+			out.add(new Lake(points, bbox, rawLake.getIsCove(), rawLake.getIsLagoon()));
 		}
 
 		return out;
