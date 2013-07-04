@@ -13,6 +13,7 @@ import java.util.HashSet;
 import java.util.zip.DataFormatException;
 
 import com.chunkmapper.Point;
+import com.chunkmapper.binaryparser.BinaryLakeParser;
 import com.chunkmapper.math.Matthewmatics;
 import com.chunkmapper.parser.LakeParser;
 import com.chunkmapper.parser.Nominatim;
@@ -33,9 +34,11 @@ public class XapiLakeReader {
 
 	public XapiLakeReader(int regionx, int regionz) throws IOException, FileNotYetAvailableException, URISyntaxException, DataFormatException {
 
-		HashSet<Lake> lakes = LakeParser.getLakes(regionx, regionz);
+		HashSet<Lake> lakes = BinaryLakeParser.getLakes(regionx, regionz);
+		
 		ArrayList<Lake> openLakes = new ArrayList<Lake>(), closedLakes = new ArrayList<Lake>();
 		for (Lake lake : lakes) {
+			System.out.println(lake.points.size());
 			if (lake.isClosed()) {
 				closedLakes.add(lake);
 			} else {
@@ -52,7 +55,7 @@ public class XapiLakeReader {
 				Point endPoint = lakeToClose.getEndPoint();
 				int regionxd = Matthewmatics.div(endPoint.x, 512), regionzd = Matthewmatics.div(endPoint.z, 512);
 				Collection<Lake> lakes2 = regionxd == regionx && regionzd == regionz ?
-						openLakes : LakeParser.getLakes(regionxd, regionzd);
+						openLakes : BinaryLakeParser.getLakes(regionxd, regionzd);
 				for (Lake lake : lakes2) {
 					lakeToClose.connect(lake);
 					if (lakeToClose.isClosed()) {
@@ -144,7 +147,7 @@ public class XapiLakeReader {
 
 	public static void main(String[] args) throws Exception {
 		double[] latlon = geocode.core.placeToCoords("rotorua, nz");
-		//		double[] latlon = Nominatim.getPoint("te anau, nz");
+//				double[] latlon = Nominatim.getPoint("te anau, nz");
 		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
 		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
 		XapiLakeReader reader = new XapiLakeReader(regionx, regionz);
