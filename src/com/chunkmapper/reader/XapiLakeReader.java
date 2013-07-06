@@ -15,8 +15,6 @@ import java.util.zip.DataFormatException;
 import com.chunkmapper.Point;
 import com.chunkmapper.binaryparser.BinaryLakeParser;
 import com.chunkmapper.math.Matthewmatics;
-import com.chunkmapper.parser.LakeParser;
-import com.chunkmapper.parser.Nominatim;
 import com.chunkmapper.sections.Lake;
 import com.chunkmapper.sections.Section;
 
@@ -34,7 +32,7 @@ public class XapiLakeReader {
 
 	public XapiLakeReader(int regionx, int regionz) throws IOException, FileNotYetAvailableException, URISyntaxException, DataFormatException {
 
-		HashSet<Lake> lakes = BinaryLakeParser.getLakes(regionx, regionz);
+		HashSet<Lake> lakes = BinaryLakeParser.getOfflineLakes(regionx, regionz);
 		
 		ArrayList<Lake> openLakes = new ArrayList<Lake>(), closedLakes = new ArrayList<Lake>();
 		for (Lake lake : lakes) {
@@ -55,7 +53,7 @@ public class XapiLakeReader {
 				Point endPoint = lakeToClose.getEndPoint();
 				int regionxd = Matthewmatics.div(endPoint.x, 512), regionzd = Matthewmatics.div(endPoint.z, 512);
 				Collection<Lake> lakes2 = regionxd == regionx && regionzd == regionz ?
-						openLakes : BinaryLakeParser.getLakes(regionxd, regionzd);
+						openLakes : BinaryLakeParser.getOfflineLakes(regionxd, regionzd);
 				for (Lake lake : lakes2) {
 					lakeToClose.connect(lake);
 					if (lakeToClose.isClosed()) {

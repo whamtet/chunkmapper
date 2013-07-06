@@ -48,10 +48,10 @@ public class BinaryLakeParser {
 		return out;
 	}
 
-	public static ArrayList<Lake> getOfflineLakes(int regionx, int regionz) throws IOException {
+	public static HashSet<Lake> getOfflineLakes(int regionx, int regionz) throws IOException {
 		Rectangle currentRectangle = new Rectangle(regionx * 512, regionz * 512, 512, 512);
 
-		ArrayList<Lake> out = new ArrayList<Lake>();
+		HashSet<Lake> out = new HashSet<Lake>();
 		File parent = new File("/Users/matthewmolloy/Downloads/osmosis-master/output/mylakes");
 		for (File f : parent.listFiles()) {
 			if (f.getName().startsWith("f_")) {
