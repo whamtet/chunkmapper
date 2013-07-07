@@ -1,20 +1,21 @@
 package com.chunkmapper.binaryparser;
 
-import com.chunkmapper.Point;
 import java.awt.Rectangle;
-import java.io.DataInputStream;
 import java.io.File;
-import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.zip.DataFormatException;
 
 import com.chunkmapper.FileValidator;
+import com.chunkmapper.Point;
 import com.chunkmapper.Utila;
-import com.chunkmapper.downloader.SynchronousDownloader;
+import com.chunkmapper.Zip;
 import com.chunkmapper.protoc.FileContainer.FileInfo;
-import com.chunkmapper.protoc.RailRegionContainer.RailRegion;
 import com.chunkmapper.protoc.PointContainer;
+import com.chunkmapper.protoc.RailRegionContainer.RailRegion;
 import com.chunkmapper.protoc.RailSectionContainer;
 import com.chunkmapper.protoc.RectangleContainer;
 import com.chunkmapper.protoc.ServerInfoContainer.ServerInfo;
@@ -22,23 +23,32 @@ import com.chunkmapper.protoc.admin.ServerInfoManager;
 import com.chunkmapper.rail.RailSection;
 
 public class BinaryRailCache {
-	private SynchronousDownloader downloader = new SynchronousDownloader();
+	private boolean offline;
+	public BinaryRailCache(boolean offline) {
+		this.offline = offline;
+	}
 	
-	public ArrayList<RailSection> getSections(FileInfo info2) throws IOException, URISyntaxException {
+	public ArrayList<RailSection> getSections(FileInfo info2) throws IOException, URISyntaxException, DataFormatException {
 		File CACHE = new File(Utila.CACHE, "myrails");
 		File cacheFile = new File(CACHE, info2.getFile());
+		boolean cacheValid = FileValidator.checkValid(cacheFile);
 		
 		byte[] data;
-		
-		if (FileValidator.checkValid(cacheFile)) {
-			DataInputStream in = new DataInputStream(new FileInputStream(cacheFile));
-			data = new byte[(int) cacheFile.length()];
-			in.readFully(data);
-			in.close();
+		if (offline) {
+			File f = new File("/Users/matthewmolloy/workspace/chunkmapper_static/public/myrails/data/" + info2.getParent() + info2.getFile());
+			data = Zip.inflate(f);
+		} else if (cacheValid) {
+			data = Zip.inflate(cacheFile);
 		} else {
 			ServerInfo info = ServerInfoManager.getServerInfo();
 			String address = info.getRailAddress() + "data/" + info2.getParent() + info2.getFile();
-			data = downloader.downloadToFile(address, cacheFile);
+			URL url = new URL(address);
+			data = Zip.readFully(url.openStream());
+			FileOutputStream out = new FileOutputStream(cacheFile);
+			out.write(data);
+			out.close();
+			FileValidator.setValid(cacheFile);
+			data = Zip.inflate(data);
 		}
 		
 		RailRegion railRegion = RailRegion.parseFrom(data);
@@ -56,11 +66,6 @@ public class BinaryRailCache {
 					bbox)); 
 		}
 		return out;
-	}
-
-	public void shutdown() {
-		downloader.shutdown();
-		
 	}
 
 }

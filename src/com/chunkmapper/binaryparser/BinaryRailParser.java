@@ -9,25 +9,25 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.zip.DataFormatException;
 
 import com.chunkmapper.Point;
-import com.chunkmapper.Utila;
 import com.chunkmapper.protoc.FileContainer.FileInfo;
 import com.chunkmapper.protoc.PointContainer;
 import com.chunkmapper.protoc.RailRegionContainer.RailRegion;
 import com.chunkmapper.protoc.RailSectionContainer;
 import com.chunkmapper.protoc.RectangleContainer;
-import com.chunkmapper.protoc.admin.FileListManager;
+import com.chunkmapper.protoc.admin.OfflineFileListManager;
 import com.chunkmapper.rail.RailSection;
 
 public class BinaryRailParser {
 	
-	public static ArrayList<RailSection> getRailSections(int regionx, int regionz) throws IOException, URISyntaxException {
+	public static ArrayList<RailSection> getRailSections(int regionx, int regionz) throws IOException, URISyntaxException, DataFormatException {
 		Rectangle myRectangle = new Rectangle(regionx * 512, regionz*512, 512, 512);
-		BinaryRailCache binaryRailCache = new BinaryRailCache();
+		BinaryRailCache binaryRailCache = new BinaryRailCache(true);
 		
 		ArrayList<RailSection> out = new ArrayList<RailSection>();
-		for (FileInfo info : FileListManager.getRailFileList().getFilesList()) {
+		for (FileInfo info : OfflineFileListManager.railFileList.getFilesList()) {
 			String[] split = info.getFile().split("_");
 			
 			int x = Integer.parseInt(split[1]);
@@ -44,7 +44,6 @@ public class BinaryRailParser {
 				}
 			}
 		}
-		binaryRailCache.shutdown();
 		return out;
 	}
 	
@@ -98,7 +97,7 @@ public class BinaryRailParser {
 		
 		return out;
 	}
-	public static void main(String[] args) throws IOException, URISyntaxException {
+	public static void main(String[] args) throws Exception {
 		double[] latlon = core.placeToCoords("auckland, nz");
 		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
 		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);

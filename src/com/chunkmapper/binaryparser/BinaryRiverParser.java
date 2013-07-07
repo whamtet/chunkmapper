@@ -43,7 +43,6 @@ public class BinaryRiverParser {
 				}
 			}
 		}
-		cache.shutdown();
 		return out;
 	}
 

@@ -5,6 +5,7 @@ import com.chunkmapper.Point;
 public class Section {
 	private Point a, b;
 	private boolean includeA;
+	public final boolean isDown;
 	public Section(Point p, Point a, Point b) {
 		
 		int previousSign = p.z > a.z ? -1 : 1;
@@ -13,6 +14,8 @@ public class Section {
 		
 		this.a = a;
 		this.b = b;
+		
+		isDown = p.z > a.z;
 		
 	}
 	public Integer getIntersection(int absz) {

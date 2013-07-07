@@ -7,15 +7,15 @@ import java.io.File;
 import com.chunkmapper.Utila;
 
 
-public class XapiLakeResourceInfo extends ResourceInfo {
-	public static final String FORMAT_URL = "http://www.overpass-api.de/api/xapi?way[natural=water][bbox=%s,%s,%s,%s]";
-	public static final File CACHE_DIRECTORY = new File(Utila.CACHE, "xapilakes");
+public class XapiCoastlineResourceInfo extends ResourceInfo {
+	public static final String FORMAT_URL = "http://www.overpass-api.de/api/xapi?way[natural=coastline][bbox=%s,%s,%s,%s]";
+	public static final File CACHE_DIRECTORY = new File(Utila.CACHE, "xapicoasts");
 	static {
 		if (!CACHE_DIRECTORY.exists())
 			CACHE_DIRECTORY.mkdirs();
 	}
 
-	public XapiLakeResourceInfo(int regionx, int regionz) {
+	public XapiCoastlineResourceInfo(int regionx, int regionz) {
 		super(getAddress(regionx, regionz), CACHE_DIRECTORY, "f_" + regionx + "_" + regionz + ".xml", regionx, regionz);
 		// TODO Auto-generated constructor stub
 	}
@@ -31,10 +31,10 @@ public class XapiLakeResourceInfo extends ResourceInfo {
 
 
 	public static void main(String[] args) {
-		double[] latlon = core.placeToCoords("rotorua, nz");
+		double[] latlon = core.placeToCoords("cape reinga");
 		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
 		int regionz = (int) Math.floor(latlon[0] * 3600 / -512);
-		XapiLakeResourceInfo info = new XapiLakeResourceInfo(regionx, regionz);
+		XapiCoastlineResourceInfo info = new XapiCoastlineResourceInfo(regionx, regionz);
 		
 		System.out.println(info.url);
 	}

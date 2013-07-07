@@ -2,9 +2,8 @@ package com.chunkmapper.binaryparser;
 
 import java.awt.Rectangle;
 import java.io.File;
-import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -14,7 +13,6 @@ import com.chunkmapper.FileValidator;
 import com.chunkmapper.Point;
 import com.chunkmapper.Utila;
 import com.chunkmapper.Zip;
-import com.chunkmapper.downloader.SynchronousDownloader;
 import com.chunkmapper.protoc.FileContainer.FileInfo;
 import com.chunkmapper.protoc.LakeContainer;
 import com.chunkmapper.protoc.LakeContainer.LakeRegion;
@@ -25,7 +23,6 @@ import com.chunkmapper.protoc.admin.ServerInfoManager;
 import com.chunkmapper.sections.Lake;
 
 public class BinaryLakeCache {
-	private SynchronousDownloader downloader = new SynchronousDownloader();
 	private final boolean offline;
 	
 	public BinaryLakeCache(boolean offline) {
@@ -36,21 +33,26 @@ public class BinaryLakeCache {
 		File CACHE = new File(Utila.CACHE, "mylakes");
 		CACHE.mkdirs();
 		File cacheFile = new File(CACHE, info2.getFile());
+		boolean cacheValid = FileValidator.checkValid(cacheFile);
 		
-		InputStream in;
+		byte[] data;
 		if (offline) {
 			File f = new File("/Users/matthewmolloy/workspace/chunkmapper_static/public/mylakes/data/" + info2.getParent() + info2.getFile());
-			in = new FileInputStream(f);
-		} else if (FileValidator.checkValid(cacheFile)) {
-			in = new FileInputStream(cacheFile);
+			data = Zip.inflate(f);
+		} else if (cacheValid) {
+			data = Zip.inflate(cacheFile);
 		} else {
 			ServerInfo info = ServerInfoManager.getServerInfo();
-			String address = info.getRailAddress() + "data/" + info2.getParent() + info2.getFile();
+			String address = info.getLakeAddress() + "data/" + info2.getParent() + info2.getFile();
 			URL url = new URL(address);
-			in = url.openStream();
+			data = Zip.readFully(url.openStream());
+			FileOutputStream out = new FileOutputStream(cacheFile);
+			out.write(data);
+			out.close();
+			FileValidator.setValid(cacheFile);
+			data = Zip.inflate(data);
 		}
 		
-		byte[] data = Zip.inflate(in);
 		LakeRegion lakeRegion = LakeRegion.parseFrom(data);
 		ArrayList<Lake> out = new ArrayList<Lake>();
 		
@@ -71,11 +73,6 @@ public class BinaryLakeCache {
 		}
 
 		return out;
-	}
-
-	public void shutdown() {
-		downloader.shutdown();
-		
 	}
 
 }

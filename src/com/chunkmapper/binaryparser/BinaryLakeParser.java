@@ -44,7 +44,6 @@ public class BinaryLakeParser {
 				}
 			}
 		}
-		cache.shutdown();
 		return out;
 	}
 

@@ -12,7 +12,6 @@ import java.util.ArrayList;
 public class Test {
 
 	public static void main(String[] args) throws Exception {
-		findRotorua();
 	}
 	private static void findRotorua() throws Exception {
 		double lon1 = 176.1980, lon2 = 176.3436;

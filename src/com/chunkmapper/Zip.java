@@ -1,5 +1,6 @@
 package com.chunkmapper;
 
+import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -51,6 +52,30 @@ public class Zip {
 			bytesRead = in.read(data);
 		}
 	}
+	public static byte[] readFully(InputStream in) throws IOException {
+		ArrayList<InputBuffer> buffers = new ArrayList<InputBuffer>();
+		while (true) {
+			InputBuffer b = new InputBuffer(in);
+			if (b.bytesRead == -1) {
+				break;
+			}
+			buffers.add(b);
+		}
+		in.close();
+		int totalSize = 0;
+		for (InputBuffer b : buffers) {
+			totalSize += b.bytesRead;
+		}
+		byte[] data = new byte[totalSize];
+		int i = 0;
+		for (InputBuffer b : buffers) {
+			for (int j = 0; j < b.bytesRead; j++) {
+				data[i] = b.data[j];
+				i++;
+			}
+		}
+		return data;
+	}
 	public static byte[] inflate(InputStream in) throws IOException, DataFormatException {
 		int fullLength = (new DataInputStream(in)).readInt();
 		ArrayList<InputBuffer> buffers = new ArrayList<InputBuffer>();
@@ -86,6 +111,22 @@ public class Zip {
 		byte[] data = new byte[(int) f.length() - 4];
 		
 		DataInputStream in = new DataInputStream(new FileInputStream(f));
+		int fullLength = in.readInt();
+		in.readFully(data);
+		in.close();
+		
+		Inflater inflater = new Inflater();
+		inflater.setInput(data);
+		data = new byte[fullLength];
+		inflater.inflate(data);
+		inflater.end();
+		
+		return data;
+	}
+	public static byte[] inflate(byte[] dataOrig) throws IOException, DataFormatException {
+		byte[] data = new byte[dataOrig.length - 4];
+		
+		DataInputStream in = new DataInputStream(new ByteArrayInputStream(dataOrig));
 		int fullLength = in.readInt();
 		in.readFully(data);
 		in.close();
