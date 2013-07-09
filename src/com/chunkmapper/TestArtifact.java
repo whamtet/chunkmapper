@@ -1,18 +1,20 @@
 package com.chunkmapper;
 
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
+import java.io.IOException;
+import java.io.PrintStream;
 
 import net.minecraft.world.level.chunk.storage.RegionFile;
 
 import org.apache.commons.io.FileUtils;
 
 import com.chunkmapper.chunk.Chunk;
-import com.chunkmapper.enumeration.CircleRail;
-import com.chunkmapper.enumeration.StraightRail;
-import com.chunkmapper.writer.ArtifactWriter;
 import com.chunkmapper.writer.GenericWriter;
 import com.chunkmapper.writer.LoadedLevelDat;
+import com.chunkmapper.writer.MobWriter;
+import com.mojang.nbt.CompoundTag;
 import com.mojang.nbt.NbtIo;
 
 public class TestArtifact {
@@ -35,6 +37,7 @@ public class TestArtifact {
 		loadedLevelDat.setPlayerPosition(0, 250, 0);
 		loadedLevelDat.save();
 		RegionFile regionFile = new RegionFile(new File(regionFolder, "r.0.0.mca"));
+		printAndQuit(regionFile);
 		int[][] heights = new int[24][24];
 		for (int i = 0; i < 24; i++) {
 			for (int j = 0; j < 24; j++) {
@@ -43,17 +46,17 @@ public class TestArtifact {
 		}
 		Chunk chunk = new Chunk(0, 0, heights, 0, 0);
 		GenericWriter.addBedrock(chunk, 0);
-		testRails(chunk);
 //		ArtifactWriter.placeMarket(chunk);
 //		ArtifactWriter.placePrison(chunk);
 //		ArtifactWriter.addTunnelIntoTheUnknown(chunk);
 //		ArtifactWriter.addHouse(chunk);
 //		ArtifactWriter.placeLookout(chunk);
-//		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 10; i++) {
+			MobWriter.addAnimal(chunk, "Horse");
 //			MobWriter.addAnimal(chunk, "Cow");
 //			MobWriter.addAnimal(chunk, "Sheep");
 //			MobWriter.addAnimal(chunk, "Chicken");
-//		}
+		}
 //		ArtifactWriter.placeLibrary(chunk);
 
 		DataOutputStream out = regionFile.getChunkDataOutputStream(0, 0);
@@ -64,14 +67,19 @@ public class TestArtifact {
 		System.out.println("done");
 
 	}
-	private static void testRails(Chunk chunk) {
-		ArtifactWriter artifactWriter = new ArtifactWriter();
-		for (int i = 0; i < 16; i++) {
-			artifactWriter.placeRail(i, i, chunk, 4, CircleRail.Three.val, false, false);
-			if (i < 15) {
-				artifactWriter.placeRail(i+1, i, chunk, 4, CircleRail.One.val, false, false);
-			}
-		}
+
+	private static void printAndQuit(RegionFile regionFile) throws IOException {
+		DataInputStream in = regionFile.getChunkDataInputStream(0, 0);
+		CompoundTag tag = NbtIo.read(in);
+		in.close();
+		PrintStream out = new PrintStream("out.txt");
+		tag.print(out);
+		out.close();
+		regionFile.close();
+		Runtime.getRuntime().exec("open out.txt");
+		System.exit(0);
+		
 	}
+
 
 }

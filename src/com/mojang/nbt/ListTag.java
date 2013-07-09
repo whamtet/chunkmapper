@@ -104,4 +104,9 @@ public class ListTag<T extends Tag> extends Tag {
         return false;
     }
 
+	private T createContents(Class<T> clazz) throws InstantiationException, IllegalAccessException
+    {
+        return clazz.newInstance();
+    }
+
 }

@@ -2,6 +2,7 @@ package com.chunkmapper.protoc.wrapper;
 
 import java.util.HashSet;
 
+import com.chunkmapper.protoc.CoastlineContainer.CoastlineSection;
 import com.chunkmapper.protoc.LakeContainer.Lake;
 import com.chunkmapper.protoc.RectangleContainer;
 import com.chunkmapper.protoc.RailSectionContainer.RailSection;
@@ -34,6 +35,14 @@ public class Test {
 		s3.add(rails1);
 		s3.add(rails2);
 		System.out.println(s3.size());
+		
+		CoastlineSection section1 = CoastlineSection.newBuilder().setBbox(rec1).build(), section2 = CoastlineSection.newBuilder().setBbox(rec2).build();
+		CoastlineSectionWrapper coastWrapper1 = new CoastlineSectionWrapper(section1);
+		CoastlineSectionWrapper coastWrapper2 = new CoastlineSectionWrapper(section2);
+		HashSet<CoastlineSectionWrapper> s4 = new HashSet<CoastlineSectionWrapper>();
+		s4.add(coastWrapper1);
+		s4.add(coastWrapper2);
+		System.out.println(s4.size());
 	}
 
 }

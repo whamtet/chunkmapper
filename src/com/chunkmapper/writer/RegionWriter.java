@@ -33,8 +33,8 @@ public class RegionWriter extends Tasker {
 			if (playerPosition == null) {
 				return 0;
 			}
-			a = new Point(a.x * 512, a.z * 512);
-			b = new Point(b.x * 512, b.z * 512);
+			a = new Point(a.x * 512 + 256, a.z * 512 + 256);
+			b = new Point(b.x * 512 + 256, b.z * 512 + 256);
 			
 			return a.distance(playerPosition) < b.distance(playerPosition) ? -1 : 1;
 		}

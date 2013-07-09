@@ -30,7 +30,7 @@ public class RainfedCrops extends AbstractColumn {
 
 		chunk.Blocks[h-3][z][x] = Block.Dirt.val;
 		chunk.Blocks[h-2][z][x] = Block.Dirt.val;
-		chunk.Blocks[h-1][z][x] = Block.Farmland.val;
+		chunk.Blocks[h-1][z][x] = Block.Grass.val;
 		if (hasNorthernBoundary || hasWesternBoundary) {
 			if (x == 7) {
 				chunk.Blocks[h][z][x] = Blocka.Gate;
@@ -41,8 +41,8 @@ public class RainfedCrops extends AbstractColumn {
 			} else {
 				chunk.Blocks[h][z][x] = Block.Fence.val;
 			}
-		} else if (farmType == FarmType.Cows || farmType == FarmType.Chicken || farmType == FarmType.Sheep) {
-			chunk.Blocks[h-1][z][x] = Block.Grass.val;
+		} else if (farmType == FarmType.Cows || farmType == FarmType.Chicken || 
+				farmType == FarmType.Sheep || farmType == FarmType.Horses) {
 			if (RANDOM.nextInt(3) == 0) {
 				chunk.Blocks[h][z][x] = Block.Long_Grass.val;
 				chunk.Data[h][z][x] = DataSource.Long_Grass.val;
@@ -60,24 +60,31 @@ public class RainfedCrops extends AbstractColumn {
 				if (RANDOM.nextInt(256/FarmType.SHEEP_DENSITY) == 0)
 					MobWriter.addAnimal(chunk, "Sheep");
 				break;
+			case Horses:
+				if (RANDOM.nextInt(256/FarmType.COW_DENSITY) == 0)
+					MobWriter.addAnimal(chunk, "Horse");
+				break;
 			default:
 			}
 		} else {
-			byte cropType = 0;
-			switch (farmType) {
-			case Carrots:
-				cropType = Block.Carrots.val;
-				break;
-			case Potatoes:
-				cropType = Block.Potatoes.val;
-				break;
-			case Wheat:
-				cropType = Block.Wheat.val;
-				break;
-			default:
-			}
-			chunk.Blocks[h][z][x] = cropType;
-			chunk.Data[h][z][x] = 7; //fully matured crops
+			throw new RuntimeException("should not be here");
+//			chunk.Blocks[h-1][z][x] = Block.Farmland.val;
+//			chunk.Data[h-1][z][x] = 7;
+//			byte cropType = 0;
+//			switch (farmType) {
+//			case Carrots:
+//				cropType = Block.Carrots.val;
+//				break;
+//			case Potatoes:
+//				cropType = Block.Potatoes.val;
+//				break;
+//			case Wheat:
+//				cropType = Block.Wheat.val;
+//				break;
+//			default:
+//			}
+//			chunk.Blocks[h][z][x] = cropType;
+//			chunk.Data[h][z][x] = 7; //fully matured crops
 		}
 	}
 }

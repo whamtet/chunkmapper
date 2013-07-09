@@ -12,5 +12,5 @@ message CoastlineSection {
 }
 
 message CoastlineRegion {
-	repeated CoastlineSection river_sections = 1;
+	repeated CoastlineSection coastline_sections = 1;
 }

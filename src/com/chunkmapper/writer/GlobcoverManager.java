@@ -73,12 +73,15 @@ public class GlobcoverManager {
 		}
 		GlobcoverReader coverReader = new GlobcoverReader(regionx, regionz);
 
-//		LakeReader lakeReader = new LakeReader(regionx, regionz, heightsReader);
+		//		LakeReader lakeReader = new LakeReader(regionx, regionz, heightsReader);
 		XapiLakeReader lakeReader = new XapiLakeReader(regionx, regionz);
 		XapiRiverReader riverReader = new XapiRiverReader(regionx, regionz);
 		railReader = new XapiRailReader(regionx, regionz, heightsReader, uberDownloader, verticalExaggeration);
 		boolean includeLivestock = !railReader.hasRails;
-		FarmTypeReader farmTypeReader = new FarmTypeReader(includeLivestock);
+		//		FarmTypeReader farmTypeReader = new FarmTypeReader(includeLivestock);
+		FarmTypeReader farmTypeReader = null;
+		if (includeLivestock)
+			farmTypeReader = new FarmTypeReader();
 		xapiReader = new XapiReader(regionx, regionz);
 
 		NoaaGshhsReader noaaGshhsReader = new NoaaGshhsReader(regionx, regionz);
@@ -120,8 +123,12 @@ public class GlobcoverManager {
 					columns[i][j] = new IrrigatedCrops(absx, absz, cropType, heightsReader);
 					break;
 				case RainfedCrops:
-					FarmType farmType = farmTypeReader.getFarmType(i, j);
-					columns[i][j] = new RainfedCrops(absx, absz, farmType, heightsReader);
+					if (farmTypeReader == null) {
+						columns[i][j] = new Grassland(absx, absz, heightsReader); 
+					} else {
+						FarmType farmType = farmTypeReader.getFarmType(i, j);
+						columns[i][j] = new RainfedCrops(absx, absz, farmType, heightsReader);
+					}
 					break;
 				case CroplandWithVegetation:
 					cropType = Block.Wheat.val;

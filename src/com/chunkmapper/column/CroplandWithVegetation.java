@@ -32,6 +32,7 @@ public class CroplandWithVegetation extends AbstractColumn {
 		chunk.Blocks[h-3][z][x] = Block.Dirt.val;
 		chunk.Blocks[h-2][z][x] = Block.Dirt.val;
 		chunk.Blocks[h-1][z][x] = Block.Farmland.val;
+		chunk.Data[h-1][z][x] = 7;
 		chunk.Blocks[h][z][x] = cropType;
 		chunk.Data[h][z][x] = 7; 
 	}

@@ -620,20 +620,20 @@ public final class CoastlineContainer {
   public interface CoastlineRegionOrBuilder
       extends com.google.protobuf.MessageLiteOrBuilder {
 
-    // repeated .CoastlineSection river_sections = 1;
+    // repeated .CoastlineSection coastline_sections = 1;
     /**
-     * <code>repeated .CoastlineSection river_sections = 1;</code>
+     * <code>repeated .CoastlineSection coastline_sections = 1;</code>
      */
     java.util.List<com.chunkmapper.protoc.CoastlineContainer.CoastlineSection> 
-        getRiverSectionsList();
+        getCoastlineSectionsList();
     /**
-     * <code>repeated .CoastlineSection river_sections = 1;</code>
+     * <code>repeated .CoastlineSection coastline_sections = 1;</code>
      */
-    com.chunkmapper.protoc.CoastlineContainer.CoastlineSection getRiverSections(int index);
+    com.chunkmapper.protoc.CoastlineContainer.CoastlineSection getCoastlineSections(int index);
     /**
-     * <code>repeated .CoastlineSection river_sections = 1;</code>
+     * <code>repeated .CoastlineSection coastline_sections = 1;</code>
      */
-    int getRiverSectionsCount();
+    int getCoastlineSectionsCount();
   }
   /**
    * Protobuf type {@code CoastlineRegion}
@@ -680,10 +680,10 @@ public final class CoastlineContainer {
             }
             case 10: {
               if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
-                riverSections_ = new java.util.ArrayList<com.chunkmapper.protoc.CoastlineContainer.CoastlineSection>();
+                coastlineSections_ = new java.util.ArrayList<com.chunkmapper.protoc.CoastlineContainer.CoastlineSection>();
                 mutable_bitField0_ |= 0x00000001;
               }
-              riverSections_.add(input.readMessage(com.chunkmapper.protoc.CoastlineContainer.CoastlineSection.PARSER, extensionRegistry));
+              coastlineSections_.add(input.readMessage(com.chunkmapper.protoc.CoastlineContainer.CoastlineSection.PARSER, extensionRegistry));
               break;
             }
           }
@@ -695,7 +695,7 @@ public final class CoastlineContainer {
             e.getMessage()).setUnfinishedMessage(this);
       } finally {
         if (((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
-          riverSections_ = java.util.Collections.unmodifiableList(riverSections_);
+          coastlineSections_ = java.util.Collections.unmodifiableList(coastlineSections_);
         }
         makeExtensionsImmutable();
       }
@@ -715,52 +715,52 @@ public final class CoastlineContainer {
       return PARSER;
     }
 
-    // repeated .CoastlineSection river_sections = 1;
-    public static final int RIVER_SECTIONS_FIELD_NUMBER = 1;
-    private java.util.List<com.chunkmapper.protoc.CoastlineContainer.CoastlineSection> riverSections_;
+    // repeated .CoastlineSection coastline_sections = 1;
+    public static final int COASTLINE_SECTIONS_FIELD_NUMBER = 1;
+    private java.util.List<com.chunkmapper.protoc.CoastlineContainer.CoastlineSection> coastlineSections_;
     /**
-     * <code>repeated .CoastlineSection river_sections = 1;</code>
+     * <code>repeated .CoastlineSection coastline_sections = 1;</code>
      */
-    public java.util.List<com.chunkmapper.protoc.CoastlineContainer.CoastlineSection> getRiverSectionsList() {
-      return riverSections_;
+    public java.util.List<com.chunkmapper.protoc.CoastlineContainer.CoastlineSection> getCoastlineSectionsList() {
+      return coastlineSections_;
     }
     /**
-     * <code>repeated .CoastlineSection river_sections = 1;</code>
+     * <code>repeated .CoastlineSection coastline_sections = 1;</code>
      */
     public java.util.List<? extends com.chunkmapper.protoc.CoastlineContainer.CoastlineSectionOrBuilder> 
-        getRiverSectionsOrBuilderList() {
-      return riverSections_;
+        getCoastlineSectionsOrBuilderList() {
+      return coastlineSections_;
     }
     /**
-     * <code>repeated .CoastlineSection river_sections = 1;</code>
+     * <code>repeated .CoastlineSection coastline_sections = 1;</code>
      */
-    public int getRiverSectionsCount() {
-      return riverSections_.size();
+    public int getCoastlineSectionsCount() {
+      return coastlineSections_.size();
     }
     /**
-     * <code>repeated .CoastlineSection river_sections = 1;</code>
+     * <code>repeated .CoastlineSection coastline_sections = 1;</code>
      */
-    public com.chunkmapper.protoc.CoastlineContainer.CoastlineSection getRiverSections(int index) {
-      return riverSections_.get(index);
+    public com.chunkmapper.protoc.CoastlineContainer.CoastlineSection getCoastlineSections(int index) {
+      return coastlineSections_.get(index);
     }
     /**
-     * <code>repeated .CoastlineSection river_sections = 1;</code>
+     * <code>repeated .CoastlineSection coastline_sections = 1;</code>
      */
-    public com.chunkmapper.protoc.CoastlineContainer.CoastlineSectionOrBuilder getRiverSectionsOrBuilder(
+    public com.chunkmapper.protoc.CoastlineContainer.CoastlineSectionOrBuilder getCoastlineSectionsOrBuilder(
         int index) {
-      return riverSections_.get(index);
+      return coastlineSections_.get(index);
     }
 
     private void initFields() {
-      riverSections_ = java.util.Collections.emptyList();
+      coastlineSections_ = java.util.Collections.emptyList();
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
       if (isInitialized != -1) return isInitialized == 1;
 
-      for (int i = 0; i < getRiverSectionsCount(); i++) {
-        if (!getRiverSections(i).isInitialized()) {
+      for (int i = 0; i < getCoastlineSectionsCount(); i++) {
+        if (!getCoastlineSections(i).isInitialized()) {
           memoizedIsInitialized = 0;
           return false;
         }
@@ -772,8 +772,8 @@ public final class CoastlineContainer {
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       getSerializedSize();
-      for (int i = 0; i < riverSections_.size(); i++) {
-        output.writeMessage(1, riverSections_.get(i));
+      for (int i = 0; i < coastlineSections_.size(); i++) {
+        output.writeMessage(1, coastlineSections_.get(i));
       }
     }
 
@@ -783,9 +783,9 @@ public final class CoastlineContainer {
       if (size != -1) return size;
 
       size = 0;
-      for (int i = 0; i < riverSections_.size(); i++) {
+      for (int i = 0; i < coastlineSections_.size(); i++) {
         size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(1, riverSections_.get(i));
+          .computeMessageSize(1, coastlineSections_.get(i));
       }
       memoizedSerializedSize = size;
       return size;
@@ -878,7 +878,7 @@ public final class CoastlineContainer {
 
       public Builder clear() {
         super.clear();
-        riverSections_ = java.util.Collections.emptyList();
+        coastlineSections_ = java.util.Collections.emptyList();
         bitField0_ = (bitField0_ & ~0x00000001);
         return this;
       }
@@ -903,22 +903,22 @@ public final class CoastlineContainer {
         com.chunkmapper.protoc.CoastlineContainer.CoastlineRegion result = new com.chunkmapper.protoc.CoastlineContainer.CoastlineRegion(this);
         int from_bitField0_ = bitField0_;
         if (((bitField0_ & 0x00000001) == 0x00000001)) {
-          riverSections_ = java.util.Collections.unmodifiableList(riverSections_);
+          coastlineSections_ = java.util.Collections.unmodifiableList(coastlineSections_);
           bitField0_ = (bitField0_ & ~0x00000001);
         }
-        result.riverSections_ = riverSections_;
+        result.coastlineSections_ = coastlineSections_;
         return result;
       }
 
       public Builder mergeFrom(com.chunkmapper.protoc.CoastlineContainer.CoastlineRegion other) {
         if (other == com.chunkmapper.protoc.CoastlineContainer.CoastlineRegion.getDefaultInstance()) return this;
-        if (!other.riverSections_.isEmpty()) {
-          if (riverSections_.isEmpty()) {
-            riverSections_ = other.riverSections_;
+        if (!other.coastlineSections_.isEmpty()) {
+          if (coastlineSections_.isEmpty()) {
+            coastlineSections_ = other.coastlineSections_;
             bitField0_ = (bitField0_ & ~0x00000001);
           } else {
-            ensureRiverSectionsIsMutable();
-            riverSections_.addAll(other.riverSections_);
+            ensureCoastlineSectionsIsMutable();
+            coastlineSections_.addAll(other.coastlineSections_);
           }
           
         }
@@ -926,8 +926,8 @@ public final class CoastlineContainer {
       }
 
       public final boolean isInitialized() {
-        for (int i = 0; i < getRiverSectionsCount(); i++) {
-          if (!getRiverSections(i).isInitialized()) {
+        for (int i = 0; i < getCoastlineSectionsCount(); i++) {
+          if (!getCoastlineSections(i).isInitialized()) {
             
             return false;
           }
@@ -954,127 +954,127 @@ public final class CoastlineContainer {
       }
       private int bitField0_;
 
-      // repeated .CoastlineSection river_sections = 1;
-      private java.util.List<com.chunkmapper.protoc.CoastlineContainer.CoastlineSection> riverSections_ =
+      // repeated .CoastlineSection coastline_sections = 1;
+      private java.util.List<com.chunkmapper.protoc.CoastlineContainer.CoastlineSection> coastlineSections_ =
         java.util.Collections.emptyList();
-      private void ensureRiverSectionsIsMutable() {
+      private void ensureCoastlineSectionsIsMutable() {
         if (!((bitField0_ & 0x00000001) == 0x00000001)) {
-          riverSections_ = new java.util.ArrayList<com.chunkmapper.protoc.CoastlineContainer.CoastlineSection>(riverSections_);
+          coastlineSections_ = new java.util.ArrayList<com.chunkmapper.protoc.CoastlineContainer.CoastlineSection>(coastlineSections_);
           bitField0_ |= 0x00000001;
          }
       }
 
       /**
-       * <code>repeated .CoastlineSection river_sections = 1;</code>
+       * <code>repeated .CoastlineSection coastline_sections = 1;</code>
        */
-      public java.util.List<com.chunkmapper.protoc.CoastlineContainer.CoastlineSection> getRiverSectionsList() {
-        return java.util.Collections.unmodifiableList(riverSections_);
+      public java.util.List<com.chunkmapper.protoc.CoastlineContainer.CoastlineSection> getCoastlineSectionsList() {
+        return java.util.Collections.unmodifiableList(coastlineSections_);
       }
       /**
-       * <code>repeated .CoastlineSection river_sections = 1;</code>
+       * <code>repeated .CoastlineSection coastline_sections = 1;</code>
        */
-      public int getRiverSectionsCount() {
-        return riverSections_.size();
+      public int getCoastlineSectionsCount() {
+        return coastlineSections_.size();
       }
       /**
-       * <code>repeated .CoastlineSection river_sections = 1;</code>
+       * <code>repeated .CoastlineSection coastline_sections = 1;</code>
        */
-      public com.chunkmapper.protoc.CoastlineContainer.CoastlineSection getRiverSections(int index) {
-        return riverSections_.get(index);
+      public com.chunkmapper.protoc.CoastlineContainer.CoastlineSection getCoastlineSections(int index) {
+        return coastlineSections_.get(index);
       }
       /**
-       * <code>repeated .CoastlineSection river_sections = 1;</code>
+       * <code>repeated .CoastlineSection coastline_sections = 1;</code>
        */
-      public Builder setRiverSections(
+      public Builder setCoastlineSections(
           int index, com.chunkmapper.protoc.CoastlineContainer.CoastlineSection value) {
         if (value == null) {
           throw new NullPointerException();
         }
-        ensureRiverSectionsIsMutable();
-        riverSections_.set(index, value);
+        ensureCoastlineSectionsIsMutable();
+        coastlineSections_.set(index, value);
 
         return this;
       }
       /**
-       * <code>repeated .CoastlineSection river_sections = 1;</code>
+       * <code>repeated .CoastlineSection coastline_sections = 1;</code>
        */
-      public Builder setRiverSections(
+      public Builder setCoastlineSections(
           int index, com.chunkmapper.protoc.CoastlineContainer.CoastlineSection.Builder builderForValue) {
-        ensureRiverSectionsIsMutable();
-        riverSections_.set(index, builderForValue.build());
+        ensureCoastlineSectionsIsMutable();
+        coastlineSections_.set(index, builderForValue.build());
 
         return this;
       }
       /**
-       * <code>repeated .CoastlineSection river_sections = 1;</code>
+       * <code>repeated .CoastlineSection coastline_sections = 1;</code>
        */
-      public Builder addRiverSections(com.chunkmapper.protoc.CoastlineContainer.CoastlineSection value) {
+      public Builder addCoastlineSections(com.chunkmapper.protoc.CoastlineContainer.CoastlineSection value) {
         if (value == null) {
           throw new NullPointerException();
         }
-        ensureRiverSectionsIsMutable();
-        riverSections_.add(value);
+        ensureCoastlineSectionsIsMutable();
+        coastlineSections_.add(value);
 
         return this;
       }
       /**
-       * <code>repeated .CoastlineSection river_sections = 1;</code>
+       * <code>repeated .CoastlineSection coastline_sections = 1;</code>
        */
-      public Builder addRiverSections(
+      public Builder addCoastlineSections(
           int index, com.chunkmapper.protoc.CoastlineContainer.CoastlineSection value) {
         if (value == null) {
           throw new NullPointerException();
         }
-        ensureRiverSectionsIsMutable();
-        riverSections_.add(index, value);
+        ensureCoastlineSectionsIsMutable();
+        coastlineSections_.add(index, value);
 
         return this;
       }
       /**
-       * <code>repeated .CoastlineSection river_sections = 1;</code>
+       * <code>repeated .CoastlineSection coastline_sections = 1;</code>
        */
-      public Builder addRiverSections(
+      public Builder addCoastlineSections(
           com.chunkmapper.protoc.CoastlineContainer.CoastlineSection.Builder builderForValue) {
-        ensureRiverSectionsIsMutable();
-        riverSections_.add(builderForValue.build());
+        ensureCoastlineSectionsIsMutable();
+        coastlineSections_.add(builderForValue.build());
 
         return this;
       }
       /**
-       * <code>repeated .CoastlineSection river_sections = 1;</code>
+       * <code>repeated .CoastlineSection coastline_sections = 1;</code>
        */
-      public Builder addRiverSections(
+      public Builder addCoastlineSections(
           int index, com.chunkmapper.protoc.CoastlineContainer.CoastlineSection.Builder builderForValue) {
-        ensureRiverSectionsIsMutable();
-        riverSections_.add(index, builderForValue.build());
+        ensureCoastlineSectionsIsMutable();
+        coastlineSections_.add(index, builderForValue.build());
 
         return this;
       }
       /**
-       * <code>repeated .CoastlineSection river_sections = 1;</code>
+       * <code>repeated .CoastlineSection coastline_sections = 1;</code>
        */
-      public Builder addAllRiverSections(
+      public Builder addAllCoastlineSections(
           java.lang.Iterable<? extends com.chunkmapper.protoc.CoastlineContainer.CoastlineSection> values) {
-        ensureRiverSectionsIsMutable();
-        super.addAll(values, riverSections_);
+        ensureCoastlineSectionsIsMutable();
+        super.addAll(values, coastlineSections_);
 
         return this;
       }
       /**
-       * <code>repeated .CoastlineSection river_sections = 1;</code>
+       * <code>repeated .CoastlineSection coastline_sections = 1;</code>
        */
-      public Builder clearRiverSections() {
-        riverSections_ = java.util.Collections.emptyList();
+      public Builder clearCoastlineSections() {
+        coastlineSections_ = java.util.Collections.emptyList();
         bitField0_ = (bitField0_ & ~0x00000001);
 
         return this;
       }
       /**
-       * <code>repeated .CoastlineSection river_sections = 1;</code>
+       * <code>repeated .CoastlineSection coastline_sections = 1;</code>
        */
-      public Builder removeRiverSections(int index) {
-        ensureRiverSectionsIsMutable();
-        riverSections_.remove(index);
+      public Builder removeCoastlineSections(int index) {
+        ensureCoastlineSectionsIsMutable();
+        coastlineSections_.remove(index);
 
         return this;
       }

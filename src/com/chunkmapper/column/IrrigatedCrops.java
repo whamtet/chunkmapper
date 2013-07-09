@@ -29,6 +29,7 @@ public class IrrigatedCrops extends AbstractColumn {
 			chunk.Blocks[h-1][z][x] = Block.Water.val;
 		} else {
 			chunk.Blocks[h-1][z][x] = Block.Farmland.val;
+			chunk.Data[h-1][z][x] = 7;
 			chunk.Blocks[h][z][x] = cropType;
 			chunk.Data[h][z][x] = 7; //fully matured crops
 		}
