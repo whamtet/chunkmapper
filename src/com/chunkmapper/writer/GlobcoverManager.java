@@ -44,6 +44,7 @@ import com.chunkmapper.reader.FileNotYetAvailableException;
 import com.chunkmapper.reader.GlobcoverReader;
 import com.chunkmapper.reader.HeightsReader;
 import com.chunkmapper.reader.NoaaGshhsReader;
+import com.chunkmapper.reader.XapiCoastlineReader;
 import com.chunkmapper.reader.XapiLakeReader;
 import com.chunkmapper.reader.XapiRailReader;
 import com.chunkmapper.reader.XapiReader;
@@ -84,20 +85,30 @@ public class GlobcoverManager {
 			farmTypeReader = new FarmTypeReader();
 		xapiReader = new XapiReader(regionx, regionz);
 
-		NoaaGshhsReader noaaGshhsReader = new NoaaGshhsReader(regionx, regionz);
+//		NoaaGshhsReader noaaGshhsReader = new NoaaGshhsReader(regionx, regionz);
+		XapiCoastlineReader coastlineReader = new XapiCoastlineReader(regionx, regionz, coverReader);
 
 		for (int i = 0; i < 512; i++) {
 			for (int j = 0; j < 512; j++) {
 				int absx = j + regionx*512, absz = i + regionz*512;
-
-				switch(noaaGshhsReader.getVal(i, j)) {
-				case NoaaGshhsReader.OCEAN:
+				
+				if (coastlineReader.hasWaterij(i, j)) {
 					columns[i][j] = new Ocean(absx, absz);
 					continue;
-				case NoaaGshhsReader.COAST:
+				}
+				if (coastlineReader.isCoastij(i, j)) {
 					columns[i][j] = new Coast(absx, absz);
 					continue;
 				}
+
+//				switch(noaaGshhsReader.getVal(i, j)) {
+//				case NoaaGshhsReader.OCEAN:
+//					columns[i][j] = new Ocean(absx, absz);
+//					continue;
+//				case NoaaGshhsReader.COAST:
+//					columns[i][j] = new Coast(absx, absz);
+//					continue;
+//				}
 
 				final int h = heightsReader.getHeightij(i, j);
 				if (lakeReader.hasWaterij(i, j)) {
@@ -246,6 +257,9 @@ public class GlobcoverManager {
 		//and signs for actual places
 		if (xapiReader != null)
 			xapiReader.addSigns(chunk);
+		
+		//a special sign
+		SpecialLandmarksWriter.addSpecialLandmarks(chunk);
 
 		//finally add rail
 		boolean chunkHasRail = false;
@@ -277,9 +291,9 @@ public class GlobcoverManager {
 			case 2:
 				ArtifactWriter.placePrison(chunk);
 				break;
-			case 3:
-				ArtifactWriter.addGallows(chunk);
-				break;
+//			case 3:
+//				ArtifactWriter.addGallows(chunk);
+//				break;
 			default:
 				ArtifactWriter.addHouse(chunk);
 			}

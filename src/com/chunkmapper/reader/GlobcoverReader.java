@@ -14,6 +14,7 @@ import com.chunkmapper.resourceinfo.GlobcoverResourceInfo;
 public class GlobcoverReader {
 	private final short[][] data;
 	private final Globcover[] indices;
+	private Boolean mostlyLand;
 	private final Random random = new Random();
 
 	//only works for positive, otherwise use sign flipping
@@ -28,6 +29,8 @@ public class GlobcoverReader {
 
 	public GlobcoverReader(int regionx, int regionz) throws FileNotYetAvailableException, IOException {
 		GlobcoverResourceInfo info = new GlobcoverResourceInfo(regionx, regionz);
+//		Runtime.getRuntime().exec("open " + info.file.toString());
+		
 		if (!FileValidator.checkValid(info.file))
 			throw new FileNotYetAvailableException();
 
@@ -43,41 +46,42 @@ public class GlobcoverReader {
 				data[i][j] = k;
 			}
 		}
-		//		
-		//		System.out.println(data.length);
-		//		System.out.println(512*512);
-		//		HashSet<Byte> s = new HashSet<Byte>();
-		//		for (byte b : data)
-		//			s.add(b);
-		//		for (byte b : s)
-		//			System.out.println(b);
 	}
-	//	public Globcover getGlobcover(int x, int z) {
-	//		x = com.chunkmapper.math.Math.mod(x, 512);
-	//		z = com.chunkmapper.math.Math.mod(z, 512);
-	//		
-	//		int i = probRound(z*50/512.), j = probRound(x*50/512.);
-	//		return indices[data[i][j]];
-	//	}
 	public Globcover getGlobcover(int i, int j) {
 		i = probRound(i * 50 / 512.);
 		j = probRound(j * 50 / 512.);
 		return indices[data[i][j]];
 	}
-	//	public static Globcover[][] getAllData(int regionx, int regionz) throws FileNotYetAvailableException, IOException {
-	//		GlobcoverReader r = new GlobcoverReader(regionx, regionz);
-	//		return r.getAllData();
-	//	}
-	//	private Globcover[][] getAllData() {
-	//		Globcover[][] out = new Globcover[512][512];
-	//		for (int i = 0; i < 512; i++) {
-	//			for (int j = 0; j < 512; j++) {
-	//				int id = probRound(i*50/512.), jd = probRound(j*50/512.);
-	//				out[i][j] = indices[data[id][jd]];
-	//			}
-	//		}
-	//		return out;
-	//	}
+
+
+	public boolean mostlyWater(int z) {
+		int numWaters = 0;
+		z = z * 50 / 512;
+		for (int j = 0; j < 512; j++) {
+			int jd = j * 50 / 512;
+			int index = data[z][jd];
+			if (indices[index] == Globcover.Water) {
+				numWaters++;
+			}
+		}
+		return numWaters > 256;
+	}
+
+	public boolean mostlyLand() {
+		if (mostlyLand == null) {
+			//ook
+			int k = 0;
+			for (int i = 0; i < 50; i++) {
+				for (int j = 0; j < 50; j++) {
+					if (indices[data[i][j]] != Globcover.Water)
+						k++;
+				}
+			}
+			mostlyLand = k > 1250;
+		}
+		return mostlyLand;
+	}
+
 
 
 }

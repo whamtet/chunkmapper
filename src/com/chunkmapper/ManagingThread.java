@@ -96,9 +96,6 @@ public class ManagingThread extends Thread {
 			//now we loop for ETERNITY!!!
 			while (true) {
 				HashSet<Point> pointsToWrite = pointManager.getNewPoints(gameFolder, gameMetaInfo.rootPoint, chunkmapperDir, playerIconManager);
-				if (pointsToWrite.size() == 0) {
-					//				System.out.println("nothing to write now");
-				}
 				for (Point p : pointsToWrite) {
 
 					uberDownloader.addRegionToDownload(p.x + gameMetaInfo.rootPoint.x, p.z + gameMetaInfo.rootPoint.z);

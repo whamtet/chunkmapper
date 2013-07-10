@@ -16,6 +16,7 @@ public class HeightsReader extends Reader {
 		x0 = regionx*512 - Utila.CHUNK_START;
 		z0 = regionz*512 - Utila.CHUNK_START;
 	}
+	
 
 	public int[][] getHeights(int chunkx, int chunkz) {
 		int size = Utila.CHUNK_START + Utila.CHUNK_END;
@@ -63,6 +64,12 @@ public class HeightsReader extends Reader {
 
 	public int getRealHeightij(int i, int j) {
 		return cache[i + Utila.CHUNK_START][j + Utila.CHUNK_START];
+	}
+	public boolean isLandij(int i, int j) {
+		return cache[i + Utila.CHUNK_START][j + Utila.CHUNK_START] >= 0;
+	}
+	public boolean isWaterij(int i, int j) {
+		return cache[i + Utila.CHUNK_START][j + Utila.CHUNK_START] < 1;
 	}
 
 }

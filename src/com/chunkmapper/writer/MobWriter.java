@@ -3,6 +3,7 @@ package com.chunkmapper.writer;
 import java.util.Random;
 
 import com.chunkmapper.chunk.Chunk;
+import com.chunkmapper.reader.NameReader;
 import com.mojang.nbt.ByteTag;
 import com.mojang.nbt.CompoundTag;
 import com.mojang.nbt.DoubleTag;
@@ -72,6 +73,8 @@ public class MobWriter {
 		animal.putInt("PortalCooldown", (byte) 0);
 		animal.putByte("PersistenceRequired", (byte) 0);
 		animal.putFloat("FallDistance", 0);
+		animal.putString("CustomName", NameReader.getName());
+		animal.putByte("CustomNameVisible", (byte) 0);
 		
 		ListTag<FloatTag> Rotation = new ListTag<FloatTag>();
 		Rotation.add(new FloatTag("", 0));

@@ -11,36 +11,7 @@ public enum Globcover {
 	ClosedBroadleafDeciduous, OpenBroadleafDeciduous, ClosedNeedleleafEvergreen, OpenNeedleleaf,
 	MixedBroadNeedleleaf, ForestShrublandWithGrass, GrassWithForestShrubland, Shrubland, Grassland,
 	SparseVegetation, FreshFloodedForest, SalineFloodedForest, FloodedGrassland, Urban, Bare, Water, Snow, NoData;
-//	public static void checkContents(File f) throws IOException {
-//		DataInputStream dataStream = new DataInputStream(new BufferedInputStream(new FileInputStream(f)));
-//		//read 8 byte header
-//		dataStream.skip(8);
-//		while (true) {
-//			int len = dataStream.readInt();
-//			char[] nameArr = new char[4];
-//			nameArr[0] = (char) dataStream.readByte();
-//			nameArr[1] = (char) dataStream.readByte();
-//			nameArr[2] = (char) dataStream.readByte();
-//			nameArr[3] = (char) dataStream.readByte();
-//			String name = new String(nameArr);
-//			
-//			if (name.equals("PLTE")) {
-//				for (int i = 0; i < 256; i++) {
-//					int r = dataStream.readByte();
-//					int g = dataStream.readByte();
-//					int b = dataStream.readByte();
-//					if (r < 0) r += 256;
-//					if (g < 0) g += 256;
-//					if (b < 0) b += 256;
-//					System.pallette.println(r + "," + g + "," + b);
-//				}
-//				dataStream.close();
-//				return;
-//			} else {
-//				dataStream.skip(len + 4);
-//			}
-//		}
-//	}
+
 	public static Globcover[] makeArray(File f) throws IOException {
 		DataInputStream dataStream = new DataInputStream(new BufferedInputStream(new FileInputStream(f)));
 		//read 8 byte header

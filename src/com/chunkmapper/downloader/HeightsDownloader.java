@@ -20,7 +20,6 @@ public class HeightsDownloader extends Downloader {
 
 		HeightsResourceInfo fileToDownload = new HeightsResourceInfo(task.x, task.z);
 		if (FileValidator.checkValid(fileToDownload.file)) {
-			System.out.println(fileToDownload.file.toString() + " is valid");
 			return;
 		}
 

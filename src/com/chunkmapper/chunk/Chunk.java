@@ -14,6 +14,7 @@ import com.mojang.nbt.ListTag;
 public class Chunk {
 	public final int xPos;
 	public final int zPos;
+	public final int abschunkx, abschunkz;
 	public final int x0, z0, xr, zr;
 	public static final Random RANDOM = new Random();
 	public long LastUpdate = 0;
@@ -125,6 +126,7 @@ public class Chunk {
 //		this(p.x, p.y);
 //	}
 	public Chunk(int x, int z, int[][] heights, int relchunkx, int relchunkz) {
+		abschunkx = x; abschunkz = z;
 		this.heights = heights;
 		xPos = relchunkx;
 		zPos = relchunkz;

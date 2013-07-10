@@ -54,110 +54,110 @@ public class ArtifactWriter {
 			}
 		}
 	}
-	public static void addGallows(Chunk chunk) {
-		int x0 = 6, z0 = 5;
-		int width = 5, length = 5;
-		int h = ArtifactWriter.getMeanHeight(chunk, x0, z0, width, length);
-		clearOut(chunk, x0, z0, h, width, length, 7);
-
-		//platform
-		for (int z = z0; z < z0 + length; z++) {
-			for (int x = x0; x < x0 + width; x++) {
-				chunk.Blocks[h][z][x] = Blocka.Planks;
-			}
-		}
-		int x = x0 + 2;
-		int z = z0;
-		for (int y = h + 1; y < h + 6; y++) {
-			chunk.Blocks[y][z][x] = Blocka.Planks;
-		}
-		z++;
-		chunk.Blocks[h+1][z][x] = Blocka.Planks;
-		chunk.Blocks[h+5][z][x] = Blocka.Planks;
-		z++;
-		chunk.Blocks[h][z][x] = 0;
-		chunk.Blocks[h+5][z][x] = Blocka.Planks;
-
-		chunk.Blocks[h+1][z][x] = Blocka.Trapdoor;
-		chunk.Data[h+1][z][x] = 9;
-
-		//lastly, a warning
-		String[] warning = new String[4];
-		switch(chunk.RANDOM.nextInt(12)) {
-		case 0:
-			warning[0] = "Whoso sheddeth"; warning[1] = "man's blood";
-			warning[2] = "by man shall"; warning[3] = "have blood shed";
-			break;
-		case 1:
-			warning[0] = "He that killeth"; warning[1] = "with the sword";
-			warning[2] = "must be killed"; warning[3] = "";
-			break;
-		case 2:
-//			warning[0]
-			warning[0] = "Whoever takes a";
-			warning[1] = "human life shall";
-			warning[2] = "surely be put";
-			warning[3] = "to death";
-			break;
-		case 3:
-			warning[0] = "Your eye";
-			warning[1] = "shall not";
-			warning[2] = "pity him";
-			warning[3] = " ";
-			break;
-		case 4:
-			warning[0] = "If anyone kills";
-			warning[1] = "a person the";
-			warning[2] = "murderer shall be";
-			warning[3] = "put to death";
-			break;
-		case 5:
-			warning[0] = "You";
-			warning[1] = "shall";
-			warning[2] = "not";
-			warning[3] = "murder";
-			break;
-		case 6:
-			warning[0] = "The authorities";
-			warning[1] = "that exist have";
-			warning[2] = "been instituted";
-			warning[3] = "by God";
-			break;
-		case 7:
-			warning[0] = "I say to";
-			warning[1] = "the wicked:";
-			warning[2] = "'You shall";
-			warning[3] = "surely die'";
-			break;
-		case 8:
-			warning[0] = "You shall";
-			warning[1] = "not permit";
-			warning[2] = "a sorceress";
-			warning[3] = "to live";
-			break;
-		case 9:
-			warning[0] = "Whoever curses";
-			warning[1] = "his father or";
-			warning[2] = "his mother shall";
-			warning[3] = "be put to death";
-			break;
-		case 10:
-			warning[0] = "Everyone who";
-			warning[1] = "hates his";
-			warning[2] = "brother is";
-			warning[3] = "a murderer";
-			break;
-		case 11:
-			warning[0] = "Let a woman";
-			warning[1] = "learn quietly";
-			warning[2] = "with all";
-			warning[3] = "submissiveness";
-			break;
-		}
-		String[] warning2 = {"ok"};
-		ArtifactWriter.addSign(chunk, h, chunk.zr + z0 + length + 1, chunk.xr + x0 + 2, warning);
-
-	}
+//	public static void addGallows(Chunk chunk) {
+//		int x0 = 6, z0 = 5;
+//		int width = 5, length = 5;
+//		int h = ArtifactWriter.getMeanHeight(chunk, x0, z0, width, length);
+//		clearOut(chunk, x0, z0, h, width, length, 7);
+//
+//		//platform
+//		for (int z = z0; z < z0 + length; z++) {
+//			for (int x = x0; x < x0 + width; x++) {
+//				chunk.Blocks[h][z][x] = Blocka.Planks;
+//			}
+//		}
+//		int x = x0 + 2;
+//		int z = z0;
+//		for (int y = h + 1; y < h + 6; y++) {
+//			chunk.Blocks[y][z][x] = Blocka.Planks;
+//		}
+//		z++;
+//		chunk.Blocks[h+1][z][x] = Blocka.Planks;
+//		chunk.Blocks[h+5][z][x] = Blocka.Planks;
+//		z++;
+//		chunk.Blocks[h][z][x] = 0;
+//		chunk.Blocks[h+5][z][x] = Blocka.Planks;
+//
+//		chunk.Blocks[h+1][z][x] = Blocka.Trapdoor;
+//		chunk.Data[h+1][z][x] = 9;
+//
+//		//lastly, a warning
+//		String[] warning = new String[4];
+//		switch(chunk.RANDOM.nextInt(12)) {
+//		case 0:
+//			warning[0] = "Whoso sheddeth"; warning[1] = "man's blood";
+//			warning[2] = "by man shall"; warning[3] = "have blood shed";
+//			break;
+//		case 1:
+//			warning[0] = "He that killeth"; warning[1] = "with the sword";
+//			warning[2] = "must be killed"; warning[3] = "";
+//			break;
+//		case 2:
+////			warning[0]
+//			warning[0] = "Whoever takes a";
+//			warning[1] = "human life shall";
+//			warning[2] = "surely be put";
+//			warning[3] = "to death";
+//			break;
+//		case 3:
+//			warning[0] = "Your eye";
+//			warning[1] = "shall not";
+//			warning[2] = "pity him";
+//			warning[3] = " ";
+//			break;
+//		case 4:
+//			warning[0] = "If anyone kills";
+//			warning[1] = "a person the";
+//			warning[2] = "murderer shall be";
+//			warning[3] = "put to death";
+//			break;
+//		case 5:
+//			warning[0] = "You";
+//			warning[1] = "shall";
+//			warning[2] = "not";
+//			warning[3] = "murder";
+//			break;
+//		case 6:
+//			warning[0] = "The authorities";
+//			warning[1] = "that exist have";
+//			warning[2] = "been instituted";
+//			warning[3] = "by God";
+//			break;
+//		case 7:
+//			warning[0] = "I say to";
+//			warning[1] = "the wicked:";
+//			warning[2] = "'You shall";
+//			warning[3] = "surely die'";
+//			break;
+//		case 8:
+//			warning[0] = "You shall";
+//			warning[1] = "not permit";
+//			warning[2] = "a sorceress";
+//			warning[3] = "to live";
+//			break;
+//		case 9:
+//			warning[0] = "Whoever curses";
+//			warning[1] = "his father or";
+//			warning[2] = "his mother shall";
+//			warning[3] = "be put to death";
+//			break;
+//		case 10:
+//			warning[0] = "Everyone who";
+//			warning[1] = "hates his";
+//			warning[2] = "brother is";
+//			warning[3] = "a murderer";
+//			break;
+//		case 11:
+//			warning[0] = "Let a woman";
+//			warning[1] = "learn quietly";
+//			warning[2] = "with all";
+//			warning[3] = "submissiveness";
+//			break;
+//		}
+//		String[] warning2 = {"ok"};
+//		ArtifactWriter.addSign(chunk, h, chunk.zr + z0 + length + 1, chunk.xr + x0 + 2, warning);
+//
+//	}
 	public static void addTunnelIntoTheUnknown(Chunk chunk) {
 		int x0 = 7;
 		int z0 = 2;
@@ -172,6 +172,8 @@ public class ArtifactWriter {
 		}
 	}
 	public static void addSign(Chunk chunk, int h, int z, int x, String[] lines) {
+		x += chunk.xr;
+		z += chunk.zr;
 		CompoundTag sign = new CompoundTag();
 		sign.putString("id", "Sign");
 		sign.putInt("x", x);

@@ -9,6 +9,7 @@ import com.chunkmapper.enumeration.Gate;
 import com.chunkmapper.enumeration.Globcover;
 import com.chunkmapper.reader.FarmTypeReader;
 import com.chunkmapper.reader.HeightsReader;
+import com.chunkmapper.writer.HorseWriter;
 import com.chunkmapper.writer.MobWriter;
 
 public class RainfedCrops extends AbstractColumn {
@@ -62,7 +63,7 @@ public class RainfedCrops extends AbstractColumn {
 				break;
 			case Horses:
 				if (RANDOM.nextInt(256/FarmType.COW_DENSITY) == 0)
-					MobWriter.addAnimal(chunk, "Horse");
+					HorseWriter.addHorse(chunk);
 				break;
 			default:
 			}

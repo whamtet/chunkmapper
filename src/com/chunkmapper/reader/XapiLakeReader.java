@@ -52,7 +52,8 @@ public class XapiLakeReader {
 					continue outer;
 				}
 			}
-			while (lakeToClose.isOpen()) {
+			int i;
+			for (i = 0; lakeToClose.isOpen() && i < 100; i++) {
 				Point endPoint = lakeToClose.getEndPoint();
 				int regionxd = Matthewmatics.div(endPoint.x, 512), regionzd = Matthewmatics.div(endPoint.z, 512);
 				Collection<Lake> lakes2 = regionxd == regionx && regionzd == regionz ?
@@ -64,6 +65,10 @@ public class XapiLakeReader {
 						break;
 					}
 				}
+			}
+			if (i == 100) {
+				System.out.println("quitting");
+				return;
 			}
 		}
 

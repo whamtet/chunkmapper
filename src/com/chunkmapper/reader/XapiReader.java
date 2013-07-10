@@ -52,7 +52,7 @@ public class XapiReader extends Parser {
 			if (0 <= offsetx && offsetx < 16 && 0 <= offsetz && offsetz < 16) {
 				int h = chunk.getHeights(offsetx, offsetz);
 				if (h < 0) h = 4;
-				ArtifactWriter.addSign(chunk, h, chunk.zr + offsetz, chunk.xr + offsetx, place.name.split(" "));
+				ArtifactWriter.addSign(chunk, h, offsetz, offsetx, place.name.split(" "));
 			}
 		}
 

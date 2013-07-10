@@ -42,7 +42,14 @@ public class Lake {
 			return false;
 		if (!(other instanceof Lake))
 			return false;
-		return bbox.equals(((Lake) other).bbox);
+		Lake other2 = (Lake) other;
+		if (other2.points.size() != points.size())
+			return false;
+		for (int i = 0; i < points.size(); i++) {
+			if (!other2.points.get(i).equals(points.get(i)))
+				return false;
+		}
+		return true;
 	}
 	public boolean isClosed() {
 		return points.get(0).equals(points.get(points.size() - 1));

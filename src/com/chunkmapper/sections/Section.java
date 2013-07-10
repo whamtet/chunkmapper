@@ -3,19 +3,21 @@ package com.chunkmapper.sections;
 import com.chunkmapper.Point;
 
 public class Section {
-	private Point a, b;
-	private boolean includeA;
+	private final Point a, b;
+	private final boolean includeA;
 	public final boolean isDown;
 	public Section(Point p, Point a, Point b) {
+		isDown = a.z > b.z;
+		this.a = a;
+		this.b = b;
+		if (p == null) {
+			includeA = true;
+			return;
+		}
 		
 		int previousSign = p.z > a.z ? -1 : 1;
 		int thisSign = a.z > b.z ? -1 : 1;
 		includeA = previousSign == thisSign;
-		
-		this.a = a;
-		this.b = b;
-		
-		isDown = p.z > a.z;
 		
 	}
 	public Integer getIntersection(int absz) {
