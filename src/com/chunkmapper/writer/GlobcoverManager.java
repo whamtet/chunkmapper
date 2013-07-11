@@ -43,18 +43,17 @@ import com.chunkmapper.reader.FarmTypeReader;
 import com.chunkmapper.reader.FileNotYetAvailableException;
 import com.chunkmapper.reader.GlobcoverReader;
 import com.chunkmapper.reader.HeightsReader;
-import com.chunkmapper.reader.NoaaGshhsReader;
+import com.chunkmapper.reader.POIReader;
 import com.chunkmapper.reader.XapiCoastlineReader;
 import com.chunkmapper.reader.XapiLakeReader;
 import com.chunkmapper.reader.XapiRailReader;
-import com.chunkmapper.reader.XapiReader;
 import com.chunkmapper.reader.XapiRiverReader;
 
 public class GlobcoverManager {
 	private final HeightsReader heightsReader;
 	//	private final FlightgearRailReader railReader;
 	private final XapiRailReader railReader;
-	private final XapiReader xapiReader;
+	private final POIReader poiReader;
 	public final boolean allWater;
 	private final ArtifactWriter artifactWriter = new ArtifactWriter();
 	public final int regionx, regionz;
@@ -69,7 +68,7 @@ public class GlobcoverManager {
 		allWater = heightsReader.allWater;
 		if (allWater) {
 			railReader = null;
-			xapiReader = null;
+			poiReader = null;
 			return;
 		}
 		GlobcoverReader coverReader = new GlobcoverReader(regionx, regionz);
@@ -83,7 +82,7 @@ public class GlobcoverManager {
 		FarmTypeReader farmTypeReader = null;
 		if (includeLivestock)
 			farmTypeReader = new FarmTypeReader();
-		xapiReader = new XapiReader(regionx, regionz);
+		poiReader = new POIReader(regionx, regionz);
 
 //		NoaaGshhsReader noaaGshhsReader = new NoaaGshhsReader(regionx, regionz);
 		XapiCoastlineReader coastlineReader = new XapiCoastlineReader(regionx, regionz, coverReader);
@@ -255,8 +254,8 @@ public class GlobcoverManager {
 		//			ArtifactWriter.addSign(chunk, h, cornerz, cornerx, ss);
 		//		}
 		//and signs for actual places
-		if (xapiReader != null)
-			xapiReader.addSigns(chunk);
+		if (poiReader != null)
+			poiReader.addSigns(chunk);
 		
 		//a special sign
 		SpecialLandmarksWriter.addSpecialLandmarks(chunk);

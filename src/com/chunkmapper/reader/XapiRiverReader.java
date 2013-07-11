@@ -63,11 +63,7 @@ public class XapiRiverReader {
 
 
 	public XapiRiverReader(int regionx, int regionz) throws FileNotYetAvailableException, IOException, URISyntaxException, DataFormatException {
-		XapiRiverResourceInfo info = new XapiRiverResourceInfo(regionx, regionz);
-		if (!FileValidator.checkValid(info.file))
-			throw new FileNotYetAvailableException();
-		//lets just assume that the water info become available earlier
-//		Collection<RiverSection> riverSections = RiverParser.getRiverSections(info.file);
+
 		ArrayList<RiverSection> riverSections = BinaryRiverParser.getRiverSections(regionx, regionz);
 
 		System.out.println(riverSections.size());

@@ -15,29 +15,29 @@ import com.chunkmapper.binaryparser.BinaryCoastlineParser;
 import com.chunkmapper.sections.Coastline;
 
 public class XapiCoastlineReader {
-	//	private boolean[][] data = new boolean[512][512];
 	private int[][] data = new int[512][512];
-	private static final int LAND = 2, WATER = -2, COAST = 3;
-	
+	private static final int BAND_WIDTH = 5;
+	private static final int COAST = BAND_WIDTH + 2, DOWN_COAST = -BAND_WIDTH - 2, UP_COAST = BAND_WIDTH + 3;
+
 	public boolean isCoastij(int i, int j) {
 		int data2 = data[i][j];
-		return data2 == COAST || data2 == 1 || data2 == -1;
+		return data2 == COAST || data2 == UP_COAST || data2 == DOWN_COAST;
 	}
 
 	public boolean hasWaterij(int i, int j) {
-		return data[i][j] == WATER;
+		return data[i][j] < 0 && data[i][j] != DOWN_COAST;
 	}
 	public int getValueij(int i, int j) {
 		return data[i][j];
 	}
-	private static void interpolate(int[][] mask, Point p1, Point p2, int regionx, int regionz, int fill) {
+	private static void interpolate(int[][] mask, Point p1, Point p2, int regionx, int regionz, int fill, int endFill) {
 		int x0 = p1.x - regionx*512, z0 = p1.z - regionz*512;
 		int x2 = p2.x - regionx*512, z2 = p2.z - regionz*512;
 
 		int xstride = x2 - x0, zstride = z2 - z0;
 		if (xstride == 0 && zstride == 0) {
 			if (z0 >= 0 && x0 >= 0 && z0 < 512 && x0 < 512)
-				mask[z0][x0] = fill;
+				mask[z0][x0] = endFill;
 			return;
 		}
 		int width = xstride >= 0 ? xstride : -xstride;
@@ -50,18 +50,18 @@ public class XapiCoastlineReader {
 				int x = x0 + i*xstep;
 				int z = z0 + i * zstride / width;
 				if (z >= 0 && x >= 0 && z < 512 && x < 512)
-					mask[z][x] = fill;
+					mask[z][x] = i == 0 || i == width ? endFill : fill;
 			}
 		} else {
 			for (int i = 0; i <= height; i++) {
 				int x = x0 + i * xstride / height;
 				int z = z0 + i*zstep;
 				if (z >= 0 && x >= 0 && z < 512 && x < 512)
-					mask[z][x] = fill;
+					mask[z][x] = i == 0 || i == height ? endFill : fill;
 			}
 		}
 	}
-	private static void floodFill(int[][] data, int i1, int j1, int fill) {
+	private static void floodFill(int[][] data, int i1, int j1, int fill, int target) {
 		// data == hasLand
 		int h = data.length;
 		int w = data[0].length;
@@ -76,24 +76,24 @@ public class XapiCoastlineReader {
 			int j = js.pop();
 
 			int jd;
-			for (jd = j; jd < w && data[i][jd] == 0; jd++) {
+			for (jd = j; jd < w && data[i][jd] == target; jd++) {
 				data[i][jd] = fill;
-				if (i > 0 && data[i-1][jd] == 0) {
+				if (i > 0 && data[i-1][jd] == target) {
 					is.add(i-1);
 					js.add(jd);
 				}
-				if (i < h-1 && data[i+1][jd] == 0) {
+				if (i < h-1 && data[i+1][jd] == target) {
 					is.add(i+1);
 					js.add(jd);
 				}
 			}
-			for (jd = j - 1; jd >= 0 && data[i][jd] == 0; jd--) {
+			for (jd = j - 1; jd >= 0 && data[i][jd] == target; jd--) {
 				data[i][jd] = fill;
-				if (i > 0 && data[i-1][jd] == 0) {
+				if (i > 0 && data[i-1][jd] == target) {
 					is.add(i-1);
 					js.add(jd);
 				}
-				if (i < h-1 && data[i+1][jd] == 0) {
+				if (i < h-1 && data[i+1][jd] == target) {
 					is.add(i+1);
 					js.add(jd);
 				}
@@ -104,116 +104,64 @@ public class XapiCoastlineReader {
 
 		HashSet<Coastline> coastlines = BinaryCoastlineParser.getCoastlines(regionx, regionz);
 		if (coastlines.size() == 0) {
-			int fill = coverReader.mostlyLand() ? LAND : WATER;
-			if (coverReader.mostlyLand()) {
-				for (int i = 0; i < 512; i++) {
-					for (int j = 0; j < 512; j++) {
-						data[i][j] = fill;
-					}
+			int fill = coverReader.mostlyLand() ? 1 : -1;
+			for (int i = 0; i < 512; i++) {
+				for (int j = 0; j < 512; j++) {
+					data[i][j] = fill;
 				}
 			}
 			return;
 		}
 		for (Coastline coastline : coastlines) {
-//			if (coastline.isSinglePoint()) {
-//				Point p = coastline.points.get(0);
-//				int x0 = regionx * 512, z0 = regionz * 512;
-//				data[p.z - z0][p.x - x0] = LAND;
-//			} else {
-				int limit = coastline.points.size() - 1;
-				for (int i = 0; i < limit; i++) {
-					Point p1 = coastline.points.get(i), p2 = coastline.points.get(i+1);
-					int fill;
-					if (p1.z == p2.z) {
-						fill = COAST;
-					} else {
-						fill = p1.z > p2.z ? 1 : -1;
-					}
-					interpolate(data, p1, p2, regionx, regionz, fill);
+			int limit = coastline.points.size() - 1;
+			for (int i = 0; i < limit; i++) {
+				Point p1 = coastline.points.get(i), p2 = coastline.points.get(i+1);
+				int fill;
+				if (p1.z == p2.z) {
+					fill = COAST;
+				} else {
+					fill = p1.z > p2.z ? UP_COAST : DOWN_COAST;
 				}
-//			}
-		}
+				interpolate(data, p1, p2, regionx, regionz, fill, COAST);
+			}
+			//			}
+	}
 		for (int i = 0; i < 512; i++) {
 			for (int j = 0; j < 512; j++) {
-				if (data[i][j] == 0) {
-					//need to fill
-					if (j < 511 && (data[i][j+1] == 1 || data[i][j+1] == -1)) {
-						boolean isDown = data[i][j+1] == -1;
-						int fill = isDown ? WATER : LAND;
-						floodFill(data, i, j, fill);
+				int val = data[i][j];
+				if (val != COAST && val != UP_COAST && val != DOWN_COAST && -BAND_WIDTH < val && val < BAND_WIDTH) {
+					boolean mustFill = false, isWater = false;
+					if (j < 511 && (data[i][j+1] == UP_COAST || data[i][j+1] == DOWN_COAST)) {
+						isWater = data[i][j+1] == DOWN_COAST;
+						mustFill = true;
 					}
-					if (j > 0 && (data[i][j-1] == 1 || data[i][j-1] == -1)) {
-						boolean isDown = data[i][j-1] == -1;
-						int fill = isDown ? LAND : WATER;
-						floodFill(data, i, j, fill);
+					if (j > 0 && (data[i][j-1] == UP_COAST || data[i][j-1] == DOWN_COAST)) {
+						isWater = data[i][j-1] == UP_COAST;
+						mustFill = true;
+					}
+					if (mustFill) {
+						int target = val;
+						int fill = isWater ? target - 1 : target + 1;
+						floodFill(data, i, j, fill, target);
 					}
 				}
 			}
 		}
-		//		int fill = 1;
-		//		ArrayList<FillDatum> filldatums = new ArrayList<FillDatum>();
-		//		for (int i = 0; i < 512; i++) {
-		//			for (int j = 0; j < 512; j++) {
-		//				if (data[i][j] == 0) {
-		//					fill++;
-		//					floodFill(data, i, j, fill);
-		//					filldatums.add(new FillDatum(data, fill, heightsReader));
-		//				}
-		//			}
-		//		}
-		//		for (int filld = 2; filld <= fill; filld++) {
-		//			int total = 0, numWater = 0;
-		//			for (int i = 0; i < 512; i++) {
-		//				for (int j = 0; j < 512; j++) {
-		//					if (data[i][j] == filld) {
-		//						total++;
-		//						if (heightsReader.isWaterij(i, j)) {
-		//							numWater++;
-		//						}
-		//					}
-		//				}
-		//			}
-		//			if (numWater >= total / 4) {
-		////			if (true) {
-		//				//wipe out this color
-		////				System.out.println("wiping color " + filld);
-		//				for (int i = 0; i < 512; i++) {
-		//					for (int j = 0; j < 512; j++) {
-		//						if (data[i][j] == filld) {
-		//							data[i][j] = 0;
-		//						}
-		//					}
-		//				}
-		//			}
-		//		}
 
 	}
-	//	private static class FillDatum {
-	//		private final double meanHeight;
-	//		public FillDatum(int[][] data, int fill, HeightsReader heightsReader) {
-	//			double s = 0;
-	//			int n = 0;
-	//			for (int i = 0; i < 512; i++) {
-	//				for (int j = 0; j < 512; j++) {
-	//					if (data[i][j] == fill) {
-	//						n++;
-	//					}
-	//				}
-	//			}
-	//		}
-	//	}
 
 	public static void main(String[] args) throws Exception {
-		double[] latlon = geocode.core.placeToCoords("auckland, nz");
-		int regionx = (int) Math.floor(latlon[1] * 3600 / 512)+1;
+		//		double[] latlon = geocode.core.placeToCoords("auckland, nz");
+		double[] latlon = {11.7235, 119.824};
+		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
 		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
 		GlobcoverReader coverReader = new GlobcoverReader(regionx, regionz);
 		XapiCoastlineReader reader = new XapiCoastlineReader(regionx, regionz, coverReader);
 		PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(new File("/Users/matthewmolloy/python/wms/data.csv"))));
 		for (int i = 0; i < 512; i++) {
 			for (int j = 0; j < 512; j++) {
-//				pw.println(reader.getValueij(i, j));
-												pw.println(reader.hasWaterij(i, j) || i == 0 && j == 0 ? 0 : 1);
+				//				pw.println(reader.getValueij(i, j));
+				pw.println(reader.hasWaterij(i, j) || i == 0 && j == 0 ? 0 : 1);
 			}
 		}
 		pw.close();
