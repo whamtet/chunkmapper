@@ -5,12 +5,13 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
+import java.net.URISyntaxException;
 import java.util.HashSet;
 import java.util.Stack;
+import java.util.zip.DataFormatException;
 
 import com.chunkmapper.Point;
-import com.chunkmapper.parser.CoastlineParser;
+import com.chunkmapper.binaryparser.BinaryCoastlineParser;
 import com.chunkmapper.sections.Coastline;
 
 public class XapiCoastlineReader {
@@ -99,9 +100,9 @@ public class XapiCoastlineReader {
 			}
 		}
 	}
-	public XapiCoastlineReader(int regionx, int regionz, GlobcoverReader coverReader) throws IOException {
+	public XapiCoastlineReader(int regionx, int regionz, GlobcoverReader coverReader) throws IOException, URISyntaxException, DataFormatException {
 
-		HashSet<Coastline> coastlines = CoastlineParser.getCoastlines(regionx, regionz);
+		HashSet<Coastline> coastlines = BinaryCoastlineParser.getCoastlines(regionx, regionz);
 		if (coastlines.size() == 0) {
 			int fill = coverReader.mostlyLand() ? LAND : WATER;
 			if (coverReader.mostlyLand()) {
@@ -203,7 +204,7 @@ public class XapiCoastlineReader {
 	//	}
 
 	public static void main(String[] args) throws Exception {
-		double[] latlon = geocode.core.placeToCoords("christchurch, nz");
+		double[] latlon = geocode.core.placeToCoords("auckland, nz");
 		int regionx = (int) Math.floor(latlon[1] * 3600 / 512)+1;
 		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
 		GlobcoverReader coverReader = new GlobcoverReader(regionx, regionz);

@@ -7,12 +7,13 @@ import com.chunkmapper.protoc.FileContainer.FileList;
 
 
 public class OfflineFileListManager {
-	public static final FileList railFileList, riverFileList, lakeFileList;
+	public static final FileList railFileList, riverFileList, lakeFileList, coastlineFileList;
 	
 	static {
 		railFileList = getFileList(new File("/Users/matthewmolloy/workspace/chunkmapper_static/public/myrails/master.pbf"));
 		riverFileList = getFileList(new File("/Users/matthewmolloy/workspace/chunkmapper_static/public/myrivers/master.pbf"));
 		lakeFileList = getFileList(new File("/Users/matthewmolloy/workspace/chunkmapper_static/public/mylakes/master.pbf"));
+		coastlineFileList = getFileList(new File("/Users/matthewmolloy/workspace/chunkmapper_static/public/mycoastlines/master.pbf"));
 	}
 	
 	private static FileList getFileList(File f) {
