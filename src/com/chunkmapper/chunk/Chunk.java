@@ -125,13 +125,13 @@ public class Chunk {
 //	public Chunk(Point p) {
 //		this(p.x, p.y);
 //	}
-	public Chunk(int x, int z, int[][] heights, int relchunkx, int relchunkz) {
-		abschunkx = x; abschunkz = z;
+	public Chunk(int abschunkx, int abschunkz, int[][] heights, int relchunkx, int relchunkz) {
+		this.abschunkx = abschunkx; this.abschunkz = abschunkz;
 		this.heights = heights;
 		xPos = relchunkx;
 		zPos = relchunkz;
-		x0 = x*16;
-		z0 = z*16;
+		x0 = abschunkx*16;
+		z0 = abschunkz*16;
 		xr = relchunkx*16;
 		zr = relchunkz*16;
 	}
