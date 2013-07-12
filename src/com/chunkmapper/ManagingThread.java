@@ -30,6 +30,10 @@ public class ManagingThread extends Thread {
 		this.lon = lon;
 		this.gameFolder = gameFolder;
 	}
+	public static void main(String[] args) throws Exception {
+		URL src = ManagingThread.class.getResource("/config/level.dat");
+		System.out.println(src);
+	}
 	private static File prepareDir(File f, boolean delete) {
 		if (delete && f.exists()) {
 			try {
