@@ -56,8 +56,14 @@ public class BinaryRailCache {
 		
 		for (RailSectionContainer.RailSection rawRailSection : railRegion.getRailSectionsList()) {
 			ArrayList<Point> points = new ArrayList<Point>();
+			Point rootPoint = null;
 			for (PointContainer.Point rawPoint : rawRailSection.getPointsList()) {
-				points.add(new Point(rawPoint.getX(), rawPoint.getZ()));
+				if (rootPoint == null) {
+					rootPoint = new Point(rawPoint.getX(), rawPoint.getZ());
+					points.add(rootPoint);
+				} else {
+					points.add(new Point(rootPoint.x + rawPoint.getX(), rootPoint.z + rawPoint.getZ()));
+				}
 			}
 			RectangleContainer.Rectangle rawBbox = rawRailSection.getBbox();
 			Rectangle bbox = new Rectangle(rawBbox.getX(), rawBbox.getZ(), rawBbox.getWidth(), rawBbox.getHeight());

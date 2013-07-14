@@ -49,10 +49,10 @@ public class BinaryRailParser {
 	}
 	
 	
-	public static ArrayList<RailSection> getOfflineRailSections(int regionx, int regionz) throws IOException {
+	public static HashSet<RailSection> getOfflineRailSections(int regionx, int regionz) throws IOException {
 		Rectangle currentRectangle = new Rectangle(regionx * 512, regionz * 512, 512, 512);
 		
-		ArrayList<RailSection> out = new ArrayList<RailSection>();
+		HashSet<RailSection> out = new HashSet<RailSection>();
 		File parent = new File("/Users/matthewmolloy/Downloads/osmosis-master/output/myrails");
 		for (File f : parent.listFiles()) {
 			if (f.getName().startsWith("f_")) {
@@ -88,8 +88,10 @@ public class BinaryRailParser {
 									points.add(new Point(point.getX() + rootPoint.x, point.getZ() + rootPoint.z));
 								}
 							}
+							RectangleContainer.Rectangle rawRectangle = railSection.getBbox();
+							Rectangle bbox = new Rectangle(rawRectangle.getX(), rawRectangle.getZ(), rawRectangle.getWidth(), rawRectangle.getHeight());
 							out.add(new RailSection(points, railSection.getIsPreserved(), railSection.getHasBridge(),
-									railSection.getHasCutting(), railSection.getHasEmbankment(), railSection.getHasTunnel()));
+									railSection.getHasCutting(), railSection.getHasEmbankment(), railSection.getHasTunnel(), bbox));
 						}
 					}
 				}

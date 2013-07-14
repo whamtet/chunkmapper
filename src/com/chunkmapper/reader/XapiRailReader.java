@@ -1,9 +1,13 @@
 package com.chunkmapper.reader;
 
+import geocode.core;
+
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.zip.DataFormatException;
 
@@ -70,11 +74,14 @@ public class XapiRailReader {
 		heights[z][x] = h;
 		this.railType[z][x] = railType;
 	}
+	private XapiRailReader(int regionx, int regionz) throws IllegalArgumentException, NoSuchElementException, IOException, InterruptedException, FileNotYetAvailableException, URISyntaxException, DataFormatException {
+		this(regionx, regionz, new HeightsReaderImpl(regionx, regionz), null, 1);
+	}
 
 	public XapiRailReader(int regionx, int regionz, HeightsReader heightsReader, UberDownloader uberDownloader, int verticalExaggeration) throws IllegalArgumentException, NoSuchElementException, IOException, InterruptedException, FileNotYetAvailableException, URISyntaxException, DataFormatException {
 		x0 = regionx * 512; z0 = regionz * 512;
 
-		Collection<RailSection> allSections = BinaryRailParser.getRailSections(regionx, regionz); 
+		Collection<RailSection> allSections = BinaryRailParser.getOfflineRailSections(regionx, regionz); 
 
 		hasRails = allSections.size() > 0;
 		if (!hasRails) {
@@ -252,11 +259,15 @@ public class XapiRailReader {
 	}
 
 	public short getHeight(int x, int z) {
-		return heights[com.chunkmapper.math.Matthewmatics.mod(z, 512)][com.chunkmapper.math.Matthewmatics.mod(x, 512)];
+//		return heights[com.chunkmapper.math.Matthewmatics.mod(z, 512)][com.chunkmapper.math.Matthewmatics.mod(x, 512)];
+		return heights[z - z0][x - x0];
 	}
 	public byte getRailType(int x, int z) {
-		return railType[com.chunkmapper.math.Matthewmatics.mod(z, 512)][com.chunkmapper.math.Matthewmatics.mod(x, 512)];
+//		return railType[com.chunkmapper.math.Matthewmatics.mod(z, 512)][com.chunkmapper.math.Matthewmatics.mod(x, 512)];
+		return railType[z - z0][x - x0];
 	}
-
+	public boolean hasRailij(int i, int j) {
+		return railType[i][j] != 0;
+	}
 
 }

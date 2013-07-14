@@ -13,6 +13,7 @@ import com.chunkmapper.FileValidator;
 import com.chunkmapper.Point;
 import com.chunkmapper.Zip;
 import com.chunkmapper.resourceinfo.HeightsResourceInfo;
+import com.chunkmapper.resourceinfo.ResourceInfo;
 
 public class HeightsDownloader extends Downloader {
 
@@ -46,16 +47,18 @@ public class HeightsDownloader extends Downloader {
 	}
 	public static void main(String[] args) throws Exception {
 		//download nz
-		HeightsDownloader downloader = new HeightsDownloader();
+//		HeightsDownloader downloader = new HeightsDownloader();
 		double lon1 = 165.88, lat1 = -47.5, lon2 = 178.7, lat2 = -34.08;
 		int regionx1 = (int) Math.floor(lon1 * 3600 / 512);
 		int regionz1 = (int) Math.floor(-lat1 * 3600 / 512);
 		int regionx2 = (int) Math.floor(lon2 * 3600 / 512);
 		int regionz2 = (int) Math.floor(-lat2 * 3600 / 512);
-		
 		for (int x = regionx1; x <= regionx2; x++) {
 			for (int z = regionz2; z < regionz1; z++) {
-				downloader.addTask(x, z);
+				ResourceInfo info = new HeightsResourceInfo(x, z);
+				if (!FileValidator.checkValid(info.file)) {
+					System.out.println(x + ", " + z);
+				}
 			}
 		}
 	}

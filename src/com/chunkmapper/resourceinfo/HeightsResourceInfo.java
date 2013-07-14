@@ -1,11 +1,14 @@
 package com.chunkmapper.resourceinfo;
 
+import geocode.core;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import com.chunkmapper.FileValidator;
 import com.chunkmapper.Utila;
 import com.chunkmapper.downloader.HeightsDownloader;
 import com.chunkmapper.reader.HeightsReader;
@@ -41,19 +44,15 @@ public class HeightsResourceInfo extends ResourceInfo {
 		return String.format(FORMAT_URL, LEN, LEN, lon1, lat1, lon2, lat2);
 	}
 	public static void main(String[] args) throws Exception {
-		double[] latlon = {-39.59, 174.42};
-		int chunkx = (int) Math.floor(latlon[1] * 3600 / 512);
-		int chunkz = (int) Math.floor(-latlon[0] * 3600 / 512);
-//		download(chunkx, chunkz);
-		deleteAndExit(chunkx, chunkz);
-		HeightsReader reader = new HeightsReaderImpl(chunkx, chunkz);
-		PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(new File("/Users/matthewmolloy/python/wms/data.csv"))));
-		for (int i = 0; i < 512; i++) {
-			for (int j = 0; j < 512; j++) {
-				pw.println(reader.getRealHeightij(i, j));
-			}
-		}
-		pw.close();
+		double[] latlon = core.placeToCoords("auckland, nz");
+		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
+		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
+//		System.out.println(regionx + ", " + regionz);
+//		ResourceInfo info = new HeightsResourceInfo(regionx, regionz);
+//		System.out.println(FileValidator.checkValid(info.file));
+		File f = new File("/Library/Caches/Chunkmapper/heights/f_1207_238_552");
+//		System.out.println(f.exists());
+		System.out.println(FileValidator.checkValid(f));
 	}
 	private static void download(int chunkx, int chunkz) throws InterruptedException {
 		HeightsDownloader downloader = new HeightsDownloader();
