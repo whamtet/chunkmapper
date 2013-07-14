@@ -9,6 +9,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.zip.DataFormatException;
 
 import com.chunkmapper.Point;
@@ -22,11 +23,11 @@ import com.chunkmapper.rail.RailSection;
 
 public class BinaryRailParser {
 	
-	public static ArrayList<RailSection> getRailSections(int regionx, int regionz) throws IOException, URISyntaxException, DataFormatException {
+	public static HashSet<RailSection> getRailSections(int regionx, int regionz) throws IOException, URISyntaxException, DataFormatException {
 		Rectangle myRectangle = new Rectangle(regionx * 512, regionz*512, 512, 512);
 		BinaryRailCache binaryRailCache = new BinaryRailCache(true);
 		
-		ArrayList<RailSection> out = new ArrayList<RailSection>();
+		HashSet<RailSection> out = new HashSet<RailSection>();
 		for (FileInfo info : OfflineFileListManager.railFileList.getFilesList()) {
 			String[] split = info.getFile().split("_");
 			

@@ -3,7 +3,6 @@ package com.chunkmapper.writer;
 import com.chunkmapper.chunk.Chunk;
 import com.chunkmapper.enumeration.Block;
 import com.chunkmapper.enumeration.Blocka;
-import com.chunkmapper.enumeration.CircleRail;
 import com.chunkmapper.enumeration.DataSource;
 import com.chunkmapper.enumeration.LadderWallsignFurnaceChest;
 import com.chunkmapper.enumeration.Stairs;

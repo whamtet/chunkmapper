@@ -7,9 +7,11 @@ package net.minecraft.world.level.chunk.storage;
  */
 
 import net.minecraft.world.level.biome.BiomeSource;
-import net.minecraft.world.level.chunk.*;
+import net.minecraft.world.level.chunk.DataLayer;
+import net.minecraft.world.level.chunk.OldDataLayer;
 
-import com.mojang.nbt.*;
+import com.mojang.nbt.CompoundTag;
+import com.mojang.nbt.ListTag;
 
 public class OldChunkStorage {
 

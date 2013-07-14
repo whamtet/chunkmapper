@@ -2,7 +2,6 @@ package com.chunkmapper.reader;
 
 import java.util.Random;
 
-import com.chunkmapper.enumeration.Block;
 import com.chunkmapper.enumeration.FarmType;
 
 public class FarmTypeReader {

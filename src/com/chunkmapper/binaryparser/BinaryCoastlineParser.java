@@ -1,24 +1,14 @@
 package com.chunkmapper.binaryparser;
 
 import java.awt.Rectangle;
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.zip.DataFormatException;
 
-import com.chunkmapper.Point;
 import com.chunkmapper.protoc.FileContainer.FileInfo;
-import com.chunkmapper.protoc.LakeContainer;
-import com.chunkmapper.protoc.LakeContainer.LakeRegion;
-import com.chunkmapper.protoc.PointContainer;
-import com.chunkmapper.protoc.RectangleContainer;
 import com.chunkmapper.protoc.admin.OfflineFileListManager;
 import com.chunkmapper.sections.Coastline;
-import com.chunkmapper.sections.Lake;
 
 public class BinaryCoastlineParser {
 

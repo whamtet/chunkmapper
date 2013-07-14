@@ -3,7 +3,6 @@ package com.chunkmapper.protoc.wrapper;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.chunkmapper.protoc.CoastlineContainer.CoastlineSection;
 import com.chunkmapper.protoc.POIContainer.POI;
 import com.chunkmapper.protoc.POIContainer.POIRegion;
 

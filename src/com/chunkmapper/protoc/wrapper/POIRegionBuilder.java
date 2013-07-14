@@ -3,8 +3,6 @@ package com.chunkmapper.protoc.wrapper;
 import java.io.IOException;
 import java.io.InputStream;
 
-import com.chunkmapper.protoc.CoastlineContainer.CoastlineRegion;
-import com.chunkmapper.protoc.CoastlineContainer.CoastlineRegion.Builder;
 import com.chunkmapper.protoc.POIContainer.POIRegion;
 import com.google.protobuf.InvalidProtocolBufferException;
 

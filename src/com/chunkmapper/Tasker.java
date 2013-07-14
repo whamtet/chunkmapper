@@ -1,6 +1,5 @@
 package com.chunkmapper;
 
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

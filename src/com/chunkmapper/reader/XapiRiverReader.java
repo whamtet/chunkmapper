@@ -11,11 +11,9 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.zip.DataFormatException;
 
-import com.chunkmapper.FileValidator;
 import com.chunkmapper.Point;
 import com.chunkmapper.binaryparser.BinaryRiverParser;
 import com.chunkmapper.parser.RiverParser.RiverSection;
-import com.chunkmapper.resourceinfo.XapiRiverResourceInfo;
 
 public class XapiRiverReader {
 	private byte[][] mask = new byte[512][512];

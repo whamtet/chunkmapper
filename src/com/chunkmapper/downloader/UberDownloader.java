@@ -1,6 +1,5 @@
 package com.chunkmapper.downloader;
 
-import com.chunkmapper.downloader.binary.BinaryRailsDownloader;
 
 public class UberDownloader {
 	private GlobcoverDownloader globcoverDownloader = new GlobcoverDownloader();

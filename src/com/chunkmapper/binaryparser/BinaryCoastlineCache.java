@@ -16,13 +16,11 @@ import com.chunkmapper.Zip;
 import com.chunkmapper.protoc.CoastlineContainer;
 import com.chunkmapper.protoc.CoastlineContainer.CoastlineRegion;
 import com.chunkmapper.protoc.FileContainer.FileInfo;
-import com.chunkmapper.protoc.LakeContainer;
 import com.chunkmapper.protoc.PointContainer;
 import com.chunkmapper.protoc.RectangleContainer;
 import com.chunkmapper.protoc.ServerInfoContainer.ServerInfo;
 import com.chunkmapper.protoc.admin.ServerInfoManager;
 import com.chunkmapper.sections.Coastline;
-import com.chunkmapper.sections.Lake;
 
 public class BinaryCoastlineCache {
 	private final boolean offline;

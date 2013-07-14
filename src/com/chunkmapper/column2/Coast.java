@@ -4,8 +4,6 @@ import java.io.IOException;
 
 import com.chunkmapper.chunk.Chunk;
 import com.chunkmapper.enumeration.Block;
-import com.chunkmapper.enumeration.LenteTree;
-import com.chunkmapper.math.StaticSobol;
 import com.chunkmapper.reader.HeightsReader;
 import com.chunkmapper.writer.LenteTreeWriter;
 
@@ -13,9 +11,7 @@ public class Coast extends AbstractColumn {
 
 	public Coast(int absx, int absz) {
 		super(absx, absz);
-		if (StaticSobol.hasObject(absx, absz, 40)) {
-			lenteTree = LenteTree.randomTree(LenteTree.Coast);
-		}
+		lenteTree = null;
 	}
 	public void addColumn(Chunk chunk) {
 		int x = com.chunkmapper.math.Matthewmatics.mod(absx, 16);

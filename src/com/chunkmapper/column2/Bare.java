@@ -2,7 +2,6 @@ package com.chunkmapper.column2;
 
 import com.chunkmapper.chunk.Chunk;
 import com.chunkmapper.enumeration.Block;
-import com.chunkmapper.enumeration.DataSource;
 import com.chunkmapper.enumeration.Globcover;
 import com.chunkmapper.reader.HeightsReader;
 

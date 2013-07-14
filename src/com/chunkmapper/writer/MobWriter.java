@@ -4,7 +4,6 @@ import java.util.Random;
 
 import com.chunkmapper.chunk.Chunk;
 import com.chunkmapper.reader.NameReader;
-import com.mojang.nbt.ByteTag;
 import com.mojang.nbt.CompoundTag;
 import com.mojang.nbt.DoubleTag;
 import com.mojang.nbt.FloatTag;

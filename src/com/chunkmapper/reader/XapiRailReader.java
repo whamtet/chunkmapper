@@ -3,9 +3,10 @@ package com.chunkmapper.reader;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.NoSuchElementException;
+import java.util.zip.DataFormatException;
 
-import com.chunkmapper.FileValidator;
 import com.chunkmapper.Point;
 import com.chunkmapper.binaryparser.BinaryRailParser;
 import com.chunkmapper.downloader.UberDownloader;
@@ -13,7 +14,6 @@ import com.chunkmapper.enumeration.CircleRail;
 import com.chunkmapper.enumeration.StraightRail;
 import com.chunkmapper.rail.HeightsManager;
 import com.chunkmapper.rail.RailSection;
-import com.chunkmapper.resourceinfo.XapiRailResourceInfo;
 
 public class XapiRailReader {
 	//	private int chunkx, chunkz;
@@ -71,17 +71,10 @@ public class XapiRailReader {
 		this.railType[z][x] = railType;
 	}
 
-	public XapiRailReader(int regionx, int regionz, HeightsReader heightsReader, UberDownloader uberDownloader, int verticalExaggeration) throws IllegalArgumentException, NoSuchElementException, IOException, InterruptedException, FileNotYetAvailableException, URISyntaxException {
+	public XapiRailReader(int regionx, int regionz, HeightsReader heightsReader, UberDownloader uberDownloader, int verticalExaggeration) throws IllegalArgumentException, NoSuchElementException, IOException, InterruptedException, FileNotYetAvailableException, URISyntaxException, DataFormatException {
 		x0 = regionx * 512; z0 = regionz * 512;
-		if (true) {
-			hasRails = false;
-			return;
-		}
-//		XapiRailResourceInfo info = new XapiRailResourceInfo(regionx, regionz);
-//		if (!FileValidator.checkValid(info.file)) {
-//			throw new FileNotYetAvailableException();
-//		}
-		ArrayList<RailSection> allSections = BinaryRailParser.getOfflineRailSections(regionx, regionz); 
+
+		Collection<RailSection> allSections = BinaryRailParser.getRailSections(regionx, regionz); 
 
 		hasRails = allSections.size() > 0;
 		if (!hasRails) {
@@ -259,16 +252,11 @@ public class XapiRailReader {
 	}
 
 	public short getHeight(int x, int z) {
-		//		return heights[z + chunkz*16][x + chunkx*16];
 		return heights[com.chunkmapper.math.Matthewmatics.mod(z, 512)][com.chunkmapper.math.Matthewmatics.mod(x, 512)];
 	}
 	public byte getRailType(int x, int z) {
-		//		return railType[z + chunkz*16][x + chunkx*16];
 		return railType[com.chunkmapper.math.Matthewmatics.mod(z, 512)][com.chunkmapper.math.Matthewmatics.mod(x, 512)];
 	}
-	//	public boolean getSpecial(int x, int z) {
-	//		return special[com.geominecraft.math.Math.mod(z, 512)][com.geominecraft.math.Math.mod(x, 512)];
-	//	}
 
 
 }

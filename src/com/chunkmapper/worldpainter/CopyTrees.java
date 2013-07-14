@@ -2,7 +2,6 @@ package com.chunkmapper.worldpainter;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashSet;
 
 import javax.vecmath.Point3i;
 
@@ -11,7 +10,6 @@ import org.pepsoft.minecraft.Material;
 import org.pepsoft.worldpainter.layers.bo2.Schematic;
 
 import com.chunkmapper.enumeration.Blocka;
-import com.chunkmapper.enumeration.DataSource;
 
 public class CopyTrees {
 

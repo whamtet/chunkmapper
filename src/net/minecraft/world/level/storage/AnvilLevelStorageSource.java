@@ -6,14 +6,21 @@ package net.minecraft.world.level.storage;
  * Don't do evil.
  */
 
-import java.io.*;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FilenameFilter;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import net.minecraft.world.level.biome.BiomeSource;
-import net.minecraft.world.level.chunk.storage.*;
+import net.minecraft.world.level.chunk.storage.OldChunkStorage;
 import net.minecraft.world.level.chunk.storage.OldChunkStorage.OldLevelChunk;
+import net.minecraft.world.level.chunk.storage.RegionFile;
 
-import com.mojang.nbt.*;
+import com.mojang.nbt.CompoundTag;
+import com.mojang.nbt.NbtIo;
 
 public class AnvilLevelStorageSource {
 

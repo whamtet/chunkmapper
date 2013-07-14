@@ -1,8 +1,6 @@
 package com.chunkmapper.rail;
 
 import java.awt.Rectangle;
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import com.chunkmapper.Point;
@@ -31,6 +29,23 @@ public class RailSection {
 		this.hasTunnel = hasTunnel;
 		this.points = points;
 		this.bbox = bbox;
+	}
+	public int hashCode() {
+		return bbox.hashCode();
+	}
+	public boolean equals(Object other) {
+		if (other == null)
+			return false;
+		if (!(other instanceof RailSection))
+			return false;
+		RailSection other2 = (RailSection) other;
+		if (other2.points.size() != points.size())
+			return false;
+		for (int i = 0; i < points.size(); i++) {
+			if (!other2.points.get(i).equals(points.get(i)))
+				return false;
+		}
+		return true;
 	}
 
 }

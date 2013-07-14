@@ -1,9 +1,6 @@
 package com.chunkmapper.protoc.wrapper;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import com.chunkmapper.protoc.RailSectionContainer.RailSection;
 
 public interface RegionWrapper {
 

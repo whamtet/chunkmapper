@@ -2,11 +2,8 @@ package com.chunkmapper.writer;
 
 import java.util.Random;
 
-import com.chunkmapper.Utila;
 import com.chunkmapper.chunk.Chunk;
-import com.chunkmapper.enumeration.Biome;
 import com.chunkmapper.enumeration.Block;
-import com.chunkmapper.math.TriangleZonator;
 
 public class GenericWriter {
 	

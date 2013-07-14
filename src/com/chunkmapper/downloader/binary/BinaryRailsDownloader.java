@@ -1,8 +1,6 @@
 package com.chunkmapper.downloader.binary;
 
-import java.awt.Rectangle;
 import java.io.File;
-import java.util.ArrayList;
 
 import com.chunkmapper.Point;
 import com.chunkmapper.Utila;

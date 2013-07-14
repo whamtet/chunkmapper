@@ -29,11 +29,9 @@ public class GlobcoverReader {
 
 	public GlobcoverReader(int regionx, int regionz) throws FileNotYetAvailableException, IOException {
 		GlobcoverResourceInfo info = new GlobcoverResourceInfo(regionx, regionz);
-//		Runtime.getRuntime().exec("open " + info.file.toString());
 		
 		if (!FileValidator.checkValid(info.file))
 			throw new FileNotYetAvailableException();
-
 
 		indices = Globcover.makeArray(info.file);
 		BufferedImage image = ImageIO.read(info.file);

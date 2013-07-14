@@ -4,9 +4,9 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 
 import com.chunkmapper.Point;
+import com.chunkmapper.protoc.PointContainer;
 import com.chunkmapper.protoc.RailRegionContainer.RailRegion;
 import com.chunkmapper.protoc.RailSectionContainer.RailSection;
-import com.chunkmapper.protoc.PointContainer;
 import com.chunkmapper.protoc.RectangleContainer;
 import com.google.protobuf.InvalidProtocolBufferException;
 

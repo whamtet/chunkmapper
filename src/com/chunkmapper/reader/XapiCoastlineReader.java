@@ -12,7 +12,6 @@ import java.util.zip.DataFormatException;
 
 import com.chunkmapper.Point;
 import com.chunkmapper.parser.CoastlineParser;
-import com.chunkmapper.resourceinfo.GlobcoverResourceInfo;
 import com.chunkmapper.sections.Coastline;
 
 public class XapiCoastlineReader {

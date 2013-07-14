@@ -1,4 +1,4 @@
-package com.chunkmapper.writer;
+package com.chunkmapper.manager;
 
 import java.io.DataOutputStream;
 import java.io.File;
@@ -18,6 +18,8 @@ import com.chunkmapper.column2.Shrubland;
 import com.chunkmapper.math.Matthewmatics;
 import com.chunkmapper.reader.HeightsReader;
 import com.chunkmapper.reader.UniformHeightsReader;
+import com.chunkmapper.writer.GenericWriter;
+import com.chunkmapper.writer.LoadedLevelDat;
 import com.mojang.nbt.NbtIo;
 
 public class SingleTerrainManager {

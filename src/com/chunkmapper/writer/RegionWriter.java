@@ -14,6 +14,7 @@ import com.chunkmapper.PointManager;
 import com.chunkmapper.Tasker;
 import com.chunkmapper.chunk.Chunk;
 import com.chunkmapper.downloader.UberDownloader;
+import com.chunkmapper.manager.GlobcoverManager;
 import com.mojang.nbt.NbtIo;
 
 public class RegionWriter extends Tasker {

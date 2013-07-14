@@ -3,11 +3,8 @@ package com.chunkmapper;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.File;
-import java.util.HashSet;
 
 import javax.imageio.ImageIO;
-
-import com.chunkmapper.reader.Reader;
 
 public class CheckGlobcover {
 	/**

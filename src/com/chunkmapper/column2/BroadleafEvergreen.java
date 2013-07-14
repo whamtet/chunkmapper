@@ -7,7 +7,6 @@ import com.chunkmapper.enumeration.Globcover;
 import com.chunkmapper.enumeration.LenteTree;
 import com.chunkmapper.math.StaticSobol;
 import com.chunkmapper.reader.HeightsReader;
-import com.chunkmapper.writer.TreeWriter;
 import com.chunkmapper.writer.LenteTreeWriter;
 
 public class BroadleafEvergreen extends AbstractColumn {

@@ -5,14 +5,9 @@ import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.ShortBuffer;
 import java.util.ArrayList;
 
-import com.chunkmapper.FileValidator;
 import com.chunkmapper.downloader.UberDownloader;
-import com.chunkmapper.resourceinfo.HeightsResourceInfo;
 import com.chunkmapper.resourceinfo.ResourceInfo;
 
 public abstract class Reader {

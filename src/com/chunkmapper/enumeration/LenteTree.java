@@ -76,7 +76,6 @@ public enum LenteTree {
 		OpenNeedleleaf = {Alaska_Cedar, Atlantic_White_Cedar, Balsam_Fir, Californian_Red_Fir,
 				Douglas_Fir, European_Black_Pine, Fraser_Fir, Grand_Fir, Loblolly_Pine, Lodgepole_Pine, Maritime_Pine,
 				Norway_Spruce, Scots_Pine, Baldcypress, European_Larch},
-//		Shrubland = {Blackthorn, Common_Hawthorn, European_Holly},
 		Shrubland = {Fraser_Fir, European_Holly, Blackthorn, Leopo_Piassaba, Hazel, Theobroma_Cacao,
 		Soncoya},
 		VegetationWithCropLand = CroplandWithVegetation;

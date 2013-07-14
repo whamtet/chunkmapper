@@ -17,7 +17,6 @@ import com.chunkmapper.FileValidator;
 import com.chunkmapper.Point;
 import com.chunkmapper.resourceinfo.XapiCoastlineResourceInfo;
 import com.chunkmapper.sections.Coastline;
-import com.chunkmapper.sections.Lake;
 
 public class CoastlineParser extends Parser {
 

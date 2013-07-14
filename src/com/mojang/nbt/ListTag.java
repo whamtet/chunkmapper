@@ -6,8 +6,12 @@ package com.mojang.nbt;
  * Don't do evil.
  */
 
-import java.io.*;
-import java.util.*;
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ListTag<T extends Tag> extends Tag {
     private List<T> list = new ArrayList<T>();

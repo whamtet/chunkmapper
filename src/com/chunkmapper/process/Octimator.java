@@ -12,7 +12,6 @@ import org.apache.commons.io.FileUtils;
 import com.chunkmapper.Utila;
 import com.chunkmapper.chunk.Chunk;
 import com.chunkmapper.math.Matthewmatics;
-import com.chunkmapper.math.ModeCalculator;
 import com.chunkmapper.writer.GenericWriter;
 import com.chunkmapper.writer.LoadedLevelDat;
 import com.mojang.nbt.CompoundTag;

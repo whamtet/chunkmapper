@@ -1,16 +1,11 @@
 package com.chunkmapper.protoc.wrapper;
 
 import java.awt.Rectangle;
-import java.util.ArrayList;
 
 import com.chunkmapper.Point;
-import com.chunkmapper.protoc.CoastlineContainer.CoastlineRegion;
-import com.chunkmapper.protoc.CoastlineContainer.CoastlineSection;
-import com.chunkmapper.protoc.POIContainer;
 import com.chunkmapper.protoc.POIContainer.POI;
 import com.chunkmapper.protoc.POIContainer.POIRegion;
 import com.chunkmapper.protoc.PointContainer;
-import com.chunkmapper.protoc.RectangleContainer;
 import com.google.protobuf.InvalidProtocolBufferException;
 
 public class POIWrapper implements SectionWrapper {

@@ -2,7 +2,6 @@ package com.chunkmapper.sections;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
-import java.util.HashSet;
 
 import com.chunkmapper.Point;
 

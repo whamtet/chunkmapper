@@ -6,8 +6,13 @@ package com.mojang.nbt;
  * Don't do evil.
  */
 
-import java.io.*;
-import java.util.*;
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CompoundTag extends Tag {
     private Map<String, Tag> tags = new HashMap<String, Tag>();

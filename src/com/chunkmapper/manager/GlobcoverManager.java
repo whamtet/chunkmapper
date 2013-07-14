@@ -1,4 +1,4 @@
-package com.chunkmapper.writer;
+package com.chunkmapper.manager;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -6,7 +6,6 @@ import java.util.NoSuchElementException;
 import java.util.Random;
 import java.util.zip.DataFormatException;
 
-import com.chunkmapper.Utila;
 import com.chunkmapper.chunk.Chunk;
 import com.chunkmapper.column2.AbstractColumn;
 import com.chunkmapper.column2.Bare;
@@ -48,6 +47,9 @@ import com.chunkmapper.reader.XapiCoastlineReader;
 import com.chunkmapper.reader.XapiLakeReader;
 import com.chunkmapper.reader.XapiRailReader;
 import com.chunkmapper.reader.XapiRiverReader;
+import com.chunkmapper.writer.ArtifactWriter;
+import com.chunkmapper.writer.GenericWriter;
+import com.chunkmapper.writer.SpecialLandmarksWriter;
 
 public class GlobcoverManager {
 	private final HeightsReaderImpl heightsReader;

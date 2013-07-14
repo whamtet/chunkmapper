@@ -6,7 +6,9 @@ package com.mojang.nbt;
  * Don't do evil.
  */
 
-import java.io.*;
+import java.io.DataInput;
+import java.io.DataOutput;
+import java.io.IOException;
 
 public class IntArrayTag extends Tag {
     public int[] data;

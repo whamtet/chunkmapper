@@ -1,6 +1,5 @@
 package com.chunkmapper.math;
 
-import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
 public class StaticSobol {

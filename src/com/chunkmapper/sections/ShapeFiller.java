@@ -1,7 +1,5 @@
 package com.chunkmapper.sections;
 
-import java.util.ArrayList;
-
 import com.chunkmapper.Point;
 
 public class ShapeFiller {

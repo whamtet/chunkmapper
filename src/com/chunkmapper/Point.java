@@ -1,6 +1,5 @@
 package com.chunkmapper;
 
-import com.chunkmapper.protoc.PointContainer;
 
 
 

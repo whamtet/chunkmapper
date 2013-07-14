@@ -3,14 +3,11 @@ package com.chunkmapper.column2;
 import java.io.IOException;
 
 import com.chunkmapper.chunk.Chunk;
-import com.chunkmapper.enumeration.Block;
-import com.chunkmapper.enumeration.DataSource;
 import com.chunkmapper.enumeration.Globcover;
 import com.chunkmapper.enumeration.LenteTree;
 import com.chunkmapper.math.StaticSobol;
 import com.chunkmapper.reader.HeightsReader;
 import com.chunkmapper.writer.LenteTreeWriter;
-import com.chunkmapper.writer.TreeWriter;
 
 public class ClosedBroadleafDeciduous extends AbstractColumn {
 	public static final Globcover TYPE = Globcover.ClosedBroadleafDeciduous;

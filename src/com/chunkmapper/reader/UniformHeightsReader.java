@@ -1,10 +1,6 @@
 package com.chunkmapper.reader;
 
-import java.io.IOException;
-
 import com.chunkmapper.Utila;
-import com.chunkmapper.downloader.UberDownloader;
-import com.chunkmapper.resourceinfo.HeightsResourceInfo;
 
 public class UniformHeightsReader implements HeightsReader {
 	

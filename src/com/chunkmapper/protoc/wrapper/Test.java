@@ -4,8 +4,8 @@ import java.util.HashSet;
 
 import com.chunkmapper.protoc.CoastlineContainer.CoastlineSection;
 import com.chunkmapper.protoc.LakeContainer.Lake;
-import com.chunkmapper.protoc.RectangleContainer;
 import com.chunkmapper.protoc.RailSectionContainer.RailSection;
+import com.chunkmapper.protoc.RectangleContainer;
 import com.chunkmapper.protoc.RiverContainer.RiverSection;
 
 public class Test {

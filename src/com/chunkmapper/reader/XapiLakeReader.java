@@ -1,10 +1,6 @@
 package com.chunkmapper.reader;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,7 +11,6 @@ import java.util.zip.DataFormatException;
 import com.chunkmapper.Point;
 import com.chunkmapper.binaryparser.BinaryLakeParser;
 import com.chunkmapper.math.Matthewmatics;
-import com.chunkmapper.parser.Nominatim;
 import com.chunkmapper.sections.Lake;
 import com.chunkmapper.sections.Section;
 
