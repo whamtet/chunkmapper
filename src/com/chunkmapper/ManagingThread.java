@@ -50,6 +50,7 @@ public class ManagingThread extends Thread {
 
 	@Override
 	public void run() {
+		System.out.println("generating " + gameFolder.getName());
 		if (!gameFolder.exists()) {
 			gameFolder.mkdirs();
 		}

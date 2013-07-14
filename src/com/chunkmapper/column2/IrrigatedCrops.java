@@ -19,21 +19,21 @@ public class IrrigatedCrops extends AbstractColumn {
 		super.HAS_WATER = hasWater;
 	}
 	
-	public void addColumn(Chunk chunk) {
-		int x = com.chunkmapper.math.Matthewmatics.mod(absx, 16);
-		int z = com.chunkmapper.math.Matthewmatics.mod(absz, 16);
-		
-		chunk.Blocks[h-3][z][x] = Block.Dirt.val;
-		chunk.Blocks[h-2][z][x] = Block.Dirt.val;
-		chunk.Blocks[h-1][z][x] = Block.Grass.val;
-//		if (this.hasWater) {
-//			chunk.Blocks[h-1][z][x] = Block.Water.val;
-//		} else {
-//			chunk.Blocks[h-1][z][x] = Block.Farmland.val;
-//			chunk.Data[h-1][z][x] = 7;
-//			chunk.Blocks[h][z][x] = cropType;
-//			chunk.Data[h][z][x] = 7; //fully matured crops
-//		}
-	}
+//	public void addColumn(Chunk chunk) {
+//		int x = com.chunkmapper.math.Matthewmatics.mod(absx, 16);
+//		int z = com.chunkmapper.math.Matthewmatics.mod(absz, 16);
+//		
+//		chunk.Blocks[h-3][z][x] = Block.Dirt.val;
+//		chunk.Blocks[h-2][z][x] = Block.Dirt.val;
+//		chunk.Blocks[h-1][z][x] = Block.Grass.val;
+////		if (this.hasWater) {
+////			chunk.Blocks[h-1][z][x] = Block.Water.val;
+////		} else {
+////			chunk.Blocks[h-1][z][x] = Block.Farmland.val;
+////			chunk.Data[h-1][z][x] = 7;
+////			chunk.Blocks[h][z][x] = cropType;
+////			chunk.Data[h][z][x] = 7; //fully matured crops
+////		}
+//	}
 
 }

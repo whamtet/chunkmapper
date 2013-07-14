@@ -51,22 +51,22 @@ public class Chunk {
 	}
 	public void setBlock(int y, int z, int x, byte val) {
 		x -= x0; z -= z0;
-		x = Matthewmatics.mod(x, 512);
-		z = Matthewmatics.mod(z, 512);
-		if (0 <= z && z < 16 && 0 <= x && x < 16)
+//		x = Matthewmatics.mod(x, 512);
+//		z = Matthewmatics.mod(z, 512);
+		if (0 <= z && z < 16 && 0 <= x && x < 16 && y > 0)
 			Blocks[y][z][x] = val;
 	}
 	
 	public void setData(int y, int z, int x, byte val) {
 		x -= x0; z -= z0;
-		x = Matthewmatics.mod(x, 512);
-		z = Matthewmatics.mod(z, 512);
-		if (0 <= z && z < 16 && 0 <= x && x < 16)
+//		x = Matthewmatics.mod(x, 512);
+//		z = Matthewmatics.mod(z, 512);
+		if (0 <= z && z < 16 && 0 <= x && x < 16 && y > 0)
 			Data[y][z][x] = val;
 	}
 	public void setBoth(int y, int z, int x, byte block, byte data) {
 		x -= x0; z -= z0;
-		if (0 <= z && z < 16 && 0 <= x && x < 16) {
+		if (0 <= z && z < 16 && 0 <= x && x < 16 && y > 0) {
 			Blocks[y][z][x] = block;
 			Data[y][z][x] = data;
 		}
@@ -125,6 +125,19 @@ public class Chunk {
 //	public Chunk(Point p) {
 //		this(p.x, p.y);
 //	}
+	private static int[][] defaultHeights() {
+		int len = Utila.CHUNK_START + Utila.CHUNK_END;
+		int[][] out = new int[len][len];
+		for (int i = 0; i < len; i++) {
+			for(int j = 0; j < len; j++) {
+				out[i][j] = 4;
+			}
+		}
+		return out;
+	}
+	public Chunk() {
+		this(0, 0, defaultHeights(), 0, 0);
+	}
 	public Chunk(int abschunkx, int abschunkz, int[][] heights, int relchunkx, int relchunkz) {
 		this.abschunkx = abschunkx; this.abschunkz = abschunkz;
 		this.heights = heights;

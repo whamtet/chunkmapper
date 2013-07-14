@@ -11,6 +11,7 @@ import org.apache.http.util.EntityUtils;
 
 import com.chunkmapper.FileValidator;
 import com.chunkmapper.Point;
+import com.chunkmapper.Zip;
 import com.chunkmapper.resourceinfo.HeightsResourceInfo;
 
 public class HeightsDownloader extends Downloader {
@@ -29,22 +30,14 @@ public class HeightsDownloader extends Downloader {
 		HttpEntity entity = response.getEntity();
 		InputStream in = entity.getContent();
 		try {
-			byte[] buffer = new byte[HeightsResourceInfo.FILE_LENGTH], buffer2 = new byte[HeightsResourceInfo.FILE_LENGTH];
-			int i = 0;
-			while (true) {
-				int amountRead = in.read(buffer);
-				if (amountRead < 0)
-					break;
-				for (int j = 0; j < amountRead; j++) {
-					buffer2[i+j] = buffer[j];
-				}
-				i += amountRead;
-			}
-			
-				BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(fileToDownload.file));
-				out.write(buffer2);
-				out.close();
-				FileValidator.setValid(fileToDownload.file);
+			byte[] buffer = Zip.readFully(in);
+			if (buffer.length != HeightsResourceInfo.FILE_LENGTH)
+				throw new RuntimeException("buffer too short");
+
+			BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(fileToDownload.file));
+			out.write(buffer);
+			out.close();
+			FileValidator.setValid(fileToDownload.file);
 		} finally {
 			in.close();
 			EntityUtils.consumeQuietly(entity);

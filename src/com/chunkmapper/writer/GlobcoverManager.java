@@ -8,32 +8,32 @@ import java.util.zip.DataFormatException;
 
 import com.chunkmapper.Utila;
 import com.chunkmapper.chunk.Chunk;
-import com.chunkmapper.column.AbstractColumn;
-import com.chunkmapper.column.Bare;
-import com.chunkmapper.column.BroadleafEvergreen;
-import com.chunkmapper.column.ClosedBroadleafDeciduous;
-import com.chunkmapper.column.ClosedNeedleleafEvergreen;
-import com.chunkmapper.column.Coast;
-import com.chunkmapper.column.CroplandWithVegetation;
-import com.chunkmapper.column.FloodedGrassland;
-import com.chunkmapper.column.ForestShrublandWithGrass;
-import com.chunkmapper.column.FreshFloodedForest;
-import com.chunkmapper.column.GrassWithForestShrubland;
-import com.chunkmapper.column.Grassland;
-import com.chunkmapper.column.IrrigatedCrops;
-import com.chunkmapper.column.Lake;
-import com.chunkmapper.column.MixedBroadNeedleleaf;
-import com.chunkmapper.column.Ocean;
-import com.chunkmapper.column.OpenBroadleafDeciduous;
-import com.chunkmapper.column.OpenNeedleleaf;
-import com.chunkmapper.column.RainfedCrops;
-import com.chunkmapper.column.River;
-import com.chunkmapper.column.SalineFloodedForest;
-import com.chunkmapper.column.Shrubland;
-import com.chunkmapper.column.Snow;
-import com.chunkmapper.column.SparseVegetation;
-import com.chunkmapper.column.Urban;
-import com.chunkmapper.column.VegetationWithCropland;
+import com.chunkmapper.column2.AbstractColumn;
+import com.chunkmapper.column2.Bare;
+import com.chunkmapper.column2.BroadleafEvergreen;
+import com.chunkmapper.column2.ClosedBroadleafDeciduous;
+import com.chunkmapper.column2.ClosedNeedleleafEvergreen;
+import com.chunkmapper.column2.Coast;
+import com.chunkmapper.column2.CroplandWithVegetation;
+import com.chunkmapper.column2.FloodedGrassland;
+import com.chunkmapper.column2.ForestShrublandWithGrass;
+import com.chunkmapper.column2.FreshFloodedForest;
+import com.chunkmapper.column2.GrassWithForestShrubland;
+import com.chunkmapper.column2.Grassland;
+import com.chunkmapper.column2.IrrigatedCrops;
+import com.chunkmapper.column2.Lake;
+import com.chunkmapper.column2.MixedBroadNeedleleaf;
+import com.chunkmapper.column2.Ocean;
+import com.chunkmapper.column2.OpenBroadleafDeciduous;
+import com.chunkmapper.column2.OpenNeedleleaf;
+import com.chunkmapper.column2.RainfedCrops;
+import com.chunkmapper.column2.River;
+import com.chunkmapper.column2.SalineFloodedForest;
+import com.chunkmapper.column2.Shrubland;
+import com.chunkmapper.column2.Snow;
+import com.chunkmapper.column2.SparseVegetation;
+import com.chunkmapper.column2.Urban;
+import com.chunkmapper.column2.VegetationWithCropland;
 import com.chunkmapper.downloader.UberDownloader;
 import com.chunkmapper.enumeration.Block;
 import com.chunkmapper.enumeration.FarmType;
@@ -42,7 +42,7 @@ import com.chunkmapper.math.Matthewmatics;
 import com.chunkmapper.reader.FarmTypeReader;
 import com.chunkmapper.reader.FileNotYetAvailableException;
 import com.chunkmapper.reader.GlobcoverReader;
-import com.chunkmapper.reader.HeightsReader;
+import com.chunkmapper.reader.HeightsReaderImpl;
 import com.chunkmapper.reader.POIReader;
 import com.chunkmapper.reader.XapiCoastlineReader;
 import com.chunkmapper.reader.XapiLakeReader;
@@ -50,8 +50,7 @@ import com.chunkmapper.reader.XapiRailReader;
 import com.chunkmapper.reader.XapiRiverReader;
 
 public class GlobcoverManager {
-	private final HeightsReader heightsReader;
-	//	private final FlightgearRailReader railReader;
+	private final HeightsReaderImpl heightsReader;
 	private final XapiRailReader railReader;
 	private final POIReader poiReader;
 	public final boolean allWater;
@@ -64,7 +63,7 @@ public class GlobcoverManager {
 	public GlobcoverManager(int regionx, int regionz, UberDownloader uberDownloader, int verticalExaggeration) throws FileNotYetAvailableException, IOException, IllegalArgumentException, NoSuchElementException, InterruptedException, URISyntaxException, DataFormatException {
 		this.regionx = regionx; this.regionz = regionz;
 
-		heightsReader = new HeightsReader(regionx, regionz, uberDownloader, verticalExaggeration);
+		heightsReader = new HeightsReaderImpl(regionx, regionz, uberDownloader, verticalExaggeration);
 		allWater = heightsReader.allWater;
 		if (allWater) {
 			railReader = null;
@@ -73,18 +72,16 @@ public class GlobcoverManager {
 		}
 		GlobcoverReader coverReader = new GlobcoverReader(regionx, regionz);
 
-		//		LakeReader lakeReader = new LakeReader(regionx, regionz, heightsReader);
 		XapiLakeReader lakeReader = new XapiLakeReader(regionx, regionz);
 		XapiRiverReader riverReader = new XapiRiverReader(regionx, regionz);
 		railReader = new XapiRailReader(regionx, regionz, heightsReader, uberDownloader, verticalExaggeration);
 		boolean includeLivestock = !railReader.hasRails;
-		//		FarmTypeReader farmTypeReader = new FarmTypeReader(includeLivestock);
+
 		FarmTypeReader farmTypeReader = null;
 		if (includeLivestock)
 			farmTypeReader = new FarmTypeReader();
 		poiReader = new POIReader(regionx, regionz);
 
-//		NoaaGshhsReader noaaGshhsReader = new NoaaGshhsReader(regionx, regionz);
 		XapiCoastlineReader coastlineReader = new XapiCoastlineReader(regionx, regionz, coverReader);
 
 		for (int i = 0; i < 512; i++) {
@@ -100,14 +97,7 @@ public class GlobcoverManager {
 					continue;
 				}
 
-//				switch(noaaGshhsReader.getVal(i, j)) {
-//				case NoaaGshhsReader.OCEAN:
-//					columns[i][j] = new Ocean(absx, absz);
-//					continue;
-//				case NoaaGshhsReader.COAST:
-//					columns[i][j] = new Coast(absx, absz);
-//					continue;
-//				}
+
 
 				final int h = heightsReader.getHeightij(i, j);
 				if (lakeReader.hasWaterij(i, j)) {
@@ -211,7 +201,7 @@ public class GlobcoverManager {
 
 	}
 
-	public Chunk getChunk(int abschunkx, int abschunkz, int relchunkx, int relchunkz) {
+	public Chunk getChunk(int abschunkx, int abschunkz, int relchunkx, int relchunkz) throws IOException {
 		int chunkx = Matthewmatics.mod(abschunkx, 32);
 		int chunkz = Matthewmatics.mod(abschunkz, 32);
 		Chunk chunk = new Chunk(abschunkx, abschunkz, heightsReader.getHeights(chunkx, chunkz), relchunkx, relchunkz);
@@ -231,8 +221,8 @@ public class GlobcoverManager {
 			}
 		}
 		//now add trees
-		int i1 = chunkz*16 - Utila.CHUNK_START, i2 = chunkz*16 + Utila.CHUNK_END;
-		int j1 = chunkx*16 - Utila.CHUNK_START, j2 = chunkx*16 + Utila.CHUNK_END;
+		int i1 = chunkz*16 - 20, i2 = chunkz*16 + 36;
+		int j1 = chunkx*16 - 20, j2 = chunkx*16 + 36;
 		if (i1 < 0) i1 = 0;
 		if (j1 < 0) j1 = 0;
 		if (i2 > 512) i2 = 512;
@@ -240,19 +230,10 @@ public class GlobcoverManager {
 		for (int i = i1; i < i2; i++) {
 			for (int j = j1; j < j2; j++) {
 				AbstractColumn col = columns[i][j];
-
-				if (col.treeHeight != 0)
 					col.addTree(chunk, heightsReader);
 			}
 		}
 
-		//add a sign for terrain type
-		//		int cornerx = relchunkx*16 + 15, cornerz = relchunkz*16 + 15;
-		//		int h = heightsReader.getHeightij(chunkz*16 + 15, chunkx*16 + 15);
-		//		if (h > 0) {
-		//			String[] ss = columns[chunkz*16 + 15][chunkx*16 + 15].getClass().toString().split("\\.");
-		//			ArtifactWriter.addSign(chunk, h, cornerz, cornerx, ss);
-		//		}
 		//and signs for actual places
 		if (poiReader != null)
 			poiReader.addSigns(chunk);

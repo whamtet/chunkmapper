@@ -81,6 +81,14 @@ public class GlobcoverReader {
 		}
 		return mostlyLand;
 	}
+	public static void main(String[] args) throws Exception {
+		double[] latlon = {-39.75, 174.277};
+		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
+		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
+		GlobcoverReader reader = new GlobcoverReader(regionx, regionz);
+		System.out.println(reader.mostlyLand());
+		
+	}
 
 
 

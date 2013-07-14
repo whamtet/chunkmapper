@@ -3,7 +3,7 @@ package com.chunkmapper.column;
 import com.chunkmapper.chunk.Chunk;
 import com.chunkmapper.enumeration.Block;
 import com.chunkmapper.enumeration.Globcover;
-import com.chunkmapper.reader.HeightsReader;
+import com.chunkmapper.reader.HeightsReaderImpl;
 
 public class Ocean extends AbstractColumn {
 	public static final Globcover TYPE = Globcover.Water;

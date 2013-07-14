@@ -6,6 +6,7 @@ import org.apache.commons.io.FileUtils;
 
 public class Utila {
 	public static final int CHUNK_START = 4, CHUNK_END = 20;
+	public static final int HEIGHTS_START = 20;
 	public static final File CACHE;// = new File("/Library/Caches/Chunkmapper");
 	public static final int Y_SCALE = 31;
 	static {

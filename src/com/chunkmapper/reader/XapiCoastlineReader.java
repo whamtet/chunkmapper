@@ -11,7 +11,8 @@ import java.util.Stack;
 import java.util.zip.DataFormatException;
 
 import com.chunkmapper.Point;
-import com.chunkmapper.binaryparser.BinaryCoastlineParser;
+import com.chunkmapper.parser.CoastlineParser;
+import com.chunkmapper.resourceinfo.GlobcoverResourceInfo;
 import com.chunkmapper.sections.Coastline;
 
 public class XapiCoastlineReader {
@@ -102,9 +103,13 @@ public class XapiCoastlineReader {
 	}
 	public XapiCoastlineReader(int regionx, int regionz, GlobcoverReader coverReader) throws IOException, URISyntaxException, DataFormatException {
 
-		HashSet<Coastline> coastlines = BinaryCoastlineParser.getCoastlines(regionx, regionz);
+		HashSet<Coastline> coastlines = CoastlineParser.getCoastlines(regionx, regionz);
 		if (coastlines.size() == 0) {
 			int fill = coverReader.mostlyLand() ? 1 : -1;
+//			if (fill == 1) {
+//				GlobcoverResourceInfo info = new GlobcoverResourceInfo(regionx, regionz);
+//				Runtime.getRuntime().exec("open " + info.file.toString());
+//			}
 			for (int i = 0; i < 512; i++) {
 				for (int j = 0; j < 512; j++) {
 					data[i][j] = fill;
@@ -125,7 +130,7 @@ public class XapiCoastlineReader {
 				interpolate(data, p1, p2, regionx, regionz, fill, COAST);
 			}
 			//			}
-	}
+		}
 		for (int i = 0; i < 512; i++) {
 			for (int j = 0; j < 512; j++) {
 				int val = data[i][j];

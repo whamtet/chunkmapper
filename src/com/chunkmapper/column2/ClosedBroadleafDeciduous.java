@@ -1,11 +1,15 @@
 package com.chunkmapper.column2;
 
+import java.io.IOException;
+
 import com.chunkmapper.chunk.Chunk;
 import com.chunkmapper.enumeration.Block;
 import com.chunkmapper.enumeration.DataSource;
 import com.chunkmapper.enumeration.Globcover;
+import com.chunkmapper.enumeration.LenteTree;
 import com.chunkmapper.math.StaticSobol;
 import com.chunkmapper.reader.HeightsReader;
+import com.chunkmapper.writer.LenteTreeWriter;
 import com.chunkmapper.writer.TreeWriter;
 
 public class ClosedBroadleafDeciduous extends AbstractColumn {
@@ -14,19 +18,18 @@ public class ClosedBroadleafDeciduous extends AbstractColumn {
 	protected ClosedBroadleafDeciduous(int absx, int absz,
 			HeightsReader heightsReader, int treeSpacing) {
 		super(absx, absz, heightsReader);
+		super.IS_FOREST = true;
 		if (StaticSobol.hasObject(absx, absz, treeSpacing)) {
-			super.treeHeight = TreeWriter.getForestTreeHeight();
-			super.IS_FOREST = true;
+			super.lenteTree = LenteTree.randomTree(LenteTree.ClosedBroadleafDeciduous);
 		}
 	}
 	public ClosedBroadleafDeciduous(int absx, int absz, HeightsReader heightsReader) {
-		this(absx, absz, heightsReader, 4);
+		this(absx, absz, heightsReader, 6);
 	}
 	
-	public void addTree(Chunk chunk, HeightsReader heightsReader) {
-//		if (treeHeight != 0) {
-			TreeWriter.placeForestTree(absx, absz, chunk, heightsReader, treeHeight);
-//		}
+	public void addTree(Chunk chunk, HeightsReader heightsReader) throws IOException {
+		if (lenteTree != null)
+		LenteTreeWriter.placeLenteTree(absx, absz, chunk, heightsReader, lenteTree);
 	}
 
 }

@@ -14,6 +14,7 @@ import com.chunkmapper.Utila;
 import com.chunkmapper.downloader.UberDownloader;
 import com.chunkmapper.reader.FileNotYetAvailableException;
 import com.chunkmapper.reader.HeightsReader;
+import com.chunkmapper.reader.HeightsReaderImpl;
 
 
 public class HeightsCache {
@@ -48,7 +49,7 @@ public class HeightsCache {
 			in.close();
 		} else {
 			
-			HeightsReader reader = new HeightsReader(p.x, p.y, uberDownloader, verticalExaggeration);
+			HeightsReader reader = new HeightsReaderImpl(p.x, p.y, uberDownloader, verticalExaggeration);
 			data = new short[512][512];
 			for (int i = 0; i < 512; i++) {
 				for (int j = 0; j < 512; j++) {

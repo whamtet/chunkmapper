@@ -1,12 +1,13 @@
 package com.chunkmapper.column2;
 
+import java.io.IOException;
+
 import com.chunkmapper.chunk.Chunk;
-import com.chunkmapper.enumeration.Block;
-import com.chunkmapper.enumeration.DataSource;
 import com.chunkmapper.enumeration.Globcover;
+import com.chunkmapper.enumeration.LenteTree;
 import com.chunkmapper.math.StaticSobol;
 import com.chunkmapper.reader.HeightsReader;
-import com.chunkmapper.writer.TreeWriter;
+import com.chunkmapper.writer.LenteTreeWriter;
 
 public class Shrubland extends AbstractColumn {
 	public static final Globcover TYPE = Globcover.Shrubland;
@@ -15,16 +16,16 @@ public class Shrubland extends AbstractColumn {
 			HeightsReader heightsReader, int treeSpacing) {
 		super(absx, absz, heightsReader);
 		if (StaticSobol.hasObject(absx, absz, treeSpacing)) {
-				treeHeight = TreeWriter.getShrubHeight();
+				lenteTree = LenteTree.randomTree(LenteTree.Shrubland);
 		}
 	}
 	public Shrubland(int absx, int absz, HeightsReader heightsReader) {
 		this(absx, absz, heightsReader, 4);
 	}
 
-	public void addTree(Chunk chunk, HeightsReader heightsReader) {
-		//		if (treeHeight != 0) {
-			TreeWriter.placeShrub(absx, absz, chunk, false, heightsReader, treeHeight);
+	public void addTree(Chunk chunk, HeightsReader heightsReader) throws IOException {
+		if (lenteTree != null)
+			LenteTreeWriter.placeLenteTree(absx, absz, chunk, heightsReader, lenteTree);
 	}
 
 }

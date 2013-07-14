@@ -11,6 +11,7 @@ import com.chunkmapper.writer.TreeWriter;
 public class SalineFloodedForest extends AbstractColumn {
 	public static final Globcover TYPE = Globcover.SalineFloodedForest;
 	public final boolean hasWater;
+	private final int treeHeight;
 
 	public SalineFloodedForest(int absx, int absz, HeightsReader heightsReader) {
 		super(absx, absz, heightsReader);
@@ -20,6 +21,8 @@ public class SalineFloodedForest extends AbstractColumn {
 				h <= heightsReader.getHeightxz(absx, absz-1) && h <= heightsReader.getHeightxz(absx, absz+1);
 		if (StaticSobol.hasObject(absx, absz, 5)) {
 			treeHeight = TreeWriter.getSavannaTreeHeight();
+		} else {
+			treeHeight = 0;
 		}
 		super.HAS_WATER = hasWater;
 	}
@@ -37,8 +40,10 @@ public class SalineFloodedForest extends AbstractColumn {
 		}
 	}
 	public void addTree(Chunk chunk, HeightsReader heightsReader) {
+		if (treeHeight != 0) {
 		chunk.setBoth(h, absz, absx, Block.Wood.val, DataSource.Jungle.val);
 		TreeWriter.placeSavannaTree(absx, absz, chunk, heightsReader, treeHeight);
+		}
 	}
 
 }

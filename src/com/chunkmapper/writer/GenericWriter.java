@@ -62,30 +62,30 @@ public class GenericWriter {
 			}
 		}
 	}
-	public static void setBlocks(byte[][][] blocks, int[][] heights) {
-		int topsoilThickness = 3;
-		for (int z = 0; z < 16; z++) {
-			for (int x = 0; x < 16; x++) {
-				blocks[0][z][x] = Block.Bedrock.val;
-				int h = heights[x + Utila.CHUNK_START][z + Utila.CHUNK_START];
-				if (h < 0) {
-					blocks[1][z][x] = Block.Sand.val;
-					blocks[2][z][x] = Block.Water.val;
-					blocks[3][z][x] = Block.Water.val;
-				} else {
-					int maxBedrock = h - topsoilThickness;
-					if (maxBedrock < 1)
-						maxBedrock = 1;
-					for (int y = 1; y < maxBedrock; y++) {
-						blocks[y][z][x] = Block.Stone.val;
-					}
-					for (int y = maxBedrock; y < h; y++) {
-						blocks[y][z][x] = Block.Grass.val;
-					}
-				}
-			}
-		}
-	}
+//	public static void setBlocks(byte[][][] blocks, int[][] heights) {
+//		int topsoilThickness = 3;
+//		for (int z = 0; z < 16; z++) {
+//			for (int x = 0; x < 16; x++) {
+//				blocks[0][z][x] = Block.Bedrock.val;
+//				int h = heights[x + Utila.CHUNK_START][z + Utila.CHUNK_START];
+//				if (h < 0) {
+//					blocks[1][z][x] = Block.Sand.val;
+//					blocks[2][z][x] = Block.Water.val;
+//					blocks[3][z][x] = Block.Water.val;
+//				} else {
+//					int maxBedrock = h - topsoilThickness;
+//					if (maxBedrock < 1)
+//						maxBedrock = 1;
+//					for (int y = 1; y < maxBedrock; y++) {
+//						blocks[y][z][x] = Block.Stone.val;
+//					}
+//					for (int y = maxBedrock; y < h; y++) {
+//						blocks[y][z][x] = Block.Grass.val;
+//					}
+//				}
+//			}
+//		}
+//	}
 
 	public static void placeBeacon(byte[][][] blocks, Chunk chunk) {
 		int h = 0;
@@ -103,13 +103,13 @@ public class GenericWriter {
 			}
 		}
 	}
-	public static void setBiomes(byte[] biomes, int[][] heights, TriangleZonator zonator, Biome[] biomesList, int approxLat) {
-		for (int i = 0; i < 256; i++) {
-			int z = i / 16;
-			int x = i % 16;
-			int h = heights[x + Utila.CHUNK_START][z + Utila.CHUNK_START];
-			biomes[i] = biomesList[zonator.checkVal(h, approxLat)].val;
-		}
-	}
+//	public static void setBiomes(byte[] biomes, int[][] heights, TriangleZonator zonator, Biome[] biomesList, int approxLat) {
+//		for (int i = 0; i < 256; i++) {
+//			int z = i / 16;
+//			int x = i % 16;
+//			int h = heights[x + Utila.CHUNK_START][z + Utila.CHUNK_START];
+//			biomes[i] = biomesList[zonator.checkVal(h, approxLat)].val;
+//		}
+//	}
 
 }

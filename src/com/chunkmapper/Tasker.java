@@ -14,7 +14,6 @@ public abstract class Tasker {
 	private final ExecutorService executorService;
 	private LinkedBlockingQueue<Point> taskQueue = new LinkedBlockingQueue<Point>();
 	protected final HashSet<Point> pointsAdded = new HashSet<Point>();
-	private boolean shutdown = false;
 
 	public void shutdownNow() {
 		executorService.shutdownNow();
@@ -50,7 +49,7 @@ public abstract class Tasker {
 		for (int i = 0; i < numThreads; i++) {
 			executorService.execute(new Runnable() {
 				public void run() {
-
+					
 					while(true) {
 						Point task = null;
 						try {
