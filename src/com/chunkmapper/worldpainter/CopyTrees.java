@@ -45,7 +45,7 @@ public class CopyTrees {
 		int i = 0;
 		for (File directory : directories) {
 			for (File f : directory.listFiles()) {
-				if ((f.getName().contains("Small") || f.getName().startsWith("73") || f.getName().startsWith("74"))
+				if ((f.getName().contains("Small"))
 						&& !f.getName().contains("Sandbox")) {
 					String[] split = f.getName().split(" \\[");
 					File destDir = new File("resources/trees");
@@ -55,9 +55,6 @@ public class CopyTrees {
 //						destDir = new File("resources/trees/tropical");
 //					}
 					String name = split[0];
-					if (name.startsWith("73") || name.startsWith("74")) {
-						name = "f_" + name;
-					}
 					File dest = new File(destDir, name + ".schematic");
 					FileUtils.copyFile(f, dest);
 				}

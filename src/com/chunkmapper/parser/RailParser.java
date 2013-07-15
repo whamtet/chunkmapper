@@ -51,9 +51,9 @@ public class RailParser extends Parser {
 				hasTunnel |= k.equals("tunnel") && v.equals("yes");
 			}
 			if (tag.equals("/way") && (isRail || isPreserved)) {
-				
-				railSections.add(new RailSection(currentPoints, 
-						isPreserved, hasBridge, hasCutting, hasEmbankment, hasTunnel));
+				throw new RuntimeException("implement bbox");
+//				railSections.add(new RailSection(currentPoints, 
+//						isPreserved, hasBridge, hasCutting, hasEmbankment, hasTunnel));
 			}
 		}
 		return railSections;

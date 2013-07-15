@@ -35,7 +35,7 @@ public class HeightsCache {
 		}
 	}
 	public HeightsCache(Point p, UberDownloader uberDownloader, int verticalExaggeration) throws IOException, InterruptedException, FileNotYetAvailableException {
-		heightsCacheFile = new File(HEIGHTS_CACHE, "f_" + p.x + "_" + p.y);
+		heightsCacheFile = new File(HEIGHTS_CACHE, "f_" + p.x + "_" + p.y + Utila.BINARY_SUFFIX);
 		regionPoint = p;
 
 		if (heightsCacheFile.exists()) {

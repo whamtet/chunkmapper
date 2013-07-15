@@ -49,7 +49,6 @@ import com.chunkmapper.reader.XapiRailReader;
 import com.chunkmapper.reader.XapiRiverReader;
 import com.chunkmapper.writer.ArtifactWriter;
 import com.chunkmapper.writer.GenericWriter;
-import com.chunkmapper.writer.SpecialLandmarksWriter;
 
 public class GlobcoverManager {
 	private final HeightsReaderImpl heightsReader;
@@ -241,7 +240,7 @@ public class GlobcoverManager {
 			poiReader.addSigns(chunk);
 		
 		//a special sign
-		SpecialLandmarksWriter.addSpecialLandmarks(chunk);
+		POIReader.addSpecialLandmarks(chunk);
 
 		//finally add rail
 		boolean chunkHasRail = false;

@@ -1,5 +1,6 @@
 package com.chunkmapper.protoc.admin;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -21,9 +22,9 @@ public class ServerInfoManager {
 	private static ServerInfo doGetServerInfo() {
 		ServerInfo info = null;
 		try {
-			URL url = new URL("http://chunkmapper-static.appspot.com/ServerInfo.pbf");
+			URL url = new URL("http://chunkmapper-static.appspot.com/public/ServerInfo.pbf");
 
-			InputStream in = url.openStream();
+			InputStream in = new BufferedInputStream(url.openStream());
 			info = ServerInfo.parseFrom(in);
 			in.close();
 
