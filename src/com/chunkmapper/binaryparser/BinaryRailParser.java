@@ -18,6 +18,7 @@ import com.chunkmapper.protoc.PointContainer;
 import com.chunkmapper.protoc.RailRegionContainer.RailRegion;
 import com.chunkmapper.protoc.RailSectionContainer;
 import com.chunkmapper.protoc.RectangleContainer;
+import com.chunkmapper.protoc.admin.FileListManager;
 import com.chunkmapper.protoc.admin.OfflineFileListManager;
 import com.chunkmapper.rail.RailSection;
 
@@ -25,10 +26,12 @@ public class BinaryRailParser {
 	
 	public static HashSet<RailSection> getRailSections(int regionx, int regionz) throws IOException, URISyntaxException, DataFormatException {
 		Rectangle myRectangle = new Rectangle(regionx * 512, regionz*512, 512, 512);
-		BinaryRailCache binaryRailCache = new BinaryRailCache(true);
+		boolean offline = false;
+		BinaryRailCache binaryRailCache = new BinaryRailCache(offline);
 		
 		HashSet<RailSection> out = new HashSet<RailSection>();
-		for (FileInfo info : OfflineFileListManager.railFileList.getFilesList()) {
+//		for (FileInfo info : OfflineFileListManager.railFileList.getFilesList()) {
+		for (FileInfo info : FileListManager.getRailFileList().getFilesList()) {
 			String[] split = info.getFile().split("_");
 			
 			int x = Integer.parseInt(split[1]);

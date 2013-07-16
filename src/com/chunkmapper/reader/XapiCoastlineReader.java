@@ -6,12 +6,16 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Stack;
 import java.util.zip.DataFormatException;
 
 import com.chunkmapper.Point;
 import com.chunkmapper.binaryparser.BinaryCoastlineParser;
+import com.chunkmapper.parser.CoastlineParser;
 import com.chunkmapper.sections.Coastline;
 
 public class XapiCoastlineReader {
@@ -105,10 +109,6 @@ public class XapiCoastlineReader {
 		HashSet<Coastline> coastlines = BinaryCoastlineParser.getCoastlines(regionx, regionz);
 		if (coastlines.size() == 0) {
 			int fill = coverReader.mostlyLand() ? 1 : -1;
-//			if (fill == 1) {
-//				GlobcoverResourceInfo info = new GlobcoverResourceInfo(regionx, regionz);
-//				Runtime.getRuntime().exec("open " + info.file.toString());
-//			}
 			for (int i = 0; i < 512; i++) {
 				for (int j = 0; j < 512; j++) {
 					data[i][j] = fill;
@@ -155,20 +155,53 @@ public class XapiCoastlineReader {
 	}
 
 	public static void main(String[] args) throws Exception {
-		//		double[] latlon = geocode.core.placeToCoords("auckland, nz");
-		double[] latlon = {11.7235, 119.824};
+				double[] latlon = geocode.core.placeToCoords("auckland, nz");
+//		double[] latlon = {-27.6268, 153.3714}; //small island
+//		double[] latlon = {-27.5158, 153.2344}; //bit of coast
 		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
 		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
-		GlobcoverReader coverReader = new GlobcoverReader(regionx, regionz);
+		CoastlineParser.getCoastlines(regionx, regionz);
+		System.exit(0);
+		GlobcoverReader coverReader = new GlobcoverReaderImpl(regionx, regionz);
 		XapiCoastlineReader reader = new XapiCoastlineReader(regionx, regionz, coverReader);
-		PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(new File("/Users/matthewmolloy/python/wms/data.csv"))));
+		reader.print(new File("/Users/matthewmolloy/python/wms/data.csv"));
+	}
+	public void print(File f) throws IOException {
+		PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(f)));
 		for (int i = 0; i < 512; i++) {
 			for (int j = 0; j < 512; j++) {
 				//				pw.println(reader.getValueij(i, j));
-				pw.println(reader.hasWaterij(i, j) || i == 0 && j == 0 ? 0 : 1);
+				pw.println(this.hasWaterij(i, j) || i == 0 && j == 0 ? 0 : 1);
 			}
 		}
 		pw.close();
-		System.out.println("done");
+	}
+	private static void compareDifferences(int regionx, int regionz) throws IOException, URISyntaxException, DataFormatException {
+		HashSet<Coastline> s1 = BinaryCoastlineParser.getCoastlines(regionx, regionz),
+				s2 = CoastlineParser.getCoastlines(regionx, regionz);
+//		for (Coastline c : s2) {
+//			s1.remove(c);
+//		}
+//		for (Coastline c : s1) {
+//			s2.remove(c);
+//		}
+		printAndSave(regionx, regionz, s1, new File("/Users/matthewmolloy/python/wms/data1.csv"));
+		printAndSave(regionx, regionz, s2, new File("/Users/matthewmolloy/python/wms/data2.csv"));
+	}
+	private static void printAndSave(int regionx, int regionz, Collection<Coastline> coastlines, File f) throws IOException {
+		int[][] data = new int[512][512];
+		for (Coastline coastline : coastlines) {
+			for (int i = 0; i < coastline.points.size() - 1; i++) {
+				interpolate(data, coastline.points.get(i), coastline.points.get(i+1), regionx, regionz, 1, 1);
+			}
+		}
+		PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(f)));
+		for (int i = 0; i < 512; i++) {
+			for (int j = 0; j < 512; j++) {
+				//				pw.println(reader.getValueij(i, j));
+				pw.println(data[i][j]);
+			}
+		}
+		pw.close();
 	}
 }

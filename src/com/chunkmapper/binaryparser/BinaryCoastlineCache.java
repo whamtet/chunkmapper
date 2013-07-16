@@ -43,7 +43,7 @@ public class BinaryCoastlineCache {
 			data = Zip.inflate(cacheFile);
 		} else {
 			ServerInfo info = ServerInfoManager.getServerInfo();
-			String address = info.getLakeAddress() + "data/" + info2.getParent() + info2.getFile();
+			String address = info.getCoastlineAddress() + "data/" + info2.getParent() + info2.getFile();
 			URL url = new URL(address);
 			data = Zip.readFully(url.openStream());
 			FileOutputStream out = new FileOutputStream(cacheFile);

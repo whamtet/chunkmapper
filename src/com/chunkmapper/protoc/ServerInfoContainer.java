@@ -55,6 +55,51 @@ public final class ServerInfoContainer {
      */
     com.google.protobuf.ByteString
         getLakeAddressBytes();
+
+    // optional string coastline_address = 4;
+    /**
+     * <code>optional string coastline_address = 4;</code>
+     */
+    boolean hasCoastlineAddress();
+    /**
+     * <code>optional string coastline_address = 4;</code>
+     */
+    java.lang.String getCoastlineAddress();
+    /**
+     * <code>optional string coastline_address = 4;</code>
+     */
+    com.google.protobuf.ByteString
+        getCoastlineAddressBytes();
+
+    // optional string poi_address = 5;
+    /**
+     * <code>optional string poi_address = 5;</code>
+     */
+    boolean hasPoiAddress();
+    /**
+     * <code>optional string poi_address = 5;</code>
+     */
+    java.lang.String getPoiAddress();
+    /**
+     * <code>optional string poi_address = 5;</code>
+     */
+    com.google.protobuf.ByteString
+        getPoiAddressBytes();
+
+    // optional string globcover_address = 6;
+    /**
+     * <code>optional string globcover_address = 6;</code>
+     */
+    boolean hasGlobcoverAddress();
+    /**
+     * <code>optional string globcover_address = 6;</code>
+     */
+    java.lang.String getGlobcoverAddress();
+    /**
+     * <code>optional string globcover_address = 6;</code>
+     */
+    com.google.protobuf.ByteString
+        getGlobcoverAddressBytes();
   }
   /**
    * Protobuf type {@code ServerInfo}
@@ -112,6 +157,21 @@ public final class ServerInfoContainer {
             case 26: {
               bitField0_ |= 0x00000004;
               lakeAddress_ = input.readBytes();
+              break;
+            }
+            case 34: {
+              bitField0_ |= 0x00000008;
+              coastlineAddress_ = input.readBytes();
+              break;
+            }
+            case 42: {
+              bitField0_ |= 0x00000010;
+              poiAddress_ = input.readBytes();
+              break;
+            }
+            case 50: {
+              bitField0_ |= 0x00000020;
+              globcoverAddress_ = input.readBytes();
               break;
             }
           }
@@ -270,10 +330,142 @@ public final class ServerInfoContainer {
       }
     }
 
+    // optional string coastline_address = 4;
+    public static final int COASTLINE_ADDRESS_FIELD_NUMBER = 4;
+    private java.lang.Object coastlineAddress_;
+    /**
+     * <code>optional string coastline_address = 4;</code>
+     */
+    public boolean hasCoastlineAddress() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>optional string coastline_address = 4;</code>
+     */
+    public java.lang.String getCoastlineAddress() {
+      java.lang.Object ref = coastlineAddress_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          coastlineAddress_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string coastline_address = 4;</code>
+     */
+    public com.google.protobuf.ByteString
+        getCoastlineAddressBytes() {
+      java.lang.Object ref = coastlineAddress_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        coastlineAddress_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    // optional string poi_address = 5;
+    public static final int POI_ADDRESS_FIELD_NUMBER = 5;
+    private java.lang.Object poiAddress_;
+    /**
+     * <code>optional string poi_address = 5;</code>
+     */
+    public boolean hasPoiAddress() {
+      return ((bitField0_ & 0x00000010) == 0x00000010);
+    }
+    /**
+     * <code>optional string poi_address = 5;</code>
+     */
+    public java.lang.String getPoiAddress() {
+      java.lang.Object ref = poiAddress_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          poiAddress_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string poi_address = 5;</code>
+     */
+    public com.google.protobuf.ByteString
+        getPoiAddressBytes() {
+      java.lang.Object ref = poiAddress_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        poiAddress_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    // optional string globcover_address = 6;
+    public static final int GLOBCOVER_ADDRESS_FIELD_NUMBER = 6;
+    private java.lang.Object globcoverAddress_;
+    /**
+     * <code>optional string globcover_address = 6;</code>
+     */
+    public boolean hasGlobcoverAddress() {
+      return ((bitField0_ & 0x00000020) == 0x00000020);
+    }
+    /**
+     * <code>optional string globcover_address = 6;</code>
+     */
+    public java.lang.String getGlobcoverAddress() {
+      java.lang.Object ref = globcoverAddress_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          globcoverAddress_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string globcover_address = 6;</code>
+     */
+    public com.google.protobuf.ByteString
+        getGlobcoverAddressBytes() {
+      java.lang.Object ref = globcoverAddress_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        globcoverAddress_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private void initFields() {
       railAddress_ = "";
       riverAddress_ = "";
       lakeAddress_ = "";
+      coastlineAddress_ = "";
+      poiAddress_ = "";
+      globcoverAddress_ = "";
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -296,6 +488,15 @@ public final class ServerInfoContainer {
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         output.writeBytes(3, getLakeAddressBytes());
       }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeBytes(4, getCoastlineAddressBytes());
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        output.writeBytes(5, getPoiAddressBytes());
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        output.writeBytes(6, getGlobcoverAddressBytes());
+      }
     }
 
     private int memoizedSerializedSize = -1;
@@ -315,6 +516,18 @@ public final class ServerInfoContainer {
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(3, getLakeAddressBytes());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(4, getCoastlineAddressBytes());
+      }
+      if (((bitField0_ & 0x00000010) == 0x00000010)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(5, getPoiAddressBytes());
+      }
+      if (((bitField0_ & 0x00000020) == 0x00000020)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(6, getGlobcoverAddressBytes());
       }
       memoizedSerializedSize = size;
       return size;
@@ -413,6 +626,12 @@ public final class ServerInfoContainer {
         bitField0_ = (bitField0_ & ~0x00000002);
         lakeAddress_ = "";
         bitField0_ = (bitField0_ & ~0x00000004);
+        coastlineAddress_ = "";
+        bitField0_ = (bitField0_ & ~0x00000008);
+        poiAddress_ = "";
+        bitField0_ = (bitField0_ & ~0x00000010);
+        globcoverAddress_ = "";
+        bitField0_ = (bitField0_ & ~0x00000020);
         return this;
       }
 
@@ -448,6 +667,18 @@ public final class ServerInfoContainer {
           to_bitField0_ |= 0x00000004;
         }
         result.lakeAddress_ = lakeAddress_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.coastlineAddress_ = coastlineAddress_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000010;
+        }
+        result.poiAddress_ = poiAddress_;
+        if (((from_bitField0_ & 0x00000020) == 0x00000020)) {
+          to_bitField0_ |= 0x00000020;
+        }
+        result.globcoverAddress_ = globcoverAddress_;
         result.bitField0_ = to_bitField0_;
         return result;
       }
@@ -467,6 +698,21 @@ public final class ServerInfoContainer {
         if (other.hasLakeAddress()) {
           bitField0_ |= 0x00000004;
           lakeAddress_ = other.lakeAddress_;
+          
+        }
+        if (other.hasCoastlineAddress()) {
+          bitField0_ |= 0x00000008;
+          coastlineAddress_ = other.coastlineAddress_;
+          
+        }
+        if (other.hasPoiAddress()) {
+          bitField0_ |= 0x00000010;
+          poiAddress_ = other.poiAddress_;
+          
+        }
+        if (other.hasGlobcoverAddress()) {
+          bitField0_ |= 0x00000020;
+          globcoverAddress_ = other.globcoverAddress_;
           
         }
         return this;
@@ -713,6 +959,228 @@ public final class ServerInfoContainer {
   }
   bitField0_ |= 0x00000004;
         lakeAddress_ = value;
+        
+        return this;
+      }
+
+      // optional string coastline_address = 4;
+      private java.lang.Object coastlineAddress_ = "";
+      /**
+       * <code>optional string coastline_address = 4;</code>
+       */
+      public boolean hasCoastlineAddress() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>optional string coastline_address = 4;</code>
+       */
+      public java.lang.String getCoastlineAddress() {
+        java.lang.Object ref = coastlineAddress_;
+        if (!(ref instanceof java.lang.String)) {
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          coastlineAddress_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string coastline_address = 4;</code>
+       */
+      public com.google.protobuf.ByteString
+          getCoastlineAddressBytes() {
+        java.lang.Object ref = coastlineAddress_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          coastlineAddress_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string coastline_address = 4;</code>
+       */
+      public Builder setCoastlineAddress(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        coastlineAddress_ = value;
+        
+        return this;
+      }
+      /**
+       * <code>optional string coastline_address = 4;</code>
+       */
+      public Builder clearCoastlineAddress() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        coastlineAddress_ = getDefaultInstance().getCoastlineAddress();
+        
+        return this;
+      }
+      /**
+       * <code>optional string coastline_address = 4;</code>
+       */
+      public Builder setCoastlineAddressBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        coastlineAddress_ = value;
+        
+        return this;
+      }
+
+      // optional string poi_address = 5;
+      private java.lang.Object poiAddress_ = "";
+      /**
+       * <code>optional string poi_address = 5;</code>
+       */
+      public boolean hasPoiAddress() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>optional string poi_address = 5;</code>
+       */
+      public java.lang.String getPoiAddress() {
+        java.lang.Object ref = poiAddress_;
+        if (!(ref instanceof java.lang.String)) {
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          poiAddress_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string poi_address = 5;</code>
+       */
+      public com.google.protobuf.ByteString
+          getPoiAddressBytes() {
+        java.lang.Object ref = poiAddress_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          poiAddress_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string poi_address = 5;</code>
+       */
+      public Builder setPoiAddress(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+        poiAddress_ = value;
+        
+        return this;
+      }
+      /**
+       * <code>optional string poi_address = 5;</code>
+       */
+      public Builder clearPoiAddress() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        poiAddress_ = getDefaultInstance().getPoiAddress();
+        
+        return this;
+      }
+      /**
+       * <code>optional string poi_address = 5;</code>
+       */
+      public Builder setPoiAddressBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000010;
+        poiAddress_ = value;
+        
+        return this;
+      }
+
+      // optional string globcover_address = 6;
+      private java.lang.Object globcoverAddress_ = "";
+      /**
+       * <code>optional string globcover_address = 6;</code>
+       */
+      public boolean hasGlobcoverAddress() {
+        return ((bitField0_ & 0x00000020) == 0x00000020);
+      }
+      /**
+       * <code>optional string globcover_address = 6;</code>
+       */
+      public java.lang.String getGlobcoverAddress() {
+        java.lang.Object ref = globcoverAddress_;
+        if (!(ref instanceof java.lang.String)) {
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          globcoverAddress_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string globcover_address = 6;</code>
+       */
+      public com.google.protobuf.ByteString
+          getGlobcoverAddressBytes() {
+        java.lang.Object ref = globcoverAddress_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          globcoverAddress_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string globcover_address = 6;</code>
+       */
+      public Builder setGlobcoverAddress(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000020;
+        globcoverAddress_ = value;
+        
+        return this;
+      }
+      /**
+       * <code>optional string globcover_address = 6;</code>
+       */
+      public Builder clearGlobcoverAddress() {
+        bitField0_ = (bitField0_ & ~0x00000020);
+        globcoverAddress_ = getDefaultInstance().getGlobcoverAddress();
+        
+        return this;
+      }
+      /**
+       * <code>optional string globcover_address = 6;</code>
+       */
+      public Builder setGlobcoverAddressBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000020;
+        globcoverAddress_ = value;
         
         return this;
       }

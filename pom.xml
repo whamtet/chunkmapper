@@ -23,11 +23,11 @@
 		<version>4.2.5</version>
 	</dependency>
 	
-	<dependency>
+	<!-- <dependency>
       <groupId>com.tomgibara.imageio</groupId>
       <artifactId>imageio-tiff</artifactId>
       <version>1.0</version>
-    </dependency>
+    </dependency> -->
             
   <dependency>
   	<groupId>commons-io</groupId>
@@ -45,7 +45,7 @@
   	<version>2.5.0</version>
   </dependency>
   </dependencies>
-  <repositories>
+<!--   <repositories>
    <repository>
       <id>tomgibara</id>
       <name>Tom Gibara Maven Repository</name>
@@ -55,5 +55,5 @@
         <enabled>false</enabled>
       </snapshots>
     </repository>
-    </repositories>
+    </repositories> -->
 </project>

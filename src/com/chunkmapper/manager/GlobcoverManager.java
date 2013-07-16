@@ -38,9 +38,11 @@ import com.chunkmapper.enumeration.Block;
 import com.chunkmapper.enumeration.FarmType;
 import com.chunkmapper.enumeration.Globcover;
 import com.chunkmapper.math.Matthewmatics;
+import com.chunkmapper.reader.DensityReader;
 import com.chunkmapper.reader.FarmTypeReader;
 import com.chunkmapper.reader.FileNotYetAvailableException;
 import com.chunkmapper.reader.GlobcoverReader;
+import com.chunkmapper.reader.GlobcoverReaderImpl2;
 import com.chunkmapper.reader.HeightsReaderImpl;
 import com.chunkmapper.reader.POIReader;
 import com.chunkmapper.reader.XapiCoastlineReader;
@@ -54,6 +56,7 @@ public class GlobcoverManager {
 	private final HeightsReaderImpl heightsReader;
 	private final XapiRailReader railReader;
 	private final POIReader poiReader;
+	private final DensityReader densityReader;
 	public final boolean allWater;
 	private final ArtifactWriter artifactWriter = new ArtifactWriter();
 	public final int regionx, regionz;
@@ -69,9 +72,11 @@ public class GlobcoverManager {
 		if (allWater) {
 			railReader = null;
 			poiReader = null;
+			densityReader = null;
 			return;
 		}
-		GlobcoverReader coverReader = new GlobcoverReader(regionx, regionz);
+		densityReader = new DensityReader(regionx, regionz);
+		GlobcoverReader coverReader = new GlobcoverReaderImpl2(regionx, regionz);
 
 		XapiLakeReader lakeReader = new XapiLakeReader(regionx, regionz);
 		XapiRiverReader riverReader = new XapiRiverReader(regionx, regionz);
@@ -248,11 +253,11 @@ public class GlobcoverManager {
 			for (int i = 0; i < 16; i++) {
 				for (int j = 0; j < 16; j++) {
 					int x = j + chunkx*16, z = i + chunkz*16;
-					short h1 = railReader.getHeight(x, z);
-					if (h1 != 0) {
+					if (railReader.hasRailij(z, x)) {
+						int h1 = railReader.getHeightij(z, x);
 						AbstractColumn col = columns[i + chunkz*16][j + chunkx*16];
 						chunkHasRail = true;
-						byte railType = railReader.getRailType(x, z);
+						byte railType = railReader.getRailTypeij(z, x);
 						boolean usePlanks = col.HAS_WATER;
 						artifactWriter.placeRail(j, i, chunk, h1, railType, usePlanks, false);
 					}
@@ -260,7 +265,7 @@ public class GlobcoverManager {
 			}
 		}
 		//add a house
-		if (chunkHasUrban && !chunkHasRail && !chunkHasWater) {
+		if ((chunkHasUrban || densityReader.hasHouse(chunkx, chunkz)) && !chunkHasRail && !chunkHasWater) {
 			int i = RANDOM.nextInt(100);
 			switch(i) {
 			case 0:
@@ -279,8 +284,7 @@ public class GlobcoverManager {
 				ArtifactWriter.addHouse(chunk);
 			}
 
-		}
-		if (chunkAllForest && !chunkHasRail && RANDOM.nextInt(100) == 0) {
+		} else if (chunkAllForest && !chunkHasRail && RANDOM.nextInt(100) == 0) {
 			if (RANDOM.nextInt(2) == 0) {
 				ArtifactWriter.placeLookout(chunk);
 			} else {

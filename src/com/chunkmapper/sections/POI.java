@@ -5,9 +5,11 @@ import com.chunkmapper.Point;
 public class POI {
 	public final String text;
 	public final Point point;
-	public POI(Point point, String text) {
+	public final Integer population;
+	public POI(Point point, String text, Integer population) {
 		this.text = text;
 		this.point = point;
+		this.population = population;
 	}
 	public int hashCode() {
 		return point.hashCode();

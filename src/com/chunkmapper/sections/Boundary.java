@@ -6,12 +6,15 @@ import java.util.Collections;
 
 import com.chunkmapper.Point;
 
-public class Coastline implements Comparable<Coastline> {
+public class Boundary implements Comparable<Boundary> {
 	public final ArrayList<Point> points;
 	public final Rectangle bbox;
-	public Coastline(ArrayList<Point> points, Rectangle bbox) {
+	public final String leftCountry, rightCountry;
+	public Boundary(ArrayList<Point> points, Rectangle bbox, String leftCountry, String rightCountry) {
 		this.points = points;
 		this.bbox = bbox;
+		this.leftCountry = leftCountry;
+		this.rightCountry = rightCountry;
 	}
 
 	public int hashCode() {
@@ -20,9 +23,9 @@ public class Coastline implements Comparable<Coastline> {
 	public boolean equals(Object other) {
 		if (other == null)
 			return false;
-		if (!(other instanceof Coastline))
+		if (!(other instanceof Boundary))
 			return false;
-		Coastline other2 = (Coastline) other;
+		Boundary other2 = (Boundary) other;
 		if (other2.points.size() != points.size())
 			return false;
 		for (int i = 0; i < points.size(); i++) {
@@ -32,7 +35,7 @@ public class Coastline implements Comparable<Coastline> {
 		return true;
 	}
 	@Override
-	public int compareTo(Coastline o) {
+	public int compareTo(Boundary o) {
 		if (points.size() != o.points.size() || points.size() == 0) {
 			return (new Integer(points.size())).compareTo(o.points.size());
 		}

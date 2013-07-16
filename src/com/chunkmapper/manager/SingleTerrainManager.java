@@ -32,7 +32,7 @@ public class SingleTerrainManager {
 		for (int i = 0; i < 512; i++) {
 			for (int j = 0; j < 512; j++) {
 				columns[i][j] = new Shrubland(j, i, heightsReader);
-//				columns[i][j] = new Coast(j, i);
+				//				columns[i][j] = new Coast(j, i);
 			}
 		}
 
@@ -61,7 +61,7 @@ public class SingleTerrainManager {
 		for (int i = i1; i < i2; i++) {
 			for (int j = j1; j < j2; j++) {
 				AbstractColumn col = columns[i][j];
-					col.addTree(chunk, heightsReader);
+				col.addTree(chunk, heightsReader);
 			}
 		}
 		return chunk;
@@ -82,11 +82,11 @@ public class SingleTerrainManager {
 		levelDat.setPlayerPosition(0, 10, 0);
 		levelDat.setName(name);
 		levelDat.save();
-		
-		
+
+
 		RegionFile regionFile = new RegionFile(new File(regionFolder, "r.0.0.mca"));
 		SingleTerrainManager manager = new SingleTerrainManager();
-		
+
 		for (int chunkx = 0; chunkx < 10; chunkx++) {
 			for (int chunkz = 0; chunkz < 10; chunkz++) {
 				Chunk chunk = manager.getChunk(chunkx, chunkz);

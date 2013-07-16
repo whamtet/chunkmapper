@@ -4,6 +4,7 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -17,7 +18,9 @@ import org.apache.commons.io.FileUtils;
 
 import com.chunkmapper.Point;
 import com.chunkmapper.Utila;
-import com.chunkmapper.reader.GlobcoverReader2;
+import com.chunkmapper.protoc.FileContainer.FileInfo;
+import com.chunkmapper.protoc.FileContainer.FileList;
+import com.chunkmapper.reader.GlobcoverReaderImpl2;
 
 
 
@@ -30,34 +33,42 @@ public class ProcessGlobcover {
 	
 	
 	public static void main(String[] args) throws Exception {
-		splitImage();
+		copyOver();
 	}
 	private static void copyOver() throws IOException {
-		File parent = new File("/Users/matthewmolloy/workspace/chunkmapper-static/public/mat");
-		parent.mkdir();
+		File parent = new File("/Users/matthewmolloy/workspace/chunkmapper-static/public/mat/data");
 		File srcParent = new File("globcover");
-		for (File f : srcParent.listFiles()) {
-			if (f.getName().startsWith("f_")) {
-				FileUtils.copyFile(f, new File(parent, f.getName()));
-			}
+		File[] toCopy = srcParent.listFiles(new BinaryFilenameFilter());
+		int numInDirectory = 990;
+		FileList.Builder fileListBuilder = FileList.newBuilder();
+		
+		for (int i = 0; i < toCopy.length; i++) {
+			File dir = new File(parent, "f_" + i / numInDirectory);
+			File src = toCopy[i];
+			fileListBuilder.addFiles(FileInfo.newBuilder().setFile(src.getName()).setParent(dir.getName() + "/").build());
+			FileUtils.copyFile(src, new File(dir, src.getName()));
 		}
+		
+		FileOutputStream out = new FileOutputStream(new File("/Users/matthewmolloy/workspace/chunkmapper-static/public/mat/master.pbf"));
+		out.write(fileListBuilder.build().toByteArray());
+		out.close();
 	}
 	private static void splitImage() {
-		
-		File parent = new File("globcover");
-		if (parent.exists())
-			throw new RuntimeException("globcover exists!");
 		
 		PlanarImage im = JAI.create("fileload", s).createInstance();
 		int totalWidth = im.getWidth(), totalHeight = im.getHeight();
 		
 		int midx = 180 * 360, midz = 90 * 360;
-		int windowWidth = 512 * GlobcoverReader2.REGION_WIDTH / 10;
+		int windowWidth = 512 * GlobcoverReaderImpl2.REGION_WIDTH / 10;
 		double windowWidthd = windowWidth;
 		
 		int x1 = (int) -Math.ceil(midx / windowWidthd), z1 = (int) -Math.ceil(midz / windowWidthd);
 		int x2 = (totalWidth - midx) / windowWidth, 
 				z2 = (totalHeight - midz) / windowWidth;
+		
+		File parent = new File("globcover");
+		if (parent.exists())
+			throw new RuntimeException("globcover exists!");
 		
 		for (int x = x1; x <= x2; x++) {
 			for (int z = z1; z <= z2; z++) {
@@ -77,7 +88,7 @@ public class ProcessGlobcover {
 			int totalWidth = im.getWidth(), totalHeight = im.getHeight();
 			
 			int midx = 180 * 360, midz = 90 * 360;
-			int windowWidth = 512 * GlobcoverReader2.REGION_WIDTH / 10;
+			int windowWidth = 512 * GlobcoverReaderImpl2.REGION_WIDTH / 10;
 			File parent = new File("globcover");
 			parent.mkdir();
 			ColorModel colorModel = im.getColorModel();

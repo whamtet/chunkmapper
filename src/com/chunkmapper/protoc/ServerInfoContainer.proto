@@ -7,4 +7,7 @@ message ServerInfo {
 	optional string rail_address = 1;
 	optional string river_address = 2;
 	optional string lake_address = 3;
+	optional string coastline_address = 4;
+	optional string poi_address = 5;
+	optional string globcover_address = 6;
 }

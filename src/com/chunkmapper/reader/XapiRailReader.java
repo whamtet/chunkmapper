@@ -258,16 +258,22 @@ public class XapiRailReader {
 
 	}
 
-	public short getHeight(int x, int z) {
-//		return heights[com.chunkmapper.math.Matthewmatics.mod(z, 512)][com.chunkmapper.math.Matthewmatics.mod(x, 512)];
-		return heights[z - z0][x - x0];
-	}
-	public byte getRailType(int x, int z) {
-//		return railType[com.chunkmapper.math.Matthewmatics.mod(z, 512)][com.chunkmapper.math.Matthewmatics.mod(x, 512)];
-		return railType[z - z0][x - x0];
-	}
+//	public short getHeight(int x, int z) {
+////		return heights[com.chunkmapper.math.Matthewmatics.mod(z, 512)][com.chunkmapper.math.Matthewmatics.mod(x, 512)];
+//		return heights[z - z0][x - x0];
+//	}
+//	public byte getRailType(int x, int z) {
+////		return railType[com.chunkmapper.math.Matthewmatics.mod(z, 512)][com.chunkmapper.math.Matthewmatics.mod(x, 512)];
+//		return railType[z - z0][x - x0];
+//	}
 	public boolean hasRailij(int i, int j) {
-		return railType[i][j] != 0;
+		return heights[i][j] != 0;
+	}
+	public short getHeightij(int i, int j) {
+		return heights[i][j];
+	}
+	public byte getRailTypeij(int i, int j) {
+		return railType[i][j];
 	}
 
 }

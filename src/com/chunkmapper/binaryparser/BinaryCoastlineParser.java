@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.zip.DataFormatException;
 
 import com.chunkmapper.protoc.FileContainer.FileInfo;
+import com.chunkmapper.protoc.admin.FileListManager;
 import com.chunkmapper.protoc.admin.OfflineFileListManager;
 import com.chunkmapper.sections.Coastline;
 
@@ -14,11 +15,13 @@ public class BinaryCoastlineParser {
 
 	public static HashSet<Coastline> getCoastlines(int regionx, int regionz) throws IOException, URISyntaxException, DataFormatException {
 		Rectangle myRectangle = new Rectangle(regionx * 512, regionz * 512, 512, 512);
-		BinaryCoastlineCache cache = new BinaryCoastlineCache(true);
+		boolean offline = false;
+		BinaryCoastlineCache cache = new BinaryCoastlineCache(offline);
 
 		HashSet<Coastline> out = new HashSet<Coastline>();
 		
-		for (FileInfo info : OfflineFileListManager.coastlineFileList.getFilesList()) {
+//		for (FileInfo info : OfflineFileListManager.coastlineFileList.getFilesList()) {
+		for (FileInfo info : FileListManager.getCoastlinesFileList().getFilesList()) {
 			String[] split = info.getFile().split("_");
 
 			int x = Integer.parseInt(split[1]);

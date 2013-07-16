@@ -5,12 +5,61 @@ import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public enum Globcover {
 	IrrigatedCrops, RainfedCrops, CroplandWithVegetation, VegetationWithCropland, BroadleafEvergreen,
 	ClosedBroadleafDeciduous, OpenBroadleafDeciduous, ClosedNeedleleafEvergreen, OpenNeedleleaf,
 	MixedBroadNeedleleaf, ForestShrublandWithGrass, GrassWithForestShrubland, Shrubland, Grassland,
 	SparseVegetation, FreshFloodedForest, SalineFloodedForest, FloodedGrassland, Urban, Bare, Water, Snow, NoData;
+
+	public static Globcover getGlobcover(int i) {
+		if (i < 0)
+			i += 256;
+		switch(i) {
+		case 11: return IrrigatedCrops;
+		case 14: return RainfedCrops;
+		case 20: return CroplandWithVegetation;
+		case 30: return VegetationWithCropland;
+		case 40: return BroadleafEvergreen;
+		case 50: return ClosedBroadleafDeciduous;
+		case 60: return OpenBroadleafDeciduous;
+		case 70: return ClosedNeedleleafEvergreen;
+		case 90: return OpenNeedleleaf;
+		case 100: return MixedBroadNeedleleaf;
+		case 110: return ForestShrublandWithGrass;
+		case 120: return GrassWithForestShrubland;
+		case 130: return Shrubland;
+		case 140: return Grassland;
+		case 150: return SparseVegetation;
+		case 160: return FreshFloodedForest;
+		case 170: return SalineFloodedForest;
+		case 180: return FloodedGrassland;
+		case 190: return Urban;
+		case 200: return Bare;
+		case 210: return Water;
+		case 220: return Snow;
+		case 230: return NoData;
+		}
+		throw new RuntimeException("should not be here");
+	}
+	public static void main(String[] args) throws Exception {
+		ArrayList<Integer> ints = new ArrayList<Integer>();
+		ints.add(11);
+		ints.add(14);
+		for (int i = 20; i <= 230; i += 10) {
+			if (i == 80)
+				i += 10;
+			ints.add(i);
+		}
+		Globcover[] vals = Globcover.values();
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < ints.size(); i++) {
+			sb.append(String.format("case %s: return %s;\n", ints.get(i), vals[i]));
+		}
+		System.out.println(sb.toString());
+	}
+
 
 	public static Globcover[] makeArray(File f) throws IOException {
 		DataInputStream dataStream = new DataInputStream(new BufferedInputStream(new FileInputStream(f)));
@@ -24,7 +73,7 @@ public enum Globcover {
 			nameArr[2] = (char) dataStream.readByte();
 			nameArr[3] = (char) dataStream.readByte();
 			String name = new String(nameArr);
-			
+
 			if (name.equals("PLTE")) {
 				Globcover[] pallette = new Globcover[256];
 				for (int i = 0; i < 256; i++) {
@@ -34,7 +83,7 @@ public enum Globcover {
 					if (r < 0) r += 256;
 					if (g < 0) g += 256;
 					if (b < 0) b += 256;
-					
+
 					if (r == 170 && g == 240 && b == 240) {
 						pallette[i] = Globcover.IrrigatedCrops;
 					} else if (r == 255 && g == 255 && b == 100) {

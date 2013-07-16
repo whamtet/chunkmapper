@@ -3,7 +3,7 @@ package com.chunkmapper;
 
 
 
-public class Point extends java.awt.Point {
+public class Point extends java.awt.Point implements Comparable<Point> {
 //	public static Point pointFromCoordinate(Coordinate c) {
 //		return new Point((int) (c.x * 3600), (int) -(c.y * 3600));
 //	}
@@ -33,5 +33,9 @@ public class Point extends java.awt.Point {
 //		super(p.getX(), p.getZ());
 //		this.z = p.getZ();
 //	}
+	@Override
+	public int compareTo(Point arg0) {
+		return (new Integer(x)).compareTo(arg0.x);
+	}
 
 }

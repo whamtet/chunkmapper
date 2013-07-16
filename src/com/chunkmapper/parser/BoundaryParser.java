@@ -15,13 +15,14 @@ import java.util.HashSet;
 
 import com.chunkmapper.FileValidator;
 import com.chunkmapper.Point;
-import com.chunkmapper.resourceinfo.XapiCoastlineResourceInfo;
+import com.chunkmapper.resourceinfo.XapiBoundaryResourceInfo;
+import com.chunkmapper.sections.Boundary;
 import com.chunkmapper.sections.Coastline;
 
-public class CoastlineParser extends Parser {
+public class BoundaryParser extends Parser {
 
-	public static HashSet<Coastline> getCoastlines(int regionx, int regionz) throws IOException {
-		XapiCoastlineResourceInfo info = new XapiCoastlineResourceInfo(regionx, regionz);
+	public static HashSet<Boundary> getCoastlines(int regionx, int regionz) throws IOException {
+		XapiBoundaryResourceInfo info = new XapiBoundaryResourceInfo(regionx, regionz);
 		Reader rawReader = FileValidator.checkValid(info.file) ? new FileReader(info.file) : new InputStreamReader(info.url.openStream());
 		BufferedReader reader = new BufferedReader(rawReader);
 		String lina;
@@ -41,9 +42,10 @@ public class CoastlineParser extends Parser {
 		}
 
 		HashMap<Long, Point> locations = getLocations(lines);
-		HashSet<Coastline> coastlines = new HashSet<Coastline>();
+		HashSet<Boundary> boundaries = new HashSet<Boundary>();
 
-		boolean isCoastline = false;
+		boolean isBoundary = false;
+		String leftCountry = null, rightCountry = null;
 		int minx = Integer.MAX_VALUE, minz = Integer.MAX_VALUE;
 		int maxx = Integer.MIN_VALUE, maxz = Integer.MIN_VALUE;
 
@@ -54,7 +56,9 @@ public class CoastlineParser extends Parser {
 				continue;
 			if (tag.equals("way")) {
 				currentPoints = new ArrayList<Point>();
-				isCoastline = false;
+				isBoundary = false;
+				leftCountry = null;
+				rightCountry = null;
 				minx = Integer.MAX_VALUE; minz = Integer.MAX_VALUE;
 				maxx = Integer.MIN_VALUE; maxz = Integer.MIN_VALUE;
 			}
@@ -76,19 +80,20 @@ public class CoastlineParser extends Parser {
 			}
 			if (tag.equals("tag")) {
 				String k = getValue(line, "k"), v = getValue(line, "v");
-				isCoastline |= k.equals("natural") && v.equals("coastline");
+				isBoundary |= k.equals("boundary") && v.equals("administrative");
+				
 			}
-			if (tag.equals("/way") && isCoastline) {
-				if (isCoastline) {
+			if (tag.equals("/way") && isBoundary) {
+				if (isBoundary) {
 					Rectangle bbox = new Rectangle(minx, minz, maxx - minx, maxz - minz);
-					coastlines.add(new Coastline(currentPoints, bbox));
+					boundaries.add(new Boundary(currentPoints, bbox, leftCountry, rightCountry));
 				}
 			}
 		}
-		return coastlines;
+		return boundaries;
 	}
 	public static void main(String[] args) throws Exception {
-		double[] latlon = geocode.core.placeToCoords("cape reinga");
+		double[] latlon = geocode.core.placeToCoords("mong cai, vietnam");
 		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
 		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
 		System.out.println(getCoastlines(regionx, regionz).size());

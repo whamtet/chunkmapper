@@ -16,6 +16,7 @@ import com.chunkmapper.protoc.LakeContainer;
 import com.chunkmapper.protoc.LakeContainer.LakeRegion;
 import com.chunkmapper.protoc.PointContainer;
 import com.chunkmapper.protoc.RectangleContainer;
+import com.chunkmapper.protoc.admin.FileListManager;
 import com.chunkmapper.protoc.admin.OfflineFileListManager;
 import com.chunkmapper.sections.Lake;
 
@@ -23,11 +24,13 @@ public class BinaryLakeParser {
 
 	public static HashSet<Lake> getLakes(int regionx, int regionz) throws IOException, URISyntaxException, DataFormatException {
 		Rectangle myRectangle = new Rectangle(regionx * 512, regionz * 512, 512, 512);
-		BinaryLakeCache cache = new BinaryLakeCache(true);
+		boolean offline = false;
+		BinaryLakeCache cache = new BinaryLakeCache(offline);
 
 		HashSet<Lake> out = new HashSet<Lake>();
 		
-		for (FileInfo info : OfflineFileListManager.lakeFileList.getFilesList()) {
+//		for (FileInfo info : OfflineFileListManager.lakeFileList.getFilesList()) {
+		for (FileInfo info : FileListManager.getLakeFileList().getFilesList()) {
 			String[] split = info.getFile().split("_");
 
 			int x = Integer.parseInt(split[1]);

@@ -44,7 +44,7 @@ public class POIParser extends Parser {
 		boolean isPoi = false;
 		String text = null;
 		Point p = null;
-		ArrayList<Point> currentPoints = null;
+		Integer population = null;
 		for (String line : lines) {
 			String tag = RailParser.getTag(line);
 			if (tag == null)
@@ -54,15 +54,18 @@ public class POIParser extends Parser {
 				double lon = Double.parseDouble(getValue(line, "lon"));
 				p = new Point((int) (lon * 3600), (int) (-3600 * lat));
 				isPoi = false;
+				population = null;
 			}
 			if (tag.equals("tag")) {
 				String k = getValue(line, "k"), v = getValue(line, "v");
 				isPoi |= k.equals("place");
 				if (k.equals("name"))
 					text = v;
+				if (k.equals("population"))
+					population = Integer.parseInt(v);
 			}
 			if (tag.equals("/node") && isPoi) {
-				pois.add(new POI(p, text));
+				pois.add(new POI(p, text, population));
 			}
 		}
 		return pois;

@@ -16,17 +16,20 @@ import com.chunkmapper.protoc.PointContainer;
 import com.chunkmapper.protoc.RectangleContainer;
 import com.chunkmapper.protoc.RiverContainer;
 import com.chunkmapper.protoc.RiverContainer.RiverRegion;
+import com.chunkmapper.protoc.admin.FileListManager;
 import com.chunkmapper.protoc.admin.OfflineFileListManager;
 
 public class BinaryRiverParser {
 
 	public static ArrayList<RiverSection> getRiverSections(int regionx, int regionz) throws IOException, URISyntaxException, DataFormatException {
 		Rectangle myRectangle = new Rectangle(regionx * 512, regionz*512, 512, 512);
-		BinaryRiverCache cache = new BinaryRiverCache(true);
+		boolean offline = false;
+		BinaryRiverCache cache = new BinaryRiverCache(offline);
 
 		ArrayList<RiverSection> out = new ArrayList<RiverSection>();
 		
-		for (FileInfo info : OfflineFileListManager.riverFileList.getFilesList()) {
+//		for (FileInfo info : OfflineFileListManager.riverFileList.getFilesList()) {
+		for (FileInfo info : FileListManager.getRiverFileList().getFilesList()) {
 			String[] split = info.getFile().split("_");
 
 			int x = Integer.parseInt(split[1]);
