@@ -347,7 +347,7 @@ public class ArtifactWriter {
 	//	}
 
 	public static void placeLookout(Chunk chunk) {
-		int lookoutHeight = 12;
+		int lookoutHeight = 30;
 		//need to get base height
 		int h = Integer.MAX_VALUE;
 		if (chunk.getHeights(14, 1) < h) h = chunk.getHeights(14, 1);

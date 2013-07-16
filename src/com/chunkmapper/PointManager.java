@@ -27,7 +27,7 @@ public class PointManager {
 	//	private final ArrayList<Point> pointsAssigned = new ArrayList<Point>();
 	private final HashSet<Point> pointsAssigned = new HashSet<Point>();
 	private final File store;
-	public final static int RAD = 2, LON_RAD = 180 * 3600 / 512;
+	public final static int RAD = 3, LON_RAD = 180 * 3600 / 512;
 	private static volatile Point currentPlayerPosition;
 	
 	public static Point getCurrentPlayerPosition() {

@@ -21,7 +21,7 @@ import com.chunkmapper.sections.Coastline;
 
 public class BoundaryParser extends Parser {
 
-	public static HashSet<Boundary> getCoastlines(int regionx, int regionz) throws IOException {
+	public static HashSet<Boundary> getBoundaries(int regionx, int regionz) throws IOException {
 		XapiBoundaryResourceInfo info = new XapiBoundaryResourceInfo(regionx, regionz);
 		Reader rawReader = FileValidator.checkValid(info.file) ? new FileReader(info.file) : new InputStreamReader(info.url.openStream());
 		BufferedReader reader = new BufferedReader(rawReader);
@@ -45,7 +45,7 @@ public class BoundaryParser extends Parser {
 		HashSet<Boundary> boundaries = new HashSet<Boundary>();
 
 		boolean isBoundary = false;
-		String leftCountry = null, rightCountry = null;
+		String leftArea = null, rightArea = null;
 		int minx = Integer.MAX_VALUE, minz = Integer.MAX_VALUE;
 		int maxx = Integer.MIN_VALUE, maxz = Integer.MIN_VALUE;
 
@@ -57,8 +57,8 @@ public class BoundaryParser extends Parser {
 			if (tag.equals("way")) {
 				currentPoints = new ArrayList<Point>();
 				isBoundary = false;
-				leftCountry = null;
-				rightCountry = null;
+				leftArea = null;
+				rightArea = null;
 				minx = Integer.MAX_VALUE; minz = Integer.MAX_VALUE;
 				maxx = Integer.MIN_VALUE; maxz = Integer.MIN_VALUE;
 			}
@@ -81,12 +81,17 @@ public class BoundaryParser extends Parser {
 			if (tag.equals("tag")) {
 				String k = getValue(line, "k"), v = getValue(line, "v");
 				isBoundary |= k.equals("boundary") && v.equals("administrative");
-				
+//				if (k.equals("left:country"))
+				if (k.startsWith("left:"))
+					leftArea = v;
+//				if (k.equals("right:country"))
+				if (k.startsWith("right:"))
+					rightArea = v;
 			}
 			if (tag.equals("/way") && isBoundary) {
 				if (isBoundary) {
 					Rectangle bbox = new Rectangle(minx, minz, maxx - minx, maxz - minz);
-					boundaries.add(new Boundary(currentPoints, bbox, leftCountry, rightCountry));
+					boundaries.add(new Boundary(currentPoints, bbox, leftArea, rightArea));
 				}
 			}
 		}
@@ -96,6 +101,6 @@ public class BoundaryParser extends Parser {
 		double[] latlon = geocode.core.placeToCoords("mong cai, vietnam");
 		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
 		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
-		System.out.println(getCoastlines(regionx, regionz).size());
+		System.out.println(getBoundaries(regionx, regionz).size());
 	}
 }

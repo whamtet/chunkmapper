@@ -45,6 +45,7 @@ import com.chunkmapper.reader.GlobcoverReader;
 import com.chunkmapper.reader.GlobcoverReaderImpl2;
 import com.chunkmapper.reader.HeightsReaderImpl;
 import com.chunkmapper.reader.POIReader;
+import com.chunkmapper.reader.XapiBoundaryReader;
 import com.chunkmapper.reader.XapiCoastlineReader;
 import com.chunkmapper.reader.XapiLakeReader;
 import com.chunkmapper.reader.XapiRailReader;
@@ -57,6 +58,7 @@ public class GlobcoverManager {
 	private final XapiRailReader railReader;
 	private final POIReader poiReader;
 	private final DensityReader densityReader;
+	private final XapiBoundaryReader boundaryReader;
 	public final boolean allWater;
 	private final ArtifactWriter artifactWriter = new ArtifactWriter();
 	public final int regionx, regionz;
@@ -73,8 +75,10 @@ public class GlobcoverManager {
 			railReader = null;
 			poiReader = null;
 			densityReader = null;
+			boundaryReader = null;
 			return;
 		}
+		boundaryReader = new XapiBoundaryReader(regionx, regionz);
 		densityReader = new DensityReader(regionx, regionz);
 		GlobcoverReader coverReader = new GlobcoverReaderImpl2(regionx, regionz);
 
@@ -115,12 +119,12 @@ public class GlobcoverManager {
 					continue;
 				}
 				double absLat = absz > 0 ? absz / 3600. : -absz / 3600.;
-				double snowLine = 4000 * (75 - absLat) / 75.;
+//				double snowLine = 4000 * (75 - absLat) / 75.;
 				int realHeight = heightsReader.getRealHeightij(i, j);
-				if (realHeight >= snowLine) {
-					columns[i][j] = new Snow(absx, absz, heightsReader);
-					continue;
-				}
+//				if (realHeight >= snowLine) {
+//					columns[i][j] = new Snow(absx, absz, heightsReader);
+//					continue;
+//				}
 				//now for the rest
 				Globcover coverType = coverReader.getGlobcover(i, j);
 				switch (coverType) {
@@ -246,6 +250,9 @@ public class GlobcoverManager {
 		
 		//a special sign
 		POIReader.addSpecialLandmarks(chunk);
+		
+		//add country boundaries
+		boundaryReader.addBoundariesToChunk(chunkx, chunkz, chunk);
 
 		//finally add rail
 		boolean chunkHasRail = false;

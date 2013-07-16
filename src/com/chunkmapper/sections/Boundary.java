@@ -9,12 +9,12 @@ import com.chunkmapper.Point;
 public class Boundary implements Comparable<Boundary> {
 	public final ArrayList<Point> points;
 	public final Rectangle bbox;
-	public final String leftCountry, rightCountry;
+	public final String leftArea, rightArea;
 	public Boundary(ArrayList<Point> points, Rectangle bbox, String leftCountry, String rightCountry) {
 		this.points = points;
 		this.bbox = bbox;
-		this.leftCountry = leftCountry;
-		this.rightCountry = rightCountry;
+		this.leftArea = leftCountry;
+		this.rightArea = rightCountry;
 	}
 
 	public int hashCode() {

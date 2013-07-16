@@ -16,6 +16,8 @@ import java.util.Random;
 
 import javax.imageio.ImageIO;
 
+import org.apache.commons.io.FileUtils;
+
 import com.chunkmapper.FileValidator;
 import com.chunkmapper.Utila;
 import com.chunkmapper.enumeration.Globcover;
@@ -131,18 +133,26 @@ public class GlobcoverReaderImpl2 implements GlobcoverReader {
 		return mostlyLand;
 	}
 	public static void main(String[] args) throws Exception {
-		double[] latlon = geocode.core.placeToCoords("auckland, nz");
+//		double[] latlon = geocode.core.placeToCoords("auckland, nz");
+		double[] latlon = {-43.88, -176.15};
 		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
 		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
+//		int globx = Matthewmatics.div(regionx, REGION_WIDTH), globz = Matthewmatics.div(regionz, REGION_WIDTH);
+//		File cacheFile = new File(CACHE_DIR, "f_" + globx + "_" + globz + Utila.BINARY_SUFFIX);
+//		File destFile = new File("image.png");
+//		FileUtils.copyFile(cacheFile, destFile);
+//		Runtime.getRuntime().exec("open " + destFile.toString());
 		GlobcoverReaderImpl2 reader = new GlobcoverReaderImpl2(regionx, regionz);
+		System.out.println(reader.mostlyLand());
+//		System.out.println(reader.getGlobcover(100, 100));
 		
-		PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter("/Users/matthewmolloy/python/wms/data.csv")));
-		for (int i = 0; i < 512; i++) {
-			for (int j = 0; j < 512; j++) {
-				pw.println(reader.getValueij(i, j));
-			}
-		}
-		pw.close();
+//		PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter("/Users/matthewmolloy/python/wms/data.csv")));
+//		for (int i = 0; i < 512; i++) {
+//			for (int j = 0; j < 512; j++) {
+//				pw.println(reader.getValueij(i, j));
+//			}
+//		}
+//		pw.close();
 		
 	}
 	private static void checkFileInfo() throws IOException {

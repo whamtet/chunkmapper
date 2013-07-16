@@ -43,22 +43,13 @@ public class LenteTreeWriter {
 	public static void placeLenteTree(int absx, int absz, Chunk chunk,
 			HeightsReader heightsReader, LenteTree lenteTree) throws IOException {
 		SchematicProtocolWrapper wrapper = protocols.get(lenteTree);
-//		Schematic s;
-//		if (schematics.contains(lenteTree)) {
-//			s = schematics.get(lenteTree);
-//		} else {
-//			String name = lenteTree.toString().replace("_", " ");
-//			File f = new File("/Users/matthewmolloy/workspace/chunkmapper2/resources/trees/" + name + ".schematic");
-//			s = Schematic.load(f);
-//			schematics.put(lenteTree, s);
-//		}
-//		Point3i d = s.getDimensions();
+
 		int xmax = wrapper.xmax, ymax = wrapper.ymax, zmax = wrapper.zmax;
 		int minHeight = Integer.MAX_VALUE;
 		for (int x = 0; x < xmax; x++) {
 			for (int z = 0; z < zmax; z++) {
 				if (wrapper.blocks[0][z][x] != 0) {
-					int h = heightsReader.getHeightxz(absx + x, absz + z);
+					int h = heightsReader.getHeightxz(absx + x - xmax/2, absz + z - zmax/2);
 					if (h < minHeight)
 						minHeight = h;
 				}

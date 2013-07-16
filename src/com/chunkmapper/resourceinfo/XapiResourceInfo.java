@@ -31,6 +31,14 @@ public class XapiResourceInfo extends ResourceInfo {
 //		super(address, cacheDirectory, fileName);
 //		// TODO Auto-generated constructor stub
 //	}
+	
+	public static void main(String[] args) throws Exception {
+		double[] latlon = geocode.core.placeToCoords("new plymouth, nz");
+		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
+		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
+		XapiResourceInfo info = new XapiResourceInfo(regionx, regionz);
+		System.out.println(info.url);
+	}
 
 	/**
 	 * @param args
