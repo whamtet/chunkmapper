@@ -12,6 +12,7 @@ import com.chunkmapper.protoc.ServerInfoContainer.ServerInfo;
 public class ServerInfoManager {
 	private static ServerInfo serverInfo;
 	
+	//method synchronized locks on entire object, so be careful here!
 	public static synchronized ServerInfo getServerInfo() {
 		if (serverInfo == null) {
 			serverInfo = doGetServerInfo();

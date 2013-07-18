@@ -56,6 +56,7 @@ public class GameMetaInfo {
 			e.printStackTrace();
 		}
 	}
+	//numChunksmade is the only mutable field, so its okay to lock on the whole object
 	public synchronized void incrementChunksMade() {
 		numChunksMade++;
 		save();

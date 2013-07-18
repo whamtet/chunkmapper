@@ -12,9 +12,9 @@ import java.util.Collection;
 import java.util.zip.DataFormatException;
 
 import com.chunkmapper.Point;
-import com.chunkmapper.binaryparser.BinaryBorderParser;
 import com.chunkmapper.chunk.Chunk;
 import com.chunkmapper.enumeration.Blocka;
+import com.chunkmapper.parser.BoundaryParser;
 import com.chunkmapper.sections.Boundary;
 import com.chunkmapper.writer.ArtifactWriter;
 
@@ -107,7 +107,7 @@ public class XapiBoundaryReader {
 	}
 	public XapiBoundaryReader(int regionx, int regionz) throws IOException, URISyntaxException, DataFormatException {
 
-		Collection<Boundary> boundaries = BinaryBorderParser.getOfflineBorders(regionx, regionz);
+		Collection<Boundary> boundaries = BoundaryParser.getBoundaries(regionx, regionz);
 		hasBorder = boundaries.size() > 0;
 
 		for (Boundary boundary : boundaries) {
