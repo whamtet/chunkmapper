@@ -1,36 +1,69 @@
 package com.chunkmapper.protoc.wrapper;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
-import com.chunkmapper.protoc.CoastlineContainer.CoastlineRegion;
-import com.chunkmapper.protoc.CoastlineContainer.CoastlineRegion.Builder;
-import com.google.protobuf.InvalidProtocolBufferException;
+import com.chunkmapper.protoc.CoastlineContainer.CoastlineSection;
 
 public class CoastlineRegionBuilder implements RegionBuilder {
-	public CoastlineRegion.Builder builder;
-	public CoastlineRegionBuilder() {
-		builder = CoastlineRegion.newBuilder();
-	}
-	public CoastlineRegionBuilder(Builder newBuilder) {
-		builder = newBuilder;
-	}
+	public final ArrayList<CoastlineSection> coastlines = new ArrayList<CoastlineSection>();
 	
-	public RegionBuilder addSection(SectionWrapper section) {
+	@Override
+	public RegionBuilder newBuilder() {
+		return new CoastlineRegionBuilder();
+	}
+
+	@Override
+	public List<SectionWrapper> getSections() {
+		ArrayList<SectionWrapper> out = new ArrayList<SectionWrapper>();
+		for (CoastlineSection coastline : coastlines) {
+			out.add(new CoastlineSectionWrapper(coastline));
+		}
+		return out;
+	}
+
+	@Override
+	public void addSection(SectionWrapper section) {
 		CoastlineSectionWrapper section2 = (CoastlineSectionWrapper) section;
-		builder.addCoastlineSections(section2.coastlineSection);
-		return this;
+		coastlines.add(section2.coastline);
 	}
-	public RegionWrapper build() {
-		return new CoastlineRegionWrapper(builder.build());
-	}
+
+	@Override
 	public int getSectionCount() {
-		return builder.getCoastlineSectionsCount();
+		return coastlines.size();
 	}
-	public RegionWrapper getRegionWrapper(InputStream in) throws IOException {
-		return new CoastlineRegionWrapper(CoastlineRegion.parseFrom(in));
+
+	@Override
+	public RegionBuilder newBuilder(InputStream in) throws IOException {
+		DataInputStream in2 = new DataInputStream(in);
+		CoastlineRegionBuilder builder = new CoastlineRegionBuilder();
+		try {
+			while(true) {
+				int len = in2.readInt();
+				byte[] data = new byte[len];
+				in2.readFully(data);
+				builder.addSection(new CoastlineSectionWrapper(CoastlineSection.parseFrom(data)));
+			}
+		} catch (EOFException e) {}
+		return builder;
 	}
-	public RegionWrapper getRegionWrapper(byte[] data) throws InvalidProtocolBufferException {
-		return new CoastlineRegionWrapper(CoastlineRegion.parseFrom(data));
+
+	@Override
+	public byte[] toByteArray() throws IOException {
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		DataOutputStream out2 = new DataOutputStream(out);
+		for (CoastlineSection coastline : coastlines) {
+			byte[] data = coastline.toByteArray();
+			out2.writeInt(data.length);
+			out2.write(data);
+		}
+		return out.toByteArray();
 	}
+
 }

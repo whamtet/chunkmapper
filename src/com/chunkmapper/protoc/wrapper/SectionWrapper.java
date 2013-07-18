@@ -1,14 +1,15 @@
 package com.chunkmapper.protoc.wrapper;
 
-import com.google.protobuf.InvalidProtocolBufferException;
+import java.awt.Rectangle;
+import java.io.IOException;
+import java.io.InputStream;
 
 public interface SectionWrapper {
 
+	public Rectangle getBbox();
 
-	public java.awt.Rectangle getBbox();
+	public RegionBuilder getRegion(InputStream in) throws IOException;
 
-	public RegionBuilder newRegionBuilder();
-
-	public RegionBuilder newRegionBuilder(byte[] data) throws InvalidProtocolBufferException;
+	public byte[] toByteArray();
 
 }

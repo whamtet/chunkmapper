@@ -1,0 +1,18 @@
+syntax = "proto2";
+
+option optimize_for = LITE_RUNTIME;
+option java_package = "com.chunkmapper.protoc";
+
+import "PointContainer.proto";
+import "RectangleContainer.proto";
+
+message BorderSection {
+	repeated Point points = 1;
+	required Rectangle bbox = 2;
+	required string left_area = 3;
+	required string right_area = 4;
+}
+
+message BorderRegion {
+	repeated BorderSection border_sections = 1;
+}

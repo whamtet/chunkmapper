@@ -35,6 +35,16 @@ public final class POIContainer {
      */
     com.google.protobuf.ByteString
         getTextBytes();
+
+    // required int32 population = 3;
+    /**
+     * <code>required int32 population = 3;</code>
+     */
+    boolean hasPopulation();
+    /**
+     * <code>required int32 population = 3;</code>
+     */
+    int getPopulation();
   }
   /**
    * Protobuf type {@code POI}
@@ -95,6 +105,11 @@ public final class POIContainer {
             case 18: {
               bitField0_ |= 0x00000002;
               text_ = input.readBytes();
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              population_ = input.readInt32();
               break;
             }
           }
@@ -183,9 +198,26 @@ public final class POIContainer {
       }
     }
 
+    // required int32 population = 3;
+    public static final int POPULATION_FIELD_NUMBER = 3;
+    private int population_;
+    /**
+     * <code>required int32 population = 3;</code>
+     */
+    public boolean hasPopulation() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>required int32 population = 3;</code>
+     */
+    public int getPopulation() {
+      return population_;
+    }
+
     private void initFields() {
       point_ = com.chunkmapper.protoc.PointContainer.Point.getDefaultInstance();
       text_ = "";
+      population_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -197,6 +229,10 @@ public final class POIContainer {
         return false;
       }
       if (!hasText()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasPopulation()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -217,6 +253,9 @@ public final class POIContainer {
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         output.writeBytes(2, getTextBytes());
       }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeInt32(3, population_);
+      }
     }
 
     private int memoizedSerializedSize = -1;
@@ -232,6 +271,10 @@ public final class POIContainer {
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(2, getTextBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(3, population_);
       }
       memoizedSerializedSize = size;
       return size;
@@ -328,6 +371,8 @@ public final class POIContainer {
         bitField0_ = (bitField0_ & ~0x00000001);
         text_ = "";
         bitField0_ = (bitField0_ & ~0x00000002);
+        population_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
 
@@ -359,6 +404,10 @@ public final class POIContainer {
           to_bitField0_ |= 0x00000002;
         }
         result.text_ = text_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.population_ = population_;
         result.bitField0_ = to_bitField0_;
         return result;
       }
@@ -373,6 +422,9 @@ public final class POIContainer {
           text_ = other.text_;
           
         }
+        if (other.hasPopulation()) {
+          setPopulation(other.getPopulation());
+        }
         return this;
       }
 
@@ -382,6 +434,10 @@ public final class POIContainer {
           return false;
         }
         if (!hasText()) {
+          
+          return false;
+        }
+        if (!hasPopulation()) {
           
           return false;
         }
@@ -542,6 +598,39 @@ public final class POIContainer {
   }
   bitField0_ |= 0x00000002;
         text_ = value;
+        
+        return this;
+      }
+
+      // required int32 population = 3;
+      private int population_ ;
+      /**
+       * <code>required int32 population = 3;</code>
+       */
+      public boolean hasPopulation() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>required int32 population = 3;</code>
+       */
+      public int getPopulation() {
+        return population_;
+      }
+      /**
+       * <code>required int32 population = 3;</code>
+       */
+      public Builder setPopulation(int value) {
+        bitField0_ |= 0x00000004;
+        population_ = value;
+        
+        return this;
+      }
+      /**
+       * <code>required int32 population = 3;</code>
+       */
+      public Builder clearPopulation() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        population_ = 0;
         
         return this;
       }

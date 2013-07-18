@@ -2,20 +2,20 @@ package com.chunkmapper.protoc.wrapper;
 
 import java.io.IOException;
 import java.io.InputStream;
-
-import com.google.protobuf.InvalidProtocolBufferException;
-
+import java.util.List;
 
 public interface RegionBuilder {
 
-	public RegionBuilder addSection(SectionWrapper section);
+	public RegionBuilder newBuilder();
 
-	public RegionWrapper build();
+	public List<SectionWrapper> getSections();
+
+	public void addSection(SectionWrapper section);
 
 	public int getSectionCount();
 
-	public RegionWrapper getRegionWrapper(InputStream in) throws IOException;
+	public RegionBuilder newBuilder(InputStream in) throws IOException;
 
-	public RegionWrapper getRegionWrapper(byte[] data) throws InvalidProtocolBufferException;
+	public byte[] toByteArray() throws IOException;
 
 }

@@ -5,12 +5,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Random;
 
-import javax.vecmath.Point3i;
-
 import net.minecraft.world.level.chunk.storage.RegionFile;
 
 import org.apache.commons.io.FileUtils;
-import org.pepsoft.worldpainter.layers.bo2.Schematic;
 
 import com.chunkmapper.chunk.Chunk;
 import com.chunkmapper.column2.AbstractColumn;
@@ -98,21 +95,21 @@ public class SingleTerrainManager {
 		regionFile.close();
 		System.out.println("done");
 	}
-	private static void getMaximumDimensions() throws IOException {
-		//gets the maximum dimension of a lente tree
-		File dir = new File("resources/trees");
-		int x = 0, z = 0;
-		for (File f : dir.listFiles()) {
-			if (f.getName().endsWith(".schematic")) {
-				Schematic s = Schematic.load(f);
-				Point3i d = s.getDimensions();
-				if (d.x > x)
-					x = d.x;
-				if (d.z > z)
-					z = d.z;
-			}
-		}
-		System.out.println(x + ", " + z);
-	}
+//	private static void getMaximumDimensions() throws IOException {
+//		//gets the maximum dimension of a lente tree
+//		File dir = new File("resources/trees");
+//		int x = 0, z = 0;
+//		for (File f : dir.listFiles()) {
+//			if (f.getName().endsWith(".schematic")) {
+//				Schematic s = Schematic.load(f);
+//				Point3i d = s.getDimensions();
+//				if (d.x > x)
+//					x = d.x;
+//				if (d.z > z)
+//					z = d.z;
+//			}
+//		}
+//		System.out.println(x + ", " + z);
+//	}
 
 }

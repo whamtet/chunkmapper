@@ -9,6 +9,7 @@ import "RectangleContainer.proto";
 message POI {
 	required Point point = 1;
 	required string text = 2;
+	required int32 population = 3;
 }
 
 message POIRegion {

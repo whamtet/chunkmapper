@@ -8,18 +8,18 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
+import com.chunkmapper.protoc.BorderContainer.BorderSection;
 import com.chunkmapper.protoc.LakeContainer.Lake;
 import com.chunkmapper.protoc.PointContainer;
-import com.chunkmapper.protoc.RailSectionContainer.RailSection;
 import com.chunkmapper.protoc.RectangleContainer;
 
-public class RailSectionWrapper implements SectionWrapper {
-	public final RailSection railSection;
+public class BorderWrapper implements SectionWrapper {
+	public final BorderSection borderSection;
 	public final Rectangle bbox;
 	public final ArrayList<Point> points = new ArrayList<Point>();
 	
-	public RailSectionWrapper(RailSection section) {
-		railSection = section;
+	public BorderWrapper(BorderSection section) {
+		this.borderSection = section;
 		RectangleContainer.Rectangle r = section.getBbox();
 		bbox = new Rectangle(r.getX(), r.getZ(), r.getWidth(), r.getHeight());
 		for (PointContainer.Point rawPoint : section.getPointsList()) {
@@ -33,14 +33,14 @@ public class RailSectionWrapper implements SectionWrapper {
 
 	@Override
 	public RegionBuilder getRegion(InputStream in) throws IOException {
-		RegionBuilder out = new RailRegionBuilder();
+		RegionBuilder out = new BorderRegionBuilder();
 		DataInputStream in2 = new DataInputStream(in);
 		try {
 			while (true) {
 				int size = in2.readInt();
 				byte[] data = new byte[size];
 				in2.readFully(data);
-				out.addSection(new RailSectionWrapper(RailSection.parseFrom(data)));
+				out.addSection(new BorderWrapper(BorderSection.parseFrom(data)));
 			}
 		} catch (EOFException e) {
 		}
@@ -49,7 +49,7 @@ public class RailSectionWrapper implements SectionWrapper {
 
 	@Override
 	public byte[] toByteArray() {
-		return railSection.toByteArray();
+		return borderSection.toByteArray();
 	}
 	
 	@Override
@@ -61,9 +61,9 @@ public class RailSectionWrapper implements SectionWrapper {
 	public boolean equals(Object other) {
 		if (other == null)
 			return false;
-		if (!(other instanceof RailSectionWrapper))
+		if (!(other instanceof BorderWrapper))
 			return false;
-		RailSectionWrapper other2 = (RailSectionWrapper) other;
+		BorderWrapper other2 = (BorderWrapper) other;
 		
 		if (other2.points.size() != points.size())
 			return false;
@@ -73,7 +73,4 @@ public class RailSectionWrapper implements SectionWrapper {
 		}
 		return true;
 	}
-//		
-	
-
 }

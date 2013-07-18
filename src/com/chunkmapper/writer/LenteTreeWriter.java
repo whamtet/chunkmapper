@@ -3,9 +3,6 @@ package com.chunkmapper.writer;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.concurrent.ConcurrentHashMap;
-
-import org.pepsoft.worldpainter.layers.bo2.Schematic;
 
 import com.chunkmapper.Zip;
 import com.chunkmapper.chunk.Chunk;
@@ -16,7 +13,6 @@ import com.chunkmapper.reader.HeightsReader;
 import com.chunkmapper.reader.UniformHeightsReader;
 
 public class LenteTreeWriter {
-	private static final ConcurrentHashMap<LenteTree, Schematic> schematics = new ConcurrentHashMap<LenteTree, Schematic>();
 	private static final HashMap<LenteTree, SchematicProtocolWrapper> protocols =
 			new HashMap<LenteTree, SchematicProtocolWrapper>();
 	static {
