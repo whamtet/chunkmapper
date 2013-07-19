@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import com.chunkmapper.Point;
 
-public class Lake {
+public class Lake extends Section {
 	public ArrayList<Point> points;
 	public final Rectangle bbox;
 	public final boolean isCove, isLagoon;

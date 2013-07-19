@@ -6,15 +6,17 @@ import java.util.Collections;
 
 import com.chunkmapper.Point;
 
-public class Boundary implements Comparable<Boundary> {
+public class Boundary extends Section implements Comparable<Boundary> {
 	public final ArrayList<Point> points;
 	public final Rectangle bbox;
 	public final String leftArea, rightArea;
-	public Boundary(ArrayList<Point> points, Rectangle bbox, String leftCountry, String rightCountry) {
+	public final int adminLevel;
+	public Boundary(ArrayList<Point> points, Rectangle bbox, String leftCountry, String rightCountry, int adminLevel) {
 		this.points = points;
 		this.bbox = bbox;
 		this.leftArea = leftCountry;
 		this.rightArea = rightCountry;
+		this.adminLevel = adminLevel;
 	}
 
 	public int hashCode() {

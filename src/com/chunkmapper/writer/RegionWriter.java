@@ -83,6 +83,7 @@ public class RegionWriter extends Tasker {
 
 		if (coverManager.allWater) {
 			pointManager.updateStore(task);
+			mappedSquareManager.addPoint(new Point(task.x + rootPoint.x, task.z + rootPoint.z));
 			return;
 		}
 

@@ -11,6 +11,8 @@ import com.chunkmapper.protoc.ServerInfoContainer.ServerInfo;
 
 public class FileListManager {
 	private static FileList railFileList, riverFileList, lakeFileList, coastlinesFileList, globcoverFileList;
+	private static Object railKey = new Object(), riverKey = new Object(), lakeKey = new Object(),
+			coastlineKey = new Object(), globcoverKey = new Object();
 
 	private static FileList getFileList(URL url) {
 		try {
@@ -26,7 +28,7 @@ public class FileListManager {
 	}
 
 	public static  FileList getCoastlinesFileList() throws MalformedURLException {
-		synchronized(coastlinesFileList) {
+		synchronized(coastlineKey) {
 			if (coastlinesFileList == null) {
 				ServerInfo info = ServerInfoManager.getServerInfo();
 				coastlinesFileList = getFileList(new URL(info.getCoastlineAddress() + "master.pbf"));
@@ -35,7 +37,7 @@ public class FileListManager {
 		}
 	}
 	public static  FileList getGlobcoverFileList() throws MalformedURLException {
-		synchronized(globcoverFileList) {
+		synchronized(globcoverKey) {
 			if (globcoverFileList == null) {
 				ServerInfo info = ServerInfoManager.getServerInfo();
 				globcoverFileList = getFileList(new URL(info.getGlobcoverAddress() + "master.pbf"));
@@ -44,7 +46,7 @@ public class FileListManager {
 		}
 	}
 	public static  FileList getRailFileList() throws MalformedURLException {
-		synchronized(railFileList) {
+		synchronized(railKey) {
 			if (railFileList == null) {
 				ServerInfo info = ServerInfoManager.getServerInfo();
 				railFileList = getFileList(new URL(info.getRailAddress() + "master.pbf"));
@@ -53,7 +55,7 @@ public class FileListManager {
 		}
 	}
 	public static  FileList getRiverFileList() throws MalformedURLException {
-		synchronized(riverFileList) {
+		synchronized(riverKey) {
 			if (riverFileList == null) {
 				ServerInfo info = ServerInfoManager.getServerInfo();
 				riverFileList = getFileList(new URL(info.getRiverAddress() + "master.pbf"));
@@ -62,7 +64,7 @@ public class FileListManager {
 		}
 	}
 	public static  FileList getLakeFileList() throws MalformedURLException {
-		synchronized(lakeFileList) {
+		synchronized(lakeKey) {
 			if (lakeFileList == null) {
 				ServerInfo info = ServerInfoManager.getServerInfo();
 				lakeFileList = getFileList(new URL(info.getLakeAddress() + "master.pbf"));

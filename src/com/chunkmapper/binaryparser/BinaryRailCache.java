@@ -20,7 +20,7 @@ import com.chunkmapper.protoc.RailSectionContainer;
 import com.chunkmapper.protoc.RectangleContainer;
 import com.chunkmapper.protoc.ServerInfoContainer.ServerInfo;
 import com.chunkmapper.protoc.admin.ServerInfoManager;
-import com.chunkmapper.rail.RailSection;
+import com.chunkmapper.sections.RailSection;
 
 public class BinaryRailCache {
 	private boolean offline;

@@ -10,9 +10,12 @@ import java.util.zip.DataFormatException;
 
 import com.chunkmapper.Point;
 import com.chunkmapper.binaryparser.BinaryLakeParser;
+import com.chunkmapper.downloader.OSMDownloader;
+import com.chunkmapper.enumeration.OSMSource;
 import com.chunkmapper.math.Matthewmatics;
+import com.chunkmapper.parser.LakeParser;
 import com.chunkmapper.sections.Lake;
-import com.chunkmapper.sections.Section;
+import com.chunkmapper.sections.RenderingSection;
 
 
 public class XapiLakeReader {
@@ -28,7 +31,7 @@ public class XapiLakeReader {
 
 	public XapiLakeReader(int regionx, int regionz) throws IOException, FileNotYetAvailableException, URISyntaxException, DataFormatException {
 
-		HashSet<Lake> lakes = BinaryLakeParser.getLakes(regionx, regionz);
+		Collection<Lake> lakes = (Collection<Lake>) OSMDownloader.getSections(OSMSource.lakes, regionx, regionz);
 		if (lakes.size() == 0) {
 			return;
 		}
@@ -67,7 +70,7 @@ public class XapiLakeReader {
 			}
 		}
 
-		ArrayList<Section> sections = new ArrayList<Section>();
+		ArrayList<RenderingSection> sections = new ArrayList<RenderingSection>();
 		for (Lake lake : closedLakes) {
 			ArrayList<Point> points = lake.points;
 			points.remove(points.size() - 1);
@@ -81,7 +84,7 @@ public class XapiLakeReader {
 						previous = wrappedGet(points, j);
 					}
 
-					sections.add(new Section(previous, a, b));
+					sections.add(new RenderingSection(previous, a, b));
 				}
 			}
 		}
@@ -90,7 +93,7 @@ public class XapiLakeReader {
 			int absz = z + regionz * 512;
 			ArrayList<Integer> intersections = new ArrayList<Integer>();
 			for (int i = 0; i < sections.size(); i++) {
-				Section section = sections.get(i);
+				RenderingSection section = sections.get(i);
 				Integer intersection = section.getIntersection(absz);
 				if (intersection != null) {
 					intersections.add(intersection);

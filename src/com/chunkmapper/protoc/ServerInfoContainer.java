@@ -100,6 +100,16 @@ public final class ServerInfoContainer {
      */
     com.google.protobuf.ByteString
         getGlobcoverAddressBytes();
+
+    // optional bool get_xapi = 7;
+    /**
+     * <code>optional bool get_xapi = 7;</code>
+     */
+    boolean hasGetXapi();
+    /**
+     * <code>optional bool get_xapi = 7;</code>
+     */
+    boolean getGetXapi();
   }
   /**
    * Protobuf type {@code ServerInfo}
@@ -172,6 +182,11 @@ public final class ServerInfoContainer {
             case 50: {
               bitField0_ |= 0x00000020;
               globcoverAddress_ = input.readBytes();
+              break;
+            }
+            case 56: {
+              bitField0_ |= 0x00000040;
+              getXapi_ = input.readBool();
               break;
             }
           }
@@ -459,6 +474,22 @@ public final class ServerInfoContainer {
       }
     }
 
+    // optional bool get_xapi = 7;
+    public static final int GET_XAPI_FIELD_NUMBER = 7;
+    private boolean getXapi_;
+    /**
+     * <code>optional bool get_xapi = 7;</code>
+     */
+    public boolean hasGetXapi() {
+      return ((bitField0_ & 0x00000040) == 0x00000040);
+    }
+    /**
+     * <code>optional bool get_xapi = 7;</code>
+     */
+    public boolean getGetXapi() {
+      return getXapi_;
+    }
+
     private void initFields() {
       railAddress_ = "";
       riverAddress_ = "";
@@ -466,6 +497,7 @@ public final class ServerInfoContainer {
       coastlineAddress_ = "";
       poiAddress_ = "";
       globcoverAddress_ = "";
+      getXapi_ = false;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -496,6 +528,9 @@ public final class ServerInfoContainer {
       }
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
         output.writeBytes(6, getGlobcoverAddressBytes());
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        output.writeBool(7, getXapi_);
       }
     }
 
@@ -528,6 +563,10 @@ public final class ServerInfoContainer {
       if (((bitField0_ & 0x00000020) == 0x00000020)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(6, getGlobcoverAddressBytes());
+      }
+      if (((bitField0_ & 0x00000040) == 0x00000040)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(7, getXapi_);
       }
       memoizedSerializedSize = size;
       return size;
@@ -632,6 +671,8 @@ public final class ServerInfoContainer {
         bitField0_ = (bitField0_ & ~0x00000010);
         globcoverAddress_ = "";
         bitField0_ = (bitField0_ & ~0x00000020);
+        getXapi_ = false;
+        bitField0_ = (bitField0_ & ~0x00000040);
         return this;
       }
 
@@ -679,6 +720,10 @@ public final class ServerInfoContainer {
           to_bitField0_ |= 0x00000020;
         }
         result.globcoverAddress_ = globcoverAddress_;
+        if (((from_bitField0_ & 0x00000040) == 0x00000040)) {
+          to_bitField0_ |= 0x00000040;
+        }
+        result.getXapi_ = getXapi_;
         result.bitField0_ = to_bitField0_;
         return result;
       }
@@ -714,6 +759,9 @@ public final class ServerInfoContainer {
           bitField0_ |= 0x00000020;
           globcoverAddress_ = other.globcoverAddress_;
           
+        }
+        if (other.hasGetXapi()) {
+          setGetXapi(other.getGetXapi());
         }
         return this;
       }
@@ -1181,6 +1229,39 @@ public final class ServerInfoContainer {
   }
   bitField0_ |= 0x00000020;
         globcoverAddress_ = value;
+        
+        return this;
+      }
+
+      // optional bool get_xapi = 7;
+      private boolean getXapi_ ;
+      /**
+       * <code>optional bool get_xapi = 7;</code>
+       */
+      public boolean hasGetXapi() {
+        return ((bitField0_ & 0x00000040) == 0x00000040);
+      }
+      /**
+       * <code>optional bool get_xapi = 7;</code>
+       */
+      public boolean getGetXapi() {
+        return getXapi_;
+      }
+      /**
+       * <code>optional bool get_xapi = 7;</code>
+       */
+      public Builder setGetXapi(boolean value) {
+        bitField0_ |= 0x00000040;
+        getXapi_ = value;
+        
+        return this;
+      }
+      /**
+       * <code>optional bool get_xapi = 7;</code>
+       */
+      public Builder clearGetXapi() {
+        bitField0_ = (bitField0_ & ~0x00000040);
+        getXapi_ = false;
         
         return this;
       }

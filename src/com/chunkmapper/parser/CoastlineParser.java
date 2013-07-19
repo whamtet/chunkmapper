@@ -20,25 +20,7 @@ import com.chunkmapper.sections.Coastline;
 
 public class CoastlineParser extends Parser {
 
-	public static HashSet<Coastline> getCoastlines(int regionx, int regionz) throws IOException {
-		XapiCoastlineResourceInfo info = new XapiCoastlineResourceInfo(regionx, regionz);
-		Reader rawReader = FileValidator.checkValid(info.file) ? new FileReader(info.file) : new InputStreamReader(info.url.openStream());
-		BufferedReader reader = new BufferedReader(rawReader);
-		String lina;
-		ArrayList<String> lines = new ArrayList<String>();
-		while ((lina = reader.readLine()) != null) {
-			lines.add(lina);
-		}
-		reader.close();
-
-		if (!FileValidator.checkValid(info.file)) {
-			PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(info.file)));
-			for (String line : lines) {
-				pw.println(line);
-			}
-			pw.close();
-			FileValidator.setValid(info.file);
-		}
+	public static HashSet<Coastline> getCoastlines(ArrayList<String> lines) {
 
 		HashMap<Long, Point> locations = getLocations(lines);
 		HashSet<Coastline> coastlines = new HashSet<Coastline>();
@@ -86,11 +68,5 @@ public class CoastlineParser extends Parser {
 			}
 		}
 		return coastlines;
-	}
-	public static void main(String[] args) throws Exception {
-		double[] latlon = geocode.core.placeToCoords("cape reinga");
-		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
-		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
-		System.out.println(getCoastlines(regionx, regionz).size());
 	}
 }

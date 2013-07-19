@@ -20,26 +20,7 @@ import com.chunkmapper.sections.Lake;
 
 public class LakeParser extends Parser {
 
-	public static HashSet<Lake> getLakes(int regionx, int regionz) throws IOException {
-		XapiLakeResourceInfo info = new XapiLakeResourceInfo(regionx, regionz);
-		Reader rawReader = FileValidator.checkValid(info.file) ? new FileReader(info.file) : new InputStreamReader(info.url.openStream());
-		BufferedReader reader = new BufferedReader(rawReader);
-		String lina;
-		ArrayList<String> lines = new ArrayList<String>();
-		while ((lina = reader.readLine()) != null) {
-			lines.add(lina);
-		}
-		reader.close();
-
-		if (!FileValidator.checkValid(info.file)) {
-			PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(info.file)));
-			for (String line : lines) {
-				pw.println(line);
-			}
-			pw.close();
-			FileValidator.setValid(info.file);
-		}
-		
+	public static HashSet<Lake> getLakes(ArrayList<String> lines) {
 
 		HashMap<Long, Point> locations = getLocations(lines);
 		HashSet<Lake> lakes = new HashSet<Lake>();

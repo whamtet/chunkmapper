@@ -10,4 +10,5 @@ message ServerInfo {
 	optional string coastline_address = 4;
 	optional string poi_address = 5;
 	optional string globcover_address = 6;
+	optional bool get_xapi = 7;
 }

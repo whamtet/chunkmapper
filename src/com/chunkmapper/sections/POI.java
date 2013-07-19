@@ -2,7 +2,7 @@ package com.chunkmapper.sections;
 
 import com.chunkmapper.Point;
 
-public class POI {
+public class POI extends Section {
 	public final String text;
 	public final Point point;
 	public final Integer population;

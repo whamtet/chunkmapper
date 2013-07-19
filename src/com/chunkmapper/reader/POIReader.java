@@ -1,24 +1,27 @@
 package com.chunkmapper.reader;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Collection;
 
 import com.chunkmapper.chunk.Chunk;
+import com.chunkmapper.downloader.OSMDownloader;
+import com.chunkmapper.enumeration.OSMSource;
 import com.chunkmapper.parser.POIParser;
 import com.chunkmapper.sections.POI;
 import com.chunkmapper.writer.ArtifactWriter;
 
 public class POIReader {
-	private HashSet<POI> pois;
+	private Collection<POI> pois;
 	private static final ArrayList<SpecialPlace> specialPlaces = new ArrayList<SpecialPlace>();
 	static {
 		specialPlaces.add(new SpecialPlace(new String[] {"home"}, -27.5037, 153.0040));
 		specialPlaces.add(new SpecialPlace(new String[] {"ma", "and", "pa"}, -39.0743, 174.0952));
 		specialPlaces.add(new SpecialPlace(new String[] {"pete's", "house"}, -43.518, 172.583));
 	}
-	public POIReader(int regionx, int regionz) throws IOException {
-		pois = POIParser.getPois(regionx, regionz);
+	public POIReader(int regionx, int regionz, Collection<POI> pois2) throws IOException, URISyntaxException {
+		pois = pois2;
 	}
 	public void addSigns(Chunk chunk) {
 		for (POI poi : pois) {

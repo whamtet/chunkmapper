@@ -13,7 +13,9 @@ import java.util.zip.DataFormatException;
 
 import com.chunkmapper.Point;
 import com.chunkmapper.chunk.Chunk;
+import com.chunkmapper.downloader.OSMDownloader;
 import com.chunkmapper.enumeration.Blocka;
+import com.chunkmapper.enumeration.OSMSource;
 import com.chunkmapper.parser.BoundaryParser;
 import com.chunkmapper.sections.Boundary;
 import com.chunkmapper.writer.ArtifactWriter;
@@ -107,27 +109,29 @@ public class XapiBoundaryReader {
 	}
 	public XapiBoundaryReader(int regionx, int regionz) throws IOException, URISyntaxException, DataFormatException {
 
-		Collection<Boundary> boundaries = BoundaryParser.getBoundaries(regionx, regionz);
+		Collection<Boundary> boundaries = (Collection<Boundary>) OSMDownloader.getSections(OSMSource.boundaries, regionx, regionz);
 		hasBorder = boundaries.size() > 0;
 
 		for (Boundary boundary : boundaries) {
-			int limit = boundary.points.size() - 1;
-			for (int i = 0; i < limit; i++) {
-				Point p1 = boundary.points.get(i), p2 = boundary.points.get(i+1);
-				if (p1.equals(p2))
-					continue;
-				interpolate(data, p1, p2, regionx, regionz);
-				//need to add signs
-				double delx = p2.x - p1.x, delz = p2.z - p1.z;
-				//scale
-				double abs = Math.sqrt(delx*delx + delz * delz);
-				double scale = 3 / abs;
-				delx *= scale; delz *= scale;
+			if (boundary.adminLevel <= 6) {
+				int limit = boundary.points.size() - 1;
+				for (int i = 0; i < limit; i++) {
+					Point p1 = boundary.points.get(i), p2 = boundary.points.get(i+1);
+					if (p1.equals(p2))
+						continue;
+					interpolate(data, p1, p2, regionx, regionz);
+					//need to add signs
+					double delx = p2.x - p1.x, delz = p2.z - p1.z;
+					//scale
+					double abs = Math.sqrt(delx*delx + delz * delz);
+					double scale = 3 / abs;
+					delx *= scale; delz *= scale;
 
-				Point leftPoint = new Point((int) (p1.x + delz), (int) (p1.z - delx));
-				stringPoints.add(new StringPoint(boundary.leftArea, leftPoint));
-				Point rightPoint = new Point((int) (p1.x - delz), (int) (p1.z + delx));
-				stringPoints.add(new StringPoint(boundary.rightArea, rightPoint));
+					Point leftPoint = new Point((int) (p1.x + delz), (int) (p1.z - delx));
+					stringPoints.add(new StringPoint(boundary.leftArea, leftPoint));
+					Point rightPoint = new Point((int) (p1.x - delz), (int) (p1.z + delx));
+					stringPoints.add(new StringPoint(boundary.rightArea, rightPoint));
+				}
 			}
 		}
 	}

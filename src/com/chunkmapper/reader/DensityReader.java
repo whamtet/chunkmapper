@@ -7,20 +7,24 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Collection;
 import java.util.Random;
 
+import com.chunkmapper.downloader.OSMDownloader;
+import com.chunkmapper.enumeration.OSMSource;
 import com.chunkmapper.parser.POIParser;
 import com.chunkmapper.sections.POI;
 
 public class DensityReader {
 	public final float[][] data = new float[32][32];
 	private final Random random = new Random();
-	public DensityReader(int regionx0, int regionz0) throws IOException {
+	public DensityReader(int regionx0, int regionz0, Collection<POI> pois) throws IOException {
 		//loop through neighbours
 		for (int regionx = regionx0 - 1; regionx <= regionx0 + 1; regionx++) {
 			for (int regionz = regionz0 - 1; regionz <= regionz0 + 1; regionz++) {
 				//for each neighbour, get points of interest
-				for (POI poi : POIParser.getPois(regionx, regionz)) {
+				
+				for (POI poi : pois) {
 					if (poi.population != null) {
 						double sigma = Math.sqrt(poi.population) * .4; //radius
 						for (int i = 0; i < 32; i++) {
@@ -55,22 +59,5 @@ public class DensityReader {
 		return random.nextDouble() < data[chunkz][chunkx];
 	}
 	
-	public static void main(String[] args) throws Exception {
-		double[] latlon = core.placeToCoords("hamilton, nz");
-		int regionx = (int) Math.floor(latlon[1] * 3600 / 512)-1;
-		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
-		DensityReader reader = new DensityReader(regionx, regionz);
-		
-		PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(new File("/Users/matthewmolloy/python/wms/data.csv"))));
-		for (int i = 0; i < 512; i++) {
-			for (int j = 0; j < 512; j++) {
-//				pw.println(reader.data[i][j]);
-				int chunkx = j / 16, chunkz = i / 16;
-				pw.println(reader.hasHouse(chunkx, chunkz) && (i > 0 || j > 0) ? 1 : 0);
-			}
-		}
-		pw.close();
-		System.out.println("done");
-	}
 
 }

@@ -20,7 +20,6 @@ public class BinaryCoastlineParser {
 
 		HashSet<Coastline> out = new HashSet<Coastline>();
 		
-//		for (FileInfo info : OfflineFileListManager.coastlineFileList.getFilesList()) {
 		for (FileInfo info : FileListManager.getCoastlinesFileList().getFilesList()) {
 			String[] split = info.getFile().split("_");
 

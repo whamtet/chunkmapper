@@ -11,6 +11,7 @@ message BorderSection {
 	required Rectangle bbox = 2;
 	required string left_area = 3;
 	required string right_area = 4;
+	required int32 admin_level = 5;
 }
 
 message BorderRegion {

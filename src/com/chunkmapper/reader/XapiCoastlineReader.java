@@ -15,6 +15,8 @@ import java.util.zip.DataFormatException;
 
 import com.chunkmapper.Point;
 import com.chunkmapper.binaryparser.BinaryCoastlineParser;
+import com.chunkmapper.downloader.OSMDownloader;
+import com.chunkmapper.enumeration.OSMSource;
 import com.chunkmapper.parser.CoastlineParser;
 import com.chunkmapper.sections.Coastline;
 
@@ -106,7 +108,7 @@ public class XapiCoastlineReader {
 	}
 	public XapiCoastlineReader(int regionx, int regionz, GlobcoverReader coverReader) throws IOException, URISyntaxException, DataFormatException {
 
-		HashSet<Coastline> coastlines = BinaryCoastlineParser.getCoastlines(regionx, regionz);
+		Collection<Coastline> coastlines = (Collection<Coastline>) OSMDownloader.getSections(OSMSource.coastlines, regionx, regionz);
 		if (coastlines.size() == 0) {
 			int fill = coverReader.mostlyLand() ? 1 : -1;
 			for (int i = 0; i < 512; i++) {
@@ -154,18 +156,7 @@ public class XapiCoastlineReader {
 
 	}
 
-	public static void main(String[] args) throws Exception {
-				double[] latlon = geocode.core.placeToCoords("auckland, nz");
-//		double[] latlon = {-27.6268, 153.3714}; //small island
-//		double[] latlon = {-27.5158, 153.2344}; //bit of coast
-		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
-		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
-		CoastlineParser.getCoastlines(regionx, regionz);
-		System.exit(0);
-		GlobcoverReader coverReader = new GlobcoverReaderImpl(regionx, regionz);
-		XapiCoastlineReader reader = new XapiCoastlineReader(regionx, regionz, coverReader);
-		reader.print(new File("/Users/matthewmolloy/python/wms/data.csv"));
-	}
+
 	public void print(File f) throws IOException {
 		PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(f)));
 		for (int i = 0; i < 512; i++) {
@@ -176,18 +167,7 @@ public class XapiCoastlineReader {
 		}
 		pw.close();
 	}
-	private static void compareDifferences(int regionx, int regionz) throws IOException, URISyntaxException, DataFormatException {
-		HashSet<Coastline> s1 = BinaryCoastlineParser.getCoastlines(regionx, regionz),
-				s2 = CoastlineParser.getCoastlines(regionx, regionz);
-//		for (Coastline c : s2) {
-//			s1.remove(c);
-//		}
-//		for (Coastline c : s1) {
-//			s2.remove(c);
-//		}
-		printAndSave(regionx, regionz, s1, new File("/Users/matthewmolloy/python/wms/data1.csv"));
-		printAndSave(regionx, regionz, s2, new File("/Users/matthewmolloy/python/wms/data2.csv"));
-	}
+
 	private static void printAndSave(int regionx, int regionz, Collection<Coastline> coastlines, File f) throws IOException {
 		int[][] data = new int[512][512];
 		for (Coastline coastline : coastlines) {

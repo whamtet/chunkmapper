@@ -1,11 +1,11 @@
-package com.chunkmapper.rail;
+package com.chunkmapper.sections;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
 import com.chunkmapper.Point;
 
-public class RailSection {
+public class RailSection extends Section {
 	public final ArrayList<Point> points;
 	public final boolean isPreserved, hasBridge, hasCutting, hasEmbankment, hasTunnel;
 	public final Rectangle bbox;

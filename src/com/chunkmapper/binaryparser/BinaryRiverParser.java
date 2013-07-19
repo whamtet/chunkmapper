@@ -10,14 +10,13 @@ import java.util.ArrayList;
 import java.util.zip.DataFormatException;
 
 import com.chunkmapper.Point;
-import com.chunkmapper.parser.RiverParser.RiverSection;
 import com.chunkmapper.protoc.FileContainer.FileInfo;
 import com.chunkmapper.protoc.PointContainer;
 import com.chunkmapper.protoc.RectangleContainer;
 import com.chunkmapper.protoc.RiverContainer;
 import com.chunkmapper.protoc.RiverContainer.RiverRegion;
 import com.chunkmapper.protoc.admin.FileListManager;
-import com.chunkmapper.protoc.admin.OfflineFileListManager;
+import com.chunkmapper.sections.RiverSection;
 
 public class BinaryRiverParser {
 
@@ -28,7 +27,6 @@ public class BinaryRiverParser {
 
 		ArrayList<RiverSection> out = new ArrayList<RiverSection>();
 		
-//		for (FileInfo info : OfflineFileListManager.riverFileList.getFilesList()) {
 		for (FileInfo info : FileListManager.getRiverFileList().getFilesList()) {
 			String[] split = info.getFile().split("_");
 

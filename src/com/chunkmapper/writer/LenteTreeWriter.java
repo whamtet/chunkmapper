@@ -20,11 +20,9 @@ public class LenteTreeWriter {
 	static {
 		for (LenteTree lenteTree : LenteTree.values()) {
 			String name = lenteTree.toString().replace("_", " ");
-			URL src = ManagingThread.class.getResource("/config/trees2");
-			File f = new File(src.getFile(), name);
-//			File f = new File("/Users/matthewmolloy/workspace/chunkmapper2/resources/trees2/" + name);
+			URL u = LenteTreeWriter.class.getResource("/images/" + name + ".myschematic");
 			try {
-			byte[] data = Zip.inflate(f);
+			byte[] data = Zip.inflate(u.openStream());
 			SchematicProtocol.Schematic p = SchematicProtocol.Schematic.parseFrom(data);
 			protocols.put(lenteTree, new SchematicProtocolWrapper(p));
 			} catch (Exception e) {

@@ -35,9 +35,6 @@ public class ServerInfoManager {
 		return info;
 	}
 
-	public static void main(String[] args) throws Exception {
-		writeToStagingDirectory();
-	}
 	private static void writeToStagingDirectory() throws IOException {
 		ServerInfo.Builder builder = ServerInfo.newBuilder();
 		builder.setRailAddress("http://chunkmapper-static.appspot.com/public/myrails/");
@@ -45,6 +42,8 @@ public class ServerInfoManager {
 		builder.setLakeAddress("http://chunkmapper-static.appspot.com/public/mylakes/");
 		builder.setCoastlineAddress("http://chunkmapper-static.appspot.com/public/mycoastlines/");
 		builder.setGlobcoverAddress("http://chunkmapper-static.appspot.com/public/mat/");
+		builder.setGetXapi(true);
+		
 		File outFile = new File("/Users/matthewmolloy/workspace/chunkmapper-static/public/ServerInfo.pbf");
 		FileOutputStream out = new FileOutputStream(outFile);
 		out.write(builder.build().toByteArray());

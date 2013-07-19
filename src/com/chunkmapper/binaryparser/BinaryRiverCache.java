@@ -13,7 +13,6 @@ import com.chunkmapper.FileValidator;
 import com.chunkmapper.Point;
 import com.chunkmapper.Utila;
 import com.chunkmapper.Zip;
-import com.chunkmapper.parser.RiverParser.RiverSection;
 import com.chunkmapper.protoc.FileContainer.FileInfo;
 import com.chunkmapper.protoc.PointContainer;
 import com.chunkmapper.protoc.RectangleContainer;
@@ -21,6 +20,7 @@ import com.chunkmapper.protoc.RiverContainer;
 import com.chunkmapper.protoc.RiverContainer.RiverRegion;
 import com.chunkmapper.protoc.ServerInfoContainer.ServerInfo;
 import com.chunkmapper.protoc.admin.ServerInfoManager;
+import com.chunkmapper.sections.RiverSection;
 
 public class BinaryRiverCache {
 	private final boolean offline;

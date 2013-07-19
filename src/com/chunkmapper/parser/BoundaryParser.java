@@ -21,31 +21,13 @@ import com.chunkmapper.sections.Coastline;
 
 public class BoundaryParser extends Parser {
 
-	public static HashSet<Boundary> getBoundaries(int regionx, int regionz) throws IOException {
-		XapiBoundaryResourceInfo info = new XapiBoundaryResourceInfo(regionx, regionz);
-		Reader rawReader = FileValidator.checkValid(info.file) ? new FileReader(info.file) : new InputStreamReader(info.url.openStream());
-		BufferedReader reader = new BufferedReader(rawReader);
-		String lina;
-		ArrayList<String> lines = new ArrayList<String>();
-		while ((lina = reader.readLine()) != null) {
-			lines.add(lina);
-		}
-		reader.close();
-
-		if (!FileValidator.checkValid(info.file)) {
-			PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(info.file)));
-			for (String line : lines) {
-				pw.println(line);
-			}
-			pw.close();
-			FileValidator.setValid(info.file);
-		}
-
+	public static HashSet<Boundary> getBoundaries(ArrayList<String> lines) {
 		HashMap<Long, Point> locations = getLocations(lines);
 		HashSet<Boundary> boundaries = new HashSet<Boundary>();
 
 		boolean isBoundary = false;
 		String leftArea = null, rightArea = null;
+		int adminLevel = 100;
 		int minx = Integer.MAX_VALUE, minz = Integer.MAX_VALUE;
 		int maxx = Integer.MIN_VALUE, maxz = Integer.MIN_VALUE;
 
@@ -59,6 +41,7 @@ public class BoundaryParser extends Parser {
 				isBoundary = false;
 				leftArea = null;
 				rightArea = null;
+				adminLevel = 100;
 				minx = Integer.MAX_VALUE; minz = Integer.MAX_VALUE;
 				maxx = Integer.MIN_VALUE; maxz = Integer.MIN_VALUE;
 			}
@@ -87,20 +70,16 @@ public class BoundaryParser extends Parser {
 //				if (k.equals("right:country"))
 				if (k.startsWith("right:"))
 					rightArea = v;
+				if (k.equals("admin_level"))
+					adminLevel = Integer.parseInt(v);
 			}
 			if (tag.equals("/way") && isBoundary) {
 				if (isBoundary) {
 					Rectangle bbox = new Rectangle(minx, minz, maxx - minx, maxz - minz);
-					boundaries.add(new Boundary(currentPoints, bbox, leftArea, rightArea));
+					boundaries.add(new Boundary(currentPoints, bbox, leftArea, rightArea, adminLevel));
 				}
 			}
 		}
 		return boundaries;
-	}
-	public static void main(String[] args) throws Exception {
-		double[] latlon = geocode.core.placeToCoords("mong cai, vietnam");
-		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
-		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
-		System.out.println(getBoundaries(regionx, regionz).size());
 	}
 }

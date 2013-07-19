@@ -1,31 +1,15 @@
 package com.chunkmapper.parser;
 
-import java.awt.Rectangle;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
 import com.chunkmapper.Point;
-import com.chunkmapper.reader.FileNotYetAvailableException;
+import com.chunkmapper.sections.RiverSection;
 
 public class RiverParser extends Parser {
-	public static class RiverSection {
-		public final ArrayList<Point> points;
-		public final Rectangle bbox;
-		public RiverSection(ArrayList<Point> points) {
-			this.points = points;
-			bbox = null;
-		}
-		public RiverSection(ArrayList<Point> points2, Rectangle bbox) {
-			points = points2;
-			this.bbox = bbox;
-		}
-	}
-	public static Collection<RiverSection> getRiverSections(File f) throws IOException, FileNotYetAvailableException {
-		ArrayList<String> lines = getLines(f);
-		confirmDownloaded(lines, f);
+	
+	public static Collection<RiverSection> getRiverSections(ArrayList<String> lines) {
 		HashMap<Long, Point> locations = getLocations(lines);
 		System.out.println(locations.size());
 		ArrayList<RiverSection> riverSections = new ArrayList<RiverSection>();

@@ -20,7 +20,7 @@ import com.chunkmapper.protoc.RailSectionContainer;
 import com.chunkmapper.protoc.RectangleContainer;
 import com.chunkmapper.protoc.admin.FileListManager;
 import com.chunkmapper.protoc.admin.OfflineFileListManager;
-import com.chunkmapper.rail.RailSection;
+import com.chunkmapper.sections.RailSection;
 
 public class BinaryRailParser {
 	

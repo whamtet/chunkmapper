@@ -5,10 +5,10 @@ public class UberDownloader {
 	private GlobcoverDownloader globcoverDownloader = new GlobcoverDownloader();
 //	private LakeDownloader lakeDownloader = new LakeDownloader();
 //	private NoaaGshhsDownloader noaaGshhsDownloader = new NoaaGshhsDownloader();
-//	private RiverDownloader riverDownloader = new RiverDownloader();
 //	private XapiRiverDownloader riverDownloader = new XapiRiverDownloader();
 //	private XapiDownloader xapiDownloader = new XapiDownloader();
 	public HeightsDownloader heightsDownloader = new HeightsDownloader();
+//	public XapiRailDownloader xapiRailDownloader = new XapiRailDownloader();
 	
 //	public static void redownloadXapi(int regionx, int regionz) {
 //		xapiRailDownloader.addForceDownload(regionx, regionz);

@@ -6,7 +6,7 @@ import java.util.Collections;
 
 import com.chunkmapper.Point;
 
-public class Coastline implements Comparable<Coastline> {
+public class Coastline extends Section implements Comparable<Coastline> {
 	public final ArrayList<Point> points;
 	public final Rectangle bbox;
 	public Coastline(ArrayList<Point> points, Rectangle bbox) {

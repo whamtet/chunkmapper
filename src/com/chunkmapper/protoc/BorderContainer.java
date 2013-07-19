@@ -65,6 +65,16 @@ public final class BorderContainer {
      */
     com.google.protobuf.ByteString
         getRightAreaBytes();
+
+    // required int32 admin_level = 5;
+    /**
+     * <code>required int32 admin_level = 5;</code>
+     */
+    boolean hasAdminLevel();
+    /**
+     * <code>required int32 admin_level = 5;</code>
+     */
+    int getAdminLevel();
   }
   /**
    * Protobuf type {@code BorderSection}
@@ -138,6 +148,11 @@ public final class BorderContainer {
             case 34: {
               bitField0_ |= 0x00000004;
               rightArea_ = input.readBytes();
+              break;
+            }
+            case 40: {
+              bitField0_ |= 0x00000008;
+              adminLevel_ = input.readInt32();
               break;
             }
           }
@@ -308,11 +323,28 @@ public final class BorderContainer {
       }
     }
 
+    // required int32 admin_level = 5;
+    public static final int ADMIN_LEVEL_FIELD_NUMBER = 5;
+    private int adminLevel_;
+    /**
+     * <code>required int32 admin_level = 5;</code>
+     */
+    public boolean hasAdminLevel() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>required int32 admin_level = 5;</code>
+     */
+    public int getAdminLevel() {
+      return adminLevel_;
+    }
+
     private void initFields() {
       points_ = java.util.Collections.emptyList();
       bbox_ = com.chunkmapper.protoc.RectangleContainer.Rectangle.getDefaultInstance();
       leftArea_ = "";
       rightArea_ = "";
+      adminLevel_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -328,6 +360,10 @@ public final class BorderContainer {
         return false;
       }
       if (!hasRightArea()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasAdminLevel()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -360,6 +396,9 @@ public final class BorderContainer {
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         output.writeBytes(4, getRightAreaBytes());
       }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeInt32(5, adminLevel_);
+      }
     }
 
     private int memoizedSerializedSize = -1;
@@ -383,6 +422,10 @@ public final class BorderContainer {
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(4, getRightAreaBytes());
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(5, adminLevel_);
       }
       memoizedSerializedSize = size;
       return size;
@@ -483,6 +526,8 @@ public final class BorderContainer {
         bitField0_ = (bitField0_ & ~0x00000004);
         rightArea_ = "";
         bitField0_ = (bitField0_ & ~0x00000008);
+        adminLevel_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000010);
         return this;
       }
 
@@ -523,6 +568,10 @@ public final class BorderContainer {
           to_bitField0_ |= 0x00000004;
         }
         result.rightArea_ = rightArea_;
+        if (((from_bitField0_ & 0x00000010) == 0x00000010)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.adminLevel_ = adminLevel_;
         result.bitField0_ = to_bitField0_;
         return result;
       }
@@ -552,6 +601,9 @@ public final class BorderContainer {
           rightArea_ = other.rightArea_;
           
         }
+        if (other.hasAdminLevel()) {
+          setAdminLevel(other.getAdminLevel());
+        }
         return this;
       }
 
@@ -565,6 +617,10 @@ public final class BorderContainer {
           return false;
         }
         if (!hasRightArea()) {
+          
+          return false;
+        }
+        if (!hasAdminLevel()) {
           
           return false;
         }
@@ -930,6 +986,39 @@ public final class BorderContainer {
   }
   bitField0_ |= 0x00000008;
         rightArea_ = value;
+        
+        return this;
+      }
+
+      // required int32 admin_level = 5;
+      private int adminLevel_ ;
+      /**
+       * <code>required int32 admin_level = 5;</code>
+       */
+      public boolean hasAdminLevel() {
+        return ((bitField0_ & 0x00000010) == 0x00000010);
+      }
+      /**
+       * <code>required int32 admin_level = 5;</code>
+       */
+      public int getAdminLevel() {
+        return adminLevel_;
+      }
+      /**
+       * <code>required int32 admin_level = 5;</code>
+       */
+      public Builder setAdminLevel(int value) {
+        bitField0_ |= 0x00000010;
+        adminLevel_ = value;
+        
+        return this;
+      }
+      /**
+       * <code>required int32 admin_level = 5;</code>
+       */
+      public Builder clearAdminLevel() {
+        bitField0_ = (bitField0_ & ~0x00000010);
+        adminLevel_ = 0;
         
         return this;
       }

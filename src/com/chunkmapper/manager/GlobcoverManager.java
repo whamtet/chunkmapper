@@ -2,6 +2,7 @@ package com.chunkmapper.manager;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.Collection;
 import java.util.NoSuchElementException;
 import java.util.Random;
 import java.util.zip.DataFormatException;
@@ -33,10 +34,12 @@ import com.chunkmapper.column2.Snow;
 import com.chunkmapper.column2.SparseVegetation;
 import com.chunkmapper.column2.Urban;
 import com.chunkmapper.column2.VegetationWithCropland;
+import com.chunkmapper.downloader.OSMDownloader;
 import com.chunkmapper.downloader.UberDownloader;
 import com.chunkmapper.enumeration.Block;
 import com.chunkmapper.enumeration.FarmType;
 import com.chunkmapper.enumeration.Globcover;
+import com.chunkmapper.enumeration.OSMSource;
 import com.chunkmapper.math.Matthewmatics;
 import com.chunkmapper.reader.DensityReader;
 import com.chunkmapper.reader.FarmTypeReader;
@@ -50,6 +53,7 @@ import com.chunkmapper.reader.XapiCoastlineReader;
 import com.chunkmapper.reader.XapiLakeReader;
 import com.chunkmapper.reader.XapiRailReader;
 import com.chunkmapper.reader.XapiRiverReader;
+import com.chunkmapper.sections.POI;
 import com.chunkmapper.writer.ArtifactWriter;
 import com.chunkmapper.writer.GenericWriter;
 
@@ -79,7 +83,9 @@ public class GlobcoverManager {
 			return;
 		}
 		boundaryReader = new XapiBoundaryReader(regionx, regionz);
-		densityReader = new DensityReader(regionx, regionz);
+		Collection<POI> pois = (Collection<POI>) OSMDownloader.getSections(OSMSource.poi, regionx, regionz);
+		
+		densityReader = new DensityReader(regionx, regionz, pois);
 		GlobcoverReader coverReader = new GlobcoverReaderImpl(regionx, regionz);
 
 		XapiLakeReader lakeReader = new XapiLakeReader(regionx, regionz);
@@ -90,7 +96,7 @@ public class GlobcoverManager {
 		FarmTypeReader farmTypeReader = null;
 		if (includeLivestock)
 			farmTypeReader = new FarmTypeReader();
-		poiReader = new POIReader(regionx, regionz);
+		poiReader = new POIReader(regionx, regionz, pois);
 
 		XapiCoastlineReader coastlineReader = new XapiCoastlineReader(regionx, regionz, coverReader);
 

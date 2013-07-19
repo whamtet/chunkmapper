@@ -8,12 +8,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.zip.DataFormatException;
 
 import com.chunkmapper.Point;
-import com.chunkmapper.binaryparser.BinaryRiverParser;
-import com.chunkmapper.parser.RiverParser.RiverSection;
+import com.chunkmapper.downloader.OSMDownloader;
+import com.chunkmapper.enumeration.OSMSource;
+import com.chunkmapper.sections.RiverSection;
 
 public class XapiRiverReader {
 	private byte[][] mask = new byte[512][512];
@@ -62,7 +63,7 @@ public class XapiRiverReader {
 
 	public XapiRiverReader(int regionx, int regionz) throws FileNotYetAvailableException, IOException, URISyntaxException, DataFormatException {
 
-		ArrayList<RiverSection> riverSections = BinaryRiverParser.getRiverSections(regionx, regionz);
+		Collection<RiverSection> riverSections = (Collection<RiverSection>) OSMDownloader.getSections(OSMSource.rivers, regionx, regionz);
 
 		System.out.println(riverSections.size());
 		for (RiverSection riverSection : riverSections) {

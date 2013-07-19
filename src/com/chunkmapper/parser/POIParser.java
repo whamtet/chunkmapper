@@ -18,26 +18,7 @@ import com.chunkmapper.sections.POI;
 
 public class POIParser extends Parser {
 
-	public static HashSet<POI> getPois(int regionx, int regionz) throws IOException {
-		XapiResourceInfo info = new XapiResourceInfo(regionx, regionz);
-		Reader rawReader = FileValidator.checkValid(info.file) ? new FileReader(info.file) : new InputStreamReader(info.url.openStream());
-		BufferedReader reader = new BufferedReader(rawReader);
-		String lina;
-		ArrayList<String> lines = new ArrayList<String>();
-		while ((lina = reader.readLine()) != null) {
-			lines.add(lina);
-		}
-		reader.close();
-
-		if (!FileValidator.checkValid(info.file)) {
-			PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(info.file)));
-			for (String line : lines) {
-				pw.println(line);
-			}
-			pw.close();
-			FileValidator.setValid(info.file);
-		}
-
+	public static HashSet<POI> getPois(ArrayList<String> lines) {
 
 		HashSet<POI> pois = new HashSet<POI>();
 
@@ -45,6 +26,7 @@ public class POIParser extends Parser {
 		String text = null;
 		Point p = null;
 		Integer population = null;
+		int adminLevel = -1;
 		for (String line : lines) {
 			String tag = RailParser.getTag(line);
 			if (tag == null)

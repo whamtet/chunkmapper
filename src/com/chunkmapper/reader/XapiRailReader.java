@@ -1,23 +1,22 @@
 package com.chunkmapper.reader;
 
-import geocode.core;
-
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.zip.DataFormatException;
 
 import com.chunkmapper.Point;
-import com.chunkmapper.binaryparser.BinaryRailParser;
+import com.chunkmapper.downloader.OSMDownloader;
 import com.chunkmapper.downloader.UberDownloader;
 import com.chunkmapper.enumeration.CircleRail;
+import com.chunkmapper.enumeration.OSMSource;
 import com.chunkmapper.enumeration.StraightRail;
+import com.chunkmapper.parser.RailParser;
 import com.chunkmapper.rail.HeightsManager;
-import com.chunkmapper.rail.RailSection;
+import com.chunkmapper.resourceinfo.XapiRailResourceInfo;
+import com.chunkmapper.sections.RailSection;
 
 public class XapiRailReader {
 	//	private int chunkx, chunkz;
@@ -81,7 +80,7 @@ public class XapiRailReader {
 	public XapiRailReader(int regionx, int regionz, HeightsReader heightsReader, UberDownloader uberDownloader, int verticalExaggeration) throws IllegalArgumentException, NoSuchElementException, IOException, InterruptedException, FileNotYetAvailableException, URISyntaxException, DataFormatException {
 		x0 = regionx * 512; z0 = regionz * 512;
 
-		Collection<RailSection> allSections = BinaryRailParser.getOfflineRailSections(regionx, regionz); 
+		Collection<RailSection> allSections = (Collection<RailSection>) OSMDownloader.getSections(OSMSource.rails, regionx, regionz); 
 
 		hasRails = allSections.size() > 0;
 		if (!hasRails) {
