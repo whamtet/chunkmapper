@@ -124,13 +124,15 @@ public class XapiBoundaryReader {
 					double delx = p2.x - p1.x, delz = p2.z - p1.z;
 					//scale
 					double abs = Math.sqrt(delx*delx + delz * delz);
-					double scale = 3 / abs;
-					delx *= scale; delz *= scale;
+					if (abs > 20) {
+						double scale = 3 / abs;
+						delx *= scale; delz *= scale;
 
-					Point leftPoint = new Point((int) (p1.x + delz), (int) (p1.z - delx));
-					stringPoints.add(new StringPoint(boundary.leftArea, leftPoint));
-					Point rightPoint = new Point((int) (p1.x - delz), (int) (p1.z + delx));
-					stringPoints.add(new StringPoint(boundary.rightArea, rightPoint));
+						Point leftPoint = new Point((int) (p1.x + delz), (int) (p1.z - delx));
+						stringPoints.add(new StringPoint(boundary.leftArea, leftPoint));
+						Point rightPoint = new Point((int) (p1.x - delz), (int) (p1.z + delx));
+						stringPoints.add(new StringPoint(boundary.rightArea, rightPoint));
+					}
 				}
 			}
 		}

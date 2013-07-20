@@ -22,7 +22,7 @@ public class POIParser extends Parser {
 
 		HashSet<POI> pois = new HashSet<POI>();
 
-		boolean isPoi = false;
+		String type = null;
 		String text = null;
 		Point p = null;
 		Integer population = null;
@@ -35,19 +35,20 @@ public class POIParser extends Parser {
 				double lat = Double.parseDouble(getValue(line, "lat"));
 				double lon = Double.parseDouble(getValue(line, "lon"));
 				p = new Point((int) (lon * 3600), (int) (-3600 * lat));
-				isPoi = false;
+				type = null;
 				population = null;
 			}
 			if (tag.equals("tag")) {
 				String k = getValue(line, "k"), v = getValue(line, "v");
-				isPoi |= k.equals("place");
+				if (k.equals("place"))
+					type = v;
 				if (k.equals("name"))
 					text = v;
 				if (k.equals("population"))
 					population = Integer.parseInt(v);
 			}
-			if (tag.equals("/node") && isPoi) {
-				pois.add(new POI(p, text, population));
+			if (tag.equals("/node") && type != null) {
+				pois.add(new POI(p, text, population, type));
 			}
 		}
 		return pois;

@@ -45,7 +45,7 @@ import com.chunkmapper.reader.DensityReader;
 import com.chunkmapper.reader.FarmTypeReader;
 import com.chunkmapper.reader.FileNotYetAvailableException;
 import com.chunkmapper.reader.GlobcoverReader;
-import com.chunkmapper.reader.GlobcoverReaderImpl;
+import com.chunkmapper.reader.GlobcoverReaderImpl2;
 import com.chunkmapper.reader.HeightsReaderImpl;
 import com.chunkmapper.reader.POIReader;
 import com.chunkmapper.reader.XapiBoundaryReader;
@@ -83,10 +83,9 @@ public class GlobcoverManager {
 			return;
 		}
 		boundaryReader = new XapiBoundaryReader(regionx, regionz);
-		Collection<POI> pois = (Collection<POI>) OSMDownloader.getSections(OSMSource.poi, regionx, regionz);
 		
-		densityReader = new DensityReader(regionx, regionz, pois);
-		GlobcoverReader coverReader = new GlobcoverReaderImpl(regionx, regionz);
+		densityReader = new DensityReader(regionx, regionz);
+		GlobcoverReader coverReader = new GlobcoverReaderImpl2(regionx, regionz);
 
 		XapiLakeReader lakeReader = new XapiLakeReader(regionx, regionz);
 		XapiRiverReader riverReader = new XapiRiverReader(regionx, regionz);
@@ -96,7 +95,7 @@ public class GlobcoverManager {
 		FarmTypeReader farmTypeReader = null;
 		if (includeLivestock)
 			farmTypeReader = new FarmTypeReader();
-		poiReader = new POIReader(regionx, regionz, pois);
+		poiReader = new POIReader(regionx, regionz);
 
 		XapiCoastlineReader coastlineReader = new XapiCoastlineReader(regionx, regionz, coverReader);
 

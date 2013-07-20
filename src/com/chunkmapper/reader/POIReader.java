@@ -8,7 +8,7 @@ import java.util.Collection;
 import com.chunkmapper.chunk.Chunk;
 import com.chunkmapper.downloader.OSMDownloader;
 import com.chunkmapper.enumeration.OSMSource;
-import com.chunkmapper.parser.POIParser;
+import com.chunkmapper.parser.Nominatim;
 import com.chunkmapper.sections.POI;
 import com.chunkmapper.writer.ArtifactWriter;
 
@@ -19,9 +19,10 @@ public class POIReader {
 		specialPlaces.add(new SpecialPlace(new String[] {"home"}, -27.5037, 153.0040));
 		specialPlaces.add(new SpecialPlace(new String[] {"ma", "and", "pa"}, -39.0743, 174.0952));
 		specialPlaces.add(new SpecialPlace(new String[] {"pete's", "house"}, -43.518, 172.583));
+		specialPlaces.add(new SpecialPlace(new String[] {"dancing", "purple", "asteroids"}, -39.066, 174.046));
 	}
-	public POIReader(int regionx, int regionz, Collection<POI> pois2) throws IOException, URISyntaxException {
-		pois = pois2;
+	public POIReader(int regionx, int regionz) throws IOException, URISyntaxException {
+		pois = (Collection<POI>) OSMDownloader.getSections(OSMSource.poi, regionx, regionz);
 	}
 	public void addSigns(Chunk chunk) {
 		for (POI poi : pois) {
@@ -55,5 +56,7 @@ public class POIReader {
 			absz = (int) Math.floor(-lat * 3600);
 		}
 	}
+	
+	
 
 }

@@ -1,15 +1,13 @@
 package com.chunkmapper.downloader;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.http.Header;
 import org.apache.http.HeaderElement;
@@ -28,9 +26,8 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 
-import com.chunkmapper.FileValidator;
 import com.chunkmapper.InfoManager;
-import com.chunkmapper.binaryparser.BinaryLakeParser;
+import com.chunkmapper.Point;
 import com.chunkmapper.enumeration.OSMSource;
 import com.chunkmapper.parser.BoundaryParser;
 import com.chunkmapper.parser.CoastlineParser;
@@ -45,101 +42,116 @@ import com.chunkmapper.sections.Section;
 public class OSMDownloader {
 	private static final int NUM_DOWNLOADING_THREADS = 6;
 	private static final DefaultHttpClient httpclient = Downloader.getHttpClient();
-	
+	private static final ConcurrentHashMap<PointSource, ArrayList<String>> cache = new ConcurrentHashMap<PointSource, ArrayList<String>>();
+
+
+
 	public static Collection<? extends Section> getSections(OSMSource source, int regionx, int regionz) throws URISyntaxException, IOException {
 		ServerInfo serverInfo = ServerInfoManager.getServerInfo();
 		if (serverInfo.getGetXapi()) {
 			//first and foremost we always try to get the latest xml from xapi
-			URL url = null;
-			switch(source) {
-			case lakes:
-			url = InfoManager.lakesServer(regionx, regionz);
-			break;
-			case poi:
-			url = InfoManager.poiServer(regionx, regionz);
-			break;
-			case rivers:
-			url = InfoManager.riversServer(regionx, regionz);
-			break;
-			case boundaries:
-			url = InfoManager.boundariesServer(regionx, regionz);
-			break;
-			case coastlines:
-			url = InfoManager.coastlinesServer(regionx, regionz);
-			break;
-			case rails:
-			url = InfoManager.railsServer(regionx, regionz);
-			break;
-			}
+			PointSource ps = new PointSource(regionx, regionz, source);
+			ArrayList<String> lines;
 			HttpGet httpGet = null;
 			HttpResponse response = null;
 			HttpEntity entity = null;
 			BufferedReader in = null;
 			try {
-			httpGet = new HttpGet(url.toURI());
-			response = httpclient.execute(httpGet);
-			entity = response.getEntity();
-			in = new BufferedReader(new InputStreamReader(entity.getContent()));
-			ArrayList<String> lines = new ArrayList<String>();
-			String tempLine;
-			while ((tempLine = in.readLine()) != null) {
-				lines.add(tempLine);
-			}
-			if (lines.size() == 0) {
-				throw new RuntimeException("xml empty");
-			}
-			String finalLine = lines.get(lines.size() - 1);
-			if (!finalLine.trim().equals("</osm>")) {
-				throw new RuntimeException("invalid osm");
-			}
-			switch(source) {
-			case lakes:
-			return LakeParser.getLakes(lines);
-			case poi:
-			return POIParser.getPois(lines);
-			case rivers:
-			return RiverParser.getRiverSections(lines);
-			case boundaries:
-			return BoundaryParser.getBoundaries(lines);
-			case coastlines:
-			return CoastlineParser.getCoastlines(lines);
-			case rails:
-			return RailParser.getRailSections(lines);
-			}
-//			} catch (Exception e) {
-//				e.printStackTrace();
+				if (cache.containsKey(ps)) {
+					lines = cache.get(ps);
+				} else {
+					URL url = null;
+					switch(source) {
+					case lakes:
+						url = InfoManager.lakesServer(regionx, regionz);
+						break;
+					case poi:
+						url = InfoManager.poiServer(regionx, regionz);
+						break;
+					case rivers:
+						url = InfoManager.riversServer(regionx, regionz);
+						break;
+					case boundaries:
+						url = InfoManager.boundariesServer(regionx, regionz);
+						break;
+					case coastlines:
+						url = InfoManager.coastlinesServer(regionx, regionz);
+						break;
+					case rails:
+						url = InfoManager.railsServer(regionx, regionz);
+						break;
+					}
+
+					httpGet = new HttpGet(url.toURI());
+					response = httpclient.execute(httpGet);
+					entity = response.getEntity();
+					in = new BufferedReader(new InputStreamReader(entity.getContent()));
+					lines = new ArrayList<String>();
+					String tempLine;
+					while ((tempLine = in.readLine()) != null) {
+						lines.add(tempLine);
+					}
+					if (lines.size() == 0) {
+						throw new RuntimeException("xml empty");
+					}
+					String finalLine = lines.get(lines.size() - 1);
+					if (!finalLine.trim().equals("</osm>")) {
+						throw new RuntimeException("invalid osm");
+					}
+					//print
+					cache.put(ps, lines);
+				}
+				switch(source) {
+				case lakes:
+					return LakeParser.getLakes(lines);
+				case poi:
+					return POIParser.getPois(lines);
+				case rivers:
+					return RiverParser.getRiverSections(lines);
+				case boundaries:
+					return BoundaryParser.getBoundaries(lines);
+				case coastlines:
+					return CoastlineParser.getCoastlines(lines);
+				case rails:
+					return RailParser.getRailSections(lines);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			} finally {
 				try {
-					in.close();
+					if (in != null)
+						in.close();
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+				if (entity != null)
 				EntityUtils.consumeQuietly(entity);
+				if (httpGet != null)
 				httpGet.releaseConnection();
 			}
 		}
 		throw new RuntimeException("unimplemented");
-//		switch(source) {
-//		case lakes:
-//		return BinaryLakeParser.getLakes(regionx, regionz);
-//		break;
-//		case poi:
-//		return 
-//		break;
-//		case rivers:
-//		f = InfoManager.riversFile(regionx, regionz);
-//		break;
-//		case boundaries:
-//		f = InfoManager.boundariesFile(regionx, regionz);
-//		break;
-//		case coastlines:
-//		f = InfoManager.coastlinesFile(regionx, regionz);
-//		break;
-//		case rails:
-//		f = InfoManager.railsFile(regionx, regionz);
-//		break;
-//		}
+		//		switch(source) {
+		//		case lakes:
+		//		return BinaryLakeParser.getLakes(regionx, regionz);
+		//		break;
+		//		case poi:
+		//		return 
+		//		break;
+		//		case rivers:
+		//		f = InfoManager.riversFile(regionx, regionz);
+		//		break;
+		//		case boundaries:
+		//		f = InfoManager.boundariesFile(regionx, regionz);
+		//		break;
+		//		case coastlines:
+		//		f = InfoManager.coastlinesFile(regionx, regionz);
+		//		break;
+		//		case rails:
+		//		f = InfoManager.railsFile(regionx, regionz);
+		//		break;
+		//		}
 	}
 	public static DefaultHttpClient getHttpClient() {
 		System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.SimpleLog");
@@ -192,6 +204,24 @@ public class OSMDownloader {
 		});
 		return httpclient;
 	}
-	
+	private static class PointSource {
+		public final Point p;
+		public final OSMSource source;
+		public PointSource(int regionx, int regionz, OSMSource source) {
+			this.source = source;
+			p = new Point(regionx, regionz);
+		}
+		public int hashCode() {
+			return p.hashCode();
+		}
+		public boolean equals(Object other) {
+			if (other == null)
+				return false;
+			if (!(other instanceof PointSource))
+				return false;
+			PointSource other2 = (PointSource) other;
+			return other2.p.equals(p) && other2.source.equals(source);
+		}
+	}
 
 }

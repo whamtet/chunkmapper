@@ -1,31 +1,31 @@
 package com.chunkmapper.reader;
 
-import geocode.core;
-
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.net.URISyntaxException;
 import java.util.Collection;
 import java.util.Random;
 
 import com.chunkmapper.downloader.OSMDownloader;
 import com.chunkmapper.enumeration.OSMSource;
-import com.chunkmapper.parser.POIParser;
+import com.chunkmapper.parser.Nominatim;
 import com.chunkmapper.sections.POI;
+import com.chunkmapper.sections.Section;
 
 public class DensityReader {
 	public final float[][] data = new float[32][32];
 	private final Random random = new Random();
-	public DensityReader(int regionx0, int regionz0, Collection<POI> pois) throws IOException {
+	public DensityReader(int regionx0, int regionz0) throws IOException, URISyntaxException {
 		//loop through neighbours
 		for (int regionx = regionx0 - 1; regionx <= regionx0 + 1; regionx++) {
 			for (int regionz = regionz0 - 1; regionz <= regionz0 + 1; regionz++) {
 				//for each neighbour, get points of interest
 				
-				for (POI poi : pois) {
-					if (poi.population != null) {
+				for (Section s : OSMDownloader.getSections(OSMSource.poi, regionx, regionz)) {
+					POI poi = (POI) s;
+					if (poi.population != null && (poi.type.equals("city")
+							|| poi.type.equals("town") || poi.type.equals("village") || poi.type.equals("hamlet")
+							|| poi.type.equals("suburb") || poi.type.equals("neighbourhood")
+							|| poi.type.equals("isolated_dwelling"))) {
 						double sigma = Math.sqrt(poi.population) * .4; //radius
 						for (int i = 0; i < 32; i++) {
 							for (int j = 0; j < 32; j++) {
@@ -57,6 +57,12 @@ public class DensityReader {
 	public boolean hasHouse(int chunkx, int chunkz) {
 //		return random.nextDouble() < 1e6 * data[chunkz*16][chunkx*16];
 		return random.nextDouble() < data[chunkz][chunkx];
+	}
+	public static void main(String[] args) throws URISyntaxException, IOException {
+		double[] latlon = geocode.core.placeToCoords("mt taranaki, nz");
+		int regionx = (int) Math.floor(latlon[1] * 3600 / 512)+1;
+		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
+		DensityReader reader = new DensityReader(regionx, regionz);
 	}
 	
 

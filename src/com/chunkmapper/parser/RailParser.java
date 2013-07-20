@@ -54,7 +54,7 @@ public class RailParser extends Parser {
 			}
 			if (tag.equals("tag")) {
 				String k = getValue(line, "k"), v = getValue(line, "v");
-				isRail |= k.equals("railway") && v.equals("rail");
+				isRail |= k.equals("railway");
 				isPreserved |= k.equals("railway") && v.equals("preserved");
 				
 				hasBridge |= k.equals("bridge") && v.equals("yes");
