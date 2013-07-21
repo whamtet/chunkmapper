@@ -8,6 +8,7 @@ import net.minecraft.world.level.chunk.storage.RegionFile;
 import org.apache.commons.io.FileUtils;
 
 import com.chunkmapper.chunk.Chunk;
+import com.chunkmapper.writer.ArtifactWriter;
 import com.chunkmapper.writer.GenericWriter;
 import com.chunkmapper.writer.HorseWriter;
 import com.chunkmapper.writer.LoadedLevelDat;
@@ -42,18 +43,18 @@ public class TestArtifact {
 		int chunkx = 2, chunkz = 3;
 		Chunk chunk = new Chunk(chunkx, chunkz, heights, chunkx, chunkz);
 		GenericWriter.addBedrock(chunk, 0);
+		ArtifactWriter.addRugbyField(chunk);
 //		ArtifactWriter.placeMarket(chunk);
 //		ArtifactWriter.placePrison(chunk);
 //		ArtifactWriter.addTunnelIntoTheUnknown(chunk);
 //		ArtifactWriter.addHouse(chunk);
 //		ArtifactWriter.placeLookout(chunk);
-		for (int i = 0; i < 10; i++) {
-			HorseWriter.addHorse(chunk);
+//		for (int i = 0; i < 10; i++) {
+//			HorseWriter.addHorse(chunk);
 //			MobWriter.addAnimal(chunk, "Cow");
 //			MobWriter.addAnimal(chunk, "Sheep");
 //			MobWriter.addAnimal(chunk, "Chicken");
-		}
-		System.out.println(chunk.Entities.size());
+//		}
 //		ArtifactWriter.placeLibrary(chunk);
 
 		DataOutputStream out = regionFile.getChunkDataOutputStream(chunkx, chunkz);

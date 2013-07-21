@@ -2,7 +2,6 @@ package com.chunkmapper.manager;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.Collection;
 import java.util.NoSuchElementException;
 import java.util.Random;
 import java.util.zip.DataFormatException;
@@ -34,12 +33,10 @@ import com.chunkmapper.column2.Snow;
 import com.chunkmapper.column2.SparseVegetation;
 import com.chunkmapper.column2.Urban;
 import com.chunkmapper.column2.VegetationWithCropland;
-import com.chunkmapper.downloader.OSMDownloader;
 import com.chunkmapper.downloader.UberDownloader;
 import com.chunkmapper.enumeration.Block;
 import com.chunkmapper.enumeration.FarmType;
 import com.chunkmapper.enumeration.Globcover;
-import com.chunkmapper.enumeration.OSMSource;
 import com.chunkmapper.math.Matthewmatics;
 import com.chunkmapper.reader.DensityReader;
 import com.chunkmapper.reader.FarmTypeReader;
@@ -48,12 +45,12 @@ import com.chunkmapper.reader.GlobcoverReader;
 import com.chunkmapper.reader.GlobcoverReaderImpl2;
 import com.chunkmapper.reader.HeightsReaderImpl;
 import com.chunkmapper.reader.POIReader;
+import com.chunkmapper.reader.RugbyReader;
 import com.chunkmapper.reader.XapiBoundaryReader;
 import com.chunkmapper.reader.XapiCoastlineReader;
 import com.chunkmapper.reader.XapiLakeReader;
 import com.chunkmapper.reader.XapiRailReader;
 import com.chunkmapper.reader.XapiRiverReader;
-import com.chunkmapper.sections.POI;
 import com.chunkmapper.writer.ArtifactWriter;
 import com.chunkmapper.writer.GenericWriter;
 
@@ -63,6 +60,7 @@ public class GlobcoverManager {
 	private final POIReader poiReader;
 	private final DensityReader densityReader;
 	private final XapiBoundaryReader boundaryReader;
+	private final RugbyReader rugbyReader;
 	public final boolean allWater;
 	private final ArtifactWriter artifactWriter = new ArtifactWriter();
 	public final int regionx, regionz;
@@ -80,15 +78,16 @@ public class GlobcoverManager {
 			poiReader = null;
 			densityReader = null;
 			boundaryReader = null;
+			rugbyReader = null;
 			return;
 		}
 		boundaryReader = new XapiBoundaryReader(regionx, regionz);
-		
+		rugbyReader = new RugbyReader(regionx, regionz);
 		densityReader = new DensityReader(regionx, regionz);
 		GlobcoverReader coverReader = new GlobcoverReaderImpl2(regionx, regionz);
 
 		XapiLakeReader lakeReader = new XapiLakeReader(regionx, regionz);
-		XapiRiverReader riverReader = new XapiRiverReader(regionx, regionz);
+		XapiRiverReader riverReader = new XapiRiverReader(regionx, regionz, heightsReader);
 		railReader = new XapiRailReader(regionx, regionz, heightsReader, uberDownloader, verticalExaggeration);
 		boolean includeLivestock = !railReader.hasRails;
 
@@ -102,7 +101,7 @@ public class GlobcoverManager {
 		for (int i = 0; i < 512; i++) {
 			for (int j = 0; j < 512; j++) {
 				int absx = j + regionx*512, absz = i + regionz*512;
-				
+
 				if (coastlineReader.hasWaterij(i, j)) {
 					columns[i][j] = new Ocean(absx, absz);
 					continue;
@@ -124,12 +123,12 @@ public class GlobcoverManager {
 					continue;
 				}
 				double absLat = absz > 0 ? absz / 3600. : -absz / 3600.;
-//				double snowLine = 4000 * (75 - absLat) / 75.;
+				//				double snowLine = 4000 * (75 - absLat) / 75.;
 				int realHeight = heightsReader.getRealHeightij(i, j);
-//				if (realHeight >= snowLine) {
-//					columns[i][j] = new Snow(absx, absz, heightsReader);
-//					continue;
-//				}
+				//				if (realHeight >= snowLine) {
+				//					columns[i][j] = new Snow(absx, absz, heightsReader);
+				//					continue;
+				//				}
 				//now for the rest
 				Globcover coverType = coverReader.getGlobcover(i, j);
 				switch (coverType) {
@@ -245,17 +244,17 @@ public class GlobcoverManager {
 		for (int i = i1; i < i2; i++) {
 			for (int j = j1; j < j2; j++) {
 				AbstractColumn col = columns[i][j];
-					col.addTree(chunk, heightsReader);
+				col.addTree(chunk, heightsReader);
 			}
 		}
 
 		//and signs for actual places
 		if (poiReader != null)
 			poiReader.addSigns(chunk);
-		
+
 		//a special sign
 		POIReader.addSpecialLandmarks(chunk);
-		
+
 		//add country boundaries
 		boundaryReader.addBoundariesToChunk(chunkx, chunkz, chunk);
 
@@ -277,7 +276,9 @@ public class GlobcoverManager {
 			}
 		}
 		//add a house
-		if ((chunkHasUrban || densityReader.hasHouse(chunkx, chunkz)) && !chunkHasRail && !chunkHasWater) {
+		if (rugbyReader.hasRugbyField(chunk) && !chunkHasRail && !chunkHasWater) {
+			ArtifactWriter.addRugbyField(chunk);
+		} else if ((chunkHasUrban || densityReader.hasHouse(chunkx, chunkz)) && !chunkHasRail && !chunkHasWater) {
 			int i = RANDOM.nextInt(100);
 			switch(i) {
 			case 0:
@@ -289,9 +290,9 @@ public class GlobcoverManager {
 			case 2:
 				ArtifactWriter.placePrison(chunk);
 				break;
-//			case 3:
-//				ArtifactWriter.addGallows(chunk);
-//				break;
+				//			case 3:
+				//				ArtifactWriter.addGallows(chunk);
+				//				break;
 			default:
 				ArtifactWriter.addHouse(chunk);
 			}

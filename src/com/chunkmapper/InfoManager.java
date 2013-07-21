@@ -67,9 +67,13 @@ public class InfoManager {
 		String s = "http://www.overpass-api.de/api/xapi?way[natural=water][bbox=%s,%s,%s,%s]";
 		return new URL(getAddress(s, regionx, regionz));
 	}
-	public static URL poiServer(int regionx, int regionz) throws MalformedURLException {
-		String s = "http://www.overpass-api.de/api/xapi?node[place=*][bbox=%s,%s,%s,%s]";
-		return new URL(getAddress(s, regionx, regionz));
+	public static String[] poiServer(int regionx, int regionz) throws MalformedURLException {
+		double[] p = getPoints(regionx, regionz);
+		String s = String.format("http://www.overpass-api.de/api/xapi?node[place=*][bbox=%s,%s,%s,%s]", 
+				p[0], p[1], p[2], p[3]);
+		String t = String.format("http://www.overpass-api.de/api/xapi?node[sport=%s][bbox=%s,%s,%s,%s]",
+				"rugby%7Crugby_union%7Crugby_league", p[0], p[1], p[2], p[3]);
+		return new String[] {s, t};
 	}
 	public static URL riversServer(int regionx, int regionz) throws MalformedURLException {
 		String s = "http://www.overpass-api.de/api/xapi?way[waterway=river][bbox=%s,%s,%s,%s]";
@@ -112,6 +116,14 @@ public class InfoManager {
 	public static URL railsBackup(int regionx, int regionz) throws MalformedURLException {
 		return null;
 	}
+	private static double[] getPoints(int regionx, int regionz) {
+		final double REGION_WIDTH_IN_DEGREES = 512 / 3600.;
+		double lon1 = regionx * REGION_WIDTH_IN_DEGREES;
+		double lon2 = lon1 + REGION_WIDTH_IN_DEGREES;
+		double lat2 = -regionz * REGION_WIDTH_IN_DEGREES;
+		double lat1 = lat2 - REGION_WIDTH_IN_DEGREES;
+		return new double[] {lon1, lat1, lon2, lat2};
+	}
 
 	private static String getAddress(String s, int regionx, int regionz) {
 		final double REGION_WIDTH_IN_DEGREES = 512 / 3600.;
@@ -123,7 +135,15 @@ public class InfoManager {
 		return String.format(s, lon1, lat1, lon2, lat2);
 	}
 	public static void main(String[] args) {
-		double[] latlon = core.placeToCoords("new plymouth, nz");
+		double[] latlon = core.placeToCoords("auckland, nz");
+		double lon1 = latlon[1] - .5, lon2 = latlon[1] + .5;
+		double lat1 = latlon[0] - .5, lat2 = latlon[0] + .5;
+		String s = "http://www.overpass-api.de/api/xapi?node[sport=rugby][bbox=%s,%s,%s,%s]";
+		String t = "http://www.overpass-api.de/api/xapi?way[sport=rugby][bbox=%s,%s,%s,%s]";
+		
+		System.out.printf(s, lon1, lat1, lon2, lat2);
+		System.out.println("\n");
+		System.out.printf(t, lon1, lat1, lon2, lat2);
 	}
 
 }

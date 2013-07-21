@@ -17,15 +17,35 @@ public class ArtifactWriter {
 		chunk.Blocks[h][z][x] = Block.Wool.val;
 		chunk.Data[h][z][x] = WoolColor.Light_Gray.val;
 	}
-	//	public static void addLotsOfWool(Chunk chunk) {
-	//		for (int y = 0; y < 5; y++) {
-	//			for (int z = 0; z < 16; z++) {
-	//				for (int x = 0; x < 16; x++) {
-	//					addWool(chunk, y, z, x);
-	//				}
-	//			}
-	//		}
-	//	}
+	private static void addH(Chunk chunk, int y0, int z0, int x0) {
+		//foundations
+		for (int y = y0; y < y0 + 7; y++) {
+			chunk.Blocks[y][z0][x0] = Blocka.Fence;
+			chunk.Blocks[y][z0][x0+5] = Blocka.Fence;
+		}
+		//and across the middle
+		for (int x = x0 + 1; x < x0 + 5; x++) {
+			chunk.Blocks[y0+3][z0][x] = Blocka.Fence;
+		}
+	}
+	public static void addRugbyField(Chunk chunk) {
+		int h = getMeanHeight(chunk);
+		//clear out space
+		for (int z = 0; z < 16; z++) {
+			for (int x = 0; x < 16; x++) {
+				for (int y = 1; y < h-1; y++) {
+					chunk.Blocks[y][z][x] = Blocka.Dirt;
+				}
+				chunk.Blocks[h-1][z][x] = Blocka.Grass;
+				for (int y = h; y < h + 10; y++) {
+					chunk.Blocks[y][z][x] = Blocka.Air;
+				}
+			}
+		}
+		//add the posts
+		addH(chunk, h, 0, 5);
+		addH(chunk, h, 15, 5);
+	}
 	private static void addArch(Chunk chunk, int x0, int z0, int h, boolean lastArch) {
 		for (int y = h; y < h + 5; y++) {
 			for (int x = x0; x < x0 + 3; x++) {
@@ -53,110 +73,110 @@ public class ArtifactWriter {
 			}
 		}
 	}
-//	public static void addGallows(Chunk chunk) {
-//		int x0 = 6, z0 = 5;
-//		int width = 5, length = 5;
-//		int h = ArtifactWriter.getMeanHeight(chunk, x0, z0, width, length);
-//		clearOut(chunk, x0, z0, h, width, length, 7);
-//
-//		//platform
-//		for (int z = z0; z < z0 + length; z++) {
-//			for (int x = x0; x < x0 + width; x++) {
-//				chunk.Blocks[h][z][x] = Blocka.Planks;
-//			}
-//		}
-//		int x = x0 + 2;
-//		int z = z0;
-//		for (int y = h + 1; y < h + 6; y++) {
-//			chunk.Blocks[y][z][x] = Blocka.Planks;
-//		}
-//		z++;
-//		chunk.Blocks[h+1][z][x] = Blocka.Planks;
-//		chunk.Blocks[h+5][z][x] = Blocka.Planks;
-//		z++;
-//		chunk.Blocks[h][z][x] = 0;
-//		chunk.Blocks[h+5][z][x] = Blocka.Planks;
-//
-//		chunk.Blocks[h+1][z][x] = Blocka.Trapdoor;
-//		chunk.Data[h+1][z][x] = 9;
-//
-//		//lastly, a warning
-//		String[] warning = new String[4];
-//		switch(chunk.RANDOM.nextInt(12)) {
-//		case 0:
-//			warning[0] = "Whoso sheddeth"; warning[1] = "man's blood";
-//			warning[2] = "by man shall"; warning[3] = "have blood shed";
-//			break;
-//		case 1:
-//			warning[0] = "He that killeth"; warning[1] = "with the sword";
-//			warning[2] = "must be killed"; warning[3] = "";
-//			break;
-//		case 2:
-////			warning[0]
-//			warning[0] = "Whoever takes a";
-//			warning[1] = "human life shall";
-//			warning[2] = "surely be put";
-//			warning[3] = "to death";
-//			break;
-//		case 3:
-//			warning[0] = "Your eye";
-//			warning[1] = "shall not";
-//			warning[2] = "pity him";
-//			warning[3] = " ";
-//			break;
-//		case 4:
-//			warning[0] = "If anyone kills";
-//			warning[1] = "a person the";
-//			warning[2] = "murderer shall be";
-//			warning[3] = "put to death";
-//			break;
-//		case 5:
-//			warning[0] = "You";
-//			warning[1] = "shall";
-//			warning[2] = "not";
-//			warning[3] = "murder";
-//			break;
-//		case 6:
-//			warning[0] = "The authorities";
-//			warning[1] = "that exist have";
-//			warning[2] = "been instituted";
-//			warning[3] = "by God";
-//			break;
-//		case 7:
-//			warning[0] = "I say to";
-//			warning[1] = "the wicked:";
-//			warning[2] = "'You shall";
-//			warning[3] = "surely die'";
-//			break;
-//		case 8:
-//			warning[0] = "You shall";
-//			warning[1] = "not permit";
-//			warning[2] = "a sorceress";
-//			warning[3] = "to live";
-//			break;
-//		case 9:
-//			warning[0] = "Whoever curses";
-//			warning[1] = "his father or";
-//			warning[2] = "his mother shall";
-//			warning[3] = "be put to death";
-//			break;
-//		case 10:
-//			warning[0] = "Everyone who";
-//			warning[1] = "hates his";
-//			warning[2] = "brother is";
-//			warning[3] = "a murderer";
-//			break;
-//		case 11:
-//			warning[0] = "Let a woman";
-//			warning[1] = "learn quietly";
-//			warning[2] = "with all";
-//			warning[3] = "submissiveness";
-//			break;
-//		}
-//		String[] warning2 = {"ok"};
-//		ArtifactWriter.addSign(chunk, h, chunk.zr + z0 + length + 1, chunk.xr + x0 + 2, warning);
-//
-//	}
+	//	public static void addGallows(Chunk chunk) {
+	//		int x0 = 6, z0 = 5;
+	//		int width = 5, length = 5;
+	//		int h = ArtifactWriter.getMeanHeight(chunk, x0, z0, width, length);
+	//		clearOut(chunk, x0, z0, h, width, length, 7);
+	//
+	//		//platform
+	//		for (int z = z0; z < z0 + length; z++) {
+	//			for (int x = x0; x < x0 + width; x++) {
+	//				chunk.Blocks[h][z][x] = Blocka.Planks;
+	//			}
+	//		}
+	//		int x = x0 + 2;
+	//		int z = z0;
+	//		for (int y = h + 1; y < h + 6; y++) {
+	//			chunk.Blocks[y][z][x] = Blocka.Planks;
+	//		}
+	//		z++;
+	//		chunk.Blocks[h+1][z][x] = Blocka.Planks;
+	//		chunk.Blocks[h+5][z][x] = Blocka.Planks;
+	//		z++;
+	//		chunk.Blocks[h][z][x] = 0;
+	//		chunk.Blocks[h+5][z][x] = Blocka.Planks;
+	//
+	//		chunk.Blocks[h+1][z][x] = Blocka.Trapdoor;
+	//		chunk.Data[h+1][z][x] = 9;
+	//
+	//		//lastly, a warning
+	//		String[] warning = new String[4];
+	//		switch(chunk.RANDOM.nextInt(12)) {
+	//		case 0:
+	//			warning[0] = "Whoso sheddeth"; warning[1] = "man's blood";
+	//			warning[2] = "by man shall"; warning[3] = "have blood shed";
+	//			break;
+	//		case 1:
+	//			warning[0] = "He that killeth"; warning[1] = "with the sword";
+	//			warning[2] = "must be killed"; warning[3] = "";
+	//			break;
+	//		case 2:
+	////			warning[0]
+	//			warning[0] = "Whoever takes a";
+	//			warning[1] = "human life shall";
+	//			warning[2] = "surely be put";
+	//			warning[3] = "to death";
+	//			break;
+	//		case 3:
+	//			warning[0] = "Your eye";
+	//			warning[1] = "shall not";
+	//			warning[2] = "pity him";
+	//			warning[3] = " ";
+	//			break;
+	//		case 4:
+	//			warning[0] = "If anyone kills";
+	//			warning[1] = "a person the";
+	//			warning[2] = "murderer shall be";
+	//			warning[3] = "put to death";
+	//			break;
+	//		case 5:
+	//			warning[0] = "You";
+	//			warning[1] = "shall";
+	//			warning[2] = "not";
+	//			warning[3] = "murder";
+	//			break;
+	//		case 6:
+	//			warning[0] = "The authorities";
+	//			warning[1] = "that exist have";
+	//			warning[2] = "been instituted";
+	//			warning[3] = "by God";
+	//			break;
+	//		case 7:
+	//			warning[0] = "I say to";
+	//			warning[1] = "the wicked:";
+	//			warning[2] = "'You shall";
+	//			warning[3] = "surely die'";
+	//			break;
+	//		case 8:
+	//			warning[0] = "You shall";
+	//			warning[1] = "not permit";
+	//			warning[2] = "a sorceress";
+	//			warning[3] = "to live";
+	//			break;
+	//		case 9:
+	//			warning[0] = "Whoever curses";
+	//			warning[1] = "his father or";
+	//			warning[2] = "his mother shall";
+	//			warning[3] = "be put to death";
+	//			break;
+	//		case 10:
+	//			warning[0] = "Everyone who";
+	//			warning[1] = "hates his";
+	//			warning[2] = "brother is";
+	//			warning[3] = "a murderer";
+	//			break;
+	//		case 11:
+	//			warning[0] = "Let a woman";
+	//			warning[1] = "learn quietly";
+	//			warning[2] = "with all";
+	//			warning[3] = "submissiveness";
+	//			break;
+	//		}
+	//		String[] warning2 = {"ok"};
+	//		ArtifactWriter.addSign(chunk, h, chunk.zr + z0 + length + 1, chunk.xr + x0 + 2, warning);
+	//
+	//	}
 	public static void addTunnelIntoTheUnknown(Chunk chunk) {
 		int x0 = 7;
 		int z0 = 2;
@@ -445,7 +465,7 @@ public class ArtifactWriter {
 				chunk.Blocks[railHeight-1][z][x] = foundation;
 				chunk.Blocks[railHeight][z][x] = Block.Powered_Rail.val;
 				chunk.Data[railHeight][z][x] = (byte) (railType + 8);
-				
+
 				int xPosition = x == 15 ? 14 : x + 1;
 				chunk.Blocks[railHeight-1][z][xPosition] = foundation;
 				chunk.Blocks[railHeight][z][xPosition] = Block.Redstone_Torch_Lit.val;
@@ -456,15 +476,15 @@ public class ArtifactWriter {
 				chunk.Blocks[railHeight-1][z][x] = foundation;
 				chunk.Blocks[railHeight][z][x] = Block.Powered_Rail.val;
 				chunk.Data[railHeight][z][x] = (byte) (railType + 8);
-				
+
 				int zPosition = z == 15 ? 14 : z + 1;
 				chunk.Blocks[railHeight-1][zPosition][x] = foundation;
 				chunk.Blocks[railHeight][zPosition][x] = Block.Redstone_Torch_Lit.val;
 				chunk.Data[railHeight][zPosition][x] = 0;
 				spacesTillNextPoweredRail = 6;
 			}
-			
-			
+
+
 		} else {
 			chunk.Blocks[railHeight-1][z][x] = foundation;
 			chunk.Blocks[railHeight][z][x] = Block.Rail.val;
@@ -634,7 +654,17 @@ public class ArtifactWriter {
 			}
 		}
 	}
-	public static int getMeanHeight(Chunk chunk, int x0, int z0, int width, int length) {
+	private static int getMeanHeight(Chunk chunk) {
+		int s = 0, n = 0;
+		for (int x = 0; x < 16; x++) {
+			for (int z = 0; z < 16; z++) {
+				s += chunk.getHeights(x, z);
+				n++;
+			}
+		}
+		return s / n;
+	}
+	private static int getMeanHeight(Chunk chunk, int x0, int z0, int width, int length) {
 		int s = 0, n = 0;
 		for (int x = x0; x < x0 + width; x++) {
 			for (int z = z0; z < z0 + length; z++) {

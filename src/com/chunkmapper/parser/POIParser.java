@@ -26,7 +26,6 @@ public class POIParser extends Parser {
 		String text = null;
 		Point p = null;
 		Integer population = null;
-		int adminLevel = -1;
 		for (String line : lines) {
 			String tag = RailParser.getTag(line);
 			if (tag == null)
@@ -42,10 +41,13 @@ public class POIParser extends Parser {
 				String k = getValue(line, "k"), v = getValue(line, "v");
 				if (k.equals("place"))
 					type = v;
+				if (k.equals("sport"))
+					type = v;
 				if (k.equals("name"))
 					text = v;
 				if (k.equals("population"))
 					population = Integer.parseInt(v);
+				
 			}
 			if (tag.equals("/node") && type != null) {
 				pois.add(new POI(p, text, population, type));

@@ -3,6 +3,7 @@ package com.chunkmapper.downloader;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import org.apache.http.HttpRequest;
 import org.apache.http.HttpRequestInterceptor;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpResponseInterceptor;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.GzipDecompressingEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -46,51 +48,77 @@ public class OSMDownloader {
 
 
 
+	private static ArrayList<String> getSingleSource(URL url) throws URISyntaxException, ClientProtocolException, IOException {
+		return getSingleSource(url, new ArrayList<String>());
+	}
+	private static ArrayList<String> getMultipleSources(String[] sources) throws ClientProtocolException, MalformedURLException, IOException, URISyntaxException {
+		ArrayList<String> lines = new ArrayList<String>();
+		for (String source : sources) {
+			getSingleSource(new URL(source), lines);
+		}
+		return lines;
+	}
+	private static ArrayList<String> getSingleSource(URL url, ArrayList<String> lines) throws ClientProtocolException, IOException, URISyntaxException {
+		HttpGet httpGet = null;
+		HttpResponse response = null;
+		HttpEntity entity = null;
+		BufferedReader in = null;
+		try {
+			httpGet = new HttpGet(url.toURI());
+			response = httpclient.execute(httpGet);
+			entity = response.getEntity();
+			in = new BufferedReader(new InputStreamReader(entity.getContent()));
+			String tempLine;
+			while ((tempLine = in.readLine()) != null) {
+				lines.add(tempLine);
+			}
+			return lines;
+		} finally {
+			try {
+				if (in != null)
+					in.close();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			if (entity != null)
+			EntityUtils.consumeQuietly(entity);
+			if (httpGet != null)
+			httpGet.releaseConnection();
+		}
+	}
 	public static Collection<? extends Section> getSections(OSMSource source, int regionx, int regionz) throws URISyntaxException, IOException {
 		ServerInfo serverInfo = ServerInfoManager.getServerInfo();
 		if (serverInfo.getGetXapi()) {
 			//first and foremost we always try to get the latest xml from xapi
 			PointSource ps = new PointSource(regionx, regionz, source);
-			ArrayList<String> lines;
-			HttpGet httpGet = null;
-			HttpResponse response = null;
-			HttpEntity entity = null;
-			BufferedReader in = null;
+			
 			try {
+				ArrayList<String> lines = null;
 				if (cache.containsKey(ps)) {
 					lines = cache.get(ps);
 				} else {
-					URL url = null;
 					switch(source) {
 					case lakes:
-						url = InfoManager.lakesServer(regionx, regionz);
+						lines = getSingleSource(InfoManager.lakesServer(regionx, regionz));
 						break;
 					case poi:
-						url = InfoManager.poiServer(regionx, regionz);
+						lines = getMultipleSources(InfoManager.poiServer(regionx, regionz));
 						break;
 					case rivers:
-						url = InfoManager.riversServer(regionx, regionz);
+						lines = getSingleSource(InfoManager.riversServer(regionx, regionz));
 						break;
 					case boundaries:
-						url = InfoManager.boundariesServer(regionx, regionz);
+						lines = getSingleSource(InfoManager.boundariesServer(regionx, regionz));
 						break;
 					case coastlines:
-						url = InfoManager.coastlinesServer(regionx, regionz);
+						lines = getSingleSource(InfoManager.coastlinesServer(regionx, regionz));
 						break;
 					case rails:
-						url = InfoManager.railsServer(regionx, regionz);
+						lines = getSingleSource(InfoManager.railsServer(regionx, regionz));
 						break;
 					}
-
-					httpGet = new HttpGet(url.toURI());
-					response = httpclient.execute(httpGet);
-					entity = response.getEntity();
-					in = new BufferedReader(new InputStreamReader(entity.getContent()));
-					lines = new ArrayList<String>();
-					String tempLine;
-					while ((tempLine = in.readLine()) != null) {
-						lines.add(tempLine);
-					}
+					
 					if (lines.size() == 0) {
 						throw new RuntimeException("xml empty");
 					}
@@ -98,7 +126,6 @@ public class OSMDownloader {
 					if (!finalLine.trim().equals("</osm>")) {
 						throw new RuntimeException("invalid osm");
 					}
-					//print
 					cache.put(ps, lines);
 				}
 				switch(source) {
@@ -117,18 +144,6 @@ public class OSMDownloader {
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
-			} finally {
-				try {
-					if (in != null)
-						in.close();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				if (entity != null)
-				EntityUtils.consumeQuietly(entity);
-				if (httpGet != null)
-				httpGet.releaseConnection();
 			}
 		}
 		throw new RuntimeException("unimplemented");
