@@ -1,0 +1,5 @@
+Chunkmapper generates the real world in Minecraft.  Start anywhere you want and go as far as you want - the world is completely unbounded.  Chunkmapper maps are large: one block is 30 metres in real life.  At this scale a trip around the equator is more than 1.3 million blocks.
+
+Chunkmapper includes many terrain types and man made features.  The world's railways are mapped with powered tracks including bridges and tunnels.
+
+Chunkmapper is a standalone program, not a Minecraft mod.  Run it while you play Minecraft and it will generate the the world as you go.

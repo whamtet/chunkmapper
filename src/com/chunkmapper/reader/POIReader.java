@@ -30,11 +30,12 @@ public class POIReader {
 			if (0 <= offsetx && offsetx < 16 && 0 <= offsetz && offsetz < 16) {
 				int h = chunk.getHeights(offsetx, offsetz);
 				if (h < 0) h = 4;
-				ArtifactWriter.addSign(chunk, h, offsetz, offsetx, poi.text.split(" "));
+				if (poi.text != null)
+					ArtifactWriter.addSign(chunk, h, offsetz, offsetx, poi.text.split(" "));
 			}
 		}
 	}
-	
+
 	public static void addSpecialLandmarks(Chunk chunk) {
 		for (SpecialPlace specialPlace : specialPlaces) {
 			if (chunk.abschunkx == specialPlace.chunkx && chunk.abschunkz == specialPlace.chunkz) {
@@ -43,7 +44,7 @@ public class POIReader {
 				ArtifactWriter.addSign(chunk, chunk.getHeights(relx, relz), relz, relx, specialPlace.text);
 			}
 		}
-		
+
 	}
 	private static class SpecialPlace {
 		public final String[] text;
@@ -56,7 +57,7 @@ public class POIReader {
 			absz = (int) Math.floor(-lat * 3600);
 		}
 	}
-	
-	
+
+
 
 }
