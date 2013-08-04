@@ -33,6 +33,7 @@ import com.chunkmapper.Point;
 import com.chunkmapper.enumeration.OSMSource;
 import com.chunkmapper.parser.BoundaryParser;
 import com.chunkmapper.parser.CoastlineParser;
+import com.chunkmapper.parser.HighwayParser;
 import com.chunkmapper.parser.LakeParser;
 import com.chunkmapper.parser.POIParser;
 import com.chunkmapper.parser.RailParser;
@@ -117,6 +118,9 @@ public class OSMDownloader {
 					case rails:
 						lines = getSingleSource(InfoManager.railsServer(regionx, regionz));
 						break;
+					case highways:
+						lines = getSingleSource(InfoManager.highwaysServer(regionx, regionz));
+						break;
 					}
 					
 					if (lines.size() == 0) {
@@ -141,6 +145,8 @@ public class OSMDownloader {
 					return CoastlineParser.getCoastlines(lines);
 				case rails:
 					return RailParser.getRailSections(lines);
+				case highways:
+					return HighwayParser.getHighwaySections(lines);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

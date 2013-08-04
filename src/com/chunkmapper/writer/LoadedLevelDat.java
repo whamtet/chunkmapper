@@ -58,7 +58,7 @@ public class LoadedLevelDat {
 		return new Point((int) x, (int) z);
 	}
 	public void setName(String name) {
-		System.out.println("setting player name");
+		System.out.println("setting game name to " + name);
 		CompoundTag Data = data.getCompound("Data");
 		Data.putString("LevelName", name);
 	}

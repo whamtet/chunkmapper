@@ -9,6 +9,7 @@ import com.chunkmapper.enumeration.Stairs;
 import com.chunkmapper.enumeration.StraightRail;
 import com.chunkmapper.enumeration.WoolColor;
 import com.chunkmapper.math.Matthewmatics;
+import com.chunkmapper.reader.RugbyReader.RugbyField;
 import com.mojang.nbt.CompoundTag;
 
 public class ArtifactWriter {
@@ -28,7 +29,7 @@ public class ArtifactWriter {
 			chunk.Blocks[y0+3][z0][x] = Blocka.Fence;
 		}
 	}
-	public static void addRugbyField(Chunk chunk) {
+	public static void addRugbyField(Chunk chunk, RugbyField rugbyField) {
 		int h = getMeanHeight(chunk);
 		//clear out space
 		for (int z = 0; z < 16; z++) {
@@ -45,6 +46,10 @@ public class ArtifactWriter {
 		//add the posts
 		addH(chunk, h, 0, 5);
 		addH(chunk, h, 15, 5);
+		//add signpost
+		if (rugbyField.name != null) {
+			ArtifactWriter.addSign(chunk, h, 1, 1, rugbyField.name.split(" "));
+		}
 	}
 	private static void addArch(Chunk chunk, int x0, int z0, int h, boolean lastArch) {
 		for (int y = h; y < h + 5; y++) {

@@ -14,16 +14,22 @@ public class RugbyReader {
 	public RugbyReader(int regionx, int regionz) throws URISyntaxException, IOException {
 		pois = (Collection<POI>) OSMDownloader.getSections(OSMSource.poi, regionx, regionz);
 	}
-	public boolean hasRugbyField(Chunk chunk) {
+	public static class RugbyField {
+		public final String name;
+		public RugbyField(String name) {
+			this.name = name;
+		}
+	}
+	public RugbyField getRugbyField(Chunk chunk) {
 		for (POI poi : pois) {
 			boolean poiIsRugby = poi.type.equals("rugby") || poi.type.equals("rugby_league")
 					|| poi.type.equals("rugby_union");
 			if (poiIsRugby && chunk.x0 <= poi.point.x && poi.point.x < chunk.x0 + 16
 					&& chunk.z0 <= poi.point.z && poi.point.z < chunk.z0 + 16) {
-				return true;
+				return new RugbyField(poi.text);
 			}
 		}
-		return false;
+		return null;
 	}
 
 }

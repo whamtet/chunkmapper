@@ -82,6 +82,10 @@ public class HeightsReaderImpl implements HeightsReader {
 			for (int z = 0; z < size; z++) {
 				int h = cache[z + offsetz][x + offsetx];
 				h = h < 0 ? 4 : h * verticalExaggeration / Utila.Y_SCALE + 4;
+				//temp
+//				h -= 128;
+//				if (h < 4) h = 4;
+				//end temp
 				if (h > 250)
 					h = 250;
 				out[x][z] = h;
@@ -97,6 +101,10 @@ public class HeightsReaderImpl implements HeightsReader {
 		absx -= x0; absz -= z0;
 		short h = cache[absz][absx];
 		h = h < 0 ? 4 : (short) (h * verticalExaggeration / Utila.Y_SCALE + 4);
+		//temp
+//		h -= 128;
+//		if (h < 4) h = 4;
+		//end temp
 		if (h > 250)
 			h = 250;
 		return h;
@@ -110,6 +118,10 @@ public class HeightsReaderImpl implements HeightsReader {
 		//note reversed order
 		short h = cache[i + Utila.HEIGHTS_START][j + Utila.HEIGHTS_START];
 		h = h < 0 ? 4 : (short) (h * verticalExaggeration / Utila.Y_SCALE + 4);
+		//temp
+//		h -= 128;
+//		if (h < 4) h = 4;
+		//end temp
 		if (h > 250)
 			h = 250;
 		return h;

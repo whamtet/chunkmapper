@@ -46,8 +46,10 @@ import com.chunkmapper.reader.GlobcoverReaderImpl2;
 import com.chunkmapper.reader.HeightsReaderImpl;
 import com.chunkmapper.reader.POIReader;
 import com.chunkmapper.reader.RugbyReader;
+import com.chunkmapper.reader.RugbyReader.RugbyField;
 import com.chunkmapper.reader.XapiBoundaryReader;
 import com.chunkmapper.reader.XapiCoastlineReader;
+import com.chunkmapper.reader.XapiHighwayReader;
 import com.chunkmapper.reader.XapiLakeReader;
 import com.chunkmapper.reader.XapiRailReader;
 import com.chunkmapper.reader.XapiRiverReader;
@@ -61,6 +63,7 @@ public class GlobcoverManager {
 	private final DensityReader densityReader;
 	private final XapiBoundaryReader boundaryReader;
 	private final RugbyReader rugbyReader;
+	private final XapiHighwayReader highwayReader;
 	public final boolean allWater;
 	private final ArtifactWriter artifactWriter = new ArtifactWriter();
 	public final int regionx, regionz;
@@ -79,8 +82,10 @@ public class GlobcoverManager {
 			densityReader = null;
 			boundaryReader = null;
 			rugbyReader = null;
+			highwayReader = null;
 			return;
 		}
+		highwayReader = new XapiHighwayReader(regionx, regionz, heightsReader);
 		boundaryReader = new XapiBoundaryReader(regionx, regionz);
 		rugbyReader = new RugbyReader(regionx, regionz);
 		densityReader = new DensityReader(regionx, regionz);
@@ -258,6 +263,11 @@ public class GlobcoverManager {
 		//add country boundaries
 		boundaryReader.addBoundariesToChunk(chunkx, chunkz, chunk);
 
+		//add some roads
+		boolean chunkHasRoad = false;
+		if (highwayReader.hasHighways)
+			chunkHasRoad = highwayReader.addRoad(chunkx, chunkz, chunk);
+		
 		//finally add rail
 		boolean chunkHasRail = false;
 		if (railReader != null && railReader.hasRails) {
@@ -275,10 +285,15 @@ public class GlobcoverManager {
 				}
 			}
 		}
+
+
+
 		//add a house
-		if (rugbyReader.hasRugbyField(chunk) && !chunkHasRail && !chunkHasWater) {
-			ArtifactWriter.addRugbyField(chunk);
-		} else if ((chunkHasUrban || densityReader.hasHouse(chunkx, chunkz)) && !chunkHasRail && !chunkHasWater) {
+		RugbyField rugbyField = rugbyReader.getRugbyField(chunk);
+		if (rugbyField != null && !chunkHasRail && !chunkHasWater && !chunkHasRoad) {
+			ArtifactWriter.addRugbyField(chunk, rugbyField);
+		} else if ((chunkHasUrban || densityReader.hasHouse(chunkx, chunkz)) && !chunkHasRail && !chunkHasWater
+				&& !chunkHasRoad) {
 			int i = RANDOM.nextInt(100);
 			switch(i) {
 			case 0:

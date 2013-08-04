@@ -31,12 +31,6 @@ public class Parser {
 		} else {
 			return value;
 		}
-//		key += "=\"";
-//		int i = s.indexOf(key);
-//		if (i == -1)
-//			return null;
-//		int j = s.indexOf("\"", i + key.length());
-//		return s.substring(i + key.length(), j);
 	}
 	protected static ArrayList<String> getLines(File f) throws IOException {
 		ArrayList<String> lines = new ArrayList<String>();
