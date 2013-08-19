@@ -1,8 +1,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.chunkmapper </groupId>
   <artifactId>chunkmapper2</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+  
   <build>
     <sourceDirectory>src</sourceDirectory>
     <plugins>
@@ -16,18 +18,19 @@
       </plugin>
     </plugins>
   </build>
+  
   <dependencies>
+  <dependency>
+	<groupId>net.tanesha.recaptcha4j</groupId>
+	<artifactId>recaptcha4j</artifactId>
+	<version>0.0.7</version>
+</dependency>
+            
   	<dependency>
 		<groupId>org.apache.httpcomponents</groupId>
 		<artifactId>httpclient</artifactId>
 		<version>4.2.5</version>
 	</dependency>
-	
-	<!-- <dependency>
-      <groupId>com.tomgibara.imageio</groupId>
-      <artifactId>imageio-tiff</artifactId>
-      <version>1.0</version>
-    </dependency> -->
             
   <dependency>
   	<groupId>commons-io</groupId>
@@ -45,15 +48,4 @@
   	<version>2.5.0</version>
   </dependency>
   </dependencies>
-<!--   <repositories>
-   <repository>
-      <id>tomgibara</id>
-      <name>Tom Gibara Maven Repository</name>
-      <layout>default</layout>
-      <url>http://www.tomgibara.com/maven/repo/</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-    </repositories> -->
 </project>

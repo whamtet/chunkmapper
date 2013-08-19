@@ -110,6 +110,21 @@ public final class ServerInfoContainer {
      * <code>optional bool get_xapi = 7;</code>
      */
     boolean getGetXapi();
+
+    // optional string reset_password_address = 8;
+    /**
+     * <code>optional string reset_password_address = 8;</code>
+     */
+    boolean hasResetPasswordAddress();
+    /**
+     * <code>optional string reset_password_address = 8;</code>
+     */
+    java.lang.String getResetPasswordAddress();
+    /**
+     * <code>optional string reset_password_address = 8;</code>
+     */
+    com.google.protobuf.ByteString
+        getResetPasswordAddressBytes();
   }
   /**
    * Protobuf type {@code ServerInfo}
@@ -187,6 +202,11 @@ public final class ServerInfoContainer {
             case 56: {
               bitField0_ |= 0x00000040;
               getXapi_ = input.readBool();
+              break;
+            }
+            case 66: {
+              bitField0_ |= 0x00000080;
+              resetPasswordAddress_ = input.readBytes();
               break;
             }
           }
@@ -490,6 +510,49 @@ public final class ServerInfoContainer {
       return getXapi_;
     }
 
+    // optional string reset_password_address = 8;
+    public static final int RESET_PASSWORD_ADDRESS_FIELD_NUMBER = 8;
+    private java.lang.Object resetPasswordAddress_;
+    /**
+     * <code>optional string reset_password_address = 8;</code>
+     */
+    public boolean hasResetPasswordAddress() {
+      return ((bitField0_ & 0x00000080) == 0x00000080);
+    }
+    /**
+     * <code>optional string reset_password_address = 8;</code>
+     */
+    public java.lang.String getResetPasswordAddress() {
+      java.lang.Object ref = resetPasswordAddress_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          resetPasswordAddress_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string reset_password_address = 8;</code>
+     */
+    public com.google.protobuf.ByteString
+        getResetPasswordAddressBytes() {
+      java.lang.Object ref = resetPasswordAddress_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        resetPasswordAddress_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private void initFields() {
       railAddress_ = "";
       riverAddress_ = "";
@@ -498,6 +561,7 @@ public final class ServerInfoContainer {
       poiAddress_ = "";
       globcoverAddress_ = "";
       getXapi_ = false;
+      resetPasswordAddress_ = "";
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -531,6 +595,9 @@ public final class ServerInfoContainer {
       }
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
         output.writeBool(7, getXapi_);
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        output.writeBytes(8, getResetPasswordAddressBytes());
       }
     }
 
@@ -567,6 +634,10 @@ public final class ServerInfoContainer {
       if (((bitField0_ & 0x00000040) == 0x00000040)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBoolSize(7, getXapi_);
+      }
+      if (((bitField0_ & 0x00000080) == 0x00000080)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(8, getResetPasswordAddressBytes());
       }
       memoizedSerializedSize = size;
       return size;
@@ -673,6 +744,8 @@ public final class ServerInfoContainer {
         bitField0_ = (bitField0_ & ~0x00000020);
         getXapi_ = false;
         bitField0_ = (bitField0_ & ~0x00000040);
+        resetPasswordAddress_ = "";
+        bitField0_ = (bitField0_ & ~0x00000080);
         return this;
       }
 
@@ -724,6 +797,10 @@ public final class ServerInfoContainer {
           to_bitField0_ |= 0x00000040;
         }
         result.getXapi_ = getXapi_;
+        if (((from_bitField0_ & 0x00000080) == 0x00000080)) {
+          to_bitField0_ |= 0x00000080;
+        }
+        result.resetPasswordAddress_ = resetPasswordAddress_;
         result.bitField0_ = to_bitField0_;
         return result;
       }
@@ -762,6 +839,11 @@ public final class ServerInfoContainer {
         }
         if (other.hasGetXapi()) {
           setGetXapi(other.getGetXapi());
+        }
+        if (other.hasResetPasswordAddress()) {
+          bitField0_ |= 0x00000080;
+          resetPasswordAddress_ = other.resetPasswordAddress_;
+          
         }
         return this;
       }
@@ -1262,6 +1344,80 @@ public final class ServerInfoContainer {
       public Builder clearGetXapi() {
         bitField0_ = (bitField0_ & ~0x00000040);
         getXapi_ = false;
+        
+        return this;
+      }
+
+      // optional string reset_password_address = 8;
+      private java.lang.Object resetPasswordAddress_ = "";
+      /**
+       * <code>optional string reset_password_address = 8;</code>
+       */
+      public boolean hasResetPasswordAddress() {
+        return ((bitField0_ & 0x00000080) == 0x00000080);
+      }
+      /**
+       * <code>optional string reset_password_address = 8;</code>
+       */
+      public java.lang.String getResetPasswordAddress() {
+        java.lang.Object ref = resetPasswordAddress_;
+        if (!(ref instanceof java.lang.String)) {
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          resetPasswordAddress_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string reset_password_address = 8;</code>
+       */
+      public com.google.protobuf.ByteString
+          getResetPasswordAddressBytes() {
+        java.lang.Object ref = resetPasswordAddress_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          resetPasswordAddress_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string reset_password_address = 8;</code>
+       */
+      public Builder setResetPasswordAddress(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000080;
+        resetPasswordAddress_ = value;
+        
+        return this;
+      }
+      /**
+       * <code>optional string reset_password_address = 8;</code>
+       */
+      public Builder clearResetPasswordAddress() {
+        bitField0_ = (bitField0_ & ~0x00000080);
+        resetPasswordAddress_ = getDefaultInstance().getResetPasswordAddress();
+        
+        return this;
+      }
+      /**
+       * <code>optional string reset_password_address = 8;</code>
+       */
+      public Builder setResetPasswordAddressBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000080;
+        resetPasswordAddress_ = value;
         
         return this;
       }

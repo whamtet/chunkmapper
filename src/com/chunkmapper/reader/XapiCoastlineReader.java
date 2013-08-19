@@ -24,10 +24,10 @@ public class XapiCoastlineReader {
 	private int[][] data = new int[512][512];
 	private static final int BAND_WIDTH = 5;
 	private static final int COAST = BAND_WIDTH + 2, DOWN_COAST = -BAND_WIDTH - 2, UP_COAST = BAND_WIDTH + 3;
+	private static final int FINAL_COAST = BAND_WIDTH + 4;
 
 	public boolean isCoastij(int i, int j) {
-		int data2 = data[i][j];
-		return data2 == COAST || data2 == UP_COAST || data2 == DOWN_COAST;
+		return data[i][j] == FINAL_COAST;
 	}
 
 	public boolean hasWaterij(int i, int j) {
@@ -130,7 +130,6 @@ public class XapiCoastlineReader {
 				}
 				interpolate(data, p1, p2, regionx, regionz, fill, COAST);
 			}
-			//			}
 		}
 		for (int i = 0; i < 512; i++) {
 			for (int j = 0; j < 512; j++) {
@@ -153,7 +152,29 @@ public class XapiCoastlineReader {
 				}
 			}
 		}
-
+		//lastly go through and widen the coasts
+		int RAD = 1;
+		for (int i = 0 ; i < 512; i++) {
+			for (int j = 0; j < 512; j++) {
+				int k = i - RAD, l = i + RAD;
+				int m = j - RAD, n = j + RAD;
+				if (k < 0) k = 0;
+				if (m < 0) m = 0;
+				if (l > 511) l = 511;
+				if (n > 511) n = 511;
+				boolean isCoast = false;
+				for (int o = k; o <= l; o++) {
+					for (int p = m; p <= n; p++) {
+						int val = data[o][p];
+						if (val == COAST || val == UP_COAST || val == DOWN_COAST) {
+							isCoast = true;
+							break;
+						}
+					}
+				}
+				if (isCoast) data[i][j] = FINAL_COAST;
+			}
+		}
 	}
 
 

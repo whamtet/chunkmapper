@@ -56,7 +56,7 @@ public class InfoManager {
 	}
 	
 	public static URL highwaysServer(int regionx, int regionz) throws MalformedURLException {
-		String s = "http://www.overpass-api.de/api/xapi?way[highway=motorway%7Ctrunk]" + getAddress("[bbox=%s,%s,%s,%s]", regionx, regionz);
+		String s = "http://www.overpass-api.de/api/xapi?way[highway=motorway%7Ctrunk%7Cprimary]" + getAddress("[bbox=%s,%s,%s,%s]", regionx, regionz);
 		return new URL(s);
 	}
 

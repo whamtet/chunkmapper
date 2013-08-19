@@ -11,4 +11,5 @@ message ServerInfo {
 	optional string poi_address = 5;
 	optional string globcover_address = 6;
 	optional bool get_xapi = 7;
+	optional string reset_password_address = 8;
 }

@@ -43,7 +43,6 @@ public class TestArtifact {
 		int chunkx = 2, chunkz = 3;
 		Chunk chunk = new Chunk(chunkx, chunkz, heights, chunkx, chunkz);
 		GenericWriter.addBedrock(chunk, 0);
-		ArtifactWriter.addRugbyField(chunk);
 //		ArtifactWriter.placeMarket(chunk);
 //		ArtifactWriter.placePrison(chunk);
 //		ArtifactWriter.addTunnelIntoTheUnknown(chunk);

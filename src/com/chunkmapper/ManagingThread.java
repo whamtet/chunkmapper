@@ -7,10 +7,15 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.HashSet;
 
+import javax.swing.JFrame;
+
 import org.apache.commons.io.FileUtils;
 
 import com.chunkmapper.downloader.UberDownloader;
+import com.chunkmapper.gui.LoginDialog;
+import com.chunkmapper.gui.SuspiciousPasswordDialog;
 import com.chunkmapper.rail.HeightsCache;
+import com.chunkmapper.security.SecurityManager;
 import com.chunkmapper.writer.LoadedLevelDat;
 import com.chunkmapper.writer.RegionWriter;
 
@@ -20,9 +25,15 @@ public class ManagingThread extends Thread {
 	private final MappedSquareManager mappedSquareManager;
 	private final PlayerIconManager playerIconManager;
 	private final int verticalExaggeration;
+	private final JFrame appFrame;
+	private final GeneratingLayer generatingLayer;
 	
 	public ManagingThread(double lat, double lon, File gameFolder, MappedSquareManager mappedSquareManager,
-			PlayerIconManager playerIconManager, int verticalExaggeration) {
+			PlayerIconManager playerIconManager, int verticalExaggeration, JFrame appFrame,
+			GeneratingLayer generatingLayer) {
+		
+		this.generatingLayer = generatingLayer;
+		this.appFrame = appFrame;
 		this.verticalExaggeration = verticalExaggeration;
 		this.mappedSquareManager = mappedSquareManager;
 		this.playerIconManager = playerIconManager;
@@ -50,6 +61,29 @@ public class ManagingThread extends Thread {
 
 	@Override
 	public void run() {
+		//first need to check security
+		if (!SecurityManager.isOfflineValid()) {
+			String email = null;
+			boolean isLoggedIn = false;
+			while(!isLoggedIn) {
+				LoginDialog dialog = new LoginDialog(appFrame, email);
+				dialog.setVisible(true);
+				if (dialog.cancelled) {
+					generatingLayer.cancel();
+					return;
+				}
+				email = dialog.getEmail();
+				switch(SecurityManager.onlineValidity(email, dialog.getPassword())) {
+				case SecurityManager.REQUIRES_LOGIN:
+				(new SuspiciousPasswordDialog(appFrame)).setVisible(true);
+				break;
+				case SecurityManager.VALID:
+				isLoggedIn = true;
+				break;
+				}
+			}
+		}
+		generatingLayer.zoomTo();
 		System.out.println("generating " + gameFolder.getName());
 		if (!gameFolder.exists()) {
 			gameFolder.mkdirs();

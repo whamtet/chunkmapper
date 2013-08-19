@@ -23,7 +23,7 @@ public class ServerInfoManager {
 	private static ServerInfo doGetServerInfo() {
 		ServerInfo info = null;
 		try {
-			URL url = new URL("http://chunkmapper-static.appspot.com/public/ServerInfo.pbf");
+			URL url = new URL("http://backend.chunkmapper.com/static/ServerInfo.pbf");
 
 			InputStream in = new BufferedInputStream(url.openStream());
 			info = ServerInfo.parseFrom(in);
@@ -43,8 +43,9 @@ public class ServerInfoManager {
 		builder.setCoastlineAddress("http://chunkmapper-static.appspot.com/public/mycoastlines/");
 		builder.setGlobcoverAddress("http://chunkmapper-static.appspot.com/public/mat/");
 		builder.setGetXapi(true);
+		builder.setResetPasswordAddress("http://www.chunkmapper.com/reset-password");
 		
-		File outFile = new File("/Users/matthewmolloy/workspace/chunkmapper-static/public/ServerInfo.pbf");
+		File outFile = new File("/Users/matthewmolloy/python/helloworld/static/ServerInfo.pbf");
 		FileOutputStream out = new FileOutputStream(outFile);
 		out.write(builder.build().toByteArray());
 		out.close();
@@ -52,5 +53,7 @@ public class ServerInfoManager {
 		System.out.println("done");
 	}
 
-
+	public static void main(String[] args) throws Exception {
+		writeToStagingDirectory();
+	}
 }
