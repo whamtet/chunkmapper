@@ -10,8 +10,8 @@ import net.minecraft.world.level.chunk.storage.RegionFile;
 import org.apache.commons.io.FileUtils;
 
 import com.chunkmapper.chunk.Chunk;
-import com.chunkmapper.column2.AbstractColumn;
-import com.chunkmapper.column2.Shrubland;
+import com.chunkmapper.column.AbstractColumn;
+import com.chunkmapper.column.Shrubland;
 import com.chunkmapper.math.Matthewmatics;
 import com.chunkmapper.reader.HeightsReader;
 import com.chunkmapper.reader.UniformHeightsReader;

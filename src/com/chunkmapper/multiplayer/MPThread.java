@@ -1,4 +1,4 @@
-package com.chunkmapper;
+package com.chunkmapper.multiplayer;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -7,44 +7,46 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.HashSet;
 
-import javax.swing.JFrame;
-
 import org.apache.commons.io.FileUtils;
 
+import com.chunkmapper.GameMetaInfo;
+import com.chunkmapper.MappedSquareManager;
+import com.chunkmapper.Point;
 import com.chunkmapper.downloader.UberDownloader;
-import com.chunkmapper.gui.LoginDialog;
-import com.chunkmapper.gui.SuspiciousPasswordDialog;
+import com.chunkmapper.parser.Nominatim;
 import com.chunkmapper.rail.HeightsCache;
-import com.chunkmapper.security.SecurityManager;
 import com.chunkmapper.writer.LoadedLevelDat;
-import com.chunkmapper.writer.RegionWriter;
+import com.chunkmapper.writer.NeutralRegionWriter;
 
-public class ManagingThread extends Thread {
-	private final double lat, lon;
-	private final File gameFolder;
-	private final MappedSquareManager mappedSquareManager;
-	private final PlayerIconManager playerIconManager;
-	private final int verticalExaggeration;
-	private final JFrame appFrame;
-	private final GeneratingLayer generatingLayer;
-	
-	public ManagingThread(double lat, double lon, File gameFolder, MappedSquareManager mappedSquareManager,
-			PlayerIconManager playerIconManager, int verticalExaggeration, JFrame appFrame,
-			GeneratingLayer generatingLayer) {
-		
-		this.generatingLayer = generatingLayer;
-		this.appFrame = appFrame;
-		this.verticalExaggeration = verticalExaggeration;
-		this.mappedSquareManager = mappedSquareManager;
-		this.playerIconManager = playerIconManager;
-		this.lat = lat;
-		this.lon = lon;
-		this.gameFolder = gameFolder;
-	}
+public class MPThread {
+
 	public static void main(String[] args) throws Exception {
-		URL src = ManagingThread.class.getResource("/config/level.dat");
-		System.out.println(src);
 	}
+	private static void start(String[] args) throws Exception {
+		//wowa, just put in a location
+		double[] latlon = Nominatim.getPoint(args[0]);
+		int verticalExaggeration = 1;
+		File gameFolder = new File(args[0].split(",")[0]);
+		run(latlon[0], latlon[1], gameFolder, verticalExaggeration);
+	}
+//	private static void start(String[] args) throws Exception {
+//	
+//		HashMap<String, String> cli = new HashMap<String, String>();
+//		for (int i = 0; i < args.length; i += 2) {
+//			cli.put(args[i], args[i+1]);
+//		}
+//		if (!cli.containsKey("-lat") || !cli.containsKey("-lon") || !cli.containsKey("-name")) {
+//			System.out.println("usage: -lat -lon -name");
+//			System.exit(0);
+//		}
+//		double lat = Double.parseDouble(cli.get("-lat"));
+//		double lon = Double.parseDouble(cli.get("-lon"));
+//		String name = cli.get("-name");
+//		//we're going to throw everything in current dir.
+//		File gameFolder = new File(name);
+//		int verticalExaggeration = 1;
+//		run(lat, lon, gameFolder, verticalExaggeration);
+//	}
 	private static File prepareDir(File f, boolean delete) {
 		if (delete && f.exists()) {
 			try {
@@ -59,32 +61,10 @@ public class ManagingThread extends Thread {
 		return f;
 	}
 
-	@Override
-	public void run() {
-		//first need to check security
-//		if (!SecurityManager.isOfflineValid()) {
-//			String email = null;
-//			boolean isLoggedIn = false;
-//			while(!isLoggedIn) {
-//				LoginDialog dialog = new LoginDialog(appFrame, email);
-//				dialog.setVisible(true);
-//				if (dialog.cancelled) {
-//					generatingLayer.cancel();
-//					return;
-//				}
-//				email = dialog.getEmail();
-//				switch(SecurityManager.onlineValidity(email, dialog.getPassword())) {
-//				case SecurityManager.REQUIRES_LOGIN:
-//				(new SuspiciousPasswordDialog(appFrame)).setVisible(true);
-//				break;
-//				case SecurityManager.VALID:
-//				isLoggedIn = true;
-//				break;
-//				}
-//			}
-//		}
-		generatingLayer.zoomTo();
+	private static void run(double lat, double lon, File gameFolder, int verticalExaggeration) throws IOException {
 		System.out.println("generating " + gameFolder.getName());
+		//write server.properties
+		ServerProperties.spitProperties(gameFolder.getName());
 		if (!gameFolder.exists()) {
 			gameFolder.mkdirs();
 		}
@@ -107,7 +87,7 @@ public class ManagingThread extends Thread {
 		File loadedLevelDatFile = new File(gameFolder, "level.dat");
 		if (!loadedLevelDatFile.exists()) {
 			try {
-				URL src = ManagingThread.class.getResource("/config/level.dat");
+				URL src = MPThread.class.getResource("/config/level.dat");
 				FileUtils.copyURLToFile(src, loadedLevelDatFile);
 				LoadedLevelDat loadedLevelDat = new LoadedLevelDat(loadedLevelDatFile);
 				String gameName = gameFolder.getName();
@@ -123,18 +103,19 @@ public class ManagingThread extends Thread {
 		HeightsCache.deleteCache();
 
 		//now we need to create all our downloaders;
-		RegionWriter regionWriter = null;
+		NeutralRegionWriter regionWriter = null;
 		UberDownloader uberDownloader = null;
+		TextDisplay textDisplay = new TextDisplay(chunkmapperDir);
 		try {
-			PointManager pointManager = new PointManager(chunkmapperDir, mappedSquareManager, gameMetaInfo.rootPoint);
+			MPPointManager pointManager = new MPPointManager(chunkmapperDir, textDisplay, gameMetaInfo.rootPoint);
 			uberDownloader = new UberDownloader();
-			regionWriter = new RegionWriter(pointManager, gameMetaInfo.rootPoint, regionFolder, 
-					gameMetaInfo, mappedSquareManager, uberDownloader, gameMetaInfo.verticalExaggeration);
+			regionWriter = new NeutralRegionWriter(pointManager, gameMetaInfo.rootPoint, regionFolder, 
+					gameMetaInfo, uberDownloader, gameMetaInfo.verticalExaggeration, textDisplay);
 
 
 			//now we loop for ETERNITY!!!
 			while (true) {
-				HashSet<Point> pointsToWrite = pointManager.getNewPoints(gameFolder, gameMetaInfo.rootPoint, chunkmapperDir, playerIconManager);
+				HashSet<Point> pointsToWrite = pointManager.getNewPoints(gameFolder, gameMetaInfo.rootPoint);
 				for (Point p : pointsToWrite) {
 
 					uberDownloader.addRegionToDownload(p.x + gameMetaInfo.rootPoint.x, p.z + gameMetaInfo.rootPoint.z);
@@ -170,19 +151,6 @@ public class ManagingThread extends Thread {
 		out[1] = Double.parseDouble(reader.readLine());
 		reader.close();
 		return out;
-	}
-	public static void blockingShutDown(ManagingThread thread) {
-		thread.interrupt();
-		while(thread.isAlive()) {
-			//			System.out.println("waiting shutdown");
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-
 	}
 
 }

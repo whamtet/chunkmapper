@@ -45,7 +45,7 @@ public class ServerInfoManager {
 		builder.setGetXapi(true);
 		builder.setResetPasswordAddress("http://www.chunkmapper.com/reset-password");
 		
-		File outFile = new File("/Users/matthewmolloy/python/helloworld/static/ServerInfo.pbf");
+		File outFile = new File("/Users/matthewmolloy/python/webstore/static/ServerInfo.pbf");
 		FileOutputStream out = new FileOutputStream(outFile);
 		out.write(builder.build().toByteArray());
 		out.close();

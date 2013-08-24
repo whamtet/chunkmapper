@@ -1,5 +1,7 @@
 package com.chunkmapper.reader;
 
+import geocode.core;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -25,9 +27,13 @@ public class XapiCoastlineReader {
 	private static final int BAND_WIDTH = 5;
 	private static final int COAST = BAND_WIDTH + 2, DOWN_COAST = -BAND_WIDTH - 2, UP_COAST = BAND_WIDTH + 3;
 	private static final int FINAL_COAST = BAND_WIDTH + 4;
+	private static final int FORESHORE = BAND_WIDTH + 5;
 
 	public boolean isCoastij(int i, int j) {
 		return data[i][j] == FINAL_COAST;
+	}
+	public boolean isForeshoreij(int i, int j) {
+		return data[i][j] == FORESHORE;
 	}
 
 	public boolean hasWaterij(int i, int j) {
@@ -152,27 +158,45 @@ public class XapiCoastlineReader {
 				}
 			}
 		}
-		//lastly go through and widen the coasts
+		//go through and widen the coasts
 		int RAD = 1;
 		for (int i = 0 ; i < 512; i++) {
 			for (int j = 0; j < 512; j++) {
-				int k = i - RAD, l = i + RAD;
-				int m = j - RAD, n = j + RAD;
-				if (k < 0) k = 0;
-				if (m < 0) m = 0;
-				if (l > 511) l = 511;
-				if (n > 511) n = 511;
-				boolean isCoast = false;
-				for (int o = k; o <= l; o++) {
-					for (int p = m; p <= n; p++) {
-						int val = data[o][p];
-						if (val == COAST || val == UP_COAST || val == DOWN_COAST) {
-							isCoast = true;
-							break;
+				int val = data[i][j];
+				if (val == COAST || val == UP_COAST || val == DOWN_COAST) {
+					int k = i - RAD, l = i + RAD;
+					int m = j - RAD, n = j + RAD;
+					if (k < 0) k = 0;
+					if (m < 0) m = 0;
+					if (l > 511) l = 511;
+					if (n > 511) n = 511;
+					for (int o = k; o <= l; o++) {
+						for (int p = m; p <= n; p++) {
+							data[o][p] = FINAL_COAST;
 						}
 					}
 				}
-				if (isCoast) data[i][j] = FINAL_COAST;
+			}
+		}
+		//add foreshore
+		for (int i = 0 ; i < 512; i++) {
+			for (int j = 0; j < 512; j++) {
+				int val = data[i][j];
+				if (val == FINAL_COAST) {
+					int k = i - RAD, l = i + RAD;
+					int m = j - RAD, n = j + RAD;
+					if (k < 0) k = 0;
+					if (m < 0) m = 0;
+					if (l > 511) l = 511;
+					if (n > 511) n = 511;
+					for (int o = k; o <= l; o++) {
+						for (int p = m; p <= n; p++) {
+							if (data[o][p] < 0) {
+								data[o][p] = FORESHORE;
+							}
+						}
+					}
+				}
 			}
 		}
 	}
@@ -204,5 +228,19 @@ public class XapiCoastlineReader {
 			}
 		}
 		pw.close();
+	}
+	public static void main(String[] args) throws Exception {
+		double[] latlon = core.placeToCoords("auckland, nz");
+		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
+		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
+		XapiCoastlineReader reader = new XapiCoastlineReader(regionx, regionz, null);
+		PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter("/Users/matthewmolloy/python/wms/data.csv")));
+		for (int i = 0; i < 512; i++) {
+			for (int j = 0; j < 512; j++) {
+				pw.println(reader.data[i][j]);
+			}
+		}
+		pw.close();
+		System.out.println("done");
 	}
 }

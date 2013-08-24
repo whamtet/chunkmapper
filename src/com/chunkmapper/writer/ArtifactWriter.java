@@ -247,13 +247,18 @@ public class ArtifactWriter {
 
 		//walls
 		byte wallBlock = 0, wallData = 0;
-		switch(chunk.RANDOM.nextInt(2)) {
+		switch(chunk.RANDOM.nextInt(3)) {
 		case 0:
 			wallBlock = Blocka.Bricks;
 			break;
 		case 1:
 			wallBlock = Blocka.Wood;
 			wallData = (byte) chunk.RANDOM.nextInt(4);
+			break;
+		case 2:
+			wallBlock = Blocka.Planks;
+			wallData = (byte) chunk.RANDOM.nextInt(4);
+			break;
 		}
 
 		for (int y = h; y < h + 3; y++) {

@@ -7,32 +7,33 @@ import java.util.Random;
 import java.util.zip.DataFormatException;
 
 import com.chunkmapper.chunk.Chunk;
-import com.chunkmapper.column2.AbstractColumn;
-import com.chunkmapper.column2.Bare;
-import com.chunkmapper.column2.BroadleafEvergreen;
-import com.chunkmapper.column2.ClosedBroadleafDeciduous;
-import com.chunkmapper.column2.ClosedNeedleleafEvergreen;
-import com.chunkmapper.column2.Coast;
-import com.chunkmapper.column2.CroplandWithVegetation;
-import com.chunkmapper.column2.FloodedGrassland;
-import com.chunkmapper.column2.ForestShrublandWithGrass;
-import com.chunkmapper.column2.FreshFloodedForest;
-import com.chunkmapper.column2.GrassWithForestShrubland;
-import com.chunkmapper.column2.Grassland;
-import com.chunkmapper.column2.IrrigatedCrops;
-import com.chunkmapper.column2.Lake;
-import com.chunkmapper.column2.MixedBroadNeedleleaf;
-import com.chunkmapper.column2.Ocean;
-import com.chunkmapper.column2.OpenBroadleafDeciduous;
-import com.chunkmapper.column2.OpenNeedleleaf;
-import com.chunkmapper.column2.RainfedCrops;
-import com.chunkmapper.column2.River;
-import com.chunkmapper.column2.SalineFloodedForest;
-import com.chunkmapper.column2.Shrubland;
-import com.chunkmapper.column2.Snow;
-import com.chunkmapper.column2.SparseVegetation;
-import com.chunkmapper.column2.Urban;
-import com.chunkmapper.column2.VegetationWithCropland;
+import com.chunkmapper.column.AbstractColumn;
+import com.chunkmapper.column.Bare;
+import com.chunkmapper.column.BroadleafEvergreen;
+import com.chunkmapper.column.ClosedBroadleafDeciduous;
+import com.chunkmapper.column.ClosedNeedleleafEvergreen;
+import com.chunkmapper.column.Coast;
+import com.chunkmapper.column.CroplandWithVegetation;
+import com.chunkmapper.column.FloodedGrassland;
+import com.chunkmapper.column.Foreshore;
+import com.chunkmapper.column.ForestShrublandWithGrass;
+import com.chunkmapper.column.FreshFloodedForest;
+import com.chunkmapper.column.GrassWithForestShrubland;
+import com.chunkmapper.column.Grassland;
+import com.chunkmapper.column.IrrigatedCrops;
+import com.chunkmapper.column.Lake;
+import com.chunkmapper.column.MixedBroadNeedleleaf;
+import com.chunkmapper.column.Ocean;
+import com.chunkmapper.column.OpenBroadleafDeciduous;
+import com.chunkmapper.column.OpenNeedleleaf;
+import com.chunkmapper.column.RainfedCrops;
+import com.chunkmapper.column.River;
+import com.chunkmapper.column.SalineFloodedForest;
+import com.chunkmapper.column.Shrubland;
+import com.chunkmapper.column.Snow;
+import com.chunkmapper.column.SparseVegetation;
+import com.chunkmapper.column.Urban;
+import com.chunkmapper.column.VegetationWithCropland;
 import com.chunkmapper.downloader.UberDownloader;
 import com.chunkmapper.enumeration.Block;
 import com.chunkmapper.enumeration.FarmType;
@@ -113,6 +114,10 @@ public class GlobcoverManager {
 				}
 				if (coastlineReader.isCoastij(i, j)) {
 					columns[i][j] = new Coast(absx, absz);
+					continue;
+				}
+				if (coastlineReader.isForeshoreij(i, j)) {
+					columns[i][j] = new Foreshore(absx, absz);
 					continue;
 				}
 

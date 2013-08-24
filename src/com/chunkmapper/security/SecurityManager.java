@@ -75,7 +75,7 @@ public class SecurityManager {
 		try {
 
 			//Create MessageDigest object for MD5
-			MessageDigest digest = MessageDigest.getInstance("MD5");
+			MessageDigest digest = MessageDigest.getInstance("SHA-512");
 
 			//Update input string in message digest
 			digest.update(input.getBytes(), 0, input.length());

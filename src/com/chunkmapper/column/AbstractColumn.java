@@ -1,18 +1,20 @@
 package com.chunkmapper.column;
 
+import java.io.IOException;
 import java.util.Random;
 
 import com.chunkmapper.chunk.Chunk;
 import com.chunkmapper.enumeration.Block;
 import com.chunkmapper.enumeration.DataSource;
 import com.chunkmapper.enumeration.Globcover;
+import com.chunkmapper.enumeration.LenteTree;
 import com.chunkmapper.reader.HeightsReader;
 
 public abstract class AbstractColumn {
 	public static final Globcover TYPE = Globcover.NoData;
 	public static final Random RANDOM = new Random();
 	public final int absx, absz, h;
-	public int treeHeight = 0;
+	public LenteTree lenteTree;
 	public boolean IS_URBAN = false, IS_FOREST = false, HAS_WATER = false;
 	protected AbstractColumn(int absx, int absz) {
 		this.absx = absx;
@@ -38,6 +40,6 @@ public abstract class AbstractColumn {
 			chunk.Data[h][z][x] = i == 1 ? DataSource.Fern.val : DataSource.Long_Grass.val; 
 		}
 	}
-	public void addTree(Chunk chunk, HeightsReader heightsReader) {} //does nothing at this stage
+	public void addTree(Chunk chunk, HeightsReader heightsReader) throws IOException {} //does nothing at this stage
 
 }

@@ -1,4 +1,4 @@
-package com.chunkmapper.column2;
+package com.chunkmapper.column;
 
 import java.io.IOException;
 
@@ -7,9 +7,9 @@ import com.chunkmapper.enumeration.Block;
 import com.chunkmapper.reader.HeightsReader;
 import com.chunkmapper.writer.LenteTreeWriter;
 
-public class Coast extends AbstractColumn {
+public class Foreshore extends AbstractColumn {
 
-	public Coast(int absx, int absz) {
+	public Foreshore(int absx, int absz) {
 		super(absx, absz);
 		lenteTree = null;
 	}
@@ -20,15 +20,15 @@ public class Coast extends AbstractColumn {
 		chunk.Blocks[0][z][x] = Block.Bedrock.val;
 		chunk.Blocks[1][z][x] = Block.Sand.val;
 		chunk.Blocks[2][z][x] = Block.Sand.val;
-		chunk.Blocks[3][z][x] = Block.Sand.val;
+		chunk.Blocks[3][z][x] = Block.Water.val;
 
 		for (int i = 4; i < 256; i++) {
 			chunk.Blocks[i][z][x] = 0;
 		}
 	}
-	public void addTree(Chunk chunk, HeightsReader heightsReader) throws IOException {
-		if (lenteTree != null)
-		LenteTreeWriter.placeLenteTree(absx, absz, chunk, heightsReader, lenteTree);
-	}
+//	public void addTree(Chunk chunk, HeightsReader heightsReader) throws IOException {
+//		if (lenteTree != null)
+//		LenteTreeWriter.placeLenteTree(absx, absz, chunk, heightsReader, lenteTree);
+//	}
 
 }
