@@ -1,25 +1,18 @@
 package com.chunkmapper.reader;
 
-import geocode.core;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.Stack;
 import java.util.zip.DataFormatException;
 
 import com.chunkmapper.Point;
-import com.chunkmapper.binaryparser.BinaryCoastlineParser;
 import com.chunkmapper.downloader.OSMDownloader;
 import com.chunkmapper.enumeration.OSMSource;
-import com.chunkmapper.parser.CoastlineParser;
 import com.chunkmapper.sections.Coastline;
 
 public class XapiCoastlineReader {
@@ -228,19 +221,5 @@ public class XapiCoastlineReader {
 			}
 		}
 		pw.close();
-	}
-	public static void main(String[] args) throws Exception {
-		double[] latlon = core.placeToCoords("auckland, nz");
-		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
-		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
-		XapiCoastlineReader reader = new XapiCoastlineReader(regionx, regionz, null);
-		PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter("/Users/matthewmolloy/python/wms/data.csv")));
-		for (int i = 0; i < 512; i++) {
-			for (int j = 0; j < 512; j++) {
-				pw.println(reader.data[i][j]);
-			}
-		}
-		pw.close();
-		System.out.println("done");
 	}
 }

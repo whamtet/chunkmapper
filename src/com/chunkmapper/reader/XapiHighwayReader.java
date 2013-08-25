@@ -169,6 +169,7 @@ public class XapiHighwayReader {
 								chunk.Blocks[h+1][zd][xd] = 0;
 								chunk.Blocks[h+2][zd][xd] = 0;
 								chunk.Blocks[h+3][zd][xd] = 0;
+								chunk.Blocks[h+4][zd][xd] = 0;
 							}
 						}
 					} else {
@@ -182,6 +183,7 @@ public class XapiHighwayReader {
 								chunk.Blocks[h+1][zd][xd] = 0;
 								chunk.Blocks[h+2][zd][xd] = 0;
 								chunk.Blocks[h+3][zd][xd] = 0;
+								chunk.Blocks[h+4][zd][xd] = 0;
 							}
 						}
 					}

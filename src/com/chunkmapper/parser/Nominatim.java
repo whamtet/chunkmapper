@@ -27,11 +27,4 @@ public class Nominatim extends Parser {
 		double lat = Double.parseDouble(latStr), lon = Double.parseDouble(lonStr);
 		return new double[] {lat, lon};
 	}
-	public static void main(String[] args) {
-		double[] latlon = geocode.core.placeToCoords("rotorua, nz");
-		//		double[] latlon = Nominatim.getPoint("te anau, nz");
-		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
-		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
-		System.out.println("f_" + regionx + "_" + regionz + ".xml");
-	}
 }

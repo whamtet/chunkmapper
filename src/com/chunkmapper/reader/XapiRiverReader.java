@@ -1,12 +1,6 @@
 package com.chunkmapper.reader;
 
-import geocode.core;
-
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.URISyntaxException;
 import java.util.Collection;
 import java.util.zip.DataFormatException;
@@ -99,22 +93,6 @@ public class XapiRiverReader {
 		}
 	}
 
-	public static void main(String[] args) throws Exception {
-//		double[] latlon = core.placeToCoords("waitara, nz");
-		double[] latlon = {-39.0743, 174.0952};
-		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
-		int regionz = (int) Math.floor(latlon[0] * 3600 / -512);
-
-		HeightsReader heightsReader = new HeightsReaderImpl(regionx, regionz);
-		XapiRiverReader reader = new XapiRiverReader(regionx, regionz, heightsReader);
-		PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(new File("/Users/matthewmolloy/python/wms/data.csv"))));
-		for (int i = 0; i < 512; i++) {
-			for (int j = 0; j < 512; j++) {
-				writer.println(reader.hasWaterij(i, j) ? 1 : 0);
-			}
-		}
-		writer.close();
-	}
 
 
 }

@@ -1,11 +1,14 @@
 package com.chunkmapper.writer;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.HashMap;
 
-import com.chunkmapper.ManagingThread;
+import org.apache.commons.io.FileUtils;
+
 import com.chunkmapper.Zip;
 import com.chunkmapper.chunk.Chunk;
 import com.chunkmapper.enumeration.LenteTree;
@@ -17,14 +20,21 @@ import com.chunkmapper.reader.UniformHeightsReader;
 public class LenteTreeWriter {
 	private static final HashMap<LenteTree, SchematicProtocolWrapper> protocols =
 			new HashMap<LenteTree, SchematicProtocolWrapper>();
+	private static final File IMAGES_DIR = new File(FileUtils.getUserDirectory(), "images");
 	static {
 		for (LenteTree lenteTree : LenteTree.values()) {
-			String name = lenteTree.toString().replace("_", " ");
-			URL u = LenteTreeWriter.class.getResource("/images/" + name + ".myschematic");
 			try {
-			byte[] data = Zip.inflate(u.openStream());
-			SchematicProtocol.Schematic p = SchematicProtocol.Schematic.parseFrom(data);
-			protocols.put(lenteTree, new SchematicProtocolWrapper(p));
+				String name = lenteTree.toString();
+				InputStream in;
+				if (IMAGES_DIR == null || !IMAGES_DIR.exists()) {
+					URL u = LenteTreeWriter.class.getResource("/images/" + name + ".myschematic");
+					in = u.openStream();
+				} else {
+					in = new FileInputStream(new File(IMAGES_DIR, name + ".myschematic"));
+				}
+				byte[] data = Zip.inflate(in);
+				SchematicProtocol.Schematic p = SchematicProtocol.Schematic.parseFrom(data);
+				protocols.put(lenteTree, new SchematicProtocolWrapper(p));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

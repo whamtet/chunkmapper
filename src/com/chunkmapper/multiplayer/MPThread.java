@@ -21,13 +21,18 @@ import com.chunkmapper.writer.NeutralRegionWriter;
 public class MPThread {
 
 	public static void main(String[] args) throws Exception {
+		//for fresh restart
+//		File f = new File("/Users/matthewmolloy/images"), g = new File("/Users/matthewmolloy/.chunkmappermp");
+//		FileUtils.deleteDirectory(g);
+//		g.mkdir();
+//		FileUtils.copyDirectory(f, new File(g, "images"));
+//		start(new String[] {"nelson, nz"});
+		start(args);
 	}
 	private static void start(String[] args) throws Exception {
 		//wowa, just put in a location
 		double[] latlon = Nominatim.getPoint(args[0]);
-		int verticalExaggeration = 1;
-		File gameFolder = new File(args[0].split(",")[0]);
-		run(latlon[0], latlon[1], gameFolder, verticalExaggeration);
+		run(latlon[0], latlon[1]);
 	}
 //	private static void start(String[] args) throws Exception {
 //	
@@ -61,15 +66,19 @@ public class MPThread {
 		return f;
 	}
 
-	private static void run(double lat, double lon, File gameFolder, int verticalExaggeration) throws IOException {
-		System.out.println("generating " + gameFolder.getName());
+	private static void run(double lat, double lon) throws IOException {
+		System.out.printf("generating from %s, %s", lat, lon);
+		final int verticalExaggeration = 1;
+		File gameFolder = new File("world");
 		//write server.properties
-		ServerProperties.spitProperties(gameFolder.getName());
+		File serverPropertiesFile = new File("server.properties");
+		ServerProperties.spitProperties(gameFolder.getName(), serverPropertiesFile);
 		if (!gameFolder.exists()) {
 			gameFolder.mkdirs();
 		}
 		File chunkmapperDir = prepareDir(new File(gameFolder, "chunkmapper"), false);
 		File regionFolder = prepareDir(new File(gameFolder, "region"), false);
+		prepareDir(new File(gameFolder, "players"), false);
 
 		File metaInfoFile = new File(chunkmapperDir, "meta.txt");
 		GameMetaInfo gameMetaInfo;
@@ -84,30 +93,16 @@ public class MPThread {
 			gameMetaInfo = new GameMetaInfo(metaInfoFile, lat, lon, verticalExaggeration);
 		}
 
-		File loadedLevelDatFile = new File(gameFolder, "level.dat");
-		if (!loadedLevelDatFile.exists()) {
-			try {
-				URL src = MPThread.class.getResource("/config/level.dat");
-				FileUtils.copyURLToFile(src, loadedLevelDatFile);
-				LoadedLevelDat loadedLevelDat = new LoadedLevelDat(loadedLevelDatFile);
-				String gameName = gameFolder.getName();
-				loadedLevelDat.setName(gameName);
-				loadedLevelDat.setPlayerPosition(lon * 3600 - gameMetaInfo.rootPoint.x * 512, 250, - lat * 3600 - gameMetaInfo.rootPoint.z * 512);
-				loadedLevelDat.save();
-			} catch (IOException e) {
-				e.printStackTrace();
-				return;
-			}
-		}
+		MPLevelDat.writeLevelDat(gameFolder, gameFolder.getName());
 		
 		HeightsCache.deleteCache();
 
 		//now we need to create all our downloaders;
 		NeutralRegionWriter regionWriter = null;
 		UberDownloader uberDownloader = null;
-		TextDisplay textDisplay = new TextDisplay(chunkmapperDir);
+		TextDisplay textDisplay = new TextDisplay(chunkmapperDir, gameMetaInfo.rootPoint);
 		try {
-			MPPointManager pointManager = new MPPointManager(chunkmapperDir, textDisplay, gameMetaInfo.rootPoint);
+			MPPointManager pointManager = new MPPointManager(chunkmapperDir, textDisplay, gameMetaInfo.rootPoint, gameFolder);
 			uberDownloader = new UberDownloader();
 			regionWriter = new NeutralRegionWriter(pointManager, gameMetaInfo.rootPoint, regionFolder, 
 					gameMetaInfo, uberDownloader, gameMetaInfo.verticalExaggeration, textDisplay);
@@ -144,13 +139,5 @@ public class MPThread {
 	 * @throws IOException 
 	 * @throws NumberFormatException 
 	 */
-	public static double[] getLatLon() throws NumberFormatException, IOException {
-		double[] out = new double[2];
-		BufferedReader reader = new BufferedReader(new FileReader("location.txt"));
-		out[0] = Double.parseDouble(reader.readLine());
-		out[1] = Double.parseDouble(reader.readLine());
-		reader.close();
-		return out;
-	}
 
 }

@@ -1,7 +1,5 @@
 package com.chunkmapper.resourceinfo;
 
-import geocode.core;
-
 import java.io.File;
 
 import com.chunkmapper.Utila;
@@ -29,13 +27,6 @@ public class XapiRailResourceInfo extends ResourceInfo {
 		return String.format(FORMAT_URL, "%7C", lon1, lat1, lon2, lat2);
 	}
 
-public static  void main(String[] args) {
-	double[] latlon = core.placeToCoords("kingston, nz");
-	int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
-	int regionz = (int) Math.floor(latlon[0] * 3600 / -512);
-	XapiRailResourceInfo info = new XapiRailResourceInfo(regionx, regionz);
-	System.out.println(info.url);
-}
 
 	/**
 	 * @param args

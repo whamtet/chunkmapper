@@ -16,7 +16,6 @@ import com.chunkmapper.chunk.Chunk;
 import com.chunkmapper.downloader.OSMDownloader;
 import com.chunkmapper.enumeration.Blocka;
 import com.chunkmapper.enumeration.OSMSource;
-import com.chunkmapper.parser.BoundaryParser;
 import com.chunkmapper.sections.Boundary;
 import com.chunkmapper.writer.ArtifactWriter;
 
@@ -138,13 +137,6 @@ public class XapiBoundaryReader {
 		}
 	}
 
-	public static void main(String[] args) throws Exception {
-		double[] latlon = geocode.core.placeToCoords("mong cai, vietnam");
-		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
-		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
-		XapiBoundaryReader reader = new XapiBoundaryReader(regionx, regionz);
-		reader.print(new File("/Users/matthewmolloy/python/wms/data.csv"));
-	}
 	public void print(File f) throws IOException {
 		PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(f)));
 		for (int i = 0; i < 512; i++) {

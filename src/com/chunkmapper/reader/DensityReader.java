@@ -58,12 +58,6 @@ public class DensityReader {
 //		return random.nextDouble() < 1e6 * data[chunkz*16][chunkx*16];
 		return random.nextDouble() < data[chunkz][chunkx];
 	}
-	public static void main(String[] args) throws URISyntaxException, IOException {
-		double[] latlon = geocode.core.placeToCoords("mt taranaki, nz");
-		int regionx = (int) Math.floor(latlon[1] * 3600 / 512)+1;
-		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
-		DensityReader reader = new DensityReader(regionx, regionz);
-	}
 	
 
 }

@@ -1,7 +1,5 @@
 package com.chunkmapper.binaryparser;
 
-import geocode.core;
-
 import java.awt.Rectangle;
 import java.io.DataInputStream;
 import java.io.File;
@@ -19,7 +17,6 @@ import com.chunkmapper.protoc.RailRegionContainer.RailRegion;
 import com.chunkmapper.protoc.RailSectionContainer;
 import com.chunkmapper.protoc.RectangleContainer;
 import com.chunkmapper.protoc.admin.FileListManager;
-import com.chunkmapper.protoc.admin.OfflineFileListManager;
 import com.chunkmapper.sections.RailSection;
 
 public class BinaryRailParser {
@@ -102,13 +99,6 @@ public class BinaryRailParser {
 		}
 		
 		return out;
-	}
-	public static void main(String[] args) throws Exception {
-		double[] latlon = core.placeToCoords("auckland, nz");
-		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
-		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
-		
-		System.out.println(getRailSections(regionx, regionz).size());
 	}
 	
 }

@@ -32,8 +32,19 @@ public class MPPointManager {
 	public final static int RAD = 3, LON_RAD = 180 * 3600 / 512;
 	private final TextDisplay textDisplay;
 
-	public MPPointManager(File chunkmapperFolder, TextDisplay textDisplay, Point rootPoint) {
+	public MPPointManager(File chunkmapperFolder, TextDisplay textDisplay, Point rootPoint, File gameFolder) {
 		this.textDisplay = textDisplay;
+		//need to preliminary add players
+		HashMap<String, Point> playerPositions = readPositions(gameFolder);
+		//need to update playerPosition
+		for (String playerName : playerPositions.keySet()) {
+			Point playerPosition = playerPositions.get(playerName);
+
+			int regionx0 = Matthewmatics.div(playerPosition.x, 512);
+			int regionz0 = Matthewmatics.div(playerPosition.z, 512);
+			
+			textDisplay.updatePlayer(playerName, regionx0, regionz0);
+		}
 
 		store = new File(chunkmapperFolder, "regionsMade.txt");
 		if (store.exists()) {
@@ -104,6 +115,14 @@ public class MPPointManager {
 
 			for (int regionx = regionx1; regionx <= regionx2; regionx++) {
 				for (int regionz = regionz1; regionz <= regionz2; regionz++) {
+					newPoints.add(new Point(regionx, regionz));
+				}
+			}
+		}
+		if (playerPositions.size() == 0) {
+			//need to add some default positions
+			for (int regionx = -RAD; regionx <= RAD; regionx++) {
+				for (int regionz = -RAD; regionz <= RAD; regionz++) {
 					newPoints.add(new Point(regionx, regionz));
 				}
 			}

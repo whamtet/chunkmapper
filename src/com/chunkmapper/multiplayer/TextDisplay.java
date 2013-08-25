@@ -18,7 +18,10 @@ public class TextDisplay implements MappedSquareManager {
 	private HashSet<Point> points = new HashSet<Point>();
 	private static final char ZERO = "0".charAt(0), ONE = "1".charAt(0), PLAYER = "*".charAt(0); 
 	private final ConcurrentHashMap<String, Point> playerPositions = new ConcurrentHashMap<String, Point>();
-	public TextDisplay(File chunkmapperDir) {
+	private final Point rootPoint;
+	
+	public TextDisplay(File chunkmapperDir, Point rootPoint) {
+		this.rootPoint = rootPoint;
 		this.chunkmapperDir = chunkmapperDir;
 	}
 	@Override
@@ -60,7 +63,7 @@ public class TextDisplay implements MappedSquareManager {
 		
 	}
 	public void updatePlayer(String playerName, int regionx0, int regionz0) {
-		playerPositions.put(playerName, new Point(regionx0, regionz0));
+		playerPositions.put(playerName, new Point(regionx0 + rootPoint.x, regionz0 + rootPoint.z));
 		
 	}
 	

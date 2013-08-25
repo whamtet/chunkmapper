@@ -1,6 +1,4 @@
 package com.chunkmapper;
-import geocode.core;
-
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -143,12 +141,6 @@ public class InfoManager {
 		
 
 		return String.format(s, lon1, lat1, lon2, lat2);
-	}
-	public static void main(String[] args) throws Exception {
-		double[] latlon = core.placeToCoords("wellington, nz");
-		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
-		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
-		System.out.println(ferryServer(regionx, regionz));
 	}
 
 }
