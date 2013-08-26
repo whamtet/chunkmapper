@@ -29,29 +29,6 @@ public class MPThread {
 //		start(new String[] {"nelson, nz"});
 		start(args);
 	}
-	private static void start(String[] args) throws Exception {
-		//wowa, just put in a location
-		double[] latlon = Nominatim.getPoint(args[0]);
-		run(latlon[0], latlon[1]);
-	}
-//	private static void start(String[] args) throws Exception {
-//	
-//		HashMap<String, String> cli = new HashMap<String, String>();
-//		for (int i = 0; i < args.length; i += 2) {
-//			cli.put(args[i], args[i+1]);
-//		}
-//		if (!cli.containsKey("-lat") || !cli.containsKey("-lon") || !cli.containsKey("-name")) {
-//			System.out.println("usage: -lat -lon -name");
-//			System.exit(0);
-//		}
-//		double lat = Double.parseDouble(cli.get("-lat"));
-//		double lon = Double.parseDouble(cli.get("-lon"));
-//		String name = cli.get("-name");
-//		//we're going to throw everything in current dir.
-//		File gameFolder = new File(name);
-//		int verticalExaggeration = 1;
-//		run(lat, lon, gameFolder, verticalExaggeration);
-//	}
 	private static File prepareDir(File f, boolean delete) {
 		if (delete && f.exists()) {
 			try {
@@ -66,10 +43,17 @@ public class MPThread {
 		return f;
 	}
 
-	private static void run(double lat, double lon) throws IOException {
+
+	private static void start(String[] args) throws Exception {
+		double lat = 0, lon = 0;
 		System.out.printf("generating from %s, %s", lat, lon);
 		final int verticalExaggeration = 1;
 		File gameFolder = new File("world");
+		if (!gameFolder.exists()) {
+			double[] latlon = Nominatim.getPoint(args[0]);
+			lat = latlon[0];
+			lon = latlon[1];
+		}
 		//write server.properties
 		File serverPropertiesFile = new File("server.properties");
 		ServerProperties.spitProperties(gameFolder.getName(), serverPropertiesFile);
