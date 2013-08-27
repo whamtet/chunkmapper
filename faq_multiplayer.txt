@@ -1,0 +1,73 @@
+Download ChunkmapperMultiplayer.jar
+
+Single player Chunkmapper is very straightforward, just point, click and a world is created for you.  Multiplayer is only slightly more complicated.
+
+1) Download ChunkmapperMultiplayer.jar to your server
+2) Open terminal/command prompt and change to the folder where you wish to create your multiplayer game.  In this example, ~/my_folder is used.
+3) Create a text file in this folder called ~/my_folder/auth.txt.  The contents should be
+
+your-email
+your-chunkmapper-password
+
+(just two lines)
+4) Run ChunkmapperMultiplayer.jar
+
+java -jar ChunkmapperMultiplayer.jar "place to start"
+
+5) In order to save server resources ChunkmapperMultiplayer has no graphical user interface.  You specify the start location by typing in its name.  If you choose an obscure location be sure to include the state/country e.g. "nelson, nz".  You must also put quotation marks around the name so that command prompt knows it is a single argument.
+
+6) ChunkmapperMultiplayer creates a folder called world that contains your map for multiplayer mode.  To observe generation progress change directory to
+
+~/my_folder/world/chunkmapper
+
+and then inspect the file ~/my_folder/world/chunkmapper/mappedSquares.txt
+
+cat <link> may be useful for this task.
+
+This shows a grid a little like the following
+
+011111111000000000
+111111111100000000
+111111111100000000
+111111111100000000
+111111111100000000
+111111111110000000
+111111111111000000
+111111111111111110
+011111111111111110
+111111111111111111
+111111111111111111
+111111111111111111
+111111111111111111
+11111111111111*111
+111111111111111111
+111111111111111111
+000000000001111111
+
+North is up and east is to the right just like a normal map.  The 1s show generated map and the 0s show stuff not generated yet.  Asterisks denote player locations, and will change as players move around.
+
+7) Once a seven by seven block of ones has been generated change back to ~/my_folder and start the minecraft server as normal.  Download minecraft_server.jar and run it
+
+java -jar minecraft_server.jar
+
+Minecraft will see the world folder that Chunkmapper has generated and use it for the world map.  I get an output like
+
+2013-08-27 08:44:08 [INFO] Loading properties
+2013-08-27 08:44:08 [INFO] Default game type: SURVIVAL
+2013-08-27 08:44:08 [INFO] Generating keypair
+2013-08-27 08:44:09 [INFO] Starting Minecraft server on *:25565
+2013-08-27 08:44:09 [INFO] Preparing level "world"
+2013-08-27 08:44:09 [INFO] Preparing start region for level 0
+2013-08-27 08:44:10 [INFO] Done (1.068s)! For help, type "help" or "?"
+
+notice that Minecraft does not need to generate any terrain because Chunkmapper has already done that for it.
+
+8) Log into multiplayer as normal.  I do so by starting Minecraft and clicking Multiplayer -> Direct Connect -> server.name.com
+
+Important Notes
+
+As with single player mode, multiplayer Chunkmapper must run at the same time as the server so that it can add to the map as players move.
+
+Provided you have a decent internet connection, single player chunkmapper can always generate map faster than the player moves so that he world appears infinite.  If a large number of users in multiplayer mode all move in opposite directions chunkmapper may not be able to add to the map quickly enough.  This may corrupt your maps or crash your server.  You have been warned.
+
+Notes:  windows cmd hoat dong the nao?

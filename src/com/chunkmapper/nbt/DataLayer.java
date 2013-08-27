@@ -1,4 +1,4 @@
-package net.minecraft.world.level.chunk;
+package com.chunkmapper.nbt;
 
 public class DataLayer {
     public final byte[] data;

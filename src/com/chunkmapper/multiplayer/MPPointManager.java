@@ -15,10 +15,10 @@ import java.util.HashSet;
 
 import com.chunkmapper.Point;
 import com.chunkmapper.math.Matthewmatics;
-import com.mojang.nbt.CompoundTag;
-import com.mojang.nbt.DoubleTag;
-import com.mojang.nbt.ListTag;
-import com.mojang.nbt.NbtIo;
+import com.chunkmapper.nbt.CompoundTag;
+import com.chunkmapper.nbt.DoubleTag;
+import com.chunkmapper.nbt.ListTag;
+import com.chunkmapper.nbt.NbtIo;
 
 public class MPPointManager {
 	//this class a) gives points to the point manager once only

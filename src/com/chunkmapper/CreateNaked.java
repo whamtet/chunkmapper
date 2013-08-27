@@ -3,14 +3,14 @@ package com.chunkmapper;
 import java.io.DataOutputStream;
 import java.io.File;
 
-import net.minecraft.world.level.chunk.storage.RegionFile;
 
 import org.apache.commons.io.FileUtils;
 
 import com.chunkmapper.chunk.Chunk;
 import com.chunkmapper.enumeration.Blocka;
+import com.chunkmapper.nbt.NbtIo;
+import com.chunkmapper.nbt.RegionFile;
 import com.chunkmapper.writer.LoadedLevelDat;
-import com.mojang.nbt.NbtIo;
 
 public class CreateNaked {
 

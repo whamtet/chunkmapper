@@ -7,8 +7,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 
-import com.mojang.nbt.CompoundTag;
-import com.mojang.nbt.NbtIo;
+import com.chunkmapper.nbt.CompoundTag;
+import com.chunkmapper.nbt.NbtIo;
 
 
 

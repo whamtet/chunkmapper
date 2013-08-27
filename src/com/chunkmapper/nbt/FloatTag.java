@@ -1,10 +1,5 @@
-package com.mojang.nbt;
+package com.chunkmapper.nbt;
 
-/**
- * Copyright Mojang AB.
- * 
- * Don't do evil.
- */
 
 import java.io.DataInput;
 import java.io.DataOutput;

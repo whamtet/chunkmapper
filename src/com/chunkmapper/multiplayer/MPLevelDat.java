@@ -6,8 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import com.mojang.nbt.CompoundTag;
-import com.mojang.nbt.NbtIo;
+import com.chunkmapper.nbt.CompoundTag;
+import com.chunkmapper.nbt.NbtIo;
 
 public class MPLevelDat {
 	public static void writeLevelDat(File parentFolder, String levelName) throws IOException {

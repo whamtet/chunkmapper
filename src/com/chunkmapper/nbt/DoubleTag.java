@@ -1,37 +1,32 @@
-package com.mojang.nbt;
+package com.chunkmapper.nbt;
 
-/**
- * Copyright Mojang AB.
- * 
- * Don't do evil.
- */
 
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
-public class LongTag extends Tag {
-    public long data;
+public class DoubleTag extends Tag {
+    public double data;
 
-    public LongTag(String name) {
+    public DoubleTag(String name) {
         super(name);
     }
 
-    public LongTag(String name, long data) {
+    public DoubleTag(String name, double data) {
         super(name);
         this.data = data;
     }
 
     void write(DataOutput dos) throws IOException {
-        dos.writeLong(data);
+        dos.writeDouble(data);
     }
 
     void load(DataInput dis) throws IOException {
-        data = dis.readLong();
+        data = dis.readDouble();
     }
 
     public byte getId() {
-        return TAG_Long;
+        return TAG_Double;
     }
 
     public String toString() {
@@ -40,13 +35,13 @@ public class LongTag extends Tag {
 
     @Override
     public Tag copy() {
-        return new LongTag(getName(), data);
+        return new DoubleTag(getName(), data);
     }
 
     @Override
     public boolean equals(Object obj) {
         if (super.equals(obj)) {
-            LongTag o = (LongTag) obj;
+            DoubleTag o = (DoubleTag) obj;
             return data == o.data;
         }
         return false;

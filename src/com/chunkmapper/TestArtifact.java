@@ -3,16 +3,16 @@ package com.chunkmapper;
 import java.io.DataOutputStream;
 import java.io.File;
 
-import net.minecraft.world.level.chunk.storage.RegionFile;
 
 import org.apache.commons.io.FileUtils;
 
 import com.chunkmapper.chunk.Chunk;
+import com.chunkmapper.nbt.NbtIo;
+import com.chunkmapper.nbt.RegionFile;
 import com.chunkmapper.writer.ArtifactWriter;
 import com.chunkmapper.writer.GenericWriter;
 import com.chunkmapper.writer.HorseWriter;
 import com.chunkmapper.writer.LoadedLevelDat;
-import com.mojang.nbt.NbtIo;
 
 public class TestArtifact {
 

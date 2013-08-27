@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Random;
 
-import net.minecraft.world.level.chunk.storage.RegionFile;
 
 import org.apache.commons.io.FileUtils;
 
@@ -13,11 +12,12 @@ import com.chunkmapper.chunk.Chunk;
 import com.chunkmapper.column.AbstractColumn;
 import com.chunkmapper.column.Shrubland;
 import com.chunkmapper.math.Matthewmatics;
+import com.chunkmapper.nbt.NbtIo;
+import com.chunkmapper.nbt.RegionFile;
 import com.chunkmapper.reader.HeightsReader;
 import com.chunkmapper.reader.UniformHeightsReader;
 import com.chunkmapper.writer.GenericWriter;
 import com.chunkmapper.writer.LoadedLevelDat;
-import com.mojang.nbt.NbtIo;
 
 public class SingleTerrainManager {
 	public final Random RANDOM = new Random();

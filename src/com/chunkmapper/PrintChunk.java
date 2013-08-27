@@ -4,10 +4,10 @@ import java.io.DataInputStream;
 import java.io.File;
 import java.io.PrintStream;
 
-import net.minecraft.world.level.chunk.storage.RegionFile;
 
-import com.mojang.nbt.CompoundTag;
-import com.mojang.nbt.NbtIo;
+import com.chunkmapper.nbt.CompoundTag;
+import com.chunkmapper.nbt.NbtIo;
+import com.chunkmapper.nbt.RegionFile;
 
 public class PrintChunk {
 

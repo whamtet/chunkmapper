@@ -7,13 +7,13 @@ import java.io.IOException;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import net.minecraft.world.level.chunk.storage.RegionFile;
 
 import org.apache.commons.io.FileUtils;
 
 import com.chunkmapper.chunk.ReadChunk;
+import com.chunkmapper.nbt.NbtIo;
+import com.chunkmapper.nbt.RegionFile;
 import com.chunkmapper.writer.LoadedLevelDat;
-import com.mojang.nbt.NbtIo;
 
 public class CropLand {
 	private static BlockingQueue<File> files = new LinkedBlockingQueue<File>();

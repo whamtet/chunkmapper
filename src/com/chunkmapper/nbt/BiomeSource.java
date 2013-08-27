@@ -1,4 +1,4 @@
-package net.minecraft.world.level.biome;
+package com.chunkmapper.nbt;
 
 
 public interface BiomeSource {

@@ -118,10 +118,4 @@ public class MPThread {
 
 	}
 
-	/**
-	 * @param args
-	 * @throws IOException 
-	 * @throws NumberFormatException 
-	 */
-
 }

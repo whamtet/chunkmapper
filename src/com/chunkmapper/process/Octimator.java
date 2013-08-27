@@ -5,17 +5,17 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
 
-import net.minecraft.world.level.chunk.storage.RegionFile;
 
 import org.apache.commons.io.FileUtils;
 
 import com.chunkmapper.Utila;
 import com.chunkmapper.chunk.Chunk;
 import com.chunkmapper.math.Matthewmatics;
+import com.chunkmapper.nbt.CompoundTag;
+import com.chunkmapper.nbt.NbtIo;
+import com.chunkmapper.nbt.RegionFile;
 import com.chunkmapper.writer.GenericWriter;
 import com.chunkmapper.writer.LoadedLevelDat;
-import com.mojang.nbt.CompoundTag;
-import com.mojang.nbt.NbtIo;
 
 public class Octimator {
 	private static final int FACTOR = 8;

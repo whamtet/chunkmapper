@@ -1,10 +1,5 @@
-package net.minecraft.world.level.storage;
+package com.chunkmapper.nbt;
 
-/**
- * Copyright Mojang AB.
- * 
- * Don't do evil.
- */
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -14,13 +9,9 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import net.minecraft.world.level.biome.BiomeSource;
-import net.minecraft.world.level.chunk.storage.OldChunkStorage;
-import net.minecraft.world.level.chunk.storage.OldChunkStorage.OldLevelChunk;
-import net.minecraft.world.level.chunk.storage.RegionFile;
+import com.chunkmapper.nbt.OldChunkStorage.OldLevelChunk;
 
-import com.mojang.nbt.CompoundTag;
-import com.mojang.nbt.NbtIo;
+
 
 public class AnvilLevelStorageSource {
 

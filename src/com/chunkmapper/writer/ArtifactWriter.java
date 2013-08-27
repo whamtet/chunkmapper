@@ -9,8 +9,8 @@ import com.chunkmapper.enumeration.Stairs;
 import com.chunkmapper.enumeration.StraightRail;
 import com.chunkmapper.enumeration.WoolColor;
 import com.chunkmapper.math.Matthewmatics;
+import com.chunkmapper.nbt.CompoundTag;
 import com.chunkmapper.reader.RugbyReader.RugbyField;
-import com.mojang.nbt.CompoundTag;
 
 public class ArtifactWriter {
 	private int spacesTillNextPoweredRail = 1;

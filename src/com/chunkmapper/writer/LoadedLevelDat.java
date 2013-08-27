@@ -10,10 +10,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import com.chunkmapper.Point;
-import com.mojang.nbt.CompoundTag;
-import com.mojang.nbt.DoubleTag;
-import com.mojang.nbt.ListTag;
-import com.mojang.nbt.NbtIo;
+import com.chunkmapper.nbt.CompoundTag;
+import com.chunkmapper.nbt.DoubleTag;
+import com.chunkmapper.nbt.ListTag;
+import com.chunkmapper.nbt.NbtIo;
 
 public class LoadedLevelDat {
 	private final CompoundTag data;

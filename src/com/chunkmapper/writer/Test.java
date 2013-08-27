@@ -1,10 +1,10 @@
 package com.chunkmapper.writer;
 
-import com.mojang.nbt.ByteTag;
-import com.mojang.nbt.CompoundTag;
-import com.mojang.nbt.DoubleTag;
-import com.mojang.nbt.FloatTag;
-import com.mojang.nbt.ListTag;
+import com.chunkmapper.nbt.ByteTag;
+import com.chunkmapper.nbt.CompoundTag;
+import com.chunkmapper.nbt.DoubleTag;
+import com.chunkmapper.nbt.FloatTag;
+import com.chunkmapper.nbt.ListTag;
 
 public class Test {
 public static void main(String[] args) {

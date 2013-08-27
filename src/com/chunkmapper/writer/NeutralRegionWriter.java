@@ -3,7 +3,6 @@ package com.chunkmapper.writer;
 import java.io.DataOutputStream;
 import java.io.File;
 
-import net.minecraft.world.level.chunk.storage.RegionFile;
 
 import com.chunkmapper.GameMetaInfo;
 import com.chunkmapper.MappedSquareManager;
@@ -14,7 +13,8 @@ import com.chunkmapper.chunk.Chunk;
 import com.chunkmapper.downloader.UberDownloader;
 import com.chunkmapper.manager.GlobcoverManager;
 import com.chunkmapper.multiplayer.MPPointManager;
-import com.mojang.nbt.NbtIo;
+import com.chunkmapper.nbt.NbtIo;
+import com.chunkmapper.nbt.RegionFile;
 
 //A region Writer without prioritizing by position
 public class NeutralRegionWriter extends Tasker {

@@ -1,7 +1,7 @@
 package com.chunkmapper.chunk;
 
-import com.mojang.nbt.CompoundTag;
-import com.mojang.nbt.ListTag;
+import com.chunkmapper.nbt.CompoundTag;
+import com.chunkmapper.nbt.ListTag;
 
 public class ReadChunk {
 	public byte[][][] data = new byte[256][16][16], blocks = new byte[256][16][16];

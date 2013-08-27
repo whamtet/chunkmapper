@@ -1,44 +1,34 @@
-package com.mojang.nbt;
-
-/**
- * Copyright Mojang AB.
- * 
- * Don't do evil.
- */
+package com.chunkmapper.nbt;
 
 import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
-public class IntArrayTag extends Tag {
-    public int[] data;
+public class ByteArrayTag extends Tag {
+    public byte[] data;
 
-    public IntArrayTag(String name) {
+    public ByteArrayTag(String name) {
         super(name);
     }
 
-    public IntArrayTag(String name, int[] data) {
+    public ByteArrayTag(String name, byte[] data) {
         super(name);
         this.data = data;
     }
 
     void write(DataOutput dos) throws IOException {
         dos.writeInt(data.length);
-        for (int i = 0; i < data.length; i++) {
-            dos.writeInt(data[i]);
-        }
+        dos.write(data);
     }
 
     void load(DataInput dis) throws IOException {
         int length = dis.readInt();
-        data = new int[length];
-        for (int i = 0; i < length; i++) {
-            data[i] = dis.readInt();
-        }
+        data = new byte[length];
+        dis.readFully(data);
     }
 
     public byte getId() {
-        return TAG_Int_Array;
+        return TAG_Byte_Array;
     }
 
     public String toString() {
@@ -48,7 +38,7 @@ public class IntArrayTag extends Tag {
     @Override
     public boolean equals(Object obj) {
         if (super.equals(obj)) {
-            IntArrayTag o = (IntArrayTag) obj;
+            ByteArrayTag o = (ByteArrayTag) obj;
             return ((data == null && o.data == null) || (data != null && data.equals(o.data)));
         }
         return false;
@@ -56,8 +46,8 @@ public class IntArrayTag extends Tag {
 
     @Override
     public Tag copy() {
-        int[] cp = new int[data.length];
+        byte[] cp = new byte[data.length];
         System.arraycopy(data, 0, cp, 0, data.length);
-        return new IntArrayTag(getName(), cp);
+        return new ByteArrayTag(getName(), cp);
     }
 }

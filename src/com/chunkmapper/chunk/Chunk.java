@@ -6,9 +6,9 @@ import java.util.Random;
 import com.chunkmapper.Utila;
 import com.chunkmapper.enumeration.Block;
 import com.chunkmapper.enumeration.StraightRail;
+import com.chunkmapper.nbt.CompoundTag;
+import com.chunkmapper.nbt.ListTag;
 import com.chunkmapper.writer.BlockLighter;
-import com.mojang.nbt.CompoundTag;
-import com.mojang.nbt.ListTag;
 
 public class Chunk {
 	public final int xPos;

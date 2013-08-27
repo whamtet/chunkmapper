@@ -5,7 +5,6 @@ import java.io.File;
 import java.util.Comparator;
 import java.util.concurrent.PriorityBlockingQueue;
 
-import net.minecraft.world.level.chunk.storage.RegionFile;
 
 import com.chunkmapper.GameMetaInfo;
 import com.chunkmapper.MappedSquareManager;
@@ -15,7 +14,8 @@ import com.chunkmapper.Tasker;
 import com.chunkmapper.chunk.Chunk;
 import com.chunkmapper.downloader.UberDownloader;
 import com.chunkmapper.manager.GlobcoverManager;
-import com.mojang.nbt.NbtIo;
+import com.chunkmapper.nbt.NbtIo;
+import com.chunkmapper.nbt.RegionFile;
 
 public class RegionWriter extends Tasker {
 	public static final int NUM_WRITING_THREADS = Runtime.getRuntime().availableProcessors() + 1;

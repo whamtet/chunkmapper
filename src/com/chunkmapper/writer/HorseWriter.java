@@ -3,11 +3,11 @@ package com.chunkmapper.writer;
 import java.util.Random;
 
 import com.chunkmapper.chunk.Chunk;
+import com.chunkmapper.nbt.CompoundTag;
+import com.chunkmapper.nbt.DoubleTag;
+import com.chunkmapper.nbt.FloatTag;
+import com.chunkmapper.nbt.ListTag;
 import com.chunkmapper.reader.NameReader;
-import com.mojang.nbt.CompoundTag;
-import com.mojang.nbt.DoubleTag;
-import com.mojang.nbt.FloatTag;
-import com.mojang.nbt.ListTag;
 
 public class HorseWriter  {
 	private static Random RANDOM = new Random();

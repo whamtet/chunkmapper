@@ -1,7 +1,7 @@
 package com.chunkmapper.process;
 
-import com.mojang.nbt.CompoundTag;
-import com.mojang.nbt.ListTag;
+import com.chunkmapper.nbt.CompoundTag;
+import com.chunkmapper.nbt.ListTag;
 
 public class NakedChunk {
 	
