@@ -62,27 +62,27 @@ public class ManagingThread extends Thread {
 	@Override
 	public void run() {
 		//first need to check security
-//		if (!SecurityManager.isOfflineValid()) {
-//			String email = null;
-//			boolean isLoggedIn = false;
-//			while(!isLoggedIn) {
-//				LoginDialog dialog = new LoginDialog(appFrame, email);
-//				dialog.setVisible(true);
-//				if (dialog.cancelled) {
-//					generatingLayer.cancel();
-//					return;
-//				}
-//				email = dialog.getEmail();
-//				switch(SecurityManager.onlineValidity(email, dialog.getPassword())) {
-//				case SecurityManager.REQUIRES_LOGIN:
-//				(new SuspiciousPasswordDialog(appFrame)).setVisible(true);
-//				break;
-//				case SecurityManager.VALID:
-//				isLoggedIn = true;
-//				break;
-//				}
-//			}
-//		}
+		if (!SecurityManager.isOfflineValid()) {
+			String email = null;
+			boolean isLoggedIn = false;
+			while(!isLoggedIn) {
+				LoginDialog dialog = new LoginDialog(appFrame, email);
+				dialog.setVisible(true);
+				if (dialog.cancelled) {
+					generatingLayer.cancel();
+					return;
+				}
+				email = dialog.getEmail();
+				switch(SecurityManager.onlineValidity(email, dialog.getPassword())) {
+				case SecurityManager.REQUIRES_LOGIN:
+				(new SuspiciousPasswordDialog(appFrame)).setVisible(true);
+				break;
+				case SecurityManager.VALID:
+				isLoggedIn = true;
+				break;
+				}
+			}
+		}
 		generatingLayer.zoomTo();
 		System.out.println("generating " + gameFolder.getName());
 		if (!gameFolder.exists()) {

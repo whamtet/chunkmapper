@@ -1,0 +1,17 @@
+Chunkmapper generates maps using data from a variety of sources.
+
+NASA
+
+Nasa provides excellent height data for the whole world at approximately 30m resolution through the Terra satelite's ASTER Mission <link> http://asterweb.jpl.nasa.gov/.  Nasa also provides an open source program similar to Google Earth called Nasa World Wind <link> http://worldwind.arc.nasa.gov/java/.  This is used to make Chunkmapper's user interface.
+
+European Space Agency
+
+The European Space Agency provides an excellent satellite data source called Globcover <link> http://due.esrin.esa.int/globcover/.  This uses satellite imagery to classify the earth's surface into 22 categories such as desert, swamp, ice, pine forest, jungle etc.
+
+Open Street Map
+
+Open Street Map is a cross between Google Maps and Wikipedia.  It is a user-contributed map of the entire world.  Chunkmapper uses Open Street Map to place towns, roads, rails, rivers, lakes, coastlines and other features.  Because Open Street Map is user editable, features that you add to it will also appear in Chunkmapper.
+
+Custom Tree Repository
+
+Lentebriesje <link> https://twitter.com/Lentebriesje has created a nice collection of 62 tree models that Chunkmapper uses to build vegetation.

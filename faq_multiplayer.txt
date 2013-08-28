@@ -2,14 +2,15 @@ Download ChunkmapperMultiplayer.jar
 
 Single player Chunkmapper is very straightforward, just point, click and a world is created for you.  Multiplayer is only slightly more complicated.
 
-1) Download ChunkmapperMultiplayer.jar to your server
+1) Download ChunkmapperMultiplayer.jar to your server.
 2) Open terminal/command prompt and change to the folder where you wish to create your multiplayer game.  In this example, ~/my_folder is used.
-3) Create a text file in this folder called ~/my_folder/auth.txt.  The contents should be
+3) Create a text file in this folder called auth.txt.  The contents should be
 
 your-email
 your-chunkmapper-password
 
 (just two lines)
+
 4) Run ChunkmapperMultiplayer.jar
 
 java -jar ChunkmapperMultiplayer.jar "place to start"
@@ -20,7 +21,7 @@ java -jar ChunkmapperMultiplayer.jar "place to start"
 
 ~/my_folder/world/chunkmapper
 
-and then inspect the file ~/my_folder/world/chunkmapper/mappedSquares.txt
+and then inspect the file mappedSquares.txt
 
 cat <link> may be useful for this task.
 
@@ -68,6 +69,6 @@ Important Notes
 
 As with single player mode, multiplayer Chunkmapper must run at the same time as the server so that it can add to the map as players move.
 
-Provided you have a decent internet connection, single player chunkmapper can always generate map faster than the player moves so that he world appears infinite.  If a large number of users in multiplayer mode all move in opposite directions chunkmapper may not be able to add to the map quickly enough.  This may corrupt your maps or crash your server.  You have been warned.
+Provided you have a decent internet connection, single player chunkmapper can always generate map faster than the player moves so that the world appears infinite.  If a large number of users in multiplayer mode all move in opposite directions chunkmapper may not be able to add to the map quickly enough.  This may corrupt your maps or crash your server.  You have been warned.
 
 Notes:  windows cmd hoat dong the nao?

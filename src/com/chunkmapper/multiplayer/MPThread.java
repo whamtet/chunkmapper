@@ -26,8 +26,8 @@ public class MPThread {
 //		FileUtils.deleteDirectory(g);
 //		g.mkdir();
 //		FileUtils.copyDirectory(f, new File(g, "images"));
-//		start(new String[] {"nelson, nz"});
-		start(args);
+		start(new String[] {"mt everest"});
+//		start(args);
 	}
 	private static File prepareDir(File f, boolean delete) {
 		if (delete && f.exists()) {
@@ -46,7 +46,7 @@ public class MPThread {
 
 	private static void start(String[] args) throws Exception {
 		double lat = 0, lon = 0;
-		System.out.printf("generating from %s, %s", lat, lon);
+		
 		final int verticalExaggeration = 1;
 		File gameFolder = new File("world");
 		if (!gameFolder.exists()) {
@@ -54,6 +54,7 @@ public class MPThread {
 			lat = latlon[0];
 			lon = latlon[1];
 		}
+		System.out.printf("generating from %s, %s", lat, lon);
 		//write server.properties
 		File serverPropertiesFile = new File("server.properties");
 		ServerProperties.spitProperties(gameFolder.getName(), serverPropertiesFile);

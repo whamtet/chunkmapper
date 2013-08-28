@@ -37,14 +37,14 @@ public class LoginDialog extends JDialog {
 	 * Launch the application.
 	 */
 	private static void openWebpage(URI uri) {
-	    Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
-	    if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
-	        try {
-	            desktop.browse(uri);
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	        }
-	    }
+		Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+		if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
+			try {
+				desktop.browse(uri);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	public static void main(String[] args) {
 		try {
@@ -76,7 +76,7 @@ public class LoginDialog extends JDialog {
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
-		
+
 		JLabel lblEmail = new JLabel("Email");
 		textField = new JTextField();
 		textField.addKeyListener(new KeyAdapter() {
@@ -90,9 +90,9 @@ public class LoginDialog extends JDialog {
 		textField.setColumns(10);
 		if (email != null)
 			textField.setText(email);
-		
+
 		JLabel lblPassword = new JLabel("Password");
-		
+
 		passwordField = new JPasswordField();
 		passwordField.addKeyListener(new KeyAdapter() {
 			@Override
@@ -102,7 +102,7 @@ public class LoginDialog extends JDialog {
 				}
 			}
 		});
-		
+
 		JButton btnCreateAccount = new JButton("Create Chunkmapper Account");
 		btnCreateAccount.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -114,43 +114,56 @@ public class LoginDialog extends JDialog {
 				}
 			}
 		});
-		
+
 		JLabel lblWrongPasswordOr = new JLabel("Wrong password or email.");
 		lblWrongPasswordOr.setVisible(email != null);
 		lblWrongPasswordOr.setForeground(Color.RED);
+
+		JButton btnResetPassword = new JButton("Reset Password");
+		btnResetPassword.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				try{
+					LoginDialog.openWebpage(new URI("http://www.chunkmapper.com/reset-password"));
+				} catch (URISyntaxException e) {
+					e.printStackTrace();
+				}
+			}});
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
 		gl_contentPanel.setHorizontalGroup(
-			gl_contentPanel.createParallelGroup(Alignment.LEADING)
+				gl_contentPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPanel.createSequentialGroup()
-					.addGap(18)
-					.addComponent(lblWrongPasswordOr)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblPassword)
-						.addComponent(lblEmail))
-					.addPreferredGap(ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
-					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(btnCreateAccount)
-						.addComponent(passwordField, GroupLayout.PREFERRED_SIZE, 160, GroupLayout.PREFERRED_SIZE)
-						.addComponent(textField, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(12, Short.MAX_VALUE))
-		);
-		gl_contentPanel.setVerticalGroup(
-			gl_contentPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_contentPanel.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
+						.addGap(18)
 						.addComponent(lblWrongPasswordOr)
-						.addComponent(lblEmail)
-						.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(26)
-					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(passwordField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblPassword))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(btnCreateAccount)
-					.addContainerGap(106, Short.MAX_VALUE))
-		);
+						.addPreferredGap(ComponentPlacement.RELATED)
+						.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
+								.addComponent(lblPassword)
+								.addComponent(lblEmail))
+								.addPreferredGap(ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+								.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
+										.addComponent(btnResetPassword)
+										.addComponent(btnCreateAccount)
+										.addComponent(passwordField, GroupLayout.PREFERRED_SIZE, 160, GroupLayout.PREFERRED_SIZE)
+										.addComponent(textField, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE))
+										.addContainerGap(11, Short.MAX_VALUE))
+				);
+		gl_contentPanel.setVerticalGroup(
+				gl_contentPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPanel.createSequentialGroup()
+						.addContainerGap()
+						.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblWrongPasswordOr)
+								.addComponent(lblEmail)
+								.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+								.addGap(26)
+								.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
+										.addComponent(passwordField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+										.addComponent(lblPassword))
+										.addPreferredGap(ComponentPlacement.RELATED)
+										.addComponent(btnCreateAccount)
+										.addPreferredGap(ComponentPlacement.RELATED)
+										.addComponent(btnResetPassword)
+										.addContainerGap(71, Short.MAX_VALUE))
+				);
 		contentPanel.setLayout(gl_contentPanel);
 		{
 			JPanel buttonPane = new JPanel();
@@ -179,5 +192,5 @@ public class LoginDialog extends JDialog {
 				buttonPane.add(cancelButton);
 			}
 		}
+		}
 	}
-}
