@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.net.URL;
 
 import com.chunkmapper.nbt.CompoundTag;
 import com.chunkmapper.nbt.NbtIo;
@@ -24,14 +25,8 @@ public class Test {
 		out.close();
 	}
 	public static void main(String[] args) throws Exception {
-		File parent = new File("/Users/matthewmolloy/images");
-		for (File f : parent.listFiles()) {
-			if (f.getName().endsWith(".myschematic")) {
-				String newName = f.getName().replace(" ", "_");
-				System.out.println(newName);
-				f.renameTo(new File(parent, newName));
-			}
-		}
+		URL src = ManagingThread.class.getResource("/hi.txt");
+		System.out.println(src);
 	}
 	private static void spitBinary() throws Exception {
 		File players = new File("/Users/matthewmolloy/Downloads/world/players");

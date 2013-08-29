@@ -9,6 +9,7 @@ import java.util.HashMap;
 
 import org.apache.commons.io.FileUtils;
 
+import com.chunkmapper.ManagingThread;
 import com.chunkmapper.Zip;
 import com.chunkmapper.chunk.Chunk;
 import com.chunkmapper.enumeration.LenteTree;
@@ -24,28 +25,20 @@ public class LenteTreeWriter {
 	static {
 		for (LenteTree lenteTree : LenteTree.values()) {
 			try {
-				String name = lenteTree.toString();
-				InputStream in;
-				if (IMAGES_DIR == null || !IMAGES_DIR.exists()) {
-					URL u = LenteTreeWriter.class.getResource("/images/" + name + ".myschematic");
-					in = u.openStream();
-				} else {
-					in = new FileInputStream(new File(IMAGES_DIR, name + ".myschematic"));
-				}
+				URL src = ManagingThread.class.getResource("/images/" + lenteTree.toString() + ".myschematic");
+				InputStream in = src.openStream();
 				byte[] data = Zip.inflate(in);
 				SchematicProtocol.Schematic p = SchematicProtocol.Schematic.parseFrom(data);
 				protocols.put(lenteTree, new SchematicProtocolWrapper(p));
 			} catch (Exception e) {
+				System.out.println(lenteTree);
 				e.printStackTrace();
 			}
 		}
 	}
 	public static void main(String[] args) throws Exception {
 
-		Chunk chunk = new Chunk();
-		LenteTree l = LenteTree.randomTree(LenteTree.values());
-		HeightsReader heightsReader = new UniformHeightsReader();
-		placeLenteTree(0, 0, chunk, heightsReader, l);
+		System.out.println(protocols.size());
 	}
 
 	public static void placeLenteTree(int absx, int absz, Chunk chunk,

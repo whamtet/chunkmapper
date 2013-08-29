@@ -26,8 +26,8 @@ public class MPThread {
 //		FileUtils.deleteDirectory(g);
 //		g.mkdir();
 //		FileUtils.copyDirectory(f, new File(g, "images"));
-		start(new String[] {"mt everest"});
-//		start(args);
+//		start(new String[] {"mt everest"});
+		start(args);
 	}
 	private static File prepareDir(File f, boolean delete) {
 		if (delete && f.exists()) {
