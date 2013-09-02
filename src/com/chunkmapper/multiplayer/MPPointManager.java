@@ -64,7 +64,7 @@ public class MPPointManager {
 			}
 		}
 	}
-	private static HashMap<String, Point> readPositions(File parentFolder) {
+	public static HashMap<String, Point> readPositions(File parentFolder) {
 		HashMap<String, Point> out = new HashMap<String, Point>();
 		File players = new File(parentFolder, "players");
 		for (File f : players.listFiles()) {

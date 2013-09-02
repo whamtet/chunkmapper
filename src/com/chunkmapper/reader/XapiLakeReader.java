@@ -1,11 +1,14 @@
 package com.chunkmapper.reader;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.zip.DataFormatException;
 
 import com.chunkmapper.Point;
@@ -13,21 +16,17 @@ import com.chunkmapper.binaryparser.BinaryLakeParser;
 import com.chunkmapper.downloader.OSMDownloader;
 import com.chunkmapper.enumeration.OSMSource;
 import com.chunkmapper.math.Matthewmatics;
-import com.chunkmapper.parser.LakeParser;
+import com.chunkmapper.parser.Nominatim;
 import com.chunkmapper.sections.Lake;
 import com.chunkmapper.sections.RenderingSection;
 
 
 public class XapiLakeReader {
-		private boolean[][] hasWater = new boolean[512][512];
-//	private int[][] data = new int[512][512];
+	private boolean[][] hasWater = new boolean[512][512];
 
 	public boolean hasWaterij(int i, int j) {
 		return hasWater[i][j];
 	}
-//	public int getValij(int i, int j) {
-//		return data[i][j];
-//	}
 
 	public XapiLakeReader(int regionx, int regionz) throws IOException, FileNotYetAvailableException, URISyntaxException, DataFormatException {
 
@@ -123,37 +122,37 @@ public class XapiLakeReader {
 	private static <E> E wrappedGet(ArrayList<E> list, int i) {
 		return list.get(Matthewmatics.mod(i, list.size()));
 	}
-//	private static class MyPoint extends com.chunkmapper.Point implements Comparable<Point> {
-//
-//		public MyPoint(int x, int z) {
-//			super(x, z);
-//			// TODO Auto-generated constructor stub
-//		}
-//
-//		@Override
-//		public int compareTo(Point arg0) {
-//			Integer a = x;
-//			Integer b = arg0.x;
-//			return a.compareTo(b);
-//		}
-//
-//	}
+	//	private static class MyPoint extends com.chunkmapper.Point implements Comparable<Point> {
+	//
+	//		public MyPoint(int x, int z) {
+	//			super(x, z);
+	//			// TODO Auto-generated constructor stub
+	//		}
+	//
+	//		@Override
+	//		public int compareTo(Point arg0) {
+	//			Integer a = x;
+	//			Integer b = arg0.x;
+	//			return a.compareTo(b);
+	//		}
+	//
+	//	}
 
-//	public static void main(String[] args) throws Exception {
-//				double[] latlon = geocode.core.placeToCoords("rotorua, nz");
-////		double[] latlon = Nominatim.getPoint("te anau, nz");
-//		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
-//		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512)-1;
-//		XapiLakeReader reader = new XapiLakeReader(regionx, regionz);
-//
-//		PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(new File("/Users/matthewmolloy/python/wms/data.csv"))));
-//		for (int z = 0; z < 512; z++) {
-//			for (int x = 0; x < 512; x++) {
-//				pw.println(reader.hasWaterij(z, x) ? 1 : 0);
-//			}
-//		}
-//		pw.close();
-//		System.out.println("done");
-//	}
+	public static void main(String[] args) throws Exception {
+		double[] latlon = Nominatim.getPoint("taupo, nz");
+		//		double[] latlon = Nominatim.getPoint("te anau, nz");
+		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
+		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
+		XapiLakeReader reader = new XapiLakeReader(regionx, regionz);
+
+		PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(new File("/Users/matthewmolloy/python/wms/data.csv"))));
+		for (int z = 0; z < 512; z++) {
+			for (int x = 0; x < 512; x++) {
+				pw.println(reader.hasWaterij(z, x) ? 1 : 0);
+			}
+		}
+		pw.close();
+		System.out.println("done");
+	}
 
 }

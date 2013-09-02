@@ -42,6 +42,10 @@ public class MPThread {
 		}
 		return f;
 	}
+	private static void printUsageAndExit() {
+		System.out.println("Usage: ChunkmapperMultiplayer.java \"place name\"");
+		System.exit(0);
+	}
 
 
 	private static void start(String[] args) throws Exception {
@@ -50,11 +54,14 @@ public class MPThread {
 		final int verticalExaggeration = 1;
 		File gameFolder = new File("world");
 		if (!gameFolder.exists()) {
+			if (args.length == 0) {
+				printUsageAndExit();
+			}
 			double[] latlon = Nominatim.getPoint(args[0]);
 			lat = latlon[0];
 			lon = latlon[1];
 		}
-		System.out.printf("generating from %s, %s", lat, lon);
+		System.out.printf("generating from %s, %s\n", lat, lon);
 		//write server.properties
 		File serverPropertiesFile = new File("server.properties");
 		ServerProperties.spitProperties(gameFolder.getName(), serverPropertiesFile);
@@ -78,6 +85,7 @@ public class MPThread {
 			gameMetaInfo = new GameMetaInfo(metaInfoFile, lat, lon, verticalExaggeration);
 		}
 
+		LocServer.startLocServer(gameMetaInfo.rootPoint, gameFolder);
 		MPLevelDat.writeLevelDat(gameFolder, gameFolder.getName());
 		
 		HeightsCache.deleteCache();

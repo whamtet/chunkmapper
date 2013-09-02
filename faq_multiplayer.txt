@@ -25,7 +25,7 @@ and then inspect the file mappedSquares.txt
 
 cat <link> may be useful for this task.
 
-This shows a grid a little like the following
+mappedSquares.txt shows a grid a little like the following
 
 011111111000000000
 111111111100000000
