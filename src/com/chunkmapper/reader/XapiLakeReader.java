@@ -12,12 +12,12 @@ import java.util.Collections;
 import java.util.zip.DataFormatException;
 
 import com.chunkmapper.Point;
-import com.chunkmapper.binaryparser.BinaryLakeParser;
-import com.chunkmapper.downloader.OSMDownloader;
-import com.chunkmapper.enumeration.OSMSource;
 import com.chunkmapper.math.Matthewmatics;
 import com.chunkmapper.parser.Nominatim;
-import com.chunkmapper.resourceinfo.XapiLakeResourceInfo;
+import com.chunkmapper.parser.OverpassParser;
+import com.chunkmapper.parser.OverpassParser.OverpassObject;
+import com.chunkmapper.parser.OverpassParser.Relation;
+import com.chunkmapper.parser.OverpassParser.Way;
 import com.chunkmapper.sections.Lake;
 import com.chunkmapper.sections.RenderingSection;
 
@@ -28,13 +28,35 @@ public class XapiLakeReader {
 	public boolean hasWaterij(int i, int j) {
 		return hasWater[i][j];
 	}
+	private static ArrayList<Lake> getLakes(int regionx, int regionz) throws IOException {
+		OverpassObject o = OverpassParser.getObject(regionx, regionz);
+		ArrayList<Lake> lakes = new ArrayList<Lake>();
+		for (Way way : o.ways) {
+			if ("water".equals(way.map.get("natural"))) {
+				System.out.println("way");
+				lakes.add(new Lake(way.points, way.bbox, false, false)); //no lagoons or coves for now
+			}
+		}
+		for (Relation relation : o.relations) {
+			if ("water".equals(relation.map.get("natural"))) {
+				System.out.println("relation");
+				ArrayList<Point> points = new ArrayList<Point>();
+				for (Way way : relation.ways) {
+					for (Point point : way.points){
+						points.add(point);
+					}
+				}
+				lakes.add(new Lake(points, relation.bbox, false, false));
+				
+			}
+		}
+		return lakes;
+	}
 
 	public XapiLakeReader(int regionx, int regionz) throws IOException, FileNotYetAvailableException, URISyntaxException, DataFormatException {
 
-		Collection<Lake> lakes = (Collection<Lake>) OSMDownloader.getSections(OSMSource.lakes, regionx, regionz);
-		if (lakes.size() == 0) {
-			return;
-		}
+		
+		ArrayList<Lake> lakes = getLakes(regionx, regionz);
 
 		ArrayList<Lake> openLakes = new ArrayList<Lake>(), closedLakes = new ArrayList<Lake>();
 		for (Lake lake : lakes) {
@@ -55,7 +77,7 @@ public class XapiLakeReader {
 				Point endPoint = lakeToClose.getEndPoint();
 				int regionxd = Matthewmatics.div(endPoint.x, 512), regionzd = Matthewmatics.div(endPoint.z, 512);
 				Collection<Lake> lakes2 = regionxd == regionx && regionzd == regionz ?
-						openLakes : BinaryLakeParser.getLakes(regionxd, regionzd);
+						openLakes : getLakes(regionxd, regionzd);
 				for (Lake lake : lakes2) {
 					lakeToClose.connect(lake);
 					if (lakeToClose.isClosed()) {
@@ -140,22 +162,24 @@ public class XapiLakeReader {
 	//	}
 
 	public static void main(String[] args) throws Exception {
-		double[] latlon = Nominatim.getPoint("rotorua, nz");
+		double[] latlon = Nominatim.getPoint("taupo, nz");
 		//		double[] latlon = Nominatim.getPoint("te anau, nz");
 		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
 		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
-		System.out.println((new XapiLakeResourceInfo(regionx, regionz)).url);
-		System.exit(0);
-		XapiLakeReader reader = new XapiLakeReader(regionx, regionz);
-
-		PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(new File("/Users/matthewmolloy/python/wms/data.csv"))));
-		for (int z = 0; z < 512; z++) {
-			for (int x = 0; x < 512; x++) {
-				pw.println(reader.hasWaterij(z, x) ? 1 : 0);
-			}
+		ArrayList<Lake> lakes = getLakes(regionx, regionz);
+		for (Lake lake : lakes) {
+			System.out.println(lake.isClosed());
 		}
-		pw.close();
-		System.out.println("done");
+//		XapiLakeReader reader = new XapiLakeReader(regionx, regionz);
+
+//		PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(new File("/Users/matthewmolloy/python/wms/data.csv"))));
+//		for (int z = 0; z < 512; z++) {
+//			for (int x = 0; x < 512; x++) {
+//				pw.println(reader.hasWaterij(z, x) ? 1 : 0);
+//			}
+//		}
+//		pw.close();
+//		System.out.println("done");
 	}
 
 }

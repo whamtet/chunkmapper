@@ -1,17 +1,18 @@
 package com.chunkmapper.reader;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import com.chunkmapper.Point;
 import com.chunkmapper.chunk.Chunk;
 import com.chunkmapper.enumeration.Blocka;
+import com.chunkmapper.parser.Nominatim;
 import com.chunkmapper.parser.OverpassParser;
 import com.chunkmapper.parser.OverpassParser.OverpassObject;
 import com.chunkmapper.parser.OverpassParser.Way;
 
-public class FerryReader {
-	public final boolean[][] hasFerry = new boolean[512][512];
-	public final boolean hasAFerry;
+public class PathReader {
+	public final boolean[][] hasPath = new boolean[512][512];
 	private static void interpolate(boolean[][] mask, Point p1, Point p2, int regionx, int regionz) {
 		int x0 = p1.x - regionx*512, z0 = p1.z - regionz*512;
 		int x2 = p2.x - regionx*512, z2 = p2.z - regionz*512;
@@ -43,47 +44,40 @@ public class FerryReader {
 			}
 		}
 	}
-	public FerryReader(int regionx, int regionz) throws IOException {
+	public PathReader(int regionx, int regionz) throws IOException {
 		OverpassObject o = OverpassParser.getObject(regionx, regionz);
 		for (Way way : o.ways) {
-			if ("ferry".equals(way.map.get("route"))) {
+			if ("path".equals(way.map.get("highway"))) {
 				for (int i = 0; i < way.points.size() - 1; i++) {
 					Point p1 = way.points.get(i), p2 = way.points.get(i+1);
-					interpolate(hasFerry, p1, p2, regionx, regionz);
+					interpolate(hasPath, p1, p2, regionx, regionz);
 				}
 			}
 		}
-		boolean hasAFerry = false;
-		outer: for (int i = 0; i < 512; i++) {
-			for (int j = 0; j < 512; j++) {
-				if (hasFerry[i][j]) {
-					hasAFerry = true;
-					break outer;
-				}
-			}
-		}
-		this.hasAFerry = hasAFerry;
 	}
-//	public static void main(String[] args) throws Exception {
-//		double[] latlon = Nominatim.getPoint("wellington, nz");
-//		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
-//		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
-//		FerryReader reader = new FerryReader(regionx, regionz);
-//		PrintWriter pw = new PrintWriter("/Users/matthewmolloy/python/wms/data.csv");
-//		for (int i = 0; i < 512; i++) {
-//			for (int j = 0; j < 512; j++) {
-//				pw.println(reader.hasFerry[i][j] ? 1 : 0);
-//			}
-//		}
-//		pw.close();
-//		System.out.println("done");
-//	}
-	public void addLillies(Chunk chunk, int chunkx, int chunkz) {
+	public static void main(String[] args) throws Exception {
+		double[] latlon = Nominatim.getPoint("cobb dam, nz");
+		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
+		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
+		PathReader reader = new PathReader(regionx, regionz);
+		PrintWriter pw = new PrintWriter("/Users/matthewmolloy/python/wms/data.csv");
+		for (int i = 0; i < 512; i++) {
+			for (int j = 0; j < 512; j++) {
+				pw.println(reader.hasPath[i][j] ? 1 : 0);
+			}
+		}
+		pw.close();
+		System.out.println("done");
+	}
+	public void addPath(Chunk chunk, int chunkx, int chunkz) {
 		for (int i = 0; i < 16; i++) {
 			for (int j = 0; j < 16; j++) {
-				if (hasFerry[i + chunkz*16][j + chunkx*16]) {
+				if (hasPath[i + chunkz*16][j + chunkx*16]) {
 					int h = chunk.getHeights(j, i);
-					chunk.Blocks[h][i][j] = Blocka.Lilly;
+					chunk.Blocks[h-1][i][j] = Blocka.Gravel;
+					chunk.Blocks[h][i][j] = 0;
+					chunk.Blocks[h+1][i][j] = 0;
+					chunk.Blocks[h+2][i][j] = 0;
 				}
 			}
 		}

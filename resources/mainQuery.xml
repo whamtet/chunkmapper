@@ -1,4 +1,11 @@
 <query type="way">
+<has-kv k="highway" v="path"/>
+</query>
+<print />
+<recurse type="way-node" />
+<print />
+
+<query type="way">
 <has-kv k="route" v="ferry"/>
 </query>
 <print />
@@ -76,6 +83,7 @@
 <query type="relation">
 <has-kv k="natural" v="water" />
 </query>
+<print />
 <recurse type="relation-way" />
 <print />
 <recurse type="way-node" />
