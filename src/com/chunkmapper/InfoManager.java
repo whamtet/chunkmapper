@@ -58,12 +58,8 @@ public class InfoManager {
 		return new URL(s);
 	}
 
-	public static URL globcoverServer(int regionx, int regionz) throws MalformedURLException {
-		String s = "http://www.overpass-api.de/api/xapi?way[][bbox=%s,%s,%s,%s]";
-		return new URL(getAddress(s, regionx, regionz));
-	}
-	public static URL heightsServer(int regionx, int regionz) throws MalformedURLException {
-		String s = "http://www.overpass-api.de/api/xapi?way[][bbox=%s,%s,%s,%s]";
+	public static URL lakesRelation(int regionx, int regionz) throws MalformedURLException {
+		String s = "http://www.overpass-api.de/api/xapi?relation[natural=water][bbox=%s,%s,%s,%s]";
 		return new URL(getAddress(s, regionx, regionz));
 	}
 	public static URL lakesServer(int regionx, int regionz) throws MalformedURLException {

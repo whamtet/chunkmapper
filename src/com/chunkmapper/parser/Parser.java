@@ -11,6 +11,16 @@ import com.chunkmapper.Point;
 import com.chunkmapper.reader.FileNotYetAvailableException;
 
 public class Parser {
+	public static ArrayList<Long> getWayReferences(ArrayList<String> lines) {
+		ArrayList<Long> out = new ArrayList<Long>();
+		for (String line : lines) {
+			String tag = Parser.getTag(line);
+			if (tag.equals("member") && "way".equals(getValue(line, "type"))) {
+				out.add(Long.parseLong(getValue(line, "ref")));
+			}
+		}
+		return out;
+	}
 	protected static String getTag(String s) {
 		int i = s.indexOf("<") + 1, j = s.indexOf(" ", i);
 		if (j == -1) j = s.indexOf(">", i);

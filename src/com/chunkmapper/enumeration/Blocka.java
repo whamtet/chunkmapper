@@ -105,5 +105,6 @@ public class Blocka {
 	public static final byte Stone_Stairs = (byte) 109;
 	public static final byte Heavy_Plate = (byte) 148;
 	public static final byte Gate = (byte) 107;
+	public static final byte Lilly = (byte) 111;
 
 }

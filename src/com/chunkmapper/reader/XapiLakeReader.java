@@ -17,6 +17,7 @@ import com.chunkmapper.downloader.OSMDownloader;
 import com.chunkmapper.enumeration.OSMSource;
 import com.chunkmapper.math.Matthewmatics;
 import com.chunkmapper.parser.Nominatim;
+import com.chunkmapper.resourceinfo.XapiLakeResourceInfo;
 import com.chunkmapper.sections.Lake;
 import com.chunkmapper.sections.RenderingSection;
 
@@ -139,10 +140,12 @@ public class XapiLakeReader {
 	//	}
 
 	public static void main(String[] args) throws Exception {
-		double[] latlon = Nominatim.getPoint("taupo, nz");
+		double[] latlon = Nominatim.getPoint("rotorua, nz");
 		//		double[] latlon = Nominatim.getPoint("te anau, nz");
 		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
 		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
+		System.out.println((new XapiLakeResourceInfo(regionx, regionz)).url);
+		System.exit(0);
 		XapiLakeReader reader = new XapiLakeReader(regionx, regionz);
 
 		PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(new File("/Users/matthewmolloy/python/wms/data.csv"))));

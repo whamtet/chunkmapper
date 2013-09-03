@@ -108,6 +108,7 @@ public class XapiBoundaryReader {
 	}
 	public XapiBoundaryReader(int regionx, int regionz) throws IOException, URISyntaxException, DataFormatException {
 
+		
 		Collection<Boundary> boundaries = (Collection<Boundary>) OSMDownloader.getSections(OSMSource.boundaries, regionx, regionz);
 		hasBorder = boundaries.size() > 0;
 

@@ -1,8 +1,11 @@
 package com.chunkmapper.downloader;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -21,6 +24,8 @@ import org.apache.http.HttpResponseInterceptor;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.GzipDecompressingEntity;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.PoolingClientConnectionManager;
 import org.apache.http.params.HttpConnectionParams;
@@ -35,7 +40,9 @@ import com.chunkmapper.parser.BoundaryParser;
 import com.chunkmapper.parser.CoastlineParser;
 import com.chunkmapper.parser.HighwayParser;
 import com.chunkmapper.parser.LakeParser;
+import com.chunkmapper.parser.Nominatim;
 import com.chunkmapper.parser.POIParser;
+import com.chunkmapper.parser.Parser;
 import com.chunkmapper.parser.RailParser;
 import com.chunkmapper.parser.RiverParser;
 import com.chunkmapper.protoc.ServerInfoContainer.ServerInfo;
@@ -58,6 +65,56 @@ public class OSMDownloader {
 			getSingleSource(new URL(source), lines);
 		}
 		return lines;
+	}
+	private static ArrayList<String> lakesQuery(int regionx, int regionz) throws IllegalStateException, IOException {
+		final double REGION_WIDTH_IN_DEGREES = 512 / 3600.;
+		double lon1 = regionx * REGION_WIDTH_IN_DEGREES;
+		double lon2 = lon1 + REGION_WIDTH_IN_DEGREES;
+		double lat2 = -regionz * REGION_WIDTH_IN_DEGREES;
+		double lat1 = lat2 - REGION_WIDTH_IN_DEGREES;
+		String bbox = String.format("<bbox-query e=\"%s\" n=\"%s\" s=\"%s\" w=\"%s\"/>",
+				lon2, lat2, lat1, lon1);
+		String query = "<query type=\"%s\"> <has-kv k=\"natural\" v=\"water\" />" + bbox + "</query>";
+		
+		String body = "<osm-script>" +
+				String.format(query, "relation") + 
+				"<recurse type=\"relation-way\" />" +
+				"<union><item />" +
+				String.format(query, "way") +
+				"</union>" +
+				"<print />" +
+				"</osm-script>";
+		System.out.println(body);
+		HttpPost httpPost = null;
+		HttpResponse response = null;
+		HttpEntity entity = null;
+		BufferedReader in = null;
+		
+		try {
+			httpPost = new HttpPost("http://www.overpass-api.de/api/interpreter");
+			httpPost.setEntity(new StringEntity(body));
+			response = httpclient.execute(httpPost);
+			ArrayList<String> lines = new ArrayList<String>();
+			entity = response.getEntity();
+			in = new BufferedReader(new InputStreamReader(entity.getContent()));
+			String tempLine;
+			while ((tempLine = in.readLine()) != null) {
+				lines.add(tempLine);
+			}
+			return lines;
+		} finally {
+			try {
+				if (in != null)
+					in.close();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			if (entity != null)
+			EntityUtils.consumeQuietly(entity);
+			if (httpPost != null)
+			httpPost.releaseConnection();
+		}
 	}
 	private static ArrayList<String> getSingleSource(URL url, ArrayList<String> lines) throws ClientProtocolException, IOException, URISyntaxException {
 		HttpGet httpGet = null;
@@ -101,7 +158,7 @@ public class OSMDownloader {
 				} else {
 					switch(source) {
 					case lakes:
-						lines = getSingleSource(InfoManager.lakesServer(regionx, regionz));
+						lines = getSingleSource(InfoManager.lakesRelation(regionx, regionz));
 						break;
 					case poi:
 						lines = getMultipleSources(InfoManager.poiServer(regionx, regionz));
@@ -136,7 +193,7 @@ public class OSMDownloader {
 				case lakes:
 					return LakeParser.getLakes(lines);
 				case poi:
-					return POIParser.getPois(lines);
+					return null;
 				case rivers:
 					return RiverParser.getRiverSections(lines);
 				case boundaries:
@@ -221,7 +278,6 @@ public class OSMDownloader {
 					}
 				}
 			}
-
 		});
 		return httpclient;
 	}
@@ -243,6 +299,18 @@ public class OSMDownloader {
 			PointSource other2 = (PointSource) other;
 			return other2.p.equals(p) && other2.source.equals(source);
 		}
+	}
+	public static void main(String[] args) throws Exception {
+		double[] latlon = Nominatim.getPoint("rotorua, nz");
+		//		double[] latlon = Nominatim.getPoint("te anau, nz");
+		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
+		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
+		PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter("out.txt")));
+		for (String line : lakesQuery(regionx, regionz)) {
+			pw.println(line);
+		}
+		pw.close();
+		Runtime.getRuntime().exec("open out.txt");
 	}
 
 }

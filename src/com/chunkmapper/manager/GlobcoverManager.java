@@ -41,6 +41,7 @@ import com.chunkmapper.enumeration.Globcover;
 import com.chunkmapper.math.Matthewmatics;
 import com.chunkmapper.reader.DensityReader;
 import com.chunkmapper.reader.FarmTypeReader;
+import com.chunkmapper.reader.FerryReader;
 import com.chunkmapper.reader.FileNotYetAvailableException;
 import com.chunkmapper.reader.GlobcoverReader;
 import com.chunkmapper.reader.GlobcoverReaderImpl2;
@@ -65,6 +66,7 @@ public class GlobcoverManager {
 	private final XapiBoundaryReader boundaryReader;
 	private final RugbyReader rugbyReader;
 	private final XapiHighwayReader highwayReader;
+	private final FerryReader ferryReader;
 	public final boolean allWater;
 	private final ArtifactWriter artifactWriter = new ArtifactWriter();
 	public final int regionx, regionz;
@@ -76,7 +78,8 @@ public class GlobcoverManager {
 		this.regionx = regionx; this.regionz = regionz;
 
 		heightsReader = new HeightsReaderImpl(regionx, regionz, uberDownloader, verticalExaggeration);
-		allWater = heightsReader.allWater;
+		ferryReader = new FerryReader(regionx, regionz);
+		allWater = heightsReader.allWater && !ferryReader.hasAFerry;
 		if (allWater) {
 			railReader = null;
 			poiReader = null;
@@ -324,6 +327,8 @@ public class GlobcoverManager {
 				ArtifactWriter.addTunnelIntoTheUnknown(chunk);
 			}
 		}
+		//last but not least, add ferry
+		ferryReader.addLillies(chunk, regionx, regionz);
 		return chunk;
 	}
 

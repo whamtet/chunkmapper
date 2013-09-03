@@ -2,12 +2,15 @@ package com.chunkmapper.reader;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.Random;
 
 import com.chunkmapper.downloader.OSMDownloader;
 import com.chunkmapper.enumeration.OSMSource;
-import com.chunkmapper.parser.Nominatim;
+import com.chunkmapper.parser.OverpassParser;
+import com.chunkmapper.parser.OverpassParser.Node;
+import com.chunkmapper.parser.OverpassParser.OverpassObject;
+import com.chunkmapper.parser.POIParser;
 import com.chunkmapper.sections.POI;
 import com.chunkmapper.sections.Section;
 
@@ -20,8 +23,7 @@ public class DensityReader {
 			for (int regionz = regionz0 - 1; regionz <= regionz0 + 1; regionz++) {
 				//for each neighbour, get points of interest
 				
-				for (Section s : OSMDownloader.getSections(OSMSource.poi, regionx, regionz)) {
-					POI poi = (POI) s;
+				for (POI poi : POIParser.getPois(regionx, regionz)) {
 					if (poi.population != null && (poi.type.equals("city")
 							|| poi.type.equals("town") || poi.type.equals("village") || poi.type.equals("hamlet")
 							|| poi.type.equals("suburb") || poi.type.equals("neighbourhood")

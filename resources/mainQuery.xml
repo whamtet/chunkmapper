@@ -1,0 +1,89 @@
+<query type="way">
+<has-kv k="route" v="ferry"/>
+</query>
+<print />
+<recurse type="way-node" />
+<print />
+
+<query type="way">
+<has-kv k="highway" v="motorway"/>
+</query>
+<print />
+<recurse type="way-node" />
+<print />
+
+<query type="way">
+<has-kv k="highway" v="trunk"/>
+</query>
+<print />
+<recurse type="way-node" />
+<print />
+
+<query type="way">
+<has-kv k="highway" v="primary"/>
+</query>
+<print />
+<recurse type="way-node" />
+<print />
+
+<query type="node">
+<has-kv k="place" />
+</query>
+<print />
+
+<query type="node">
+<has-kv k="sport" v="rugby"/>
+</query>
+<print />
+<query type="node">
+<has-kv k="sport" v="rugby_league"/>
+</query>
+<print />
+<query type="node">
+<has-kv k="sport" v="rugby_union"/>
+</query>
+<print />
+
+<query type="way">
+<has-kv k="waterway" v="river"/>
+</query>
+<print />
+<recurse type="way-node" />
+<print />
+
+<query type="way">
+<has-kv k="boundary" v="administrative" />
+</query>
+<print />
+<recurse type="way-node" />
+<print />
+
+<query type="way">
+<has-kv k="natural" v="coastline" />
+</query>
+<print />
+<recurse type="way-node" />
+<print />
+
+<query type="way">
+<has-kv k="railway" />
+</query>
+<print />
+<recurse type="way-node" />
+<print />
+
+<!-- lakes -->
+<query type="relation">
+<has-kv k="natural" v="water" />
+</query>
+<recurse type="relation-way" />
+<print />
+<recurse type="way-node" />
+<print />
+
+<query type="way">
+<has-kv k="natural" v="water" />
+</query>
+<print />
+<recurse type="way-node" />
+<print />

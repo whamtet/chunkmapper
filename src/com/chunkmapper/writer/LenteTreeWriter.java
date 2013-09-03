@@ -21,7 +21,6 @@ import com.chunkmapper.reader.UniformHeightsReader;
 public class LenteTreeWriter {
 	private static final HashMap<LenteTree, SchematicProtocolWrapper> protocols =
 			new HashMap<LenteTree, SchematicProtocolWrapper>();
-	private static final File IMAGES_DIR = new File(FileUtils.getUserDirectory(), "images");
 	static {
 		for (LenteTree lenteTree : LenteTree.values()) {
 			try {

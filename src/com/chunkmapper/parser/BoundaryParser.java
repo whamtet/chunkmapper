@@ -1,25 +1,36 @@
 package com.chunkmapper.parser;
 
 import java.awt.Rectangle;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import com.chunkmapper.FileValidator;
 import com.chunkmapper.Point;
-import com.chunkmapper.resourceinfo.XapiBoundaryResourceInfo;
+import com.chunkmapper.parser.OverpassParser.OverpassObject;
+import com.chunkmapper.parser.OverpassParser.Way;
 import com.chunkmapper.sections.Boundary;
-import com.chunkmapper.sections.Coastline;
 
 public class BoundaryParser extends Parser {
+	
+	public static HashSet<Boundary> getBoundaries(int regionx, int regionz) throws IOException {
+		HashSet<Boundary> out = new HashSet<Boundary>();
+		OverpassObject o = OverpassParser.getObject(regionx, regionz);
+		for (Way way : o.ways) {
+			if ("administrative".equals(way.map.get("boundary"))) {
+				String leftArea = null, rightArea = null;
+				for (String k : way.map.keySet()) {
+					if (k.startsWith("left:"))
+						leftArea = way.map.get(k);
+					if (k.startsWith("right:"))
+						rightArea = way.map.get(k);
+				}
+				int adminLevel = Integer.parseInt(way.map.get("admin_level"));
+				out.add(new Boundary(way.points, way.bbox, leftArea, rightArea, adminLevel));
+			}
+		}
+		return out;
+	}
 
 	public static HashSet<Boundary> getBoundaries(ArrayList<String> lines) {
 		HashMap<Long, Point> locations = getLocations(lines);
