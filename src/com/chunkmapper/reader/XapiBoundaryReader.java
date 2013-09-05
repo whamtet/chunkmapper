@@ -8,14 +8,13 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.HashSet;
 import java.util.zip.DataFormatException;
 
 import com.chunkmapper.Point;
 import com.chunkmapper.chunk.Chunk;
-import com.chunkmapper.downloader.OSMDownloader;
 import com.chunkmapper.enumeration.Blocka;
-import com.chunkmapper.enumeration.OSMSource;
+import com.chunkmapper.parser.BoundaryParser;
 import com.chunkmapper.sections.Boundary;
 import com.chunkmapper.writer.ArtifactWriter;
 
@@ -109,7 +108,7 @@ public class XapiBoundaryReader {
 	public XapiBoundaryReader(int regionx, int regionz) throws IOException, URISyntaxException, DataFormatException {
 
 		
-		Collection<Boundary> boundaries = (Collection<Boundary>) OSMDownloader.getSections(OSMSource.boundaries, regionx, regionz);
+		HashSet<Boundary> boundaries = BoundaryParser.getBoundaries(regionx, regionz);
 		hasBorder = boundaries.size() > 0;
 
 		for (Boundary boundary : boundaries) {

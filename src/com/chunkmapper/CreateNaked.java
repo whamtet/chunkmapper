@@ -10,7 +10,7 @@ import com.chunkmapper.chunk.Chunk;
 import com.chunkmapper.enumeration.Blocka;
 import com.chunkmapper.nbt.NbtIo;
 import com.chunkmapper.nbt.RegionFile;
-import com.chunkmapper.writer.LoadedLevelDat;
+import com.chunkmapper.writer.LevelDat;
 
 public class CreateNaked {
 
@@ -25,7 +25,7 @@ public class CreateNaked {
 		regionFolder.mkdirs();
 		File loadedLevelDatFile = new File("/Users/matthewmolloy/Library/Application Suppport/minecraft/saves/naked/level.dat");
 		FileUtils.copyFile(src, loadedLevelDatFile);
-		LoadedLevelDat loadedLevelDat = new LoadedLevelDat(loadedLevelDatFile);
+		LevelDat loadedLevelDat = new LevelDat(loadedLevelDatFile);
 		loadedLevelDat.setName("naked");
 		loadedLevelDat.setPlayerPosition(12, 6, 12);
 		loadedLevelDat.save();

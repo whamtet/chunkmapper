@@ -1,4 +1,12 @@
 <query type="way">
+<has-kv k="highway" v="track"/>
+<has-kv k="foot" v="yes" />
+</query>
+<print />
+<recurse type="way-node" />
+<print />
+
+<query type="way">
 <has-kv k="highway" v="path"/>
 </query>
 <print />
@@ -35,6 +43,15 @@
 
 <query type="node">
 <has-kv k="place" />
+</query>
+<print />
+
+<query type="node">
+<has-kv k="tourism" v="alpine_hut"/>
+</query>
+<print />
+<query type="node">
+<has-kv k="tourism" v="wilderness_hut"/>
 </query>
 <print />
 

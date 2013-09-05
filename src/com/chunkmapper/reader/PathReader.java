@@ -47,7 +47,9 @@ public class PathReader {
 	public PathReader(int regionx, int regionz) throws IOException {
 		OverpassObject o = OverpassParser.getObject(regionx, regionz);
 		for (Way way : o.ways) {
-			if ("path".equals(way.map.get("highway"))) {
+			String highway = way.map.get("highway");
+			String foot = way.map.get("foot");
+			if ("path".equals(highway) || ("track".equals(highway) && "yes".equals(foot))) {
 				for (int i = 0; i < way.points.size() - 1; i++) {
 					Point p1 = way.points.get(i), p2 = way.points.get(i+1);
 					interpolate(hasPath, p1, p2, regionx, regionz);

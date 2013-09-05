@@ -1,24 +1,28 @@
 package com.chunkmapper.parser;
 
 import java.awt.Rectangle;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import com.chunkmapper.FileValidator;
 import com.chunkmapper.Point;
-import com.chunkmapper.resourceinfo.XapiCoastlineResourceInfo;
+import com.chunkmapper.parser.OverpassParser.OverpassObject;
+import com.chunkmapper.parser.OverpassParser.Way;
 import com.chunkmapper.sections.Coastline;
 
 public class CoastlineParser extends Parser {
+	
+	public static HashSet<Coastline> getCoastlines(int regionx, int regionz) throws IOException {
+		OverpassObject o = OverpassParser.getObject(regionx, regionz);
+		HashSet<Coastline> coastlines = new HashSet<Coastline>();
+		for (Way way : o.ways) {
+			if ("coastline".equals(way.map.get("natural"))) {
+				coastlines.add(new Coastline(way.points, way.bbox));
+			}
+		}
+		return coastlines;
+	}
 
 	public static HashSet<Coastline> getCoastlines(ArrayList<String> lines) {
 

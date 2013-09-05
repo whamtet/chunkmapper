@@ -158,6 +158,7 @@ public class OverpassParser extends Parser {
 				currWay.calculateBbox();
 				ways.add(currWay);
 				wayMap.put(wayKey, currWay);
+				currWay = null;
 			}
 			if (tag.equals("node") && line.indexOf("/>") == -1) {
 				Long k = Long.parseLong(getValue(line, "id"));
@@ -189,6 +190,7 @@ public class OverpassParser extends Parser {
 				long key = Long.parseLong(getValue(line, "ref"));
 				Way way = wayMap.get(key);
 				if (way != null) {
+					way.map.put("role", getValue(line, "role"));
 					relation.ways.add(way);
 				}
 			}
@@ -201,6 +203,7 @@ public class OverpassParser extends Parser {
 			if (tag.equals("/relation")) {
 				relation.calculateBbox();
 				relations.add(relation);
+				relation = null;
 			}
 		}
 

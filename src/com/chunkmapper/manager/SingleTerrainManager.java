@@ -17,7 +17,7 @@ import com.chunkmapper.nbt.RegionFile;
 import com.chunkmapper.reader.HeightsReader;
 import com.chunkmapper.reader.UniformHeightsReader;
 import com.chunkmapper.writer.GenericWriter;
-import com.chunkmapper.writer.LoadedLevelDat;
+import com.chunkmapper.writer.LevelDat;
 
 public class SingleTerrainManager {
 	public final Random RANDOM = new Random();
@@ -75,7 +75,7 @@ public class SingleTerrainManager {
 		File src = new File("resources/level.dat");
 		File loadedLevelDatFile = new File(gameFolder, "level.dat");
 		FileUtils.copyFile(src, loadedLevelDatFile);
-		LoadedLevelDat levelDat = new LoadedLevelDat(loadedLevelDatFile);
+		LevelDat levelDat = new LevelDat(loadedLevelDatFile);
 		levelDat.setPlayerPosition(0, 10, 0);
 		levelDat.setName(name);
 		levelDat.save();

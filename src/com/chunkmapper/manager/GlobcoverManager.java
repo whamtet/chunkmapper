@@ -46,6 +46,7 @@ import com.chunkmapper.reader.FileNotYetAvailableException;
 import com.chunkmapper.reader.GlobcoverReader;
 import com.chunkmapper.reader.GlobcoverReaderImpl2;
 import com.chunkmapper.reader.HeightsReaderImpl;
+import com.chunkmapper.reader.HutReader;
 import com.chunkmapper.reader.POIReader;
 import com.chunkmapper.reader.PathReader;
 import com.chunkmapper.reader.RugbyReader;
@@ -69,6 +70,7 @@ public class GlobcoverManager {
 	private final XapiHighwayReader highwayReader;
 	private final FerryReader ferryReader;
 	private final PathReader pathReader;
+	private final HutReader hutReader;
 	public final boolean allWater;
 	private final ArtifactWriter artifactWriter = new ArtifactWriter();
 	public final int regionx, regionz;
@@ -90,8 +92,10 @@ public class GlobcoverManager {
 			rugbyReader = null;
 			highwayReader = null;
 			pathReader = null;
+			hutReader = null;
 			return;
 		}
+		hutReader = new HutReader(regionx, regionz);
 		pathReader = new PathReader(regionx, regionz);
 		highwayReader = new XapiHighwayReader(regionx, regionz, heightsReader);
 		boundaryReader = new XapiBoundaryReader(regionx, regionz);
@@ -109,7 +113,7 @@ public class GlobcoverManager {
 			farmTypeReader = new FarmTypeReader();
 		poiReader = new POIReader(regionx, regionz);
 
-		XapiCoastlineReader coastlineReader = new XapiCoastlineReader(regionx, regionz, coverReader);
+		XapiCoastlineReader coastlineReader = new XapiCoastlineReader(regionx, regionz, heightsReader);
 
 		for (int i = 0; i < 512; i++) {
 			for (int j = 0; j < 512; j++) {
@@ -334,6 +338,7 @@ public class GlobcoverManager {
 		pathReader.addPath(chunk, chunkx, chunkz);
 		//last but not least, add ferry
 		ferryReader.addLillies(chunk, chunkx, chunkz);
+		hutReader.addHut(chunk);
 		return chunk;
 	}
 

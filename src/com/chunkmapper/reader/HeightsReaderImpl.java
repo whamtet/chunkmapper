@@ -20,6 +20,16 @@ public class HeightsReaderImpl implements HeightsReader {
 	private final int x0, z0, verticalExaggeration;
 	public final boolean allWater;
 	
+	public boolean mostlyLand() {
+		int sumHeight = 0;
+		for (int i = 0; i < HeightsResourceInfo.LEN; i++) {
+			for (int j = 0; j < HeightsResourceInfo.LEN; j++) {
+				sumHeight += cache[i][j];
+			}
+		}
+		return sumHeight > 0;
+	}
+	
 	public HeightsReaderImpl(int regionx, int regionz) throws InterruptedException, IOException, FileNotYetAvailableException {
 		this(regionx, regionz, null, 1);
 	}

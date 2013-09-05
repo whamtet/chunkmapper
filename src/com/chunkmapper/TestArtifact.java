@@ -3,16 +3,13 @@ package com.chunkmapper;
 import java.io.DataOutputStream;
 import java.io.File;
 
-
-import org.apache.commons.io.FileUtils;
-
 import com.chunkmapper.chunk.Chunk;
 import com.chunkmapper.nbt.NbtIo;
 import com.chunkmapper.nbt.RegionFile;
+import com.chunkmapper.protoc.wrapper.SchematicProtocolWrapper;
 import com.chunkmapper.writer.ArtifactWriter;
 import com.chunkmapper.writer.GenericWriter;
-import com.chunkmapper.writer.HorseWriter;
-import com.chunkmapper.writer.LoadedLevelDat;
+import com.chunkmapper.writer.LevelDat;
 
 public class TestArtifact {
 
@@ -28,8 +25,7 @@ public class TestArtifact {
 		File src = new File("resources/level.dat");
 		File regionFolder = new File(gameFolder, "region");
 		File loadedLevelDatFile = new File("/Users/matthewmolloy/Library/Application Suppport/minecraft/saves/house/level.dat");
-		FileUtils.copyFile(src, loadedLevelDatFile);
-		LoadedLevelDat loadedLevelDat = new LoadedLevelDat(loadedLevelDatFile);
+		LevelDat loadedLevelDat = new LevelDat(loadedLevelDatFile);
 //		ParallelWriter writer = new ParallelWriter(0, 0, 0, 0, "house", true);
 		loadedLevelDat.setPlayerPosition(512, 250, 512);
 		loadedLevelDat.save();
@@ -40,9 +36,10 @@ public class TestArtifact {
 				heights[i][j] = 4;
 			}
 		}
-		int chunkx = 2, chunkz = 3;
+		int chunkx = 3, chunkz = 3;
 		Chunk chunk = new Chunk(chunkx, chunkz, heights, chunkx, chunkz);
 		GenericWriter.addBedrock(chunk, 0);
+		ArtifactWriter.addHut(chunk, "hi there");
 //		ArtifactWriter.placeMarket(chunk);
 //		ArtifactWriter.placePrison(chunk);
 //		ArtifactWriter.addTunnelIntoTheUnknown(chunk);

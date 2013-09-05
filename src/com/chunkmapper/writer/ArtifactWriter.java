@@ -10,9 +10,20 @@ import com.chunkmapper.enumeration.StraightRail;
 import com.chunkmapper.enumeration.WoolColor;
 import com.chunkmapper.math.Matthewmatics;
 import com.chunkmapper.nbt.CompoundTag;
+import com.chunkmapper.protoc.wrapper.SchematicProtocolWrapper;
 import com.chunkmapper.reader.RugbyReader.RugbyField;
 
 public class ArtifactWriter {
+	private static final SchematicProtocolWrapper hut;
+	static {
+		SchematicProtocolWrapper hut2 = null;
+		try {
+			hut2 = new SchematicProtocolWrapper("/buildings/hut.myschematic");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		hut = hut2;
+	}
 	private int spacesTillNextPoweredRail = 1;
 	private static void addWool(Chunk chunk, int h, int z, int x) {
 		chunk.Blocks[h][z][x] = Block.Wool.val;
@@ -673,6 +684,21 @@ public class ArtifactWriter {
 			}
 		}
 		return s / n;
+	}
+	public static void addHut(Chunk chunk, String name) {
+		int h = getMeanHeight(chunk);
+		for (int y = 0; y < hut.ymax; y++) {
+			for (int x = 0; x < 16; x++) {
+				for (int z = 0; z < 16; z++) {
+					chunk.Blocks[y+h][z][x] = hut.blocks[y][z][x];
+					chunk.Data[y+h][z][x] = hut.data[y][z][x];
+				}
+			}
+		}
+		//add hut name
+		if (name != null) {
+			addSign(chunk, h, 2, 2, name.split(" "));
+		}
 	}
 	private static int getMeanHeight(Chunk chunk, int x0, int z0, int width, int length) {
 		int s = 0, n = 0;

@@ -80,7 +80,7 @@ public class XapiRailReader {
 	public XapiRailReader(int regionx, int regionz, HeightsReader heightsReader, UberDownloader uberDownloader, int verticalExaggeration) throws IllegalArgumentException, NoSuchElementException, IOException, InterruptedException, FileNotYetAvailableException, URISyntaxException, DataFormatException {
 		x0 = regionx * 512; z0 = regionz * 512;
 
-		Collection<RailSection> allSections = (Collection<RailSection>) OSMDownloader.getSections(OSMSource.rails, regionx, regionz); 
+		Collection<RailSection> allSections = RailParser.getRailSection(regionx, regionz); 
 
 		hasRails = allSections.size() > 0;
 		if (!hasRails) {

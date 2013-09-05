@@ -15,7 +15,7 @@ import com.chunkmapper.nbt.CompoundTag;
 import com.chunkmapper.nbt.NbtIo;
 import com.chunkmapper.nbt.RegionFile;
 import com.chunkmapper.writer.GenericWriter;
-import com.chunkmapper.writer.LoadedLevelDat;
+import com.chunkmapper.writer.LevelDat;
 
 public class Octimator {
 	private static final int FACTOR = 8;
@@ -35,7 +35,7 @@ public class Octimator {
 		File src = new File("resources/level.dat");
 		File loadedLevelDatFile = new File(gameFolder, "level.dat");
 		FileUtils.copyFile(src, loadedLevelDatFile);
-		LoadedLevelDat levelDat = new LoadedLevelDat(loadedLevelDatFile);
+		LevelDat levelDat = new LevelDat(loadedLevelDatFile);
 		levelDat.setPlayerPosition(0, 10, 0);
 		levelDat.setName(name);
 		levelDat.save();
@@ -49,7 +49,7 @@ public class Octimator {
 		File src = new File("resources/level.dat");
 		File loadedLevelDatFile = new File(gameFolder, "level.dat");
 		FileUtils.copyFile(src, loadedLevelDatFile);
-		LoadedLevelDat levelDat = new LoadedLevelDat(loadedLevelDatFile);
+		LevelDat levelDat = new LevelDat(loadedLevelDatFile);
 		levelDat.setPlayerPosition(0, 10, 0);
 		levelDat.setName("name");
 		levelDat.save();

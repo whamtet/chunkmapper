@@ -33,21 +33,25 @@ public class XapiLakeReader {
 		ArrayList<Lake> lakes = new ArrayList<Lake>();
 		for (Way way : o.ways) {
 			if ("water".equals(way.map.get("natural"))) {
-				System.out.println("way");
 				lakes.add(new Lake(way.points, way.bbox, false, false)); //no lagoons or coves for now
 			}
 		}
 		for (Relation relation : o.relations) {
 			if ("water".equals(relation.map.get("natural"))) {
-				System.out.println("relation");
 				ArrayList<Point> points = new ArrayList<Point>();
 				for (Way way : relation.ways) {
-					for (Point point : way.points){
-						points.add(point);
+					if ("outer".equals(way.map.get("role"))) {
+						for (Point point : way.points){
+							points.add(point);
+						}
 					}
 				}
 				lakes.add(new Lake(points, relation.bbox, false, false));
-				
+				for (Way way : relation.ways){
+					if ("inner".equals(way.map.get("role"))) {
+						lakes.add(new Lake(way.points, relation.bbox, false, false));
+					}
+				}
 			}
 		}
 		return lakes;
@@ -55,47 +59,49 @@ public class XapiLakeReader {
 
 	public XapiLakeReader(int regionx, int regionz) throws IOException, FileNotYetAvailableException, URISyntaxException, DataFormatException {
 
-		
+
 		ArrayList<Lake> lakes = getLakes(regionx, regionz);
 
-		ArrayList<Lake> openLakes = new ArrayList<Lake>(), closedLakes = new ArrayList<Lake>();
-		for (Lake lake : lakes) {
-			if (lake.isClosed()) {
-				closedLakes.add(lake);
-			} else {
-				openLakes.add(lake);
-			}
-		}
-		outer: for (Lake lakeToClose : openLakes) {
-			for (Lake closedLake : closedLakes) {
-				if (closedLake.contains(lakeToClose)) {
-					continue outer;
-				}
-			}
-			int i;
-			for (i = 0; lakeToClose.isOpen() && i < 100; i++) {
-				Point endPoint = lakeToClose.getEndPoint();
-				int regionxd = Matthewmatics.div(endPoint.x, 512), regionzd = Matthewmatics.div(endPoint.z, 512);
-				Collection<Lake> lakes2 = regionxd == regionx && regionzd == regionz ?
-						openLakes : getLakes(regionxd, regionzd);
-				for (Lake lake : lakes2) {
-					lakeToClose.connect(lake);
-					if (lakeToClose.isClosed()) {
-						closedLakes.add(lakeToClose);
-						break;
-					}
-				}
-			}
-			if (i == 100) {
-				System.out.println("quitting");
-				return;
-			}
-		}
+		//		ArrayList<Lake> openLakes = new ArrayList<Lake>(), closedLakes = new ArrayList<Lake>();
+		//		for (Lake lake : lakes) {
+		//			if (lake.isClosed()) {
+		//				closedLakes.add(lake);
+		//			} else {
+		//				openLakes.add(lake);
+		//			}
+		//		}
+		//		outer: for (Lake lakeToClose : openLakes) {
+		//			for (Lake closedLake : closedLakes) {
+		//				if (closedLake.contains(lakeToClose)) {
+		//					continue outer;
+		//				}
+		//			}
+		//			int i;
+		//			for (i = 0; lakeToClose.isOpen() && i < 100; i++) {
+		//				Point endPoint = lakeToClose.getEndPoint();
+		//				int regionxd = Matthewmatics.div(endPoint.x, 512), regionzd = Matthewmatics.div(endPoint.z, 512);
+		//				Collection<Lake> lakes2 = regionxd == regionx && regionzd == regionz ?
+		//						openLakes : getLakes(regionxd, regionzd);
+		//				for (Lake lake : lakes2) {
+		//					lakeToClose.connect(lake);
+		//					if (lakeToClose.isClosed()) {
+		//						closedLakes.add(lakeToClose);
+		//						break;
+		//					}
+		//				}
+		//			}
+		//			if (i == 100) {
+		//				System.out.println("quitting");
+		//				return;
+		//			}
+		//		}
 
 		ArrayList<RenderingSection> sections = new ArrayList<RenderingSection>();
-		for (Lake lake : closedLakes) {
+		for (Lake lake : lakes) {
 			ArrayList<Point> points = lake.points;
-			points.remove(points.size() - 1);
+			if (lake.isClosed())
+				points.remove(points.size() - 1);
+
 			for (int i = 0; i < points.size(); i++) {
 				Point previous = wrappedGet(points, i - 1);
 				Point a = points.get(i), b = wrappedGet(points, i + 1);
@@ -164,18 +170,17 @@ public class XapiLakeReader {
 	public static void main(String[] args) throws Exception {
 		double[] latlon = Nominatim.getPoint("taupo, nz");
 		//		double[] latlon = Nominatim.getPoint("te anau, nz");
-		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
+		int regionx = (int) Math.floor(latlon[1] * 3600 / 512)-3;
 		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
-		ArrayList<Lake> lakes = getLakes(regionx, regionz);
-		for (Lake lake : lakes) {
+		for (Lake lake : getLakes(regionx, regionz)) {
 			System.out.println(lake.isClosed());
 		}
 //		XapiLakeReader reader = new XapiLakeReader(regionx, regionz);
-
+//
 //		PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(new File("/Users/matthewmolloy/python/wms/data.csv"))));
 //		for (int z = 0; z < 512; z++) {
 //			for (int x = 0; x < 512; x++) {
-//				pw.println(reader.hasWaterij(z, x) ? 1 : 0);
+//				pw.println(reader.hasWaterij(z, x) && (z > 0 || x > 0) ? 0 : 1);
 //			}
 //		}
 //		pw.close();

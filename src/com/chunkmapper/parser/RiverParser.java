@@ -1,13 +1,27 @@
 package com.chunkmapper.parser;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
 import com.chunkmapper.Point;
+import com.chunkmapper.parser.OverpassParser.OverpassObject;
+import com.chunkmapper.parser.OverpassParser.Way;
 import com.chunkmapper.sections.RiverSection;
 
 public class RiverParser extends Parser {
+	
+	public static ArrayList<RiverSection> getRiverSections(int regionx, int regionz) throws IOException {
+		ArrayList<RiverSection> out = new ArrayList<RiverSection>();
+		OverpassObject o = OverpassParser.getObject(regionx, regionz);
+		for (Way way : o.ways) {
+			if ("river".equals(way.map.get("waterway"))) {
+				out.add(new RiverSection(way.points));
+			}
+		}
+		return out;
+	}
 	
 	public static Collection<RiverSection> getRiverSections(ArrayList<String> lines) {
 		HashMap<Long, Point> locations = getLocations(lines);

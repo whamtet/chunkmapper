@@ -13,6 +13,7 @@ import java.util.zip.DataFormatException;
 import com.chunkmapper.Point;
 import com.chunkmapper.downloader.OSMDownloader;
 import com.chunkmapper.enumeration.OSMSource;
+import com.chunkmapper.parser.CoastlineParser;
 import com.chunkmapper.sections.Coastline;
 
 public class XapiCoastlineReader {
@@ -105,11 +106,11 @@ public class XapiCoastlineReader {
 			}
 		}
 	}
-	public XapiCoastlineReader(int regionx, int regionz, GlobcoverReader coverReader) throws IOException, URISyntaxException, DataFormatException {
+	public XapiCoastlineReader(int regionx, int regionz, HeightsReader heightsReader) throws IOException, URISyntaxException, DataFormatException {
 
-		Collection<Coastline> coastlines = (Collection<Coastline>) OSMDownloader.getSections(OSMSource.coastlines, regionx, regionz);
+		Collection<Coastline> coastlines = CoastlineParser.getCoastlines(regionx, regionz);
 		if (coastlines.size() == 0) {
-			int fill = coverReader.mostlyLand() ? 1 : -1;
+			int fill = heightsReader.mostlyLand() ? 1 : -1;
 			for (int i = 0; i < 512; i++) {
 				for (int j = 0; j < 512; j++) {
 					data[i][j] = fill;

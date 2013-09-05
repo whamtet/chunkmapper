@@ -16,7 +16,7 @@ import com.chunkmapper.gui.LoginDialog;
 import com.chunkmapper.gui.SuspiciousPasswordDialog;
 import com.chunkmapper.rail.HeightsCache;
 import com.chunkmapper.security.SecurityManager;
-import com.chunkmapper.writer.LoadedLevelDat;
+import com.chunkmapper.writer.LevelDat;
 import com.chunkmapper.writer.RegionWriter;
 
 public class ManagingThread extends Thread {
@@ -107,9 +107,9 @@ public class ManagingThread extends Thread {
 		File loadedLevelDatFile = new File(gameFolder, "level.dat");
 		if (!loadedLevelDatFile.exists()) {
 			try {
-				URL src = ManagingThread.class.getResource("/config/level.dat");
-				FileUtils.copyURLToFile(src, loadedLevelDatFile);
-				LoadedLevelDat loadedLevelDat = new LoadedLevelDat(loadedLevelDatFile);
+//				URL src = ManagingThread.class.getResource("/config/level.dat");
+//				FileUtils.copyURLToFile(src, loadedLevelDatFile);
+				LevelDat loadedLevelDat = new LevelDat(loadedLevelDatFile);
 				String gameName = gameFolder.getName();
 				loadedLevelDat.setName(gameName);
 				loadedLevelDat.setPlayerPosition(lon * 3600 - gameMetaInfo.rootPoint.x * 512, 250, - lat * 3600 - gameMetaInfo.rootPoint.z * 512);

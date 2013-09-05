@@ -15,6 +15,7 @@ import com.chunkmapper.chunk.Chunk;
 import com.chunkmapper.downloader.OSMDownloader;
 import com.chunkmapper.enumeration.Blocka;
 import com.chunkmapper.enumeration.OSMSource;
+import com.chunkmapper.parser.HighwayParser;
 import com.chunkmapper.sections.HighwaySection;
 import com.chunkmapper.writer.ArtifactWriter;
 
@@ -96,7 +97,7 @@ public class XapiHighwayReader {
 
 	public XapiHighwayReader(int regionx, int regionz, HeightsReader heightsReader) throws IllegalArgumentException, NoSuchElementException, IOException, InterruptedException, FileNotYetAvailableException, URISyntaxException, DataFormatException {
 
-		Collection<HighwaySection> allSections = (Collection<HighwaySection>) OSMDownloader.getSections(OSMSource.highways, regionx, regionz);
+		Collection<HighwaySection> allSections = HighwayParser.getHighwaySections(regionx, regionz);
 
 		hasHighways = allSections.size() > 0;
 		System.out.println(allSections.size());

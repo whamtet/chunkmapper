@@ -1,12 +1,14 @@
 package com.chunkmapper.parser;
 
 import java.awt.Rectangle;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.chunkmapper.Point;
+import com.chunkmapper.parser.OverpassParser.OverpassObject;
+import com.chunkmapper.parser.OverpassParser.Way;
 import com.chunkmapper.sections.HighwaySection;
-import com.chunkmapper.sections.RailSection;
 
 public class HighwayParser extends Parser {
 	
@@ -60,5 +62,19 @@ public class HighwayParser extends Parser {
 			}
 		}
 		return highwaySections;
+	}
+	public static ArrayList<HighwaySection> getHighwaySections(int regionx, int regionz) throws IOException {
+		ArrayList<HighwaySection> out = new ArrayList<HighwaySection>();
+		OverpassObject o = OverpassParser.getObject(regionx, regionz);
+		for (Way way : o.ways) {
+			String k = way.map.get("highway");
+			if ("motorway".equals(k) || "trunk".equals(k) || "primary".equals(k)) {
+				String name = way.map.get("name");
+				boolean hasBridge = "yes".equals(way.map.get("bridge"));
+				boolean hasTunnel = "yes".equals(way.map.get("tunnel"));
+				out.add(new HighwaySection(way.points, hasBridge, hasTunnel, way.bbox, name));
+			}
+		}
+		return out;
 	}
 }

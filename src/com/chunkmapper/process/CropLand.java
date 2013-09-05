@@ -13,7 +13,7 @@ import org.apache.commons.io.FileUtils;
 import com.chunkmapper.chunk.ReadChunk;
 import com.chunkmapper.nbt.NbtIo;
 import com.chunkmapper.nbt.RegionFile;
-import com.chunkmapper.writer.LoadedLevelDat;
+import com.chunkmapper.writer.LevelDat;
 
 public class CropLand {
 	private static BlockingQueue<File> files = new LinkedBlockingQueue<File>();
@@ -26,7 +26,7 @@ public class CropLand {
 		FileUtils.copyDirectory(src, dest);
 		//need to update name
 		File loadedLevelDatFile = new File(dest, "level.dat");
-		LoadedLevelDat loadedLevelDat = new LoadedLevelDat(loadedLevelDatFile);
+		LevelDat loadedLevelDat = new LevelDat(loadedLevelDatFile);
 		loadedLevelDat.setName("everest2");
 		loadedLevelDat.save();
 

@@ -1,16 +1,32 @@
 package com.chunkmapper.parser;
 
 import java.awt.Rectangle;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.chunkmapper.Point;
-import com.chunkmapper.reader.FileNotYetAvailableException;
+import com.chunkmapper.parser.OverpassParser.OverpassObject;
+import com.chunkmapper.parser.OverpassParser.Way;
 import com.chunkmapper.sections.RailSection;
 
 public class RailParser extends Parser {
+	
+	public static ArrayList<RailSection> getRailSection(int regionx, int regionz) throws IOException {
+		OverpassObject o = OverpassParser.getObject(regionx, regionz);
+		ArrayList<RailSection> out = new ArrayList<RailSection>();
+		for (Way way : o.ways) {
+			if (way.map.containsKey("railway")) {
+				boolean isPreserved = "preserved".equals(way.map.get("railway"));
+				boolean hasBridge = "yes".equals(way.map.get("bridge"));
+				boolean hasCutting = "yes".equals(way.map.get("cutting"));
+				boolean embankment = "yes".equals(way.map.get("embankment"));
+				boolean hasTunnel = "yes".equals(way.map.get("tunnel"));
+				out.add(new RailSection(way.points, isPreserved, hasBridge, hasCutting, embankment, hasTunnel, way.bbox));
+			}
+		}
+		return out;
+	}
 	
 	public static ArrayList<RailSection> getRailSections(ArrayList<String> lines) {
 		

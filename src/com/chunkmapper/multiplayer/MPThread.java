@@ -15,7 +15,7 @@ import com.chunkmapper.Point;
 import com.chunkmapper.downloader.UberDownloader;
 import com.chunkmapper.parser.Nominatim;
 import com.chunkmapper.rail.HeightsCache;
-import com.chunkmapper.writer.LoadedLevelDat;
+import com.chunkmapper.writer.LevelDat;
 import com.chunkmapper.writer.NeutralRegionWriter;
 
 public class MPThread {

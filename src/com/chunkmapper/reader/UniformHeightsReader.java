@@ -4,7 +4,9 @@ import com.chunkmapper.Utila;
 
 public class UniformHeightsReader implements HeightsReader {
 	
-	
+	public boolean mostlyLand() {
+		return true;
+	}
 
 	/* (non-Javadoc)
 	 * @see com.chunkmapper.reader.HeightsReader#getHeights(int, int)

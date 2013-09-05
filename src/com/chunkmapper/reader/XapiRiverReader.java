@@ -8,6 +8,7 @@ import java.util.zip.DataFormatException;
 import com.chunkmapper.Point;
 import com.chunkmapper.downloader.OSMDownloader;
 import com.chunkmapper.enumeration.OSMSource;
+import com.chunkmapper.parser.RiverParser;
 import com.chunkmapper.sections.RiverSection;
 
 public class XapiRiverReader {
@@ -57,7 +58,7 @@ public class XapiRiverReader {
 
 	public XapiRiverReader(int regionx, int regionz, HeightsReader heightsReader) throws FileNotYetAvailableException, IOException, URISyntaxException, DataFormatException {
 
-		Collection<RiverSection> riverSections = (Collection<RiverSection>) OSMDownloader.getSections(OSMSource.rivers, regionx, regionz);
+		Collection<RiverSection> riverSections = RiverParser.getRiverSections(regionx, regionz);
 
 		System.out.println(riverSections.size());
 		for (RiverSection riverSection : riverSections) {
