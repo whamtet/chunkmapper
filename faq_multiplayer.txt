@@ -15,9 +15,9 @@ your-chunkmapper-password
 
 java -jar ChunkmapperMultiplayer.jar "place to start"
 
-5) In order to save server resources ChunkmapperMultiplayer has no graphical user interface.  You specify the start location by typing in its name.  If you choose an obscure location be sure to include the state/country e.g. "nelson, nz".  You must also put quotation marks around the name so that command prompt knows it is a single argument.
+In order to save server resources ChunkmapperMultiplayer has no graphical user interface.  You specify the start location by typing in its name.  If you choose an obscure location be sure to include the state/country e.g. "nelson, nz".  You must also put quotation marks around the name so that command prompt knows it is a single argument.
 
-6) ChunkmapperMultiplayer creates a folder called world that contains your map for multiplayer mode.  To observe generation progress change directory to
+5) ChunkmapperMultiplayer creates a folder called world that contains your map for multiplayer mode.  To observe generation progress change directory to
 
 ~/my_folder/world/chunkmapper
 
@@ -70,5 +70,3 @@ Important Notes
 As with single player mode, multiplayer Chunkmapper must run at the same time as the server so that it can add to the map as players move.
 
 Provided you have a decent internet connection, single player chunkmapper can always generate map faster than the player moves so that the world appears infinite.  If a large number of users in multiplayer mode all move in opposite directions chunkmapper may not be able to add to the map quickly enough.  This may corrupt your maps or crash your server.  You have been warned.
-
-Notes:  windows cmd hoat dong the nao?

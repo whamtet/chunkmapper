@@ -1,5 +1,9 @@
 package com.chunkmapper.writer;
 
+import java.io.File;
+
+import org.apache.commons.io.FileUtils;
+
 import com.chunkmapper.chunk.Chunk;
 import com.chunkmapper.enumeration.Block;
 import com.chunkmapper.enumeration.Blocka;
@@ -18,6 +22,7 @@ public class ArtifactWriter {
 	static {
 		SchematicProtocolWrapper hut2 = null;
 		try {
+//			hut2 = new SchematicProtocolWrapper(new File(FileUtils.getUserDirectory(), "hut.myschematic"));
 			hut2 = new SchematicProtocolWrapper("/buildings/hut.myschematic");
 		} catch (Exception e) {
 			e.printStackTrace();

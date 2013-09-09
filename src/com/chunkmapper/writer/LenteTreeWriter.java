@@ -24,11 +24,7 @@ public class LenteTreeWriter {
 	static {
 		for (LenteTree lenteTree : LenteTree.values()) {
 			try {
-				URL src = ManagingThread.class.getResource("/images/" + lenteTree.toString() + ".myschematic");
-				InputStream in = src.openStream();
-				byte[] data = Zip.inflate(in);
-				SchematicProtocol.Schematic p = SchematicProtocol.Schematic.parseFrom(data);
-				protocols.put(lenteTree, new SchematicProtocolWrapper(p));
+				protocols.put(lenteTree, new SchematicProtocolWrapper("/trees/" + lenteTree.toString() + ".myschematic"));
 			} catch (Exception e) {
 				System.out.println(lenteTree);
 				e.printStackTrace();
@@ -37,6 +33,7 @@ public class LenteTreeWriter {
 	}
 	public static void main(String[] args) throws Exception {
 
+		System.out.println(LenteTree.values().length);
 		System.out.println(protocols.size());
 	}
 

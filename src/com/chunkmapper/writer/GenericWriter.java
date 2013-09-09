@@ -4,6 +4,7 @@ import java.util.Random;
 
 import com.chunkmapper.chunk.Chunk;
 import com.chunkmapper.enumeration.Block;
+import com.chunkmapper.enumeration.Blocka;
 
 public class GenericWriter {
 	
@@ -12,6 +13,19 @@ public class GenericWriter {
 //	public static void addBedrock(byte[][][] blocks, int[][] heights) {
 //		addBedrock(blocks, heights, 2);
 //	}
+	
+	public static void addGrass(Chunk chunk) {
+		for (int z = 0; z < 16; z++) {
+			for (int x = 0; x < 16; x++) {
+				int h = chunk.getHeights(x, z);
+				chunk.Blocks[0][z][x] = Blocka.Bedrock;
+				for (int i = 1; i < h - 1; i++) {
+					chunk.Blocks[i][z][x] = Blocka.Dirt;
+				}
+				chunk.Blocks[h-1][z][x] = Blocka.Grass;
+			}
+		}
+	}
 
 	public static void addBedrock(Chunk chunk) {
 		addBedrock(chunk, 2);

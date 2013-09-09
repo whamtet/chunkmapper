@@ -2,13 +2,19 @@ package com.chunkmapper;
 
 import java.io.DataOutputStream;
 import java.io.File;
+import java.io.IOException;
 
 import com.chunkmapper.chunk.Chunk;
+import com.chunkmapper.column.AbstractColumn;
+import com.chunkmapper.column.Vineyard;
+import com.chunkmapper.enumeration.LenteTree;
 import com.chunkmapper.nbt.NbtIo;
 import com.chunkmapper.nbt.RegionFile;
-import com.chunkmapper.protoc.wrapper.SchematicProtocolWrapper;
+import com.chunkmapper.reader.HeightsReader;
+import com.chunkmapper.reader.UniformHeightsReader;
 import com.chunkmapper.writer.ArtifactWriter;
 import com.chunkmapper.writer.GenericWriter;
+import com.chunkmapper.writer.LenteTreeWriter;
 import com.chunkmapper.writer.LevelDat;
 
 public class TestArtifact {
@@ -36,23 +42,18 @@ public class TestArtifact {
 				heights[i][j] = 4;
 			}
 		}
-		int chunkx = 3, chunkz = 3;
+		int chunkx = 0, chunkz = 0;
 		Chunk chunk = new Chunk(chunkx, chunkz, heights, chunkx, chunkz);
-		GenericWriter.addBedrock(chunk, 0);
-		ArtifactWriter.addHut(chunk, "hi there");
-//		ArtifactWriter.placeMarket(chunk);
-//		ArtifactWriter.placePrison(chunk);
-//		ArtifactWriter.addTunnelIntoTheUnknown(chunk);
-//		ArtifactWriter.addHouse(chunk);
-//		ArtifactWriter.placeLookout(chunk);
-//		for (int i = 0; i < 10; i++) {
-//			HorseWriter.addHorse(chunk);
-//			MobWriter.addAnimal(chunk, "Cow");
-//			MobWriter.addAnimal(chunk, "Sheep");
-//			MobWriter.addAnimal(chunk, "Chicken");
-//		}
-//		ArtifactWriter.placeLibrary(chunk);
-
+		GenericWriter.addBedrock(chunk);
+		
+		HeightsReader heightsReader = new UniformHeightsReader();
+		for (int i = 0; i < 16; i++) {
+			for (int j = 0; j < 16; j++) {
+				Vineyard col = new Vineyard(j, i, heightsReader);
+				col.addColumn(chunk);
+			}
+		}
+		
 		DataOutputStream out = regionFile.getChunkDataOutputStream(chunkx, chunkz);
 		NbtIo.write(chunk.getTag(), out);
 		out.close();
@@ -64,7 +65,21 @@ public class TestArtifact {
 //		Runtime.getRuntime().exec("open cow.txt");
 
 		System.out.println("done");
-
+	}
+	//write all the Lente trees
+	private static void writeTree(int chunkx, int chunkz, LenteTree tree, int[][] heights, RegionFile regionFile) throws IOException {
+		Chunk chunk = new Chunk(chunkx, chunkz, heights, chunkx, chunkz);
+		GenericWriter.addBedrock(chunk, 0);
+		HeightsReader heightsReader  = new UniformHeightsReader();
+		int absx = chunkx*16 + 8, absz = chunkz * 16 + 8;
+		LenteTreeWriter.placeLenteTree(absx, absz, chunk, heightsReader, tree);
+		ArtifactWriter.addSign(chunk, 4, 0, 0, tree.toString().split("_"));
+		
+		DataOutputStream out = regionFile.getChunkDataOutputStream(chunkx, chunkz);
+		NbtIo.write(chunk.getTag(), out);
+		out.close();
+		
+		
 	}
 
 

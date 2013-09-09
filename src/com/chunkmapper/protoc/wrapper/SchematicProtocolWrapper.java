@@ -2,6 +2,7 @@ package com.chunkmapper.protoc.wrapper;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.zip.DataFormatException;
 
 import com.chunkmapper.Zip;
@@ -14,14 +15,15 @@ public class SchematicProtocolWrapper {
 		byte[] data = Zip.inflate(f);
 		return SchematicProtocol.Schematic.parseFrom(data);
 	}
+	private static SchematicProtocol.Schematic getSchematic(InputStream in) throws IOException, DataFormatException {
+		byte[] data = Zip.inflate(in);
+		return SchematicProtocol.Schematic.parseFrom(data);
+	}
 	public SchematicProtocolWrapper(File f) throws IOException, DataFormatException {
 		this(getSchematic(f));
 	}
-	private static File getFile(String s) {
-		return new File(SchematicProtocolWrapper.class.getResource(s).getFile());
-	}
 	public SchematicProtocolWrapper(String s) throws IOException, DataFormatException {
-		this(getFile(s));
+		this(getSchematic(SchematicProtocolWrapper.class.getResource(s).openStream()));
 	}
 	public SchematicProtocolWrapper(SchematicProtocol.Schematic schematic) {
 		xmax = schematic.getX();

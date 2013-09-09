@@ -5,6 +5,7 @@ import java.util.Random;
 
 import com.chunkmapper.chunk.Chunk;
 import com.chunkmapper.enumeration.Block;
+import com.chunkmapper.enumeration.Blocka;
 import com.chunkmapper.enumeration.DataSource;
 import com.chunkmapper.enumeration.Globcover;
 import com.chunkmapper.enumeration.LenteTree;
@@ -28,6 +29,9 @@ public abstract class AbstractColumn {
 	}
 	//default methods
 	public void addColumn(Chunk chunk) {
+		addColumn(chunk, false, false);
+	}
+	public void addColumn(Chunk chunk, boolean dandelion, boolean rose) {
 		int x = com.chunkmapper.math.Matthewmatics.mod(absx, 16);
 		int z = com.chunkmapper.math.Matthewmatics.mod(absz, 16);
 
@@ -38,6 +42,12 @@ public abstract class AbstractColumn {
 		if (i > 0) {
 			chunk.Blocks[h][z][x] = Block.Long_Grass.val;
 			chunk.Data[h][z][x] = i == 1 ? DataSource.Fern.val : DataSource.Long_Grass.val; 
+		}
+		if (dandelion && RANDOM.nextInt(100) == 0) {
+			chunk.Blocks[h][z][x] = Block.Dandelion.val;
+		}
+		if (rose && RANDOM.nextInt(100) == 0) {
+			chunk.Blocks[h][z][x] = Blocka.Rose;
 		}
 	}
 	public void addTree(Chunk chunk, HeightsReader heightsReader) throws IOException {} //does nothing at this stage

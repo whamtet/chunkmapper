@@ -112,3 +112,19 @@
 <print />
 <recurse type="way-node" />
 <print />
+
+<!-- Vineyards -->
+<query type="way">
+<has-kv k="landuse" v="vineyard"/>
+</query>
+<print />
+<recurse type="way-node" />
+<print />
+
+<query type="way">
+<has-kv k="crop" v="grape"/>
+</query>
+<print />
+<recurse type="way-node" />
+<print />
+<!-- End Vineyards -->

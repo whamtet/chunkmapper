@@ -1,10 +1,10 @@
 package com.chunkmapper;
 
-import java.util.HashMap;
+import com.google.protobuf.ByteString;
 
 public class Test {
 	public static void main(String[] args) {
-		HashMap<Integer, String> map = new HashMap<Integer, String>();
+		ByteString b;
 	}
 
 }

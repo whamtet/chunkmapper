@@ -1,5 +1,7 @@
 package com.chunkmapper;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -14,6 +16,7 @@ import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
 public class Zip {
+	//storage needs full length and then zipped lengths
 
 	public static void zipOver(File src, File dest) throws IOException, DataFormatException {
 		byte[] data = new byte[(int) src.length()], data2 = new byte[(int) src.length()];
@@ -27,7 +30,10 @@ public class Zip {
 
 		int cl = compresser.deflate(data2);
 		
-		FileOutputStream out = new FileOutputStream(dest);
+//		FileOutputStream out = new FileOutputStream(dest);
+		DataOutputStream out = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(dest)));
+		out.writeInt(data.length);
+		out.writeInt(cl);
 		out.write(data2, 0, cl);
 		out.close();
 
@@ -42,6 +48,7 @@ public class Zip {
 		
 		DataOutputStream out = new DataOutputStream(new FileOutputStream(dest));
 		out.writeInt(data.length);
+		out.writeInt(cl);
 		out.write(data2, 0, cl);
 		out.close();
 	}
@@ -77,67 +84,51 @@ public class Zip {
 		return data;
 	}
 	public static byte[] inflate(InputStream in) throws IOException, DataFormatException {
-		int fullLength = (new DataInputStream(in)).readInt();
-		ArrayList<InputBuffer> buffers = new ArrayList<InputBuffer>();
-		while (true) {
-			InputBuffer b = new InputBuffer(in);
-			if (b.bytesRead == -1) {
-				break;
-			}
-			buffers.add(b);
-		}
-		in.close();
-		int totalSize = 0;
-		for (InputBuffer b : buffers) {
-			totalSize += b.bytesRead;
-		}
-		byte[] data = new byte[totalSize];
-		int i = 0;
-		for (InputBuffer b : buffers) {
-			for (int j = 0; j < b.bytesRead; j++) {
-				data[i] = b.data[j];
-				i++;
-			}
-		}
+		DataInputStream in2 = new DataInputStream(new BufferedInputStream(in));
+		int fullLength = in2.readInt();
+		int cl = in2.readInt();
+		byte[] compressed = new byte[cl], uncompressed = new byte[fullLength];
+		in2.readFully(compressed);
+		in2.close();
+		
 		Inflater inflater = new Inflater();
-		inflater.setInput(data);
-		data = new byte[fullLength];
-		inflater.inflate(data);
+		inflater.setInput(compressed);
+		inflater.inflate(uncompressed);
 		inflater.end();
 		
-		return data;
+		return uncompressed;
 	}
 	public static byte[] inflate(File f) throws IOException, DataFormatException {
-		byte[] data = new byte[(int) f.length() - 4];
-		
-		DataInputStream in = new DataInputStream(new FileInputStream(f));
-		int fullLength = in.readInt();
-		in.readFully(data);
-		in.close();
+		BufferedInputStream in = new BufferedInputStream(new FileInputStream(f));
+		DataInputStream in2 = new DataInputStream(in);
+		int fullLength = in2.readInt();
+		int cl = in2.readInt();
+		byte[] compressed = new byte[cl], uncompressed = new byte[fullLength];
+		in2.readFully(compressed);
+		in2.close();
 		
 		Inflater inflater = new Inflater();
-		inflater.setInput(data);
-		data = new byte[fullLength];
-		inflater.inflate(data);
+		inflater.setInput(compressed);
+		inflater.inflate(uncompressed);
 		inflater.end();
 		
-		return data;
+		return uncompressed;
 	}
 	public static byte[] inflate(byte[] dataOrig) throws IOException, DataFormatException {
-		byte[] data = new byte[dataOrig.length - 4];
-		
-		DataInputStream in = new DataInputStream(new ByteArrayInputStream(dataOrig));
-		int fullLength = in.readInt();
-		in.readFully(data);
-		in.close();
+		ByteArrayInputStream in = new ByteArrayInputStream(dataOrig);
+		DataInputStream in2 = new DataInputStream(in);
+		int fullLength = in2.readInt();
+		int cl = in2.readInt();
+		byte[] compressed = new byte[cl], uncompressed = new byte[fullLength];
+		in2.readFully(compressed);
+		in2.close();
 		
 		Inflater inflater = new Inflater();
-		inflater.setInput(data);
-		data = new byte[fullLength];
-		inflater.inflate(data);
+		inflater.setInput(compressed);
+		inflater.inflate(uncompressed);
 		inflater.end();
 		
-		return data;
+		return uncompressed;
 		
 		
 	}
