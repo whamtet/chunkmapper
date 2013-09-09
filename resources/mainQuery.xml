@@ -127,4 +127,18 @@
 <print />
 <recurse type="way-node" />
 <print />
-<!-- End Vineyards -->
+
+<!-- Orchard -->
+<query type="way">
+<has-kv k="landuse" v="orchard"/>
+</query>
+<print />
+<recurse type="way-node" />
+<print />
+
+<query type="way">
+<has-kv k="agriculture" v="orchard"/>
+</query>
+<print />
+<recurse type="way-node" />
+<print />

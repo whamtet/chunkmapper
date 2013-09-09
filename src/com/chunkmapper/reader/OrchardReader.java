@@ -15,21 +15,24 @@ import com.chunkmapper.parser.OverpassParser;
 import com.chunkmapper.parser.OverpassParser.OverpassObject;
 import com.chunkmapper.parser.OverpassParser.Way;
 import com.chunkmapper.sections.RenderingSection;
+import com.chunkmapper.writer.TreeWriter;
 
-public class VineyardReader {
-	public boolean[][] hasVineyard = new boolean[512][512];
+public class OrchardReader {
+	public boolean[][] hasOrchard = new boolean[512][512];
+	public final boolean hasAnOrchard;
 
-	public VineyardReader(int regionx, int regionz) throws IOException {
+	public OrchardReader(int regionx, int regionz) throws IOException {
 		OverpassObject o = OverpassParser.getObject(regionx, regionz);
 		ArrayList<RenderingSection> sections = new ArrayList<RenderingSection>();
 		for (Way way : o.ways) {
-			if ("vineyard".equals(way.map.get("landuse")) || "grape".equals(way.map.get("crop"))) {
+			if ("orchard".equals(way.map.get("landuse")) || "orchard".equals(way.map.get("agriculture"))) {
 				if (way.points.size() > 1)
 					addVineyard(way, sections);
 			}
 		}
 		if (sections.size() > 0)
 			paintSections(sections, regionx, regionz);
+		hasAnOrchard = sections.size() > 0;
 	}
 	private void paintSections(ArrayList<RenderingSection> sections, int regionx, int regionz) {
 		for (int z = 0; z < 512; z++) {
@@ -53,10 +56,10 @@ public class VineyardReader {
 				if (b > 511)
 					b = 511;
 				if (a == b) {
-					hasVineyard[z][a] = true;
+					hasOrchard[z][a] = true;
 				} else {
 					for (int x = a; x <= b; x++) {
-						hasVineyard[z][x] = true;
+						hasOrchard[z][x] = true;
 					}
 				}
 			}
@@ -91,11 +94,11 @@ public class VineyardReader {
 		double[] latlon = Nominatim.getPoint("motueka, nz");
 		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
 		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
-		VineyardReader reader = new VineyardReader(regionx, regionz);
+		OrchardReader reader = new OrchardReader(regionx, regionz);
 		PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(new File("/Users/matthewmolloy/python/wms/data.csv"))));
 		for (int i = 0; i < 512; i++) {
 			for (int j = 0; j < 512; j++) {
-				pw.println(reader.hasVineyard[i][j] ? 1 : 0);
+				pw.println(reader.hasOrchard[i][j] ? 1 : 0);
 			}
 		}
 		pw.close();

@@ -5,8 +5,7 @@ import java.io.File;
 import java.io.IOException;
 
 import com.chunkmapper.chunk.Chunk;
-import com.chunkmapper.column.AbstractColumn;
-import com.chunkmapper.column.Vineyard;
+import com.chunkmapper.column.Orchard;
 import com.chunkmapper.enumeration.LenteTree;
 import com.chunkmapper.nbt.NbtIo;
 import com.chunkmapper.nbt.RegionFile;
@@ -47,10 +46,19 @@ public class TestArtifact {
 		GenericWriter.addBedrock(chunk);
 		
 		HeightsReader heightsReader = new UniformHeightsReader();
-		for (int i = 0; i < 16; i++) {
-			for (int j = 0; j < 16; j++) {
-				Vineyard col = new Vineyard(j, i, heightsReader);
-				col.addColumn(chunk);
+//		for (int i = 0; i < 16; i++) {
+//			for (int j = 0; j < 16; j++) {
+//				Vineyard col = new Vineyard(j, i, heightsReader);
+//				col.addColumn(chunk);
+//			}
+//		}
+		for (int i = -5; i < 21; i++) {
+			for (int j = -5; j < 21; j++) {
+				Orchard col = new Orchard(j, i, heightsReader);
+				if (0 <= i && i < 16 && 0 <= j && j < 16) {
+					col.addColumn(chunk);
+				}
+				col.addTree(chunk, heightsReader);
 			}
 		}
 		

@@ -31,7 +31,7 @@ public abstract class AbstractColumn {
 	public void addColumn(Chunk chunk) {
 		addColumn(chunk, false, false);
 	}
-	public void addColumn(Chunk chunk, boolean dandelion, boolean rose) {
+	protected void addColumn(Chunk chunk, boolean dandelion, boolean rose) {
 		int x = com.chunkmapper.math.Matthewmatics.mod(absx, 16);
 		int z = com.chunkmapper.math.Matthewmatics.mod(absz, 16);
 

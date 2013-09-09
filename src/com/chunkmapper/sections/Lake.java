@@ -10,6 +10,13 @@ public class Lake extends Section {
 	public final Rectangle bbox;
 	public final boolean isCove, isLagoon;
 	
+	public Lake(ArrayList<Point> points, Rectangle bbox) {
+		this.points = points;
+		this.bbox = bbox;
+		isCove = false;
+		isLagoon = false;
+	}
+	
 	public Lake(ArrayList<Point> points, Rectangle bbox, boolean isCove, boolean isLagoon) {
 		this.points = points;
 		this.bbox = bbox;

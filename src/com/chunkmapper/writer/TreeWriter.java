@@ -4,12 +4,13 @@ import java.util.Random;
 
 import com.chunkmapper.chunk.Chunk;
 import com.chunkmapper.enumeration.Block;
+import com.chunkmapper.enumeration.Blocka;
 import com.chunkmapper.enumeration.DataSource;
 import com.chunkmapper.reader.HeightsReader;
 
 public class TreeWriter {
 	public final static Random RANDOM = new Random();
-	
+
 	public static int getJungleTreeHeight() {
 		return 5 + RANDOM.nextInt(5);
 	}
@@ -90,7 +91,7 @@ public class TreeWriter {
 		int rootHeight = heightsReader.getHeightxz(absx, absz);
 		int rootHeight2 = heightsReader.getHeightxz(absx+1, absz+1);
 		if (trunkWidth == 2 && rootHeight2 < rootHeight) rootHeight = rootHeight2;
-		
+
 
 		if (rootHeight < 0) //we are over ocean
 			return;
@@ -119,8 +120,8 @@ public class TreeWriter {
 			boolean hasSnow, int baseHeight, HeightsReader heightsReader) {
 
 		int h = heightsReader.getHeightxz(absx, absz);
-//		if (h < 0)
-//			return;//we are over ocean
+		//		if (h < 0)
+		//			return;//we are over ocean
 		int crownHeight = 3;
 
 		//crown
@@ -152,7 +153,7 @@ public class TreeWriter {
 	}
 	public static void placeShrub(int absx, int absz, Chunk chunk, boolean hasSnow,
 			HeightsReader heightsReader, int shrubHeight) {
-		
+
 		int h = Integer.MAX_VALUE;
 		for (int xd = absx; xd < absx + 2; xd++) {
 			for (int zd = absz; zd < absz + 2; zd++) {
@@ -174,88 +175,88 @@ public class TreeWriter {
 		}
 		if (hasSnow)
 			throw new RuntimeException();
-		
+
 	}
 
-//	public static void placeShrub(int x, int z, Chunk chunk, boolean hasSnow) {
-//		
-//		if (x > 14 || z > 14)
-//			return;//no shrubs near edge
-//		int shrubHeight = 2 + RANDOM.nextInt(3);
-//		int shrubBase = Integer.MAX_VALUE;
-//		for (int i = 0; i < 4; i++) {
-//			int h = chunk.getHeights(x + i / 2, z + i%2);
-//			if (h < shrubBase)
-//				shrubBase = h;
-//		}
-//		if (shrubBase < 0)
-//			return;//we're over water
-//		
-//		for (int y = shrubBase; y < shrubBase + shrubHeight; y++) {
-//			for (int z2 = z; z2 < z + 2; z2++) {
-//				for (int x2 = x; x2 < x + 2; x2++) {
-//					if (RANDOM.nextInt(3) > 0 && chunk.Blocks[y][z2][x2] == 0) {
-//						chunk.Blocks[y][z2][x2] = Block.Leaves.val;
-//						chunk.Data[y][z2][x2] = DataSource.Jungle.val;
-//					}
-//				}
-//			}
-//		}
-//		if (hasSnow) {
-//			for (int z2 = z; z2 < z + 2; z2++) {
-//				for (int x2 = x; x2 < x + 2; x2++) {
-//					for (int y = shrubBase + shrubHeight - 1; y >= shrubBase; y--) {
-//						if (chunk.Blocks[y][z2][x2] == Block.Leaves.val) {
-//							if (RANDOM.nextInt(2) == 0 && chunk.Blocks[y+1][z2][x2] == 0)
-//								chunk.Blocks[y+1][z2][x2] = Block.Snow.val;
-//							break;
-//						}
-//					}
-//				}
-//			}
-//		}
-//	}
+	//	public static void placeShrub(int x, int z, Chunk chunk, boolean hasSnow) {
+	//		
+	//		if (x > 14 || z > 14)
+	//			return;//no shrubs near edge
+	//		int shrubHeight = 2 + RANDOM.nextInt(3);
+	//		int shrubBase = Integer.MAX_VALUE;
+	//		for (int i = 0; i < 4; i++) {
+	//			int h = chunk.getHeights(x + i / 2, z + i%2);
+	//			if (h < shrubBase)
+	//				shrubBase = h;
+	//		}
+	//		if (shrubBase < 0)
+	//			return;//we're over water
+	//		
+	//		for (int y = shrubBase; y < shrubBase + shrubHeight; y++) {
+	//			for (int z2 = z; z2 < z + 2; z2++) {
+	//				for (int x2 = x; x2 < x + 2; x2++) {
+	//					if (RANDOM.nextInt(3) > 0 && chunk.Blocks[y][z2][x2] == 0) {
+	//						chunk.Blocks[y][z2][x2] = Block.Leaves.val;
+	//						chunk.Data[y][z2][x2] = DataSource.Jungle.val;
+	//					}
+	//				}
+	//			}
+	//		}
+	//		if (hasSnow) {
+	//			for (int z2 = z; z2 < z + 2; z2++) {
+	//				for (int x2 = x; x2 < x + 2; x2++) {
+	//					for (int y = shrubBase + shrubHeight - 1; y >= shrubBase; y--) {
+	//						if (chunk.Blocks[y][z2][x2] == Block.Leaves.val) {
+	//							if (RANDOM.nextInt(2) == 0 && chunk.Blocks[y+1][z2][x2] == 0)
+	//								chunk.Blocks[y+1][z2][x2] = Block.Snow.val;
+	//							break;
+	//						}
+	//					}
+	//				}
+	//			}
+	//		}
+	//	}
 
-//	public static void placeSwampTree(int x, int z, Chunk chunk, boolean hasSnow) {
-//		//make crown
-//		int[] rads = new int[4];
-//		for (int i = 0; i < 4; i++) {
-//			rads[i] = 2 + RANDOM.nextInt(2);
-//		}
-////		int crownWidth = 5 + RANDOM.nextInt(3);
-////		int crownLength = 5 + RANDOM.nextInt(3);
-//		int trunkHeight = 2 + RANDOM.nextInt(3);
-//		
-//		//trunk height
-//		int h = chunk.getHeights(x, z);
-//		if (h < 0)
-//			return;//we're over water
-//		for (int y = h - 1; y < h + trunkHeight + 1; y++) {
-//			chunk.setBlock(y, z, x, Block.Wood.val);
-//			chunk.setData(y, z, x, DataSource.Oak.val);
-//		}
-//		//first layer of tree
-//		for (int i = x - rads[0]; i <= x + rads[1]; i++) {
-//			for (int j = z - rads[2]; j <= z + rads[3]; j++) {
-//				if (i != x || j != z) {
-//					chunk.setBlock(h+trunkHeight, j, i, Block.Leaves.val);
-//					if (hasSnow && RANDOM.nextInt(3) > 0)
-//						chunk.setBlock(h+trunkHeight+1, j, i, Block.Snow.val);
-//				}
-//			}
-//		}
-//		
-//		for (int i = x - rads[0] + 1; i <= x + rads[1] - 1; i++) {
-//			for (int j = z - rads[2] + 1; j <= z + rads[3] - 1; j++) {
-//				if (i != x - rads[0] + 1 && i != x + rads[1] - 1 || j != z - rads[2] + 1 && j != z + rads[3] - 1) {
-//					chunk.setBlock(h+trunkHeight+1, j, i, Block.Leaves.val);
-//					if (hasSnow && RANDOM.nextInt(3) > 0)
-//						chunk.setBlock(h+trunkHeight+2, j, i, Block.Snow.val);
-//				}
-//			}
-//		}
-//		
-//	}
+	//	public static void placeSwampTree(int x, int z, Chunk chunk, boolean hasSnow) {
+	//		//make crown
+	//		int[] rads = new int[4];
+	//		for (int i = 0; i < 4; i++) {
+	//			rads[i] = 2 + RANDOM.nextInt(2);
+	//		}
+	////		int crownWidth = 5 + RANDOM.nextInt(3);
+	////		int crownLength = 5 + RANDOM.nextInt(3);
+	//		int trunkHeight = 2 + RANDOM.nextInt(3);
+	//		
+	//		//trunk height
+	//		int h = chunk.getHeights(x, z);
+	//		if (h < 0)
+	//			return;//we're over water
+	//		for (int y = h - 1; y < h + trunkHeight + 1; y++) {
+	//			chunk.setBlock(y, z, x, Block.Wood.val);
+	//			chunk.setData(y, z, x, DataSource.Oak.val);
+	//		}
+	//		//first layer of tree
+	//		for (int i = x - rads[0]; i <= x + rads[1]; i++) {
+	//			for (int j = z - rads[2]; j <= z + rads[3]; j++) {
+	//				if (i != x || j != z) {
+	//					chunk.setBlock(h+trunkHeight, j, i, Block.Leaves.val);
+	//					if (hasSnow && RANDOM.nextInt(3) > 0)
+	//						chunk.setBlock(h+trunkHeight+1, j, i, Block.Snow.val);
+	//				}
+	//			}
+	//		}
+	//		
+	//		for (int i = x - rads[0] + 1; i <= x + rads[1] - 1; i++) {
+	//			for (int j = z - rads[2] + 1; j <= z + rads[3] - 1; j++) {
+	//				if (i != x - rads[0] + 1 && i != x + rads[1] - 1 || j != z - rads[2] + 1 && j != z + rads[3] - 1) {
+	//					chunk.setBlock(h+trunkHeight+1, j, i, Block.Leaves.val);
+	//					if (hasSnow && RANDOM.nextInt(3) > 0)
+	//						chunk.setBlock(h+trunkHeight+2, j, i, Block.Snow.val);
+	//				}
+	//			}
+	//		}
+	//		
+	//	}
 	public static void placeSavannaTree(int absx, int absz, Chunk chunk,
 			HeightsReader heightsReader, int treeHeight) {
 		//place trunk
@@ -274,14 +275,14 @@ public class TreeWriter {
 		}
 		//bits on the end
 		chunk.setBoth(h+treeHeight+1, absz, absx, Block.Leaves.val, DataSource.Jungle.val);
-		
+
 		chunk.setBoth(h+treeHeight, absz-2, absx, Block.Leaves.val, DataSource.Jungle.val);
 		chunk.setBoth(h+treeHeight, absz+2, absx, Block.Leaves.val, DataSource.Jungle.val);
 		chunk.setBoth(h+treeHeight, absz, absx-2, Block.Leaves.val, DataSource.Jungle.val);
 		chunk.setBoth(h+treeHeight, absz, absx+2, Block.Leaves.val, DataSource.Jungle.val);
 
 		if (treeHeight == 4) {
-			
+
 			chunk.setBoth(h+treeHeight-1, absz-2, absx, Block.Leaves.val, DataSource.Jungle.val);
 			chunk.setBoth(h+treeHeight-1, absz+2, absx, Block.Leaves.val, DataSource.Jungle.val);
 			chunk.setBoth(h+treeHeight-1, absz, absx-2, Block.Leaves.val, DataSource.Jungle.val);
@@ -289,9 +290,40 @@ public class TreeWriter {
 		}
 
 	}
+	public static void placeOrchardTree(int absx, int absz, Chunk chunk,
+			HeightsReader heightsReader, int crownHeight) {
+
+		int h = heightsReader.getHeightxz(absx, absz);
+		for (int y = h; y < h + 3; y++) {
+			for (int z = absz; z < absz + 2; z++) {
+				for (int x = absx; x < absx + 2; x++) {
+					byte val = RANDOM.nextInt(3) == 0 ? 0 : Blocka.Fence;
+					chunk.setBlock(y, z, x, val);
+				}
+			}
+		}
+		for (int y = h + 1; y < h + 5; y++) {
+			int r0 = 0, r1 = 2;
+			if (y == h + 2 || y == h + 3) {
+				r0 = 1;
+				r1 = 3;
+			}
+			int z0 = absz - r0, z1 = absz + r1;
+			int x0 = absx - r0, x1 = absx + r1;
+				
+			for (int z = z0; z < z1; z++) {
+				for (int x = x0; x < x1; x++) {
+					//					byte val = RANDOM.nextInt(3) == 0 ? 0 : Blocka.Leaves;
+					if (RANDOM.nextInt(3) > 0) {
+						chunk.setBlock(y, z, x, Blocka.Leaves);
+					}
+				}
+			}
+		}
+	}
 	public static void placeForestTree(int absx, int absz, Chunk chunk,
 			HeightsReader heightsReader, int crownHeight) {
-		
+
 		int h = heightsReader.getHeightxz(absx, absz);
 		boolean hasSnow = false;
 
@@ -349,11 +381,11 @@ public class TreeWriter {
 		}
 
 	}
-	
-	
-	
 
-	
+
+
+
+
 
 
 }

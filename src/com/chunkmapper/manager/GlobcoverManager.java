@@ -26,6 +26,7 @@ import com.chunkmapper.column.MixedBroadNeedleleaf;
 import com.chunkmapper.column.Ocean;
 import com.chunkmapper.column.OpenBroadleafDeciduous;
 import com.chunkmapper.column.OpenNeedleleaf;
+import com.chunkmapper.column.Orchard;
 import com.chunkmapper.column.RainfedCrops;
 import com.chunkmapper.column.River;
 import com.chunkmapper.column.SalineFloodedForest;
@@ -34,6 +35,7 @@ import com.chunkmapper.column.Snow;
 import com.chunkmapper.column.SparseVegetation;
 import com.chunkmapper.column.Urban;
 import com.chunkmapper.column.VegetationWithCropland;
+import com.chunkmapper.column.Vineyard;
 import com.chunkmapper.downloader.UberDownloader;
 import com.chunkmapper.enumeration.Block;
 import com.chunkmapper.enumeration.FarmType;
@@ -47,10 +49,12 @@ import com.chunkmapper.reader.GlobcoverReader;
 import com.chunkmapper.reader.GlobcoverReaderImpl2;
 import com.chunkmapper.reader.HeightsReaderImpl;
 import com.chunkmapper.reader.HutReader;
+import com.chunkmapper.reader.OrchardReader;
 import com.chunkmapper.reader.POIReader;
 import com.chunkmapper.reader.PathReader;
 import com.chunkmapper.reader.RugbyReader;
 import com.chunkmapper.reader.RugbyReader.RugbyField;
+import com.chunkmapper.reader.VineyardReader;
 import com.chunkmapper.reader.XapiBoundaryReader;
 import com.chunkmapper.reader.XapiCoastlineReader;
 import com.chunkmapper.reader.XapiHighwayReader;
@@ -75,6 +79,8 @@ public class GlobcoverManager {
 	private final ArtifactWriter artifactWriter = new ArtifactWriter();
 	public final int regionx, regionz;
 	public final Random RANDOM = new Random();
+	private final VineyardReader vineyardReader;
+	private final OrchardReader orchardReader;
 
 	private final AbstractColumn[][] columns = new AbstractColumn[512][512];
 
@@ -84,7 +90,10 @@ public class GlobcoverManager {
 		heightsReader = new HeightsReaderImpl(regionx, regionz, uberDownloader, verticalExaggeration);
 		ferryReader = new FerryReader(regionx, regionz);
 		allWater = heightsReader.allWater && !ferryReader.hasAFerry;
+		
 		if (allWater) {
+			orchardReader = null;
+			vineyardReader = null;
 			railReader = null;
 			poiReader = null;
 			densityReader = null;
@@ -95,6 +104,8 @@ public class GlobcoverManager {
 			hutReader = null;
 			return;
 		}
+		orchardReader = new OrchardReader(regionx, regionz);
+		vineyardReader = new VineyardReader(regionx, regionz);
 		hutReader = new HutReader(regionx, regionz);
 		pathReader = new PathReader(regionx, regionz);
 		highwayReader = new XapiHighwayReader(regionx, regionz, heightsReader);
@@ -132,8 +143,6 @@ public class GlobcoverManager {
 					continue;
 				}
 
-
-
 				final int h = heightsReader.getHeightij(i, j);
 				if (lakeReader.hasWaterij(i, j)) {
 					columns[i][j] = new Lake(absx, absz, heightsReader);
@@ -143,9 +152,17 @@ public class GlobcoverManager {
 					columns[i][j] = new River(absx, absz, heightsReader);
 					continue;
 				}
-				double absLat = absz > 0 ? absz / 3600. : -absz / 3600.;
+				if (vineyardReader.hasVineyard[i][j]) {
+					columns[i][j] = new Vineyard(absx, absz, heightsReader);
+					continue;
+				}
+				if (orchardReader.hasOrchard[i][j]) {
+					columns[i][j] = new Orchard(absx, absz, heightsReader);
+					continue;
+				}
+//				double absLat = absz > 0 ? absz / 3600. : -absz / 3600.;
 				//				double snowLine = 4000 * (75 - absLat) / 75.;
-				int realHeight = heightsReader.getRealHeightij(i, j);
+//				int realHeight = heightsReader.getRealHeightij(i, j);
 				//				if (realHeight >= snowLine) {
 				//					columns[i][j] = new Snow(absx, absz, heightsReader);
 				//					continue;
