@@ -3,9 +3,11 @@ package com.chunkmapper;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
+
+import org.apache.commons.io.FileUtils;
 
 import com.chunkmapper.chunk.Chunk;
-import com.chunkmapper.column.Orchard;
 import com.chunkmapper.enumeration.LenteTree;
 import com.chunkmapper.nbt.NbtIo;
 import com.chunkmapper.nbt.RegionFile;
@@ -15,6 +17,7 @@ import com.chunkmapper.writer.ArtifactWriter;
 import com.chunkmapper.writer.GenericWriter;
 import com.chunkmapper.writer.LenteTreeWriter;
 import com.chunkmapper.writer.LevelDat;
+import com.chunkmapper.writer.MobWriter;
 
 public class TestArtifact {
 
@@ -26,13 +29,16 @@ public class TestArtifact {
 	 * @param args
 	 */
 	public static void main(String[] args) throws Exception {
+		Random random = new Random();
 		File gameFolder = new File("/Users/matthewmolloy/Library/Application Support/minecraft/saves/house");
-		File src = new File("resources/level.dat");
+		FileUtils.deleteDirectory(gameFolder);
 		File regionFolder = new File(gameFolder, "region");
-		File loadedLevelDatFile = new File("/Users/matthewmolloy/Library/Application Suppport/minecraft/saves/house/level.dat");
+		regionFolder.mkdirs();
+		File loadedLevelDatFile = new File(gameFolder, "level.dat");
 		LevelDat loadedLevelDat = new LevelDat(loadedLevelDatFile);
 //		ParallelWriter writer = new ParallelWriter(0, 0, 0, 0, "house", true);
-		loadedLevelDat.setPlayerPosition(512, 250, 512);
+		loadedLevelDat.setPlayerPosition(0, 25, 0);
+		loadedLevelDat.setName("house");
 		loadedLevelDat.save();
 		RegionFile regionFile = new RegionFile(new File(regionFolder, "r.0.0.mca"));
 		int[][] heights = new int[24][24];
@@ -43,24 +49,28 @@ public class TestArtifact {
 		}
 		int chunkx = 0, chunkz = 0;
 		Chunk chunk = new Chunk(chunkx, chunkz, heights, chunkx, chunkz);
-		GenericWriter.addBedrock(chunk);
-		
-		HeightsReader heightsReader = new UniformHeightsReader();
+		GenericWriter.addGrass(chunk);
+		double y = 4;
+		for (int i = 0; i < 7; i++) {
+			double x = random.nextDouble() * 16, z = random.nextDouble() * 16;
+			MobWriter.addVillager(chunk, i, x, y, z);
+		}
+//		HeightsReader heightsReader = new UniformHeightsReader();
 //		for (int i = 0; i < 16; i++) {
 //			for (int j = 0; j < 16; j++) {
 //				Vineyard col = new Vineyard(j, i, heightsReader);
 //				col.addColumn(chunk);
 //			}
 //		}
-		for (int i = -5; i < 21; i++) {
-			for (int j = -5; j < 21; j++) {
-				Orchard col = new Orchard(j, i, heightsReader);
-				if (0 <= i && i < 16 && 0 <= j && j < 16) {
-					col.addColumn(chunk);
-				}
-				col.addTree(chunk, heightsReader);
-			}
-		}
+//		for (int i = -5; i < 21; i++) {
+//			for (int j = -5; j < 21; j++) {
+//				Orchard col = new Orchard(j, i, heightsReader);
+//				if (0 <= i && i < 16 && 0 <= j && j < 16) {
+//					col.addColumn(chunk);
+//				}
+//				col.addTree(chunk, heightsReader);
+//			}
+//		}
 		
 		DataOutputStream out = regionFile.getChunkDataOutputStream(chunkx, chunkz);
 		NbtIo.write(chunk.getTag(), out);

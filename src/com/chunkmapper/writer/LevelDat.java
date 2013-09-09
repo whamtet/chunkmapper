@@ -76,7 +76,7 @@ public class LevelDat {
 		CompoundTag Data1 = new CompoundTag();
 		Data1.putByte("thundering", (byte) 0);
 		Data1.putLong("DayTime", 1456L);
-		Data1.putLong("LastPlayed", 1368253349056L);
+		Data1.putLong("LastPlayed", System.currentTimeMillis());
 
 		CompoundTag Player1 = new CompoundTag();
 		Player1.putInt("SelectedItemSlot", 0);
