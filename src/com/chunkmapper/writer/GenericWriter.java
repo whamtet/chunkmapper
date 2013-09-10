@@ -33,12 +33,14 @@ public class GenericWriter {
 	public static void addBedrock(Chunk chunk, int soilThickness) {
 		int c = 0;
 		int coalWidth = 10 * 4, ironWidth = 20 * 4, redstoneWidth = 30 * 4, goldWidth = 40 * 4, diamondWidth = 50 * 4;
+		int emeraldWidth = 60 * 4;
 		
 		int nextCoal = RANDOM.nextInt(coalWidth);
 		int nextIron = RANDOM.nextInt(ironWidth);
 		int nextRedstone = RANDOM.nextInt(redstoneWidth);
 		int nextGold = RANDOM.nextInt(goldWidth);
 		int nextDiamond = RANDOM.nextInt(diamondWidth);
+		int nextEmerald = RANDOM.nextInt(emeraldWidth);
 		
 		for (int z = 0; z < 16; z++) {
 			for (int x = 0; x < 16; x++) {
@@ -66,6 +68,10 @@ public class GenericWriter {
 					if (c == nextDiamond) {
 						fill = Block.Diamond_Ore.val;
 						nextGold += RANDOM.nextInt(diamondWidth);
+					}
+					if (c == nextEmerald) {
+						fill = Blocka.Emerald;
+						nextEmerald += RANDOM.nextInt(emeraldWidth);
 					}
 					chunk.Blocks[y][z][x] = fill;
 					c++;

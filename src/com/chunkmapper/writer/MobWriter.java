@@ -18,7 +18,7 @@ public class MobWriter {
 		//        :TAG_List :TAG_Compound :TAG_Int_Array])
 		ListTag l;
 	}
-	public static void addVillager(Chunk chunk, int profession, double x, double y, double z) {
+	public static void addVillager(Chunk chunk, int profession, double x, double y, double z, boolean isChild) {
 
 		CompoundTag anon4 = new CompoundTag();
 
@@ -72,7 +72,7 @@ public class MobWriter {
 		anon4.put("Attributes", Attributes1);
 
 		anon4.putLong("UUIDLeast", -6310649377590585080L);
-		anon4.putInt("Age", 0);
+		anon4.putInt("Age", isChild ? -1000000000 : 0);
 
 		ListTag<DoubleTag> Motion1 = new ListTag<DoubleTag>();
 		Motion1.add(new DoubleTag("", 0.0));

@@ -11,6 +11,7 @@ import com.chunkmapper.enumeration.DataSource;
 import com.chunkmapper.enumeration.LadderWallsignFurnaceChest;
 import com.chunkmapper.enumeration.Stairs;
 import com.chunkmapper.enumeration.StraightRail;
+import com.chunkmapper.enumeration.Villager;
 import com.chunkmapper.enumeration.WoolColor;
 import com.chunkmapper.math.Matthewmatics;
 import com.chunkmapper.nbt.CompoundTag;
@@ -22,7 +23,7 @@ public class ArtifactWriter {
 	static {
 		SchematicProtocolWrapper hut2 = null;
 		try {
-//			hut2 = new SchematicProtocolWrapper(new File(FileUtils.getUserDirectory(), "hut.myschematic"));
+			//			hut2 = new SchematicProtocolWrapper(new File(FileUtils.getUserDirectory(), "hut.myschematic"));
 			hut2 = new SchematicProtocolWrapper("/buildings/hut.myschematic");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -386,11 +387,15 @@ public class ArtifactWriter {
 		//and a small table
 		chunk.Blocks[h+1][z0+1][x0+4] = Blocka.Fence;
 		chunk.Blocks[h+2][z0+1][x0+4] = Blocka.Heavy_Plate;
+
+		//finally add a couple of occupants
+		for (int i = 0; i < 5; i++) {
+			double x = 2 + 4 * chunk.RANDOM.nextDouble();
+			double z = 5 + 3 * chunk.RANDOM.nextDouble();
+			double y = h + 1;
+			MobWriter.addVillager(chunk, Villager.Farmer, x + chunk.xr, y, z + chunk.zr, i < 3);
+		}
 	}
-	//	private static void addPainting(Chunk chunk, int y, int z, int x) {
-	//		chunk.Data[y][z][x] = 65;
-	//		chunk.Add[y][z][x] = 1;
-	//	}
 
 	public static void placeLookout(Chunk chunk) {
 		int lookoutHeight = 30;
@@ -439,7 +444,7 @@ public class ArtifactWriter {
 			chunk.Blocks[y][4][12] = Block.Ladder.val;
 			chunk.Data[y][4][12] = LadderWallsignFurnaceChest.Facing_South.val;
 		}
-
+		MobWriter.addVillager(chunk, Villager.Priest, 13 + chunk.xr, h + lookoutHeight, 3 + chunk.zr, false);
 
 	}
 	public void placeRail(int x, int z, Chunk chunk, int railHeight, byte railType, boolean usePlanks,
@@ -663,6 +668,8 @@ public class ArtifactWriter {
 		//		
 		//		chunk.Data[h+1][z0+length][x0+4] = 1;
 		//		chunk.Data[h+2][z0+length][x0+4] = 8;
+		//place Librarian
+		MobWriter.addVillager(chunk, Villager.Librarian, 5.3 + chunk.xr, h+1, 2.3 + chunk.zr, false);
 
 	}
 	public static void makeSideWindow(Chunk chunk, int h, int z0, int x0, int width) {
@@ -747,6 +754,13 @@ public class ArtifactWriter {
 		chunk.Blocks[h][z+1][x+1] = Blocka.Stone_Stairs;
 		chunk.Data[h][z+1][x] = Stairs.Ascending_North.val;
 		chunk.Data[h][z+1][x+1] = Stairs.Ascending_North.val;
+		
+		
+		for (int i = 0; i < 5; i++) {
+			double xd = 2.3 + 7.4 * chunk.RANDOM.nextDouble() + chunk.xr;
+			double zd = 2.3 + 7.4 * chunk.RANDOM.nextDouble() + chunk.zr;
+			MobWriter.addVillager(chunk, chunk.RANDOM.nextInt(6), xd, h + 1, zd, false);
+		}
 	}
 	public static void placeMarket(Chunk chunk) {
 		int x0 = 1, z0 = 1;
@@ -790,5 +804,8 @@ public class ArtifactWriter {
 				chunk.Data[h+3][z][x] = WoolColor.Brown.val;
 			}
 		}
+		//add a butcher
+		double z = 5.5, x = 4.5 + 2 * chunk.RANDOM.nextInt(3);
+		MobWriter.addVillager(chunk, Villager.Butcher, x, h, z, false);
 	}
 }

@@ -50,11 +50,10 @@ public class TestArtifact {
 		int chunkx = 0, chunkz = 0;
 		Chunk chunk = new Chunk(chunkx, chunkz, heights, chunkx, chunkz);
 		GenericWriter.addGrass(chunk);
-		double y = 4;
-		for (int i = 0; i < 7; i++) {
-			double x = random.nextDouble() * 16, z = random.nextDouble() * 16;
-			MobWriter.addVillager(chunk, i, x, y, z);
-		}
+		ArtifactWriter.placePrison(chunk);
+//		ArtifactWriter.placeMarket(chunk);
+//		ArtifactWriter.placeLibrary(chunk);
+//		ArtifactWriter.addHouse(chunk);
 //		HeightsReader heightsReader = new UniformHeightsReader();
 //		for (int i = 0; i < 16; i++) {
 //			for (int j = 0; j < 16; j++) {

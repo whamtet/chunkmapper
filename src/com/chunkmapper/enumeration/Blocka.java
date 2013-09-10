@@ -107,5 +107,6 @@ public class Blocka {
 	public static final byte Gate = (byte) 107;
 	public static final byte Lilly = (byte) 111;
 	public static final byte Rose = (byte) 38;
+	public static final byte Emerald = (byte) 129;
 
 }

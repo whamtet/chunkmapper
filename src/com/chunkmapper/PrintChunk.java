@@ -15,7 +15,7 @@ public class PrintChunk {
 		File gameFolder = new File("/Users/matthewmolloy/Library/Application Support/minecraft/saves/house");
 		File regionFolder = new File(gameFolder, "region");
 		RegionFile regionFile = new RegionFile(new File(regionFolder, "r.0.0.mca"));
-		DataInputStream in = regionFile.getChunkDataInputStream(1, 0);
+		DataInputStream in = regionFile.getChunkDataInputStream(0, 0);
 		CompoundTag root = NbtIo.read(in);
 		in.close();
 		regionFile.close();
