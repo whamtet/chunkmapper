@@ -3,21 +3,31 @@ syntax = "proto2";
 option optimize_for = LITE_RUNTIME;
 option java_package = "com.chunkmapper.protoc";
 
+message Rectangle {
+	required int32 x = 1;
+	required int32 z = 2;
+	required int32 width = 3;
+	required int32 height = 4;
+}
 message Node {
 	required int32 x = 1;
 	required int32 z = 2;
 	repeated string keys = 3;
 	repeated string vals = 4;
+	required int64 id = 5;
 }
 message Way {
 	repeated int32 xs = 1 [packed=true];
 	repeated int32 zs = 2 [packed=true];
 	repeated string keys = 3;
 	repeated string vals = 4;
+	required int64 id = 5;
+	required Rectangle bbox = 6;
 }
 message Relation {
 	repeated int64 ways = 1;
 	repeated string roles = 2;
 	repeated string keys = 3;
 	repeated string vals = 4;
+	required int64 id = 5;
 }

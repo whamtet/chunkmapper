@@ -42,6 +42,13 @@ public class OverpassDownloader {
 		}
 		generalQuery = q1;
 	}
+	public static void main(String[] args) throws Exception {
+//		double[] latlon = Nominatim.getPoint("sydney");
+//		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
+//		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
+		int regionx = 1060, regionz = 238;
+		System.out.println(getLines(regionx, regionz).size());
+	}
 
 	public static ArrayList<String> getLines(int regionx, int regionz) throws IOException {
 		Point p = new Point(regionx, regionz);
@@ -120,9 +127,11 @@ public class OverpassDownloader {
 		DefaultHttpClient httpclient = new DefaultHttpClient(cm);
 
 		//timeout
+		int timeout = 1000000;
 		HttpParams params = httpclient.getParams();
-		HttpConnectionParams.setConnectionTimeout(params, 10000);
-		HttpConnectionParams.setSoTimeout(params, 10000);
+		HttpConnectionParams.setConnectionTimeout(params, timeout);
+		HttpConnectionParams.setSoTimeout(params, timeout);
+		params.setParameter("http.socket.timeout", timeout);
 
 		httpclient.addRequestInterceptor(new HttpRequestInterceptor() {
 			public void process(

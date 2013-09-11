@@ -106,11 +106,11 @@ public class XapiCoastlineReader {
 			}
 		}
 	}
-	public XapiCoastlineReader(int regionx, int regionz, HeightsReader heightsReader) throws IOException, URISyntaxException, DataFormatException {
+	public XapiCoastlineReader(int regionx, int regionz, GlobcoverReader reader) throws IOException, URISyntaxException, DataFormatException {
 
 		Collection<Coastline> coastlines = CoastlineParser.getCoastlines(regionx, regionz);
 		if (coastlines.size() == 0) {
-			int fill = heightsReader.mostlyLand() ? 1 : -1;
+			int fill = reader.mostlyLand() ? 1 : -1;
 			for (int i = 0; i < 512; i++) {
 				for (int j = 0; j < 512; j++) {
 					data[i][j] = fill;

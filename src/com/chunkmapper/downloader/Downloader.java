@@ -97,9 +97,11 @@ public abstract class Downloader extends Tasker {
 		DefaultHttpClient httpclient = new DefaultHttpClient(cm);
 
 		//timeout
+		int timeout = 1000000;
 		HttpParams params = httpclient.getParams();
-		HttpConnectionParams.setConnectionTimeout(params, 10000);
-		HttpConnectionParams.setSoTimeout(params, 10000);
+		HttpConnectionParams.setConnectionTimeout(params, timeout);
+		HttpConnectionParams.setSoTimeout(params, timeout);
+		params.setParameter("http.socket.timeout", timeout);
 
 		httpclient.addRequestInterceptor(new HttpRequestInterceptor() {
 			public void process(

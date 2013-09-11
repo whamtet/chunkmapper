@@ -124,7 +124,8 @@ public class GlobcoverManager {
 			farmTypeReader = new FarmTypeReader();
 		poiReader = new POIReader(regionx, regionz);
 
-		XapiCoastlineReader coastlineReader = new XapiCoastlineReader(regionx, regionz, heightsReader);
+//		XapiCoastlineReader coastlineReader = new XapiCoastlineReader(regionx, regionz, heightsReader);
+		XapiCoastlineReader coastlineReader = new XapiCoastlineReader(regionx, regionz, coverReader);
 
 		for (int i = 0; i < 512; i++) {
 			for (int j = 0; j < 512; j++) {

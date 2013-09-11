@@ -12,7 +12,7 @@ import com.chunkmapper.parser.OverpassParser.Way;
 import com.chunkmapper.sections.Boundary;
 
 public class BoundaryParser extends Parser {
-	
+
 	public static HashSet<Boundary> getBoundaries(int regionx, int regionz) throws IOException {
 		HashSet<Boundary> out = new HashSet<Boundary>();
 		OverpassObject o = OverpassParser.getObject(regionx, regionz);
@@ -25,8 +25,12 @@ public class BoundaryParser extends Parser {
 					if (k.startsWith("right:"))
 						rightArea = way.map.get(k);
 				}
-				int adminLevel = Integer.parseInt(way.map.get("admin_level"));
-				out.add(new Boundary(way.points, way.bbox, leftArea, rightArea, adminLevel));
+				try {
+					int adminLevel = Integer.parseInt(way.map.get("admin_level"));
+					out.add(new Boundary(way.points, way.bbox, leftArea, rightArea, adminLevel));
+				} catch (NumberFormatException e) {
+					System.err.println("no number in Boundary(BoundaryParser.java:32)");
+				}
 			}
 		}
 		return out;
@@ -75,10 +79,10 @@ public class BoundaryParser extends Parser {
 			if (tag.equals("tag")) {
 				String k = getValue(line, "k"), v = getValue(line, "v");
 				isBoundary |= k.equals("boundary") && v.equals("administrative");
-//				if (k.equals("left:country"))
+				//				if (k.equals("left:country"))
 				if (k.startsWith("left:"))
 					leftArea = v;
-//				if (k.equals("right:country"))
+				//				if (k.equals("right:country"))
 				if (k.startsWith("right:"))
 					rightArea = v;
 				if (k.equals("admin_level"))

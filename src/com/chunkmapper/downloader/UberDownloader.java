@@ -2,7 +2,7 @@ package com.chunkmapper.downloader;
 
 
 public class UberDownloader {
-	private GlobcoverDownloader globcoverDownloader = new GlobcoverDownloader();
+//	private GlobcoverDownloader globcoverDownloader = new GlobcoverDownloader();
 //	private LakeDownloader lakeDownloader = new LakeDownloader();
 //	private NoaaGshhsDownloader noaaGshhsDownloader = new NoaaGshhsDownloader();
 //	private XapiRiverDownloader riverDownloader = new XapiRiverDownloader();
@@ -16,7 +16,7 @@ public class UberDownloader {
 
 	public void addRegionToDownload(int regionx, int regionz) {
 		//obligatory sources
-		globcoverDownloader.addTask(regionx, regionz);
+//		globcoverDownloader.addTask(regionx, regionz);
 //		noaaGshhsDownloader.addTask(regionx, regionz);
 		heightsDownloader.addTask(regionx, regionz);
 		
@@ -28,7 +28,7 @@ public class UberDownloader {
 //		xapiRailDownloader.addTask(regionx, regionz);
 	}
 	public void shutdown() {
-		globcoverDownloader.shutdownNow();
+//		globcoverDownloader.shutdownNow();
 //		lakeDownloader.shutdownNow();
 //		noaaGshhsDownloader.shutdownNow();
 //		riverDownloader.shutdownNow();
