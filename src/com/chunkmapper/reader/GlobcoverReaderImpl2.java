@@ -24,6 +24,7 @@ import com.chunkmapper.enumeration.Globcover;
 import com.chunkmapper.math.Matthewmatics;
 import com.chunkmapper.protoc.FileContainer.FileInfo;
 import com.chunkmapper.protoc.FileContainer.FileList;
+import com.chunkmapper.protoc.admin.BucketInfo;
 import com.chunkmapper.protoc.admin.FileListManager;
 import com.chunkmapper.protoc.admin.ServerInfoManager;
 
@@ -48,7 +49,7 @@ public class GlobcoverReaderImpl2 implements GlobcoverReader {
 		}
 	}
 
-	public GlobcoverReaderImpl2(int regionx, int regionz) throws FileNotYetAvailableException, IOException {
+	public GlobcoverReaderImpl2(int regionx, int regionz) throws FileNotYetAvailableException, IOException, InterruptedException {
 		int globx = Matthewmatics.div(regionx, REGION_WIDTH), globz = Matthewmatics.div(regionz, REGION_WIDTH);
 		
 		File cacheFile = new File(CACHE_DIR, "f_" + globx + "_" + globz + Utila.BINARY_SUFFIX);
@@ -56,15 +57,16 @@ public class GlobcoverReaderImpl2 implements GlobcoverReader {
 		if (FileValidator.checkValid(cacheFile)) {
 			im = ImageIO.read(cacheFile);
 		} else {
-			String base = "f_" + globx + "_" + globz + Utila.BINARY_SUFFIX;
-			URL url = null;
-			//need to find matching root;
-			for (FileInfo info : FileListManager.getGlobcoverFileList().getFilesList()) {
-				if (info.getFile().equals(base)) {
-					url = new URL(ServerInfoManager.getServerInfo().getGlobcoverAddress() + "data/"
-							+ info.getParent() + info.getFile());
-				}
-			}
+			String base = "/f_" + globx + "_" + globz + Utila.BINARY_SUFFIX;
+			URL url = new URL(BucketInfo.getBucket("chunkmapper-mat") + base);
+//			URL url = null;
+//			//need to find matching root;
+//			for (FileInfo info : FileListManager.getGlobcoverFileList().getFilesList()) {
+//				if (info.getFile().equals(base)) {
+//					url = new URL(ServerInfoManager.getServerInfo().getGlobcoverAddress() + "data/"
+//							+ info.getParent() + info.getFile());
+//				}
+//			}
 			im = ImageIO.read(url);
 			//now save it as well.
 			ImageIO.write(im, "png", cacheFile);

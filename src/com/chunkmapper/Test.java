@@ -1,17 +1,11 @@
 package com.chunkmapper;
 
-import java.util.HashSet;
+import java.io.File;
+import java.util.HashMap;
 
 public class Test {
-	public static void main(String[] args) {
-		HashSet<Integer> ints = new HashSet<Integer>();
-		ints.add(1);
-		ints.add(2);
-		ints.add(3);
-		
-		for (int i : ints) {
-			ints.remove(3);
-		}
-
+	private static HashMap<Point, Point> map = new HashMap<Point, Point>();
+	public static void main(String[] args) throws Exception {
+		File f;
 	}
 }
