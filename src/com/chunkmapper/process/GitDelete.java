@@ -18,6 +18,7 @@ public class GitDelete {
 			Runtime.getRuntime().exec(command);
 		}
 		br.close();
+		System.out.println("done");
 
 	}
 

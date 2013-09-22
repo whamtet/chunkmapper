@@ -34,7 +34,16 @@ public class POIParser extends Parser {
 			String text = node.map.get("name");
 			Integer population = null;
 			if (node.map.containsKey("population")) {
+				try {
 				population = Integer.parseInt(node.map.get("population"));
+				} catch (NumberFormatException e) {
+					try {
+						String s = node.map.get("population").split(" ")[0];
+						population = Integer.parseInt(s);
+					} catch (NumberFormatException e2) {
+						
+					}
+				}
 			}
 			pois.add(new POI(node.point, text, population, type));
 		}

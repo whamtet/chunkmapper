@@ -32,30 +32,34 @@ public class OverpassDownloader {
 	private static final int NUM_DOWNLOADING_THREADS = 6;
 	private static final DefaultHttpClient httpclient = Downloader.getHttpClient();
 	private static final ConcurrentHashMap<Point, ArrayList<String>> generalCache = new ConcurrentHashMap<Point, ArrayList<String>>();
-	private static final String generalQuery;
+	private static final String generalQuery, testQuery;
 	static {
 		String q1 = null;
+		String q2 = null;
 		try {
 			q1 = getQuery("/mainQuery.xml");
+			q2 = getQuery("/testQuery.xml");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		generalQuery = q1;
+		testQuery = q2;
 	}
 	public static void main(String[] args) throws Exception {
 //		double[] latlon = Nominatim.getPoint("sydney");
 //		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
 //		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
 		int regionx = 1060, regionz = 238;
-		System.out.println(getLines(regionx, regionz).size());
+		System.out.println(getLines(regionx, regionz, false).size());
 	}
 
-	public static ArrayList<String> getLines(int regionx, int regionz) throws IOException {
+	public static ArrayList<String> getLines(int regionx, int regionz, boolean test) throws IOException {
 		Point p = new Point(regionx, regionz);
 		if (generalCache.containsKey(p)) {
 			return generalCache.get(p);
 		} else {
-			ArrayList<String> lines = doGetLines(generalQuery, regionx, regionz);
+			String query = test ? testQuery : generalQuery;
+			ArrayList<String> lines = doGetLines(query, regionx, regionz);
 			generalCache.put(p, lines);
 			return lines;
 		}

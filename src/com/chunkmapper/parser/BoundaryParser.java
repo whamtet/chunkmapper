@@ -29,7 +29,6 @@ public class BoundaryParser extends Parser {
 					int adminLevel = Integer.parseInt(way.map.get("admin_level"));
 					out.add(new Boundary(way.points, way.bbox, leftArea, rightArea, adminLevel));
 				} catch (NumberFormatException e) {
-					System.err.println("no number in Boundary(BoundaryParser.java:32)");
 				}
 			}
 		}

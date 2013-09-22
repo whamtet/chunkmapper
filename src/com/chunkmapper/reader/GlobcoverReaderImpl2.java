@@ -131,6 +131,7 @@ public class GlobcoverReaderImpl2 implements GlobcoverReader {
 			mostlyLand = k > dataz * datax / 2;
 		}
 		return mostlyLand;
+//		return true;
 	}
 	public static void main(String[] args) throws Exception {
 //		double[] latlon = geocode.core.placeToCoords("auckland, nz");

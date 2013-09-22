@@ -1,0 +1,9 @@
+syntax = "proto2";
+
+option optimize_for = LITE_RUNTIME;
+option java_package = "com.chunkmapper.protoc";
+
+message Heights {
+	repeated int32 lats = 1 [packed=true];
+	repeated int32 lons = 2 [packed=true];
+}

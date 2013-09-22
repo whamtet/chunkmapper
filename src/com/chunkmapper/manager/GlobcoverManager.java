@@ -49,6 +49,7 @@ import com.chunkmapper.reader.GlobcoverReader;
 import com.chunkmapper.reader.GlobcoverReaderImpl2;
 import com.chunkmapper.reader.HeightsReaderImpl;
 import com.chunkmapper.reader.HutReader;
+import com.chunkmapper.reader.LakeReader;
 import com.chunkmapper.reader.OrchardReader;
 import com.chunkmapper.reader.POIReader;
 import com.chunkmapper.reader.PathReader;
@@ -114,7 +115,7 @@ public class GlobcoverManager {
 		densityReader = new DensityReader(regionx, regionz);
 		GlobcoverReader coverReader = new GlobcoverReaderImpl2(regionx, regionz);
 
-		XapiLakeReader lakeReader = new XapiLakeReader(regionx, regionz);
+		LakeReader lakeReader = new XapiLakeReader(regionx, regionz);
 		XapiRiverReader riverReader = new XapiRiverReader(regionx, regionz, heightsReader);
 		railReader = new XapiRailReader(regionx, regionz, heightsReader, uberDownloader, verticalExaggeration);
 		boolean includeLivestock = !railReader.hasRails;

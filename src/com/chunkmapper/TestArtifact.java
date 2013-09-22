@@ -39,7 +39,7 @@ public class TestArtifact {
 //		ParallelWriter writer = new ParallelWriter(0, 0, 0, 0, "house", true);
 		loadedLevelDat.setPlayerPosition(0, 25, 0);
 		loadedLevelDat.setName("house");
-		loadedLevelDat.save();
+		loadedLevelDat.save();	
 		RegionFile regionFile = new RegionFile(new File(regionFolder, "r.0.0.mca"));
 		int[][] heights = new int[24][24];
 		for (int i = 0; i < 24; i++) {
@@ -50,7 +50,7 @@ public class TestArtifact {
 		int chunkx = 0, chunkz = 0;
 		Chunk chunk = new Chunk(chunkx, chunkz, heights, chunkx, chunkz);
 		GenericWriter.addGrass(chunk);
-		ArtifactWriter.placePrison(chunk);
+//		ArtifactWriter.placePrison(chunk);
 //		ArtifactWriter.placeMarket(chunk);
 //		ArtifactWriter.placeLibrary(chunk);
 //		ArtifactWriter.addHouse(chunk);

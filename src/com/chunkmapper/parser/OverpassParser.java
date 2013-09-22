@@ -104,10 +104,13 @@ public class OverpassParser extends Parser {
 		if (cache.contains(p)) {
 			return cache.get(p);
 		} else {
-			OverpassObject o = doGetObject(regionx, regionz);
+			OverpassObject o = doGetObject(regionx, regionz, false);
 			cache.put(p, o);
 			return o;
 		}
+	}
+	public static OverpassObject getTestObject(int regionx, int regionz) throws IOException {
+		return doGetObject(regionx, regionz, true);
 	}
 	private static void spit(ArrayList<String> lines) throws IOException {
 		PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter("test.xml")));
@@ -119,8 +122,8 @@ public class OverpassParser extends Parser {
 //		System.exit(0);
 	}
 
-	private static OverpassObject doGetObject(int regionx, int regionz) throws IOException {
-		ArrayList<String> lines = OverpassDownloader.getLines(regionx, regionz);
+	private static OverpassObject doGetObject(int regionx, int regionz, boolean test) throws IOException {
+		ArrayList<String> lines = OverpassDownloader.getLines(regionx, regionz, test);
 //				spit(lines);
 		//		ArrayList<String> lines = getLines();
 		HashMap<Long, Point> locations = getLocations(lines);

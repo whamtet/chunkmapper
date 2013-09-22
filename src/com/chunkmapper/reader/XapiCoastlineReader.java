@@ -11,9 +11,8 @@ import java.util.Stack;
 import java.util.zip.DataFormatException;
 
 import com.chunkmapper.Point;
-import com.chunkmapper.downloader.OSMDownloader;
-import com.chunkmapper.enumeration.OSMSource;
 import com.chunkmapper.parser.CoastlineParser;
+import com.chunkmapper.parser.Nominatim;
 import com.chunkmapper.sections.Coastline;
 
 public class XapiCoastlineReader {
@@ -109,8 +108,11 @@ public class XapiCoastlineReader {
 	public XapiCoastlineReader(int regionx, int regionz, GlobcoverReader reader) throws IOException, URISyntaxException, DataFormatException {
 
 		Collection<Coastline> coastlines = CoastlineParser.getCoastlines(regionx, regionz);
-		if (coastlines.size() == 0) {
+		//1062, 237
+		if (coastlines.size() == 0 || regionx == 1062 && regionz == 237) {
 			int fill = reader.mostlyLand() ? 1 : -1;
+			if (regionx == 1062 && regionz == 237)
+				fill = 1;
 			for (int i = 0; i < 512; i++) {
 				for (int j = 0; j < 512; j++) {
 					data[i][j] = fill;
@@ -207,20 +209,14 @@ public class XapiCoastlineReader {
 		pw.close();
 	}
 
-	private static void printAndSave(int regionx, int regionz, Collection<Coastline> coastlines, File f) throws IOException {
-		int[][] data = new int[512][512];
-		for (Coastline coastline : coastlines) {
-			for (int i = 0; i < coastline.points.size() - 1; i++) {
-				interpolate(data, coastline.points.get(i), coastline.points.get(i+1), regionx, regionz, 1, 1);
-			}
-		}
-		PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(f)));
-		for (int i = 0; i < 512; i++) {
-			for (int j = 0; j < 512; j++) {
-				//				pw.println(reader.getValueij(i, j));
-				pw.println(data[i][j]);
-			}
-		}
-		pw.close();
+	public static void main(String[] args) throws Exception {
+		double[] latlon = Nominatim.getPoint("sydney");
+		int regionx = (int) Math.floor(latlon[1] * 3600 / 512)-1;
+		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512)-1;
+		System.out.println(regionx + ", " + regionz);
+//		GlobcoverReader globcoverReader = new GlobcoverReaderImpl2(regionx, regionz);
+//		XapiCoastlineReader reader = new XapiCoastlineReader(regionx, regionz, globcoverReader);
+//		reader.print(new File("/Users/matthewmolloy/python/wms/data.csv"));
+//		System.out.println("done");
 	}
 }
