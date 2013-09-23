@@ -15,6 +15,10 @@ public class HeightsReaderS3 implements HeightsReader {
 //	public final int min, max;
 	private final int x0, z0, verticalExaggeration;
 	public final boolean allWater;
+	
+	public boolean isAllWater() {
+		return allWater;
+	}
 
 	public boolean mostlyLand() {
 		int sumHeight = 0;

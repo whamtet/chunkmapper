@@ -47,7 +47,8 @@ import com.chunkmapper.reader.FerryReader;
 import com.chunkmapper.reader.FileNotYetAvailableException;
 import com.chunkmapper.reader.GlobcoverReader;
 import com.chunkmapper.reader.GlobcoverReaderImpl2;
-import com.chunkmapper.reader.HeightsReaderImpl;
+import com.chunkmapper.reader.HeightsReader;
+import com.chunkmapper.reader.HeightsReaderS3;
 import com.chunkmapper.reader.HutReader;
 import com.chunkmapper.reader.LakeReader;
 import com.chunkmapper.reader.OrchardReader;
@@ -66,7 +67,7 @@ import com.chunkmapper.writer.ArtifactWriter;
 import com.chunkmapper.writer.GenericWriter;
 
 public class GlobcoverManager {
-	private final HeightsReaderImpl heightsReader;
+	private final HeightsReader heightsReader;
 	private final XapiRailReader railReader;
 	private final POIReader poiReader;
 	private final DensityReader densityReader;
@@ -88,9 +89,9 @@ public class GlobcoverManager {
 	public GlobcoverManager(int regionx, int regionz, UberDownloader uberDownloader, int verticalExaggeration) throws FileNotYetAvailableException, IOException, IllegalArgumentException, NoSuchElementException, InterruptedException, URISyntaxException, DataFormatException {
 		this.regionx = regionx; this.regionz = regionz;
 
-		heightsReader = new HeightsReaderImpl(regionx, regionz, uberDownloader, verticalExaggeration);
+		heightsReader = new HeightsReaderS3(regionx, regionz, verticalExaggeration);
 		ferryReader = new FerryReader(regionx, regionz);
-		allWater = heightsReader.allWater && !ferryReader.hasAFerry;
+		allWater = heightsReader.isAllWater() && !ferryReader.hasAFerry;
 		
 		if (allWater) {
 			orchardReader = null;

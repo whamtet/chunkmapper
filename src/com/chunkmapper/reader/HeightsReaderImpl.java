@@ -20,6 +20,10 @@ public class HeightsReaderImpl implements HeightsReader {
 	private final int x0, z0, verticalExaggeration;
 	public final boolean allWater;
 	
+	public boolean isAllWater() {
+		return allWater;
+	}
+	
 	public boolean mostlyLand() {
 		int sumHeight = 0;
 		for (int i = 0; i < HeightsResourceInfo.LEN; i++) {

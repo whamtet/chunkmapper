@@ -67,4 +67,10 @@ public class UniformHeightsReader implements HeightsReader {
 		return false;
 	}
 
+	@Override
+	public boolean isAllWater() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

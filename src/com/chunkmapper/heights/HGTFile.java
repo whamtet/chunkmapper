@@ -49,7 +49,7 @@ public class HGTFile {
 			latStr = "" + lat;
 		}
 		if (lon < 10) {
-			lonStr = "00" + lat;
+			lonStr = "00" + lon;
 		} else if (lon < 100) {
 			lonStr = "0" + lon;
 		} else {

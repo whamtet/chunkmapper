@@ -2,6 +2,8 @@ package com.chunkmapper.reader;
 
 public interface HeightsReader {
 	
+	public boolean isAllWater();
+	
 	public boolean mostlyLand();
 
 	public int[][] getHeights(int chunkx, int chunkz);
