@@ -75,6 +75,7 @@ public class HGTFile {
 			ZipInputStream in = new ZipInputStream(url.openStream());
 			in.getNextEntry();
 			byte[] uncompressed = Zip.readFully(in);
+			in.close();
 
 			FileOutputStream out = new FileOutputStream(f);
 			out.write(uncompressed);

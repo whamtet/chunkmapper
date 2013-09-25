@@ -3,6 +3,7 @@ package com.chunkmapper;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -10,6 +11,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
 import java.util.ArrayList;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
@@ -30,7 +33,6 @@ public class Zip {
 
 		int cl = compresser.deflate(data2);
 		
-//		FileOutputStream out = new FileOutputStream(dest);
 		DataOutputStream out = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(dest)));
 		out.writeInt(data.length);
 		out.writeInt(cl);
@@ -52,6 +54,39 @@ public class Zip {
 		out.write(data2, 0, cl);
 		out.close();
 	}
+	public static byte[] zipToArray(byte[] data) throws IOException {
+		byte[] data2 = new byte[data.length];
+		Deflater compresser = new Deflater(Deflater.BEST_COMPRESSION);
+		compresser.setInput(data);
+		compresser.finish();
+
+		int cl = compresser.deflate(data2);
+		
+		ByteArrayOutputStream out2 = new ByteArrayOutputStream();
+		DataOutputStream out = new DataOutputStream(out2);
+		out.writeInt(data.length);
+		out.writeInt(cl);
+		out.write(data2, 0, cl);
+		
+		out.close();
+		return out2.toByteArray();
+	}
+	public static InputStream zipToStream(byte[] data) throws IOException {
+		byte[] data2 = new byte[data.length];
+		Deflater compresser = new Deflater(Deflater.BEST_COMPRESSION);
+		compresser.setInput(data);
+		compresser.finish();
+
+		int cl = compresser.deflate(data2);
+		
+		PipedInputStream in = new PipedInputStream();
+		DataOutputStream out = new DataOutputStream(new PipedOutputStream(in));
+		out.writeInt(data.length);
+		out.writeInt(cl);
+		out.write(data2, 0, cl);
+		
+		return in;
+	}
 	private static class InputBuffer {
 		public final int bytesRead;
 		public final byte[] data = new byte[8192];
@@ -68,7 +103,7 @@ public class Zip {
 			}
 			buffers.add(b);
 		}
-		in.close();
+//		in.close();
 		int totalSize = 0;
 		for (InputBuffer b : buffers) {
 			totalSize += b.bytesRead;
