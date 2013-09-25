@@ -31,7 +31,8 @@ public class HeightsReaderS3 implements HeightsReader {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		double[] latlon = Nominatim.getPoint("Brisbane");
+		System.out.println("starting");
+		double[] latlon = Nominatim.getPoint("nassihorn, switzerland");
 		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
 		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
 		HeightsReader reader = new HeightsReaderS3(regionx, regionz, 1);
@@ -74,11 +75,26 @@ public class HeightsReaderS3 implements HeightsReader {
 				}
 			}
 		}
-		int rooti = (int) ((lati2 + 1 - lat2) * 1200);
-		int rootj = (int) ((lon1 - loni1) * 1200);
+//		int rooti = (int) ((lati2 + 1 - lat2) * 1200);
+//		int rootj = (int) ((lon1 - loni1) * 1200);
+		double rooti = (lati2 + 1 - lat2) * 1200;
+		double rootj = (lon1 - loni1) * 1200;
+		int imax = height * 1200 - 1, jmax = width * 1200 - 1;
+		
 		for (int i = 0; i < LEN; i++) {
 			for (int j = 0; j < LEN; j++) {
-				cache[i][j] = tempCache[rooti + i/3][rootj + j/3];
+				
+				double id = rooti + i/3., jd = rootj + j/3.;
+				int i1 = (int) Math.floor(id), i2 = (int) Math.ceil(id);
+				int j1 = (int) Math.floor(jd), j2 = (int) Math.ceil(jd);
+				double ifr = id - i1, jfr = jd - j1;
+				if (i2 > imax) i2 = imax;
+				if (j2 > jmax) j2 = jmax;
+				
+				double h1 = tempCache[i1][j1] * (1-jfr) + tempCache[i1][j2] * jfr;
+				double h2 = tempCache[i2][j1] * (1-jfr) + tempCache[i2][j2] * jfr;
+				cache[i][j] = (short) (h1 * (1-ifr) + h2*ifr);
+//				cache[i][j] = tempCache[i1][j1];
 			}
 		}
 		

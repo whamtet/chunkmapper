@@ -36,7 +36,6 @@ import com.chunkmapper.column.SparseVegetation;
 import com.chunkmapper.column.Urban;
 import com.chunkmapper.column.VegetationWithCropland;
 import com.chunkmapper.column.Vineyard;
-import com.chunkmapper.downloader.UberDownloader;
 import com.chunkmapper.enumeration.Block;
 import com.chunkmapper.enumeration.FarmType;
 import com.chunkmapper.enumeration.Globcover;
@@ -45,6 +44,7 @@ import com.chunkmapper.reader.DensityReader;
 import com.chunkmapper.reader.FarmTypeReader;
 import com.chunkmapper.reader.FerryReader;
 import com.chunkmapper.reader.FileNotYetAvailableException;
+import com.chunkmapper.reader.GlacierReader;
 import com.chunkmapper.reader.GlobcoverReader;
 import com.chunkmapper.reader.GlobcoverReaderImpl2;
 import com.chunkmapper.reader.HeightsReader;
@@ -86,7 +86,7 @@ public class GlobcoverManager {
 
 	private final AbstractColumn[][] columns = new AbstractColumn[512][512];
 
-	public GlobcoverManager(int regionx, int regionz, UberDownloader uberDownloader, int verticalExaggeration) throws FileNotYetAvailableException, IOException, IllegalArgumentException, NoSuchElementException, InterruptedException, URISyntaxException, DataFormatException {
+	public GlobcoverManager(int regionx, int regionz, int verticalExaggeration) throws FileNotYetAvailableException, IOException, IllegalArgumentException, NoSuchElementException, InterruptedException, URISyntaxException, DataFormatException {
 		this.regionx = regionx; this.regionz = regionz;
 
 		heightsReader = new HeightsReaderS3(regionx, regionz, verticalExaggeration);
@@ -115,10 +115,11 @@ public class GlobcoverManager {
 		rugbyReader = new RugbyReader(regionx, regionz);
 		densityReader = new DensityReader(regionx, regionz);
 		GlobcoverReader coverReader = new GlobcoverReaderImpl2(regionx, regionz);
+		GlacierReader glacierReader = new GlacierReader(regionx, regionz);
 
 		LakeReader lakeReader = new XapiLakeReader(regionx, regionz);
 		XapiRiverReader riverReader = new XapiRiverReader(regionx, regionz, heightsReader);
-		railReader = new XapiRailReader(regionx, regionz, heightsReader, uberDownloader, verticalExaggeration);
+		railReader = new XapiRailReader(regionx, regionz, heightsReader, verticalExaggeration);
 		boolean includeLivestock = !railReader.hasRails;
 
 		FarmTypeReader farmTypeReader = null;
@@ -161,6 +162,10 @@ public class GlobcoverManager {
 				}
 				if (orchardReader.hasOrchard[i][j]) {
 					columns[i][j] = new Orchard(absx, absz, heightsReader);
+					continue;
+				}
+				if (glacierReader.hasGlacierij(i, j)) {
+					columns[i][j] = new Snow(absx, absz, heightsReader);
 					continue;
 				}
 //				double absLat = absz > 0 ? absz / 3600. : -absz / 3600.;

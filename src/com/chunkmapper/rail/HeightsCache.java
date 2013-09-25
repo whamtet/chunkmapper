@@ -11,7 +11,6 @@ import java.io.IOException;
 
 import com.chunkmapper.Point;
 import com.chunkmapper.Utila;
-import com.chunkmapper.downloader.UberDownloader;
 import com.chunkmapper.reader.FileNotYetAvailableException;
 import com.chunkmapper.reader.HeightsReader;
 import com.chunkmapper.reader.HeightsReaderS3;
@@ -34,7 +33,7 @@ public class HeightsCache {
 			}
 		}
 	}
-	public HeightsCache(Point p, UberDownloader uberDownloader, int verticalExaggeration) throws IOException, InterruptedException, FileNotYetAvailableException {
+	public HeightsCache(Point p, int verticalExaggeration) throws IOException, InterruptedException, FileNotYetAvailableException {
 		heightsCacheFile = new File(HEIGHTS_CACHE, "f_" + p.x + "_" + p.y + Utila.BINARY_SUFFIX);
 		regionPoint = p;
 

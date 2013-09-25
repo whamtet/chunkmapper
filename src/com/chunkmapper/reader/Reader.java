@@ -7,9 +7,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import com.chunkmapper.downloader.UberDownloader;
-import com.chunkmapper.resourceinfo.ResourceInfo;
-
 public abstract class Reader {
 
 	public static ArrayList<Byte> getBlueIndices(File f) throws IOException {
@@ -83,16 +80,5 @@ public abstract class Reader {
 		}
 	}
 
-	protected Reader(ResourceInfo resourceInfo, UberDownloader uberDownloader) throws InterruptedException, IOException, FileNotYetAvailableException {
-		
-
-	}
-	//	public static void main(String[] args) throws Exception {
-	//		File f = new File("/Users/matthewmolloy/Downloads/wmsMap-20130502_013137.png");
-	//		BufferedImage image = ImageIO.read(f);
-	//		byte[] data = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
-	//		System.out.println(data.length);
-	//		System.out.println(512*512*4);
-	//	}
 
 }

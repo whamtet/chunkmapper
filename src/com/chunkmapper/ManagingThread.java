@@ -11,11 +11,7 @@ import javax.swing.JFrame;
 
 import org.apache.commons.io.FileUtils;
 
-import com.chunkmapper.downloader.UberDownloader;
-import com.chunkmapper.gui.LoginDialog;
-import com.chunkmapper.gui.SuspiciousPasswordDialog;
 import com.chunkmapper.rail.HeightsCache;
-import com.chunkmapper.security.SecurityManager;
 import com.chunkmapper.writer.LevelDat;
 import com.chunkmapper.writer.RegionWriter;
 
@@ -124,12 +120,10 @@ public class ManagingThread extends Thread {
 
 		//now we need to create all our downloaders;
 		RegionWriter regionWriter = null;
-		UberDownloader uberDownloader = null;
 		try {
 			PointManager pointManager = new PointManager(chunkmapperDir, mappedSquareManager, gameMetaInfo.rootPoint);
-			uberDownloader = new UberDownloader();
 			regionWriter = new RegionWriter(pointManager, gameMetaInfo.rootPoint, regionFolder, 
-					gameMetaInfo, mappedSquareManager, uberDownloader, gameMetaInfo.verticalExaggeration);
+					gameMetaInfo, mappedSquareManager, gameMetaInfo.verticalExaggeration);
 
 
 			//now we loop for ETERNITY!!!
@@ -137,7 +131,6 @@ public class ManagingThread extends Thread {
 				HashSet<Point> pointsToWrite = pointManager.getNewPoints(gameFolder, gameMetaInfo.rootPoint, chunkmapperDir, playerIconManager);
 				for (Point p : pointsToWrite) {
 
-					uberDownloader.addRegionToDownload(p.x + gameMetaInfo.rootPoint.x, p.z + gameMetaInfo.rootPoint.z);
 					regionWriter.addTask(p.x, p.z);
 				}
 //				double minDistance = pointManager.getDistanceToEdge(gameFolder);
@@ -148,8 +141,6 @@ public class ManagingThread extends Thread {
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
-			if (uberDownloader != null)
-				uberDownloader.shutdown();
 			if (regionWriter != null)
 				regionWriter.blockingShutdownNow();
 			return;

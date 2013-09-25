@@ -10,7 +10,6 @@ import java.nio.ShortBuffer;
 
 import com.chunkmapper.FileValidator;
 import com.chunkmapper.Utila;
-import com.chunkmapper.downloader.UberDownloader;
 import com.chunkmapper.resourceinfo.HeightsResourceInfo;
 import com.chunkmapper.resourceinfo.ResourceInfo;
 
@@ -35,15 +34,13 @@ public class HeightsReaderImpl implements HeightsReader {
 	}
 	
 	public HeightsReaderImpl(int regionx, int regionz) throws InterruptedException, IOException, FileNotYetAvailableException {
-		this(regionx, regionz, null, 1);
+		this(regionx, regionz, 1);
 	}
 	
-	public HeightsReaderImpl(int regionx, int regionz, UberDownloader uberDownloader, int verticalExaggeration)
+	public HeightsReaderImpl(int regionx, int regionz, int verticalExaggeration)
 			throws InterruptedException, IOException, FileNotYetAvailableException {
 		ResourceInfo resourceInfo = new HeightsResourceInfo(regionx, regionz);
 		if (!FileValidator.checkValid(resourceInfo.file)) {
-			if (uberDownloader != null)
-				uberDownloader.heightsDownloader.addTask(resourceInfo.regionx, resourceInfo.regionz);
 			throw new FileNotYetAvailableException();
 		}
 

@@ -1,21 +1,15 @@
 package com.chunkmapper.multiplayer;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
-import java.net.URL;
 import java.util.HashSet;
 
 import org.apache.commons.io.FileUtils;
 
 import com.chunkmapper.GameMetaInfo;
-import com.chunkmapper.MappedSquareManager;
 import com.chunkmapper.Point;
-import com.chunkmapper.downloader.UberDownloader;
 import com.chunkmapper.parser.Nominatim;
 import com.chunkmapper.rail.HeightsCache;
-import com.chunkmapper.writer.LevelDat;
 import com.chunkmapper.writer.NeutralRegionWriter;
 
 public class MPThread {
@@ -92,13 +86,11 @@ public class MPThread {
 
 		//now we need to create all our downloaders;
 		NeutralRegionWriter regionWriter = null;
-		UberDownloader uberDownloader = null;
 		TextDisplay textDisplay = new TextDisplay(chunkmapperDir, gameMetaInfo.rootPoint);
 		try {
 			MPPointManager pointManager = new MPPointManager(chunkmapperDir, textDisplay, gameMetaInfo.rootPoint, gameFolder);
-			uberDownloader = new UberDownloader();
 			regionWriter = new NeutralRegionWriter(pointManager, gameMetaInfo.rootPoint, regionFolder, 
-					gameMetaInfo, uberDownloader, gameMetaInfo.verticalExaggeration, textDisplay);
+					gameMetaInfo, gameMetaInfo.verticalExaggeration, textDisplay);
 
 
 			//now we loop for ETERNITY!!!
@@ -106,7 +98,6 @@ public class MPThread {
 				HashSet<Point> pointsToWrite = pointManager.getNewPoints(gameFolder, gameMetaInfo.rootPoint);
 				for (Point p : pointsToWrite) {
 
-					uberDownloader.addRegionToDownload(p.x + gameMetaInfo.rootPoint.x, p.z + gameMetaInfo.rootPoint.z);
 					regionWriter.addTask(p.x, p.z);
 				}
 //				double minDistance = pointManager.getDistanceToEdge(gameFolder);
@@ -117,8 +108,6 @@ public class MPThread {
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
-			if (uberDownloader != null)
-				uberDownloader.shutdown();
 			if (regionWriter != null)
 				regionWriter.blockingShutdownNow();
 			return;

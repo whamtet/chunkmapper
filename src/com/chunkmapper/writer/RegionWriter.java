@@ -5,14 +5,12 @@ import java.io.File;
 import java.util.Comparator;
 import java.util.concurrent.PriorityBlockingQueue;
 
-
 import com.chunkmapper.GameMetaInfo;
 import com.chunkmapper.MappedSquareManager;
 import com.chunkmapper.Point;
 import com.chunkmapper.PointManager;
 import com.chunkmapper.Tasker;
 import com.chunkmapper.chunk.Chunk;
-import com.chunkmapper.downloader.UberDownloader;
 import com.chunkmapper.manager.GlobcoverManager;
 import com.chunkmapper.nbt.NbtIo;
 import com.chunkmapper.nbt.RegionFile;
@@ -21,7 +19,6 @@ public class RegionWriter extends Tasker {
 	public static final int NUM_WRITING_THREADS = Runtime.getRuntime().availableProcessors() + 1;
 	public final Point rootPoint;
 	public final File regionFolder;
-	private final UberDownloader uberDownloader;
 	private final GameMetaInfo gameMetaInfo;
 	private final MappedSquareManager mappedSquareManager;
 	private final PointManager pointManager;
@@ -43,12 +40,11 @@ public class RegionWriter extends Tasker {
 	});
 
 	public RegionWriter(PointManager pointManager, Point rootPoint, File regionFolder, 
-			GameMetaInfo metaInfo, MappedSquareManager mappedSquareManager, UberDownloader uberDownloader, int verticalExaggeration) {
+			GameMetaInfo metaInfo, MappedSquareManager mappedSquareManager, int verticalExaggeration) {
 		super(NUM_WRITING_THREADS);
 		this.verticalExaggeration = verticalExaggeration;
 		this.rootPoint = rootPoint;
 		this.regionFolder = regionFolder;
-		this.uberDownloader = uberDownloader;
 		this.gameMetaInfo = metaInfo;
 		this.mappedSquareManager = mappedSquareManager;
 		this.pointManager = pointManager;
@@ -79,7 +75,7 @@ public class RegionWriter extends Tasker {
 		int regionx = task.x + rootPoint.x, regionz = task.z + rootPoint.z;
 
 		File f = new File(regionFolder, "r." + a + "." + b + ".mca");
-		GlobcoverManager coverManager = new GlobcoverManager(regionx, regionz, uberDownloader, verticalExaggeration);
+		GlobcoverManager coverManager = new GlobcoverManager(regionx, regionz, verticalExaggeration);
 
 		if (coverManager.allWater) {
 			pointManager.updateStore(task);

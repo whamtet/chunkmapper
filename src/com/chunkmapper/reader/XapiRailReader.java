@@ -8,14 +8,10 @@ import java.util.NoSuchElementException;
 import java.util.zip.DataFormatException;
 
 import com.chunkmapper.Point;
-import com.chunkmapper.downloader.OSMDownloader;
-import com.chunkmapper.downloader.UberDownloader;
 import com.chunkmapper.enumeration.CircleRail;
-import com.chunkmapper.enumeration.OSMSource;
 import com.chunkmapper.enumeration.StraightRail;
 import com.chunkmapper.parser.RailParser;
 import com.chunkmapper.rail.HeightsManager;
-import com.chunkmapper.resourceinfo.XapiRailResourceInfo;
 import com.chunkmapper.sections.RailSection;
 
 public class XapiRailReader {
@@ -74,10 +70,10 @@ public class XapiRailReader {
 		this.railType[z][x] = railType;
 	}
 	private XapiRailReader(int regionx, int regionz) throws IllegalArgumentException, NoSuchElementException, IOException, InterruptedException, FileNotYetAvailableException, URISyntaxException, DataFormatException {
-		this(regionx, regionz, new HeightsReaderImpl(regionx, regionz), null, 1);
+		this(regionx, regionz, new HeightsReaderImpl(regionx, regionz), 1);
 	}
 
-	public XapiRailReader(int regionx, int regionz, HeightsReader heightsReader, UberDownloader uberDownloader, int verticalExaggeration) throws IllegalArgumentException, NoSuchElementException, IOException, InterruptedException, FileNotYetAvailableException, URISyntaxException, DataFormatException {
+	public XapiRailReader(int regionx, int regionz, HeightsReader heightsReader, int verticalExaggeration) throws IllegalArgumentException, NoSuchElementException, IOException, InterruptedException, FileNotYetAvailableException, URISyntaxException, DataFormatException {
 		x0 = regionx * 512; z0 = regionz * 512;
 
 		Collection<RailSection> allSections = RailParser.getRailSection(regionx, regionz); 
@@ -86,7 +82,7 @@ public class XapiRailReader {
 		if (!hasRails) {
 			return;
 		}
-		HeightsManager heightsManager = new HeightsManager(uberDownloader, verticalExaggeration);
+		HeightsManager heightsManager = new HeightsManager(verticalExaggeration);
 //		if (true)
 //			return;
 

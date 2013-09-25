@@ -113,6 +113,23 @@
 <recurse type="way-node" />
 <print />
 
+<!-- glaciers -->
+<query type="relation">
+<has-kv k="natural" v="glacier" />
+</query>
+<print />
+<recurse type="relation-way" />
+<print />
+<recurse type="way-node" />
+<print />
+
+<query type="way">
+<has-kv k="natural" v="glacier" />
+</query>
+<print />
+<recurse type="way-node" />
+<print />
+
 <!-- Vineyards -->
 <query type="way">
 <has-kv k="landuse" v="vineyard"/>

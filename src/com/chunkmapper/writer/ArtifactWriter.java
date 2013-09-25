@@ -389,7 +389,15 @@ public class ArtifactWriter {
 		chunk.Blocks[h+2][z0+1][x0+4] = Blocka.Heavy_Plate;
 
 		//finally add a couple of occupants
-		for (int i = 0; i < 5; i++) {
+		int numChildren = chunk.RANDOM.nextInt(5);
+		int numParents = chunk.RANDOM.nextInt(3);
+		for (int i = 0; i < numChildren; i++) {
+			double x = 2 + 4 * chunk.RANDOM.nextDouble();
+			double z = 5 + 3 * chunk.RANDOM.nextDouble();
+			double y = h + 1;
+			MobWriter.addVillager(chunk, Villager.Farmer, x + chunk.xr, y, z + chunk.zr, true);
+		}
+		for (int i = 0; i < numParents; i++) {
 			double x = 2 + 4 * chunk.RANDOM.nextDouble();
 			double z = 5 + 3 * chunk.RANDOM.nextDouble();
 			double y = h + 1;
@@ -755,8 +763,8 @@ public class ArtifactWriter {
 		chunk.Data[h][z+1][x] = Stairs.Ascending_North.val;
 		chunk.Data[h][z+1][x+1] = Stairs.Ascending_North.val;
 		
-		
-		for (int i = 0; i < 5; i++) {
+		int numPrisoners = chunk.RANDOM.nextInt(20);
+		for (int i = 0; i < numPrisoners; i++) {
 			double xd = 2.3 + 7.4 * chunk.RANDOM.nextDouble() + chunk.xr;
 			double zd = 2.3 + 7.4 * chunk.RANDOM.nextDouble() + chunk.zr;
 			MobWriter.addVillager(chunk, chunk.RANDOM.nextInt(6), xd, h + 1, zd, false);
