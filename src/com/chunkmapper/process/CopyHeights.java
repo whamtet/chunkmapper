@@ -29,7 +29,9 @@ public class CopyHeights {
 		}
 	}
 	public static ArrayList<StreamObject> readHeightsStream(InputStream in) throws IOException {
-		ZipInputStream in2 = new ZipInputStream(new BufferedInputStream(in));
+		byte[] data = Zip.readFully(in);
+		in.close();
+		ZipInputStream in2 = new ZipInputStream(new ByteArrayInputStream(data));
 		ZipEntry entry;
 		ArrayList<StreamObject> out = new ArrayList<StreamObject>();
 		while ((entry = in2.getNextEntry()) != null) {
