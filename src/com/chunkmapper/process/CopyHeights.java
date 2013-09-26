@@ -39,7 +39,6 @@ public class CopyHeights {
 				String name = entry.getName().split("/")[1];
 
 				byte[] uncompressed = Zip.readFully(in2);
-				System.out.println(Zip.zipToArray(uncompressed).length);
 				out.add(new StreamObject(name, Zip.zipToArray(uncompressed)));
 			}
 		}
