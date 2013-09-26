@@ -37,7 +37,6 @@ public class CopyHeights {
 		while ((entry = in2.getNextEntry()) != null) {
 			if (entry.getName().endsWith(".hgt")) {
 				String name = entry.getName().split("/")[1];
-
 				byte[] uncompressed = Zip.readFully(in2);
 				out.add(new StreamObject(name, Zip.zipToArray(uncompressed)));
 			}
