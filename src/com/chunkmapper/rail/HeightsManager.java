@@ -1,6 +1,7 @@
 package com.chunkmapper.rail;
 
 import java.io.IOException;
+import java.util.zip.DataFormatException;
 
 import com.chunkmapper.Point;
 import com.chunkmapper.reader.FileNotYetAvailableException;
@@ -15,7 +16,7 @@ public class HeightsManager {
 	public HeightsManager(int verticalExaggeration) {
 		this.verticalExaggeration = verticalExaggeration;
 	}
-	public short getHeight(int x, int z) throws IOException, InterruptedException, FileNotYetAvailableException {
+	public short getHeight(int x, int z) throws IOException, InterruptedException, FileNotYetAvailableException, DataFormatException {
 		Point neededPoint = Point.getRegionPoint(x, z);
 		if (cache != null && neededPoint.equals(cache.regionPoint)) {
 			return cache.getHeight(x, z);
@@ -27,7 +28,7 @@ public class HeightsManager {
 			return cache.getHeight(x, z);
 		}
 	}
-	public void setHeight(int x, int z, short h) throws IOException, InterruptedException, FileNotYetAvailableException {
+	public void setHeight(int x, int z, short h) throws IOException, InterruptedException, FileNotYetAvailableException, DataFormatException {
 		Point neededPoint = Point.getRegionPoint(x, z);
 		if (cache != null && neededPoint.equals(cache.regionPoint)) {
 			cache.setHeight(x, z, h);
@@ -77,7 +78,7 @@ public class HeightsManager {
 			railTypeCache.setRailType(x, z, (byte) (b + 1));
 		}
 	}
-	public void setBoth(int x, int z, short h, byte b) throws IOException, InterruptedException, FileNotYetAvailableException {
+	public void setBoth(int x, int z, short h, byte b) throws IOException, InterruptedException, FileNotYetAvailableException, DataFormatException {
 		setRailType(x, z, b);
 		setHeight(x, z, h);
 	}

@@ -7,8 +7,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import com.chunkmapper.Point;
-import com.chunkmapper.parser.OverpassParser.OverpassObject;
-import com.chunkmapper.parser.OverpassParser.Way;
+import com.chunkmapper.parser.OverpassObject.Way;
 import com.chunkmapper.sections.Coastline;
 
 public class CoastlineParser extends Parser {

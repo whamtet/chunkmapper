@@ -7,9 +7,9 @@ import com.chunkmapper.Point;
 import com.chunkmapper.chunk.Chunk;
 import com.chunkmapper.enumeration.Blocka;
 import com.chunkmapper.parser.Nominatim;
+import com.chunkmapper.parser.OverpassObject;
+import com.chunkmapper.parser.OverpassObject.Way;
 import com.chunkmapper.parser.OverpassParser;
-import com.chunkmapper.parser.OverpassParser.OverpassObject;
-import com.chunkmapper.parser.OverpassParser.Way;
 
 public class PathReader {
 	public final boolean[][] hasPath = new boolean[512][512];

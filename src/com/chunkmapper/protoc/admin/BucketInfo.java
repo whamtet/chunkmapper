@@ -8,12 +8,14 @@ import java.util.HashMap;
 
 public class BucketInfo {
 	private static HashMap<String, String> map;
-	
+	private static Object key = new Object();
 	public static String getBucket(String key) throws InterruptedException {
-		while (map == null) {
-			initMap();
-			if (map == null)
-				Thread.sleep(1000);
+		synchronized(key) {
+			while (map == null) {
+				initMap();
+				if (map == null)
+					Thread.sleep(1000);
+			}
 		}
 		return map.get(key);
 	}
@@ -28,6 +30,7 @@ public class BucketInfo {
 				String[] split = line.split(" ");
 				map.put(split[0], split[1]);
 			}
+			br.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 			map = null;

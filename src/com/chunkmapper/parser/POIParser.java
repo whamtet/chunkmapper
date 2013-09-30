@@ -1,13 +1,11 @@
 package com.chunkmapper.parser;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.chunkmapper.Point;
-import com.chunkmapper.parser.OverpassParser.Node;
-import com.chunkmapper.parser.OverpassParser.OverpassObject;
+import com.chunkmapper.parser.OverpassObject.Node;
 import com.chunkmapper.sections.POI;
 
 public class POIParser extends Parser {

@@ -2,9 +2,10 @@ package com.chunkmapper.reader;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.zip.DataFormatException;
 
 import com.chunkmapper.Utila;
-import com.chunkmapper.heights.HGTFile;
+import com.chunkmapper.heights.HGTFile2;
 import com.chunkmapper.parser.Nominatim;
 import com.chunkmapper.protoc.admin.HeightsInfo;
 import com.chunkmapper.resourceinfo.HeightsResourceInfo;
@@ -47,7 +48,7 @@ public class HeightsReaderS3 implements HeightsReader {
 	}
 
 
-	public HeightsReaderS3(int regionx, int regionz, int verticalExaggeration) throws IOException, InterruptedException {
+	public HeightsReaderS3(int regionx, int regionz, int verticalExaggeration) throws IOException, InterruptedException, DataFormatException {
 
 		double buffer = Utila.HEIGHTS_START / 3600.;
 		double lon1 = regionx * 512. / 3600 - buffer, lon2 = lon1 + 512. / 3600 + 2 * buffer;
@@ -66,7 +67,7 @@ public class HeightsReaderS3 implements HeightsReader {
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
 				if (HeightsInfo.hasPoint(lati2 - i, loni1 + j)) {
-					short[][] tempTempCache = HGTFile.getHeights(lati2 - i, loni1 + j);
+					short[][] tempTempCache = HGTFile2.getHeights(lati2 - i, loni1 + j);
 					for (int k = 0; k < 1200; k++) {
 						for (int l = 0; l < 1200; l++) {
 							tempCache[i*1200 + k][j * 1200 + l] = tempTempCache[k][l];

@@ -21,7 +21,7 @@ public class CopyHeights {
 			return data;
 		}
 		public String getName() {
-			return name;
+			return name.toUpperCase();
 		}
 		public StreamObject(String name, byte[] data) {
 			this.name = name;
@@ -30,6 +30,8 @@ public class CopyHeights {
 	}
 	public static ArrayList<StreamObject> readHeightsStream(InputStream in) throws IOException {
 		byte[] data = Zip.readFully(in);
+		System.out.println(data.length);
+		System.exit(0);
 		in.close();
 		ZipInputStream in2 = new ZipInputStream(new ByteArrayInputStream(data));
 		ZipEntry entry;
@@ -39,14 +41,16 @@ public class CopyHeights {
 				String name = entry.getName().split("/")[1];
 				byte[] uncompressed = Zip.readFully(in2);
 				out.add(new StreamObject(name, Zip.zipToArray(uncompressed)));
+//				out.add(new StreamObject(null, null));
 			}
 		}
 		in2.close();
 		return out;
 	}
+	
 	public static void main(String[] args) throws Exception {
-		File f = new File("/Users/matthewmolloy/Downloads/U15.zip");
-		readHeightsStream(new FileInputStream(f));
+		File f = new File("/Users/matthewmolloy/Downloads/Folx/46-60A.zip");
+		System.out.println(readHeightsStream(new FileInputStream(f)).size());
 	}
 
 }

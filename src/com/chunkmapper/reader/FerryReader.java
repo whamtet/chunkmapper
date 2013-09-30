@@ -5,9 +5,9 @@ import java.io.IOException;
 import com.chunkmapper.Point;
 import com.chunkmapper.chunk.Chunk;
 import com.chunkmapper.enumeration.Blocka;
+import com.chunkmapper.parser.OverpassObject;
+import com.chunkmapper.parser.OverpassObject.Way;
 import com.chunkmapper.parser.OverpassParser;
-import com.chunkmapper.parser.OverpassParser.OverpassObject;
-import com.chunkmapper.parser.OverpassParser.Way;
 
 public class FerryReader {
 	public final boolean[][] hasFerry = new boolean[512][512];

@@ -13,10 +13,11 @@ import com.chunkmapper.protoc.HeightsContainer;
 
 public class HeightsInfo {
 	private static HashSet<Point> points;
+	private static Object key = new Object();
 	private static void setPoints() {
 		InputStream in = null;
 		try {
-			URL url = new URL(BucketInfo.getBucket("chunkmapper-admin") + "/heights");
+			URL url = new URL(BucketInfo.getBucket("chunkmapper-admin") + "/heights2");
 			in = new BufferedInputStream(url.openStream());
 			HeightsContainer.Heights heights = HeightsContainer.Heights.parseFrom(in);
 			points = new HashSet<Point>();
@@ -38,20 +39,25 @@ public class HeightsInfo {
 		}
 	}
 	public static boolean hasPoint(int lat, int lon) throws InterruptedException {
-		while (points == null) {
-			setPoints();
-			if (points == null)
-				Thread.sleep(1000);
+		synchronized(key) {
+			while (points == null) {
+				setPoints();
+				if (points == null)
+					Thread.sleep(1000);
+			}
 		}
 		return points.contains(new Point(lat, lon));
 	}
 	public static void main(String[] args) throws Exception {
 		setPoints();
 		PrintWriter lats = new PrintWriter("/Users/matthewmolloy/python/wms/lats.csv"), lons = new PrintWriter("/Users/matthewmolloy/python/wms/lons.csv");
+		int i = 0;
 		for (Point p : points) {
 			lats.println(p.x);
 			lons.println(p.y);
+			i++;
 		}
+		System.out.println(i);
 		lats.close();
 		lons.close();
 		System.out.println("done");

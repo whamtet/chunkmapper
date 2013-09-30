@@ -2,17 +2,10 @@ package com.chunkmapper.reader;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.Random;
 
-import com.chunkmapper.downloader.OSMDownloader;
-import com.chunkmapper.enumeration.OSMSource;
-import com.chunkmapper.parser.OverpassParser;
-import com.chunkmapper.parser.OverpassParser.Node;
-import com.chunkmapper.parser.OverpassParser.OverpassObject;
 import com.chunkmapper.parser.POIParser;
 import com.chunkmapper.sections.POI;
-import com.chunkmapper.sections.Section;
 
 public class DensityReader {
 	public final float[][] data = new float[32][32];

@@ -6,8 +6,7 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import com.chunkmapper.Point;
-import com.chunkmapper.parser.OverpassParser.OverpassObject;
-import com.chunkmapper.parser.OverpassParser.Way;
+import com.chunkmapper.parser.OverpassObject.Way;
 import com.chunkmapper.sections.RiverSection;
 
 public class RiverParser extends Parser {

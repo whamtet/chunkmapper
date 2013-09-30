@@ -14,10 +14,10 @@ import java.util.zip.DataFormatException;
 import com.chunkmapper.Point;
 import com.chunkmapper.math.Matthewmatics;
 import com.chunkmapper.parser.Nominatim;
+import com.chunkmapper.parser.OverpassObject;
+import com.chunkmapper.parser.OverpassObject.Relation;
+import com.chunkmapper.parser.OverpassObject.Way;
 import com.chunkmapper.parser.OverpassParser;
-import com.chunkmapper.parser.OverpassParser.OverpassObject;
-import com.chunkmapper.parser.OverpassParser.Relation;
-import com.chunkmapper.parser.OverpassParser.Way;
 import com.chunkmapper.sections.Glacier;
 import com.chunkmapper.sections.RenderingSection;
 

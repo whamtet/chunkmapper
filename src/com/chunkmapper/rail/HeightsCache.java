@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.zip.DataFormatException;
 
 import com.chunkmapper.Point;
 import com.chunkmapper.Utila;
@@ -33,7 +34,7 @@ public class HeightsCache {
 			}
 		}
 	}
-	public HeightsCache(Point p, int verticalExaggeration) throws IOException, InterruptedException, FileNotYetAvailableException {
+	public HeightsCache(Point p, int verticalExaggeration) throws IOException, InterruptedException, FileNotYetAvailableException, DataFormatException {
 		heightsCacheFile = new File(HEIGHTS_CACHE, "f_" + p.x + "_" + p.y + Utila.BINARY_SUFFIX);
 		regionPoint = p;
 

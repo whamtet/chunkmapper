@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import com.chunkmapper.Point;
 import com.chunkmapper.chunk.Chunk;
 import com.chunkmapper.parser.Nominatim;
+import com.chunkmapper.parser.OverpassObject;
+import com.chunkmapper.parser.OverpassObject.Node;
 import com.chunkmapper.parser.OverpassParser;
-import com.chunkmapper.parser.OverpassParser.Node;
-import com.chunkmapper.parser.OverpassParser.OverpassObject;
 import com.chunkmapper.writer.ArtifactWriter;
 
 public class HutReader {
