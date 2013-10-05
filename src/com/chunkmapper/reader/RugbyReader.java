@@ -3,6 +3,7 @@ package com.chunkmapper.reader;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Collection;
+import java.util.zip.DataFormatException;
 
 import com.chunkmapper.chunk.Chunk;
 import com.chunkmapper.downloader.OSMDownloader;
@@ -12,7 +13,7 @@ import com.chunkmapper.sections.POI;
 
 public class RugbyReader {
 	private final Collection<POI> pois;
-	public RugbyReader(int regionx, int regionz) throws IOException {
+	public RugbyReader(int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
 		pois = POIParser.getPois(regionx, regionz);
 	}
 	public static class RugbyField {

@@ -1,13 +1,14 @@
 package com.chunkmapper.reader;
 
 import java.io.IOException;
+import java.util.zip.DataFormatException;
 
 import com.chunkmapper.Point;
+import com.chunkmapper.admin.OSMRouter;
 import com.chunkmapper.chunk.Chunk;
 import com.chunkmapper.enumeration.Blocka;
 import com.chunkmapper.parser.OverpassObject;
 import com.chunkmapper.parser.OverpassObject.Way;
-import com.chunkmapper.parser.OverpassParser;
 
 public class FerryReader {
 	public final boolean[][] hasFerry = new boolean[512][512];
@@ -43,8 +44,8 @@ public class FerryReader {
 			}
 		}
 	}
-	public FerryReader(int regionx, int regionz) throws IOException {
-		OverpassObject o = OverpassParser.getObject(regionx, regionz);
+	public FerryReader(int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
+		OverpassObject o = OSMRouter.getObject(regionx, regionz);
 		for (Way way : o.ways) {
 			if ("ferry".equals(way.map.get("route"))) {
 				for (int i = 0; i < way.points.size() - 1; i++) {

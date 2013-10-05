@@ -5,16 +5,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.zip.DataFormatException;
 
 import com.chunkmapper.Point;
+import com.chunkmapper.admin.OSMRouter;
 import com.chunkmapper.parser.OverpassObject.Way;
 import com.chunkmapper.sections.Boundary;
 
 public class BoundaryParser extends Parser {
 
-	public static HashSet<Boundary> getBoundaries(int regionx, int regionz) throws IOException {
+	public static HashSet<Boundary> getBoundaries(int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
 		HashSet<Boundary> out = new HashSet<Boundary>();
-		OverpassObject o = OverpassParser.getObject(regionx, regionz);
+		OverpassObject o = OSMRouter.getObject(regionx, regionz);
 		for (Way way : o.ways) {
 			if ("administrative".equals(way.map.get("boundary"))) {
 				String leftArea = null, rightArea = null;

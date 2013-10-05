@@ -2,14 +2,15 @@ package com.chunkmapper.reader;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.zip.DataFormatException;
 
 import com.chunkmapper.Point;
+import com.chunkmapper.admin.OSMRouter;
 import com.chunkmapper.chunk.Chunk;
 import com.chunkmapper.enumeration.Blocka;
 import com.chunkmapper.parser.Nominatim;
 import com.chunkmapper.parser.OverpassObject;
 import com.chunkmapper.parser.OverpassObject.Way;
-import com.chunkmapper.parser.OverpassParser;
 
 public class PathReader {
 	public final boolean[][] hasPath = new boolean[512][512];
@@ -44,8 +45,8 @@ public class PathReader {
 			}
 		}
 	}
-	public PathReader(int regionx, int regionz) throws IOException {
-		OverpassObject o = OverpassParser.getObject(regionx, regionz);
+	public PathReader(int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
+		OverpassObject o = OSMRouter.getObject(regionx, regionz);
 		for (Way way : o.ways) {
 			String highway = way.map.get("highway");
 			String foot = way.map.get("foot");

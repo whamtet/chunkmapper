@@ -12,12 +12,12 @@ import java.util.HashSet;
 import java.util.zip.DataFormatException;
 
 import com.chunkmapper.Point;
+import com.chunkmapper.admin.OSMRouter;
 import com.chunkmapper.math.Matthewmatics;
 import com.chunkmapper.parser.Nominatim;
 import com.chunkmapper.parser.OverpassObject;
 import com.chunkmapper.parser.OverpassObject.Relation;
 import com.chunkmapper.parser.OverpassObject.Way;
-import com.chunkmapper.parser.OverpassParser;
 import com.chunkmapper.sections.Lake;
 import com.chunkmapper.sections.RenderingSection;
 
@@ -32,10 +32,10 @@ public class XapiLakeReader implements LakeReader {
 	public boolean hasWaterij(int i, int j) {
 		return hasWater[i][j];
 	}
-	private static ArrayList<Lake> getLakes(int regionx, int regionz) throws IOException {
+	private static ArrayList<Lake> getLakes(int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
 		//NOTEE!!!!!
 //		OverpassObject o = OverpassParser.getTestObject(regionx, regionz);
-		OverpassObject o = OverpassParser.getObject(regionx, regionz);
+		OverpassObject o = OSMRouter.getObject(regionx, regionz);
 		
 		HashSet<Lake> lakes = new HashSet<Lake>();
 		for (Way way : o.ways) {
@@ -115,7 +115,7 @@ public class XapiLakeReader implements LakeReader {
 //		return lakes;
 	}
 
-	public XapiLakeReader(int regionx, int regionz) throws IOException, FileNotYetAvailableException, URISyntaxException, DataFormatException {
+	public XapiLakeReader(int regionx, int regionz) throws IOException, FileNotYetAvailableException, URISyntaxException, DataFormatException, InterruptedException {
 
 
 		ArrayList<Lake> lakes = getLakes(regionx, regionz);

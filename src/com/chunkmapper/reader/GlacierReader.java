@@ -12,12 +12,12 @@ import java.util.HashSet;
 import java.util.zip.DataFormatException;
 
 import com.chunkmapper.Point;
+import com.chunkmapper.admin.OSMRouter;
 import com.chunkmapper.math.Matthewmatics;
 import com.chunkmapper.parser.Nominatim;
 import com.chunkmapper.parser.OverpassObject;
 import com.chunkmapper.parser.OverpassObject.Relation;
 import com.chunkmapper.parser.OverpassObject.Way;
-import com.chunkmapper.parser.OverpassParser;
 import com.chunkmapper.sections.Glacier;
 import com.chunkmapper.sections.RenderingSection;
 
@@ -31,10 +31,10 @@ public class GlacierReader {
 	public boolean hasGlacierij(int i, int j) {
 		return hasGlacier[i][j];
 	}
-	private static ArrayList<Glacier> getLakes(int regionx, int regionz) throws IOException {
+	private static ArrayList<Glacier> getLakes(int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
 		//NOTEE!!!!!
 //		OverpassObject o = OverpassParser.getTestObject(regionx, regionz);
-		OverpassObject o = OverpassParser.getObject(regionx, regionz);
+		OverpassObject o = OSMRouter.getObject(regionx, regionz);
 		
 		HashSet<Glacier> lakes = new HashSet<Glacier>();
 		for (Way way : o.ways) {
@@ -84,7 +84,7 @@ public class GlacierReader {
 		return closedLakes;
 	}
 
-	public GlacierReader(int regionx, int regionz) throws IOException, FileNotYetAvailableException, URISyntaxException, DataFormatException {
+	public GlacierReader(int regionx, int regionz) throws IOException, FileNotYetAvailableException, URISyntaxException, DataFormatException, InterruptedException {
 
 
 		ArrayList<Glacier> lakes = getLakes(regionx, regionz);

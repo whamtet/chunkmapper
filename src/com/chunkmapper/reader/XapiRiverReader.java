@@ -56,7 +56,7 @@ public class XapiRiverReader {
 
 
 
-	public XapiRiverReader(int regionx, int regionz, HeightsReader heightsReader) throws FileNotYetAvailableException, IOException, URISyntaxException, DataFormatException {
+	public XapiRiverReader(int regionx, int regionz, HeightsReader heightsReader) throws FileNotYetAvailableException, IOException, URISyntaxException, DataFormatException, InterruptedException {
 
 		Collection<RiverSection> riverSections = RiverParser.getRiverSections(regionx, regionz);
 

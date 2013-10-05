@@ -37,8 +37,9 @@ public class OverpassParser extends Parser {
 		return out;
 	}
 	
-	
 	public static OverpassObject getObject(int regionx, int regionz) throws IOException {
+//		if (true)
+//		throw new RuntimeException("Don't call me");
 		Point p = new Point(regionx, regionz);
 		if (cache.contains(p)) {
 			return cache.get(p);
@@ -66,11 +67,12 @@ public class OverpassParser extends Parser {
 //				spit(lines);
 		//		ArrayList<String> lines = getLines();
 		HashMap<Long, Point> locations = getLocations(lines);
-		ArrayList<Way> ways = new ArrayList<Way>();
+		OverpassObject out = new OverpassObject();
+//		ArrayList<Way> ways = new ArrayList<Way>();
 		HashMap<Long, Way> wayMap = new HashMap<Long, Way>();
 		long wayKey = 0;
 		Way currWay = null;
-		ArrayList<Node> nodes = new ArrayList<Node>();
+//		ArrayList<Node> nodes = new ArrayList<Node>();
 		Node currNode = null;
 
 		for (String line : lines) {
@@ -78,8 +80,9 @@ public class OverpassParser extends Parser {
 			if (tag == null)
 				continue;
 			if (tag.equals("way")) {
-				currWay = new Way();
+				
 				wayKey = Long.parseLong(getValue(line, "id"));
+				currWay = new Way(wayKey);
 			}
 			if (tag.equals("nd")) {
 				if (currWay != null) {
@@ -98,13 +101,14 @@ public class OverpassParser extends Parser {
 			}
 			if (tag.equals("/way")) {
 				currWay.calculateBbox();
-				ways.add(currWay);
+//				ways.add(currWay);
+				out.ways.add(currWay);
 				wayMap.put(wayKey, currWay);
 				currWay = null;
 			}
 			if (tag.equals("node") && line.indexOf("/>") == -1) {
 				Long k = Long.parseLong(getValue(line, "id"));
-				currNode = new Node(locations.get(k));
+				currNode = new Node(locations.get(k), k);
 			}
 			if (tag.equals("/node")) {
 				if (currNode == null) {
@@ -116,17 +120,19 @@ public class OverpassParser extends Parser {
 					Runtime.getRuntime().exec("open error.xml");
 					System.exit(0);
 				}
-				nodes.add(currNode);
+				out.nodes.add(currNode);
+//				nodes.add(currNode);
 			}
 		}
 		Relation relation = null;
-		ArrayList<Relation> relations = new ArrayList<Relation>();
+//		ArrayList<Relation> relations = new ArrayList<Relation>();
 		for (String line : lines) {
 			String tag = getTag(line);
 			if (tag == null)
 				continue;
 			if (tag.equals("relation")) {
-				relation = new Relation();
+				Long id = Long.parseLong(getValue(line, "id"));
+				relation = new Relation(id);
 			}
 			if (tag.equals("member")) {
 				long key = Long.parseLong(getValue(line, "ref"));
@@ -144,12 +150,13 @@ public class OverpassParser extends Parser {
 			}
 			if (tag.equals("/relation")) {
 				relation.calculateBbox();
-				relations.add(relation);
+//				relations.add(relation);
+				out.relations.add(relation);
 				relation = null;
 			}
 		}
 
-		return new OverpassObject(ways, nodes, relations);
+		return out;
 	}
 
 }

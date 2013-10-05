@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.zip.DataFormatException;
 
 import com.chunkmapper.chunk.Chunk;
 import com.chunkmapper.downloader.OSMDownloader;
@@ -22,7 +23,7 @@ public class POIReader {
 		specialPlaces.add(new SpecialPlace(new String[] {"pete's", "house"}, -43.518, 172.583));
 		specialPlaces.add(new SpecialPlace(new String[] {"dancing", "purple", "asteroids"}, -39.066, 174.046));
 	}
-	public POIReader(int regionx, int regionz) throws IOException {
+	public POIReader(int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
 		pois = POIParser.getPois(regionx, regionz);
 	}
 	public void addSigns(Chunk chunk) {

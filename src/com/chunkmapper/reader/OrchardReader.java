@@ -7,21 +7,22 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.zip.DataFormatException;
 
 import com.chunkmapper.Point;
+import com.chunkmapper.admin.OSMRouter;
 import com.chunkmapper.math.Matthewmatics;
 import com.chunkmapper.parser.Nominatim;
 import com.chunkmapper.parser.OverpassObject;
 import com.chunkmapper.parser.OverpassObject.Way;
-import com.chunkmapper.parser.OverpassParser;
 import com.chunkmapper.sections.RenderingSection;
 
 public class OrchardReader {
 	public boolean[][] hasOrchard = new boolean[512][512];
 	public final boolean hasAnOrchard;
 
-	public OrchardReader(int regionx, int regionz) throws IOException {
-		OverpassObject o = OverpassParser.getObject(regionx, regionz);
+	public OrchardReader(int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
+		OverpassObject o = OSMRouter.getObject(regionx, regionz);
 		ArrayList<RenderingSection> sections = new ArrayList<RenderingSection>();
 		for (Way way : o.ways) {
 			if ("orchard".equals(way.map.get("landuse")) || "orchard".equals(way.map.get("agriculture"))) {

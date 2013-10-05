@@ -2,13 +2,14 @@ package com.chunkmapper.reader;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.zip.DataFormatException;
 
 import com.chunkmapper.Point;
+import com.chunkmapper.admin.OSMRouter;
 import com.chunkmapper.chunk.Chunk;
 import com.chunkmapper.parser.Nominatim;
 import com.chunkmapper.parser.OverpassObject;
 import com.chunkmapper.parser.OverpassObject.Node;
-import com.chunkmapper.parser.OverpassParser;
 import com.chunkmapper.writer.ArtifactWriter;
 
 public class HutReader {
@@ -22,8 +23,8 @@ public class HutReader {
 			this.name = name;
 		}
 	}
-	public HutReader(int regionx, int regionz) throws IOException {
-		OverpassObject o = OverpassParser.getObject(regionx, regionz);
+	public HutReader(int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
+		OverpassObject o = OSMRouter.getObject(regionx, regionz);
 		for (Node node : o.nodes) {
 			String tourism = node.map.get("tourism");
 			if ("alpine_hut".equals(tourism) || "wilderness_hut".equals(tourism)) {

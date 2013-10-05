@@ -5,15 +5,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.zip.DataFormatException;
 
 import com.chunkmapper.Point;
+import com.chunkmapper.admin.OSMRouter;
 import com.chunkmapper.parser.OverpassObject.Way;
 import com.chunkmapper.sections.Coastline;
 
 public class CoastlineParser extends Parser {
 	
-	public static HashSet<Coastline> getCoastlines(int regionx, int regionz) throws IOException {
-		OverpassObject o = OverpassParser.getObject(regionx, regionz);
+	public static HashSet<Coastline> getCoastlines(int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
+		OverpassObject o = OSMRouter.getObject(regionx, regionz);
 		HashSet<Coastline> coastlines = new HashSet<Coastline>();
 		for (Way way : o.ways) {
 			if ("coastline".equals(way.map.get("natural"))) {

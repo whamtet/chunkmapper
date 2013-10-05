@@ -4,15 +4,17 @@ import java.awt.Rectangle;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.zip.DataFormatException;
 
 import com.chunkmapper.Point;
+import com.chunkmapper.admin.OSMRouter;
 import com.chunkmapper.parser.OverpassObject.Way;
 import com.chunkmapper.sections.RailSection;
 
 public class RailParser extends Parser {
 	
-	public static ArrayList<RailSection> getRailSection(int regionx, int regionz) throws IOException {
-		OverpassObject o = OverpassParser.getObject(regionx, regionz);
+	public static ArrayList<RailSection> getRailSection(int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
+		OverpassObject o = OSMRouter.getObject(regionx, regionz);
 		ArrayList<RailSection> out = new ArrayList<RailSection>();
 		for (Way way : o.ways) {
 			if (way.map.containsKey("railway")) {

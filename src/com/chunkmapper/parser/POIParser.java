@@ -3,14 +3,16 @@ package com.chunkmapper.parser;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.zip.DataFormatException;
 
 import com.chunkmapper.Point;
+import com.chunkmapper.admin.OSMRouter;
 import com.chunkmapper.parser.OverpassObject.Node;
 import com.chunkmapper.sections.POI;
 
 public class POIParser extends Parser {
 	private static final ConcurrentHashMap<Point, HashSet<POI>> cache = new ConcurrentHashMap<Point, HashSet<POI>>(); 
-	public static HashSet<POI> getPois(int regionx, int regionz) throws IOException {
+	public static HashSet<POI> getPois(int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
 		Point p = new Point(regionx, regionz);
 		if (cache.containsKey(p)) {
 			return cache.get(p);
@@ -20,8 +22,8 @@ public class POIParser extends Parser {
 			return pois;
 		}
 	}
-	private static HashSet<POI> doGetPois(int regionx, int regionz) throws IOException {
-		OverpassObject o = OverpassParser.getObject(regionx, regionz);
+	private static HashSet<POI> doGetPois(int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
+		OverpassObject o = OSMRouter.getObject(regionx, regionz);
 		HashSet<POI> pois = new HashSet<POI>();
 		
 		for (Node node : o.nodes){

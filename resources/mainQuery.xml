@@ -114,6 +114,7 @@
 <print />
 
 <!-- glaciers -->
+
 <query type="relation">
 <has-kv k="natural" v="glacier" />
 </query>

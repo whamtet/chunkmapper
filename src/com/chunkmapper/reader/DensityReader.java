@@ -3,6 +3,7 @@ package com.chunkmapper.reader;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Random;
+import java.util.zip.DataFormatException;
 
 import com.chunkmapper.parser.POIParser;
 import com.chunkmapper.sections.POI;
@@ -10,7 +11,7 @@ import com.chunkmapper.sections.POI;
 public class DensityReader {
 	public final float[][] data = new float[32][32];
 	private final Random random = new Random();
-	public DensityReader(int regionx0, int regionz0) throws IOException, URISyntaxException {
+	public DensityReader(int regionx0, int regionz0) throws IOException, URISyntaxException, InterruptedException, DataFormatException {
 		//loop through neighbours
 		for (int regionx = regionx0 - 1; regionx <= regionx0 + 1; regionx++) {
 			for (int regionz = regionz0 - 1; regionz <= regionz0 + 1; regionz++) {

@@ -105,7 +105,7 @@ public class XapiBoundaryReader {
 		}
 
 	}
-	public XapiBoundaryReader(int regionx, int regionz) throws IOException, URISyntaxException, DataFormatException {
+	public XapiBoundaryReader(int regionx, int regionz) throws IOException, URISyntaxException, DataFormatException, InterruptedException {
 
 		
 		HashSet<Boundary> boundaries = BoundaryParser.getBoundaries(regionx, regionz);

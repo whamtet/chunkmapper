@@ -105,7 +105,7 @@ public class XapiCoastlineReader {
 			}
 		}
 	}
-	public XapiCoastlineReader(int regionx, int regionz, GlobcoverReader reader) throws IOException, URISyntaxException, DataFormatException {
+	public XapiCoastlineReader(int regionx, int regionz, GlobcoverReader reader) throws IOException, URISyntaxException, DataFormatException, InterruptedException {
 
 		Collection<Coastline> coastlines = CoastlineParser.getCoastlines(regionx, regionz);
 		//1062, 237
@@ -210,13 +210,13 @@ public class XapiCoastlineReader {
 	}
 
 	public static void main(String[] args) throws Exception {
-		double[] latlon = Nominatim.getPoint("sydney");
-		int regionx = (int) Math.floor(latlon[1] * 3600 / 512)-1;
-		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512)-1;
+		double[] latlon = Nominatim.getPoint("new plymouth, nz");
+		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
+		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
 		System.out.println(regionx + ", " + regionz);
-//		GlobcoverReader globcoverReader = new GlobcoverReaderImpl2(regionx, regionz);
-//		XapiCoastlineReader reader = new XapiCoastlineReader(regionx, regionz, globcoverReader);
-//		reader.print(new File("/Users/matthewmolloy/python/wms/data.csv"));
-//		System.out.println("done");
+		GlobcoverReader globcoverReader = new GlobcoverReaderImpl2(regionx, regionz);
+		XapiCoastlineReader reader = new XapiCoastlineReader(regionx, regionz, globcoverReader);
+		reader.print(new File("/Users/matthewmolloy/python/wms/data.csv"));
+		System.out.println("done");
 	}
 }
