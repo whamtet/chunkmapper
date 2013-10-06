@@ -5,8 +5,9 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.EOFException;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -26,17 +27,19 @@ import com.chunkmapper.parser.OverpassObject.Way;
 import com.chunkmapper.parser.OverpassParser;
 import com.chunkmapper.protoc.OSMContainer;
 import com.chunkmapper.protoc.admin.BucketInfo;
+import com.chunkmapper.protoc.admin.ProtocPrinter;
 
 public class OsmosisParser {
 	public static final int NODE = 0, WAY = 1, RELATION = 2;
 	private static final ConcurrentHashMap<Point, OverpassObject> cache = new ConcurrentHashMap<Point, OverpassObject>();
-	private static final ConcurrentHashMap<Point, FileContents> cache2 = new ConcurrentHashMap<Point, FileContents>();
+//	private static final ConcurrentHashMap<Point, FileContents> cache2 = new ConcurrentHashMap<Point, FileContents>();
+	private static final ConcurrentHashMap<URL, FileContents> cache2 = new ConcurrentHashMap<URL, FileContents>();
 	private static ArrayList<Rectangle> rectangles;
 	private static Object key = new Object();
 	
 	public static OverpassObject getObject(int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
 		Point p = new Point(regionx, regionz);
-		if (cache.contains(p)) {
+		if (cache.containsKey(p)) {
 			return cache.get(p);
 		} else {
 			OverpassObject o = doGetObject(regionx, regionz);
@@ -108,7 +111,8 @@ public class OsmosisParser {
 	private static ArrayList<Rectangle> getRectangles() {
 		try {
 			URL url = new URL("http://chunkbackend.appspot.com/static/osm.txt");
-			BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
+//			BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
+			BufferedReader br = new BufferedReader(new FileReader(new File("/Users/matthewmolloy/python/webstore/static/osm.txt")));
 			ArrayList<Rectangle> out = new ArrayList<Rectangle>();
 			String line;
 			while ((line = br.readLine()) != null) {
@@ -137,32 +141,37 @@ public class OsmosisParser {
 		double[] latlon = Nominatim.getPoint(place);
 		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
 		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
-		System.out.println(getFileContents(regionx, regionz));
+		System.out.println(getObject(regionx, regionz));
+//		FileContents fileContents = getFileContents(regionx, regionz);
+//		System.out.println(fileContents);
+//		for (OSMContainer.Relation relation : fileContents.relations) {
+//			ProtocPrinter.PrintRelation(relation);
+//		}
 		System.out.println(OverpassParser.getObject(regionx, regionz));
 		System.out.println("***");
 	}
 	private static FileContents getFileContents(int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
-		Point p = new Point(regionx, regionz);
-		if (cache2.contains(p)) {
-			return cache2.get(p);
-		}
 		
 		setRectangles();
 		FileContents out = new FileContents();
-		int x = regionx * 512, z = regionz * 512 - 512;
+		int x = regionx * 512, z = regionz * 512;
 		Rectangle myRectangle = new Rectangle(x, z, 512, 512);
-		String rootAddress = BucketInfo.getBucket("chunkmapper-osm") + "/f_";
+		String rootAddress = BucketInfo.getBucket("chunkmapper-a") + "/f_";
 		for (Rectangle r : rectangles) {
 			if (myRectangle.intersects(r)) {
 				URL url = new URL(rootAddress + r.x + "_" + r.y + "_" + r.width + "_" + r.height);
-				readFile(url, out);
+				System.out.println(url);
+				out.append(readFile(url));
 			}
 		}
-		cache2.put(p, out);
 		return out;
 	}
 
-	private static FileContents readFile(URL url, FileContents out) throws IOException, DataFormatException {
+	private static FileContents readFile(URL url) throws IOException, DataFormatException {
+		if (cache2.containsKey(url)) {
+			return cache2.get(url);
+		}
+		FileContents out = new FileContents();
 		
 		DataInputStream in = new DataInputStream(new ByteArrayInputStream(Zip.inflate(url.openStream())));
 		try {
@@ -171,6 +180,7 @@ public class OsmosisParser {
 				int len = in.readInt();
 				byte[] data = new byte[len];
 				in.readFully(data);
+				
 				switch(type) {
 				case NODE:
 					out.nodes.add(OSMContainer.Node.parseFrom(data));
@@ -187,6 +197,7 @@ public class OsmosisParser {
 
 		}
 		in.close();
+		cache2.put(url, out);
 		return out;
 	}
 

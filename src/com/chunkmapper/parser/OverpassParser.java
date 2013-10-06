@@ -36,12 +36,12 @@ public class OverpassParser extends Parser {
 		reader.close();
 		return out;
 	}
-	
+
 	public static OverpassObject getObject(int regionx, int regionz) throws IOException {
-//		if (true)
-//		throw new RuntimeException("Don't call me");
+		//		if (true)
+		//		throw new RuntimeException("Don't call me");
 		Point p = new Point(regionx, regionz);
-		if (cache.contains(p)) {
+		if (cache.containsKey(p)) {
 			return cache.get(p);
 		} else {
 			OverpassObject o = doGetObject(regionx, regionz, false);
@@ -59,20 +59,20 @@ public class OverpassParser extends Parser {
 		}
 		pw.close();
 		Runtime.getRuntime().exec("open test.xml");
-//		System.exit(0);
+		//		System.exit(0);
 	}
 
 	private static OverpassObject doGetObject(int regionx, int regionz, boolean test) throws IOException {
 		ArrayList<String> lines = OverpassDownloader.getLines(regionx, regionz, test);
-//				spit(lines);
+		//				spit(lines);
 		//		ArrayList<String> lines = getLines();
 		HashMap<Long, Point> locations = getLocations(lines);
 		OverpassObject out = new OverpassObject();
-//		ArrayList<Way> ways = new ArrayList<Way>();
+		//		ArrayList<Way> ways = new ArrayList<Way>();
 		HashMap<Long, Way> wayMap = new HashMap<Long, Way>();
 		long wayKey = 0;
 		Way currWay = null;
-//		ArrayList<Node> nodes = new ArrayList<Node>();
+		//		ArrayList<Node> nodes = new ArrayList<Node>();
 		Node currNode = null;
 
 		for (String line : lines) {
@@ -80,7 +80,7 @@ public class OverpassParser extends Parser {
 			if (tag == null)
 				continue;
 			if (tag.equals("way")) {
-				
+
 				wayKey = Long.parseLong(getValue(line, "id"));
 				currWay = new Way(wayKey);
 			}
@@ -101,7 +101,7 @@ public class OverpassParser extends Parser {
 			}
 			if (tag.equals("/way")) {
 				currWay.calculateBbox();
-//				ways.add(currWay);
+				//				ways.add(currWay);
 				out.ways.add(currWay);
 				wayMap.put(wayKey, currWay);
 				currWay = null;
@@ -120,12 +120,19 @@ public class OverpassParser extends Parser {
 					Runtime.getRuntime().exec("open error.xml");
 					System.exit(0);
 				}
-				out.nodes.add(currNode);
-//				nodes.add(currNode);
+				boolean include = false;
+				for (String k : currNode.map.keySet()) {
+					String v = currNode.map.get(k);
+					include |= k.equals("place");
+					include |= k.equals("tourism") && (v.equals("alpine_hut") || v.equals("wilderness_hut"));
+					include |= k.equals("sport") && (v.equals("rugby") || v.equals("rugby_league") || v.equals("rugby_union"));
+				}
+				if (include)
+					out.nodes.add(currNode);
 			}
 		}
 		Relation relation = null;
-//		ArrayList<Relation> relations = new ArrayList<Relation>();
+		//		ArrayList<Relation> relations = new ArrayList<Relation>();
 		for (String line : lines) {
 			String tag = getTag(line);
 			if (tag == null)
@@ -150,7 +157,7 @@ public class OverpassParser extends Parser {
 			}
 			if (tag.equals("/relation")) {
 				relation.calculateBbox();
-//				relations.add(relation);
+				//				relations.add(relation);
 				out.relations.add(relation);
 				relation = null;
 			}

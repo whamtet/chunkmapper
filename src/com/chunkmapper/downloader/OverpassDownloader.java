@@ -1,8 +1,11 @@
 package com.chunkmapper.downloader;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
@@ -26,7 +29,6 @@ import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 
 import com.chunkmapper.Point;
-import com.chunkmapper.parser.Nominatim;
 
 public class OverpassDownloader {
 	private static final int NUM_DOWNLOADING_THREADS = 6;
@@ -91,6 +93,13 @@ public class OverpassDownloader {
 			while ((tempLine = in.readLine()) != null) {
 				lines.add(tempLine);
 			}
+			//write into temp file
+//			PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter("lines.xml")));
+//			for (String line : lines) {
+//				pw.println(line);
+//			}
+//			pw.close();
+//			Runtime.getRuntime().exec("open lines.xml");
 			return lines;
 		} finally {
 			try {

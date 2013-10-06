@@ -81,7 +81,7 @@ public  class OverpassObject {
 				if (p.z < minz)
 					minz = p.z;
 			}
-			bbox = new Rectangle(minx, minz, maxx - minx, maxz - minz);
+			bbox = new Rectangle(minx, minz, 1 + maxx - minx, 1 + maxz - minz);
 		}
 	}
 	public static class Node {
