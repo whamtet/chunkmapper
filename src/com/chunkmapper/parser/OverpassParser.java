@@ -123,9 +123,7 @@ public class OverpassParser extends Parser {
 				boolean include = false;
 				for (String k : currNode.map.keySet()) {
 					String v = currNode.map.get(k);
-					include |= k.equals("place");
-					include |= k.equals("tourism") && (v.equals("alpine_hut") || v.equals("wilderness_hut"));
-					include |= k.equals("sport") && (v.equals("rugby") || v.equals("rugby_league") || v.equals("rugby_union"));
+					include |= include(k, v, include);
 				}
 				if (include)
 					out.nodes.add(currNode);
@@ -164,6 +162,12 @@ public class OverpassParser extends Parser {
 		}
 
 		return out;
+	}
+	public static boolean include(String k, String v, boolean include) {
+		include |= k.equals("place");
+		include |= k.equals("tourism") && (v.equals("alpine_hut") || v.equals("wilderness_hut"));
+		include |= k.equals("sport") && (v.equals("rugby") || v.equals("rugby_league") || v.equals("rugby_union"));
+		return include;
 	}
 
 }
