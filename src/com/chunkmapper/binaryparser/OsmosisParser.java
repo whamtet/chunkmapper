@@ -156,7 +156,7 @@ public class OsmosisParser {
 		FileContents out = new FileContents();
 		int x = regionx * 512, z = regionz * 512;
 		Rectangle myRectangle = new Rectangle(x, z, 512, 512);
-		String rootAddress = BucketInfo.getBucket("chunkmapper-a") + "/f_";
+		String rootAddress = BucketInfo.getBucket("chunkmapper-osm2") + "/f_";
 		for (Rectangle r : rectangles) {
 			if (myRectangle.intersects(r)) {
 				URL url = new URL(rootAddress + r.x + "_" + r.y + "_" + r.width + "_" + r.height);
