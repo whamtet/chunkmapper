@@ -8,7 +8,6 @@ import com.chunkmapper.Utila;
 import com.chunkmapper.heights.HGTFile2;
 import com.chunkmapper.parser.Nominatim;
 import com.chunkmapper.protoc.admin.HeightsInfo;
-import com.chunkmapper.resourceinfo.HeightsResourceInfo;
 
 public class HeightsReaderS3 implements HeightsReader {
 	private static final int LEN = 512 + 2 * Utila.HEIGHTS_START;
@@ -23,8 +22,8 @@ public class HeightsReaderS3 implements HeightsReader {
 
 	public boolean mostlyLand() {
 		int sumHeight = 0;
-		for (int i = 0; i < HeightsResourceInfo.LEN; i++) {
-			for (int j = 0; j < HeightsResourceInfo.LEN; j++) {
+		for (int i = 0; i < LEN; i++) {
+			for (int j = 0; j < LEN; j++) {
 				sumHeight += cache[i][j];
 			}
 		}

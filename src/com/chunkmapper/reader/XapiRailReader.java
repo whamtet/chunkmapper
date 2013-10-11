@@ -69,9 +69,6 @@ public class XapiRailReader {
 		heights[z][x] = h;
 		this.railType[z][x] = railType;
 	}
-	private XapiRailReader(int regionx, int regionz) throws IllegalArgumentException, NoSuchElementException, IOException, InterruptedException, FileNotYetAvailableException, URISyntaxException, DataFormatException {
-		this(regionx, regionz, new HeightsReaderImpl(regionx, regionz), 1);
-	}
 
 	public XapiRailReader(int regionx, int regionz, HeightsReader heightsReader, int verticalExaggeration) throws IllegalArgumentException, NoSuchElementException, IOException, InterruptedException, FileNotYetAvailableException, URISyntaxException, DataFormatException {
 		x0 = regionx * 512; z0 = regionz * 512;
