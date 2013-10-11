@@ -23,11 +23,13 @@ public class LevelDat {
 
 	public LevelDat(File loadedLevelDatFile) throws IOException {
 		this.store = loadedLevelDatFile;
-		//		CompoundTag data;
-		//			InputStream in = new BufferedInputStream(new FileInputStream(store));
-		//			data = NbtIo.readCompressed(in);
-		//			in.close();
-		this.data = getRoot();
+		if (store.exists()) {
+			InputStream in = new BufferedInputStream(new FileInputStream(store));
+			data = NbtIo.readCompressed(in);
+			in.close();
+		} else {
+			this.data = getRoot();
+		}
 	}
 	public void save() throws IOException {
 		File parent = store.getParentFile();
@@ -57,6 +59,12 @@ public class LevelDat {
 		CompoundTag Data = data.getCompound("Data");
 		CompoundTag Player = Data.getCompound("Player");
 		ListTag<DoubleTag> Pos = (ListTag<DoubleTag>) Player.getList("Pos");
+		System.out.println(store);
+		System.out.println("***Pos***");
+		for (int i = 0; i < 3; i++) {
+			System.out.println(Pos.get(i).data);
+		}
+		System.out.println("***");
 		double x = Pos.get(0).data;
 		double z = Pos.get(2).data;
 		return new Point((int) x, (int) z);
@@ -153,9 +161,9 @@ public class LevelDat {
 		Player1.putByte("CanPickUpLoot", (byte) 0);
 
 		ListTag<DoubleTag> Pos1 = new ListTag<DoubleTag>();
-		Pos1.add(new DoubleTag("", -1362.3328758265166));
-		Pos1.add(new DoubleTag("", 6.981310257287419));
-		Pos1.add(new DoubleTag("", 304.7759157670519));
+		Pos1.add(new DoubleTag("", 0));
+		Pos1.add(new DoubleTag("", 255));
+		Pos1.add(new DoubleTag("", 0));
 		Player1.put("Pos", Pos1);
 
 		Player1.putInt("PortalCooldown", 0);

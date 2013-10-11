@@ -19,6 +19,7 @@ import java.util.zip.DataFormatException;
 
 import com.chunkmapper.Point;
 import com.chunkmapper.Zip;
+import com.chunkmapper.admin.BucketInfo;
 import com.chunkmapper.parser.Nominatim;
 import com.chunkmapper.parser.OverpassObject;
 import com.chunkmapper.parser.OverpassObject.Node;
@@ -26,17 +27,28 @@ import com.chunkmapper.parser.OverpassObject.Relation;
 import com.chunkmapper.parser.OverpassObject.Way;
 import com.chunkmapper.parser.OverpassParser;
 import com.chunkmapper.protoc.OSMContainer;
-import com.chunkmapper.protoc.admin.BucketInfo;
 import com.chunkmapper.protoc.admin.ProtocPrinter;
 
 public class OsmosisParser {
 	public static final int NODE = 0, WAY = 1, RELATION = 2;
 	private static final ConcurrentHashMap<Point, OverpassObject> cache = new ConcurrentHashMap<Point, OverpassObject>();
-//	private static final ConcurrentHashMap<Point, FileContents> cache2 = new ConcurrentHashMap<Point, FileContents>();
-	private static final ConcurrentHashMap<URL, FileContents> cache2 = new ConcurrentHashMap<URL, FileContents>();
+	private static final HashMap<URL, URL> lockMap = new HashMap<URL, URL>();
+	private static Object masterLock = new Object();
+		private static final ConcurrentHashMap<URL, FileContents> cache2 = new ConcurrentHashMap<URL, FileContents>();
 	private static ArrayList<Rectangle> rectangles;
 	private static Object key = new Object();
-	
+
+	private static URL getLock(URL url) {
+		synchronized(masterLock) {
+			if (lockMap.containsKey(url)) {
+				return lockMap.get(url);
+			} else {
+				lockMap.put(url, url);
+				return url;
+			}
+		}
+	}
+
 	public static OverpassObject getObject(int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
 		Point p = new Point(regionx, regionz);
 		if (cache.containsKey(p)) {
@@ -47,7 +59,7 @@ public class OsmosisParser {
 			return o;
 		}
 	}
-	
+
 	private static OverpassObject doGetObject(int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
 		FileContents contents = getFileContents(regionx, regionz);
 		OverpassObject out = new OverpassObject();
@@ -98,7 +110,7 @@ public class OsmosisParser {
 		}
 		return out;
 	}
-	
+
 	private static void setRectangles() throws InterruptedException {
 		synchronized(key) {
 			while (rectangles == null) {
@@ -111,7 +123,7 @@ public class OsmosisParser {
 	private static ArrayList<Rectangle> getRectangles() {
 		try {
 			URL url = new URL("http://chunkbackend.appspot.com/static/osm.txt");
-//			BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
+			//			BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
 			BufferedReader br = new BufferedReader(new FileReader(new File("/Users/matthewmolloy/python/webstore/static/osm.txt")));
 			ArrayList<Rectangle> out = new ArrayList<Rectangle>();
 			String line;
@@ -131,9 +143,9 @@ public class OsmosisParser {
 		}
 	}
 	public static void main(String[] args) throws Exception {
-//		checkPlace("new plymouth, nz");
-//		checkPlace("sydney");
-//		checkPlace("brisbane");
+		//		checkPlace("new plymouth, nz");
+		//		checkPlace("sydney");
+		//		checkPlace("brisbane");
 		checkPlace("london");
 	}
 	private static void checkPlace(String place) throws MalformedURLException, URISyntaxException, IOException, InterruptedException, DataFormatException {
@@ -142,16 +154,16 @@ public class OsmosisParser {
 		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
 		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
 		System.out.println(getObject(regionx, regionz));
-//		FileContents fileContents = getFileContents(regionx, regionz);
-//		System.out.println(fileContents);
-//		for (OSMContainer.Relation relation : fileContents.relations) {
-//			ProtocPrinter.PrintRelation(relation);
-//		}
+		//		FileContents fileContents = getFileContents(regionx, regionz);
+		//		System.out.println(fileContents);
+		//		for (OSMContainer.Relation relation : fileContents.relations) {
+		//			ProtocPrinter.PrintRelation(relation);
+		//		}
 		System.out.println(OverpassParser.getObject(regionx, regionz));
 		System.out.println("***");
 	}
 	private static FileContents getFileContents(int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
-		
+
 		setRectangles();
 		FileContents out = new FileContents();
 		int x = regionx * 512, z = regionz * 512;
@@ -160,7 +172,7 @@ public class OsmosisParser {
 		for (Rectangle r : rectangles) {
 			if (myRectangle.intersects(r)) {
 				URL url = new URL(rootAddress + r.x + "_" + r.y + "_" + r.width + "_" + r.height);
-				System.out.println(url);
+				
 				out.append(readFile(url));
 			}
 		}
@@ -168,37 +180,40 @@ public class OsmosisParser {
 	}
 
 	private static FileContents readFile(URL url) throws IOException, DataFormatException {
-		if (cache2.containsKey(url)) {
-			return cache2.get(url);
-		}
-		FileContents out = new FileContents();
-		
-		DataInputStream in = new DataInputStream(new ByteArrayInputStream(Zip.inflate(url.openStream())));
-		try {
-			while(true) {
-				byte type = in.readByte();
-				int len = in.readInt();
-				byte[] data = new byte[len];
-				in.readFully(data);
-				
-				switch(type) {
-				case NODE:
-					out.nodes.add(OSMContainer.Node.parseFrom(data));
-					break;
-				case WAY:
-					out.ways.add(OSMContainer.Way.parseFrom(data));
-					break;
-				case RELATION:
-					out.relations.add(OSMContainer.Relation.parseFrom(data));
-					break;
-				}
+		synchronized(getLock(url)) {
+			if (cache2.containsKey(url)) {
+				return cache2.get(url);
 			}
-		} catch (EOFException e) {
+			System.out.println(url);
+			FileContents out = new FileContents();
 
+			DataInputStream in = new DataInputStream(new ByteArrayInputStream(Zip.inflate(url.openStream())));
+			try {
+				while(true) {
+					byte type = in.readByte();
+					int len = in.readInt();
+					byte[] data = new byte[len];
+					in.readFully(data);
+
+					switch(type) {
+					case NODE:
+						out.nodes.add(OSMContainer.Node.parseFrom(data));
+						break;
+					case WAY:
+						out.ways.add(OSMContainer.Way.parseFrom(data));
+						break;
+					case RELATION:
+						out.relations.add(OSMContainer.Relation.parseFrom(data));
+						break;
+					}
+				}
+			} catch (EOFException e) {
+
+			}
+			in.close();
+			cache2.put(url, out);
+			return out;
 		}
-		in.close();
-		cache2.put(url, out);
-		return out;
 	}
 
 }

@@ -9,8 +9,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.chunkmapper.MappedSquareManager;
 import com.chunkmapper.Point;
+import com.chunkmapper.interfaces.MappedSquareManager;
 
 public class TextDisplay implements MappedSquareManager {
 

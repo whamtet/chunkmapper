@@ -15,7 +15,7 @@ import java.util.zip.ZipInputStream;
 import com.chunkmapper.FileValidator;
 import com.chunkmapper.Utila;
 import com.chunkmapper.Zip;
-import com.chunkmapper.protoc.admin.BucketInfo;
+import com.chunkmapper.admin.BucketInfo;
 
 public class HGTFile {
 

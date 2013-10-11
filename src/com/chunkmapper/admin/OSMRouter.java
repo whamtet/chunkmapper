@@ -8,13 +8,16 @@ import com.chunkmapper.parser.OverpassObject;
 import com.chunkmapper.parser.OverpassParser;
 
 public class OSMRouter {
-	public static boolean isLiveMode;
+	private static boolean isLiveMode;
 	public static OverpassObject getObject(int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
 		if (isLiveMode) {
 			return OverpassParser.getObject(regionx, regionz);
 		} else {
 			return OsmosisParser.getObject(regionx, regionz);
 		}
+	}
+	public static void setLive() {
+		isLiveMode = true;
 	}
 
 }

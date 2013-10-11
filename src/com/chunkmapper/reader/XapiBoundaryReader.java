@@ -112,7 +112,7 @@ public class XapiBoundaryReader {
 		hasBorder = boundaries.size() > 0;
 
 		for (Boundary boundary : boundaries) {
-			if (boundary.adminLevel <= 6) {
+			if (boundary.adminLevel <= 4) {
 				int limit = boundary.points.size() - 1;
 				for (int i = 0; i < limit; i++) {
 					Point p1 = boundary.points.get(i), p2 = boundary.points.get(i+1);

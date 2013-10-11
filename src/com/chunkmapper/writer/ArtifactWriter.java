@@ -708,10 +708,17 @@ public class ArtifactWriter {
 	public static void addHut(Chunk chunk, String name) {
 		int h = getMeanHeight(chunk);
 		for (int y = 0; y < hut.ymax; y++) {
-			for (int x = 0; x < 16; x++) {
-				for (int z = 0; z < 16; z++) {
+			for (int z = 0; z < 16; z++) {
+				for (int x = 0; x < 16; x++) {
 					chunk.Blocks[y+h][z][x] = hut.blocks[y][z][x];
 					chunk.Data[y+h][z][x] = hut.data[y][z][x];
+				}
+			}
+		}
+		for (int y = h + hut.ymax; y < 256; y++) {
+			for (int z = 0; z < 16; z++) {
+				for (int x = 0; x < 16; x++) {
+					chunk.Blocks[y][z][x] = 0;
 				}
 			}
 		}
@@ -762,7 +769,7 @@ public class ArtifactWriter {
 		chunk.Blocks[h][z+1][x+1] = Blocka.Stone_Stairs;
 		chunk.Data[h][z+1][x] = Stairs.Ascending_North.val;
 		chunk.Data[h][z+1][x+1] = Stairs.Ascending_North.val;
-		
+
 		int numPrisoners = chunk.RANDOM.nextInt(20);
 		for (int i = 0; i < numPrisoners; i++) {
 			double xd = 2.3 + 7.4 * chunk.RANDOM.nextDouble() + chunk.xr;

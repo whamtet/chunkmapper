@@ -11,6 +11,11 @@ import javax.swing.JFrame;
 
 import org.apache.commons.io.FileUtils;
 
+import com.chunkmapper.admin.OSMRouter;
+import com.chunkmapper.interfaces.GeneratingLayer;
+import com.chunkmapper.interfaces.GlobalSettings;
+import com.chunkmapper.interfaces.MappedSquareManager;
+import com.chunkmapper.interfaces.PointManager;
 import com.chunkmapper.rail.HeightsCache;
 import com.chunkmapper.writer.LevelDat;
 import com.chunkmapper.writer.RegionWriter;
@@ -20,17 +25,17 @@ public class ManagingThread extends Thread {
 	private final File gameFolder;
 	private final MappedSquareManager mappedSquareManager;
 	private final PlayerIconManager playerIconManager;
-	private final int verticalExaggeration;
+	private final GlobalSettings globalSettings;
 	private final JFrame appFrame;
 	private final GeneratingLayer generatingLayer;
 	
 	public ManagingThread(double lat, double lon, File gameFolder, MappedSquareManager mappedSquareManager,
-			PlayerIconManager playerIconManager, int verticalExaggeration, JFrame appFrame,
+			PlayerIconManager playerIconManager, GlobalSettings globalSettings, JFrame appFrame,
 			GeneratingLayer generatingLayer) {
 		
 		this.generatingLayer = generatingLayer;
 		this.appFrame = appFrame;
-		this.verticalExaggeration = verticalExaggeration;
+		this.globalSettings = globalSettings;
 		this.mappedSquareManager = mappedSquareManager;
 		this.playerIconManager = playerIconManager;
 		this.lat = lat;
@@ -79,6 +84,9 @@ public class ManagingThread extends Thread {
 //				}
 //			}
 //		}
+		if (globalSettings.isLive()) {
+			OSMRouter.setLive();
+		}
 		generatingLayer.zoomTo();
 		System.out.println("generating " + gameFolder.getName());
 		if (!gameFolder.exists()) {
@@ -97,7 +105,7 @@ public class ManagingThread extends Thread {
 				throw new RuntimeException();
 			}
 		} else {
-			gameMetaInfo = new GameMetaInfo(metaInfoFile, lat, lon, verticalExaggeration);
+			gameMetaInfo = new GameMetaInfo(metaInfoFile, lat, lon, globalSettings.getVerticalExaggeration());
 		}
 
 		File loadedLevelDatFile = new File(gameFolder, "level.dat");

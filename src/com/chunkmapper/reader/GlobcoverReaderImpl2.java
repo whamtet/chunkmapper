@@ -20,11 +20,11 @@ import org.apache.commons.io.FileUtils;
 
 import com.chunkmapper.FileValidator;
 import com.chunkmapper.Utila;
+import com.chunkmapper.admin.BucketInfo;
 import com.chunkmapper.enumeration.Globcover;
 import com.chunkmapper.math.Matthewmatics;
 import com.chunkmapper.protoc.FileContainer.FileInfo;
 import com.chunkmapper.protoc.FileContainer.FileList;
-import com.chunkmapper.protoc.admin.BucketInfo;
 import com.chunkmapper.protoc.admin.FileListManager;
 import com.chunkmapper.protoc.admin.ServerInfoManager;
 

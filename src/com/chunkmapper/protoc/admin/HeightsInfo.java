@@ -9,6 +9,7 @@ import java.net.URL;
 import java.util.HashSet;
 import java.util.Iterator;
 
+import com.chunkmapper.admin.BucketInfo;
 import com.chunkmapper.protoc.HeightsContainer;
 
 public class HeightsInfo {

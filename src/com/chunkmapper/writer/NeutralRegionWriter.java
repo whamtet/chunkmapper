@@ -4,10 +4,10 @@ import java.io.DataOutputStream;
 import java.io.File;
 
 import com.chunkmapper.GameMetaInfo;
-import com.chunkmapper.MappedSquareManager;
 import com.chunkmapper.Point;
 import com.chunkmapper.Tasker;
 import com.chunkmapper.chunk.Chunk;
+import com.chunkmapper.interfaces.MappedSquareManager;
 import com.chunkmapper.manager.GlobcoverManager;
 import com.chunkmapper.multiplayer.MPPointManager;
 import com.chunkmapper.nbt.NbtIo;

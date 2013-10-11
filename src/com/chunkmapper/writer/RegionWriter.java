@@ -6,11 +6,11 @@ import java.util.Comparator;
 import java.util.concurrent.PriorityBlockingQueue;
 
 import com.chunkmapper.GameMetaInfo;
-import com.chunkmapper.MappedSquareManager;
 import com.chunkmapper.Point;
-import com.chunkmapper.PointManager;
 import com.chunkmapper.Tasker;
 import com.chunkmapper.chunk.Chunk;
+import com.chunkmapper.interfaces.MappedSquareManager;
+import com.chunkmapper.interfaces.PointManager;
 import com.chunkmapper.manager.GlobcoverManager;
 import com.chunkmapper.nbt.NbtIo;
 import com.chunkmapper.nbt.RegionFile;
