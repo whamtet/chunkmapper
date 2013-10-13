@@ -14,7 +14,9 @@ public class Utila {
 	static {
 		String os = System.getProperty("os.name").toLowerCase();
 		if (os.indexOf("win") >= 0) {
-			MINECRAFT_DIR = new File(FileUtils.getUserDirectory(), "\\.minecraft");
+			File appData = new File(System.getenv("APPDATA"));
+			MINECRAFT_DIR = new File(appData, ".minecraft");
+//			MINECRAFT_DIR = new File(FileUtils.getUserDirectory(), "/AppData/Roaming/.minecraft");
 		} else if (os.indexOf("mac") >= 0) {
 			MINECRAFT_DIR = new File(FileUtils.getUserDirectory(), "/Library/Application Support/minecraft");
 //			    			MINECRAFT_DIR = new File("wwffd");
