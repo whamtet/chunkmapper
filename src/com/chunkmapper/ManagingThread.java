@@ -28,11 +28,10 @@ public class ManagingThread extends Thread {
 	private final GlobalSettings globalSettings;
 	private final JFrame appFrame;
 	private final GeneratingLayer generatingLayer;
-	
+
 	public ManagingThread(double lat, double lon, File gameFolder, MappedSquareManager mappedSquareManager,
 			PlayerIconManager playerIconManager, GlobalSettings globalSettings, JFrame appFrame,
 			GeneratingLayer generatingLayer) {
-		
 		this.generatingLayer = generatingLayer;
 		this.appFrame = appFrame;
 		this.globalSettings = globalSettings;
@@ -43,8 +42,7 @@ public class ManagingThread extends Thread {
 		this.gameFolder = gameFolder;
 	}
 	public static void main(String[] args) throws Exception {
-		URL src = ManagingThread.class.getResource("/config/level.dat");
-		System.out.println(src);
+		new ManagingThread(0, 0, null, null, null, null, null, null);
 	}
 	private static File prepareDir(File f, boolean delete) {
 		if (delete && f.exists()) {
@@ -63,27 +61,27 @@ public class ManagingThread extends Thread {
 	@Override
 	public void run() {
 		//first need to check security
-//		if (!SecurityManager.isOfflineValid()) {
-//			String email = null;
-//			boolean isLoggedIn = false;
-//			while(!isLoggedIn) {
-//				LoginDialog dialog = new LoginDialog(appFrame, email);
-//				dialog.setVisible(true);
-//				if (dialog.cancelled) {
-//					generatingLayer.cancel();
-//					return;
-//				}
-//				email = dialog.getEmail();
-//				switch(SecurityManager.onlineValidity(email, dialog.getPassword())) {
-//				case SecurityManager.REQUIRES_LOGIN:
-//				(new SuspiciousPasswordDialog(appFrame)).setVisible(true);
-//				break;
-//				case SecurityManager.VALID:
-//				isLoggedIn = true;
-//				break;
-//				}
-//			}
-//		}
+		//		if (!SecurityManager.isOfflineValid()) {
+		//			String email = null;
+		//			boolean isLoggedIn = false;
+		//			while(!isLoggedIn) {
+		//				LoginDialog dialog = new LoginDialog(appFrame, email);
+		//				dialog.setVisible(true);
+		//				if (dialog.cancelled) {
+		//					generatingLayer.cancel();
+		//					return;
+		//				}
+		//				email = dialog.getEmail();
+		//				switch(SecurityManager.onlineValidity(email, dialog.getPassword())) {
+		//				case SecurityManager.REQUIRES_LOGIN:
+		//				(new SuspiciousPasswordDialog(appFrame)).setVisible(true);
+		//				break;
+		//				case SecurityManager.VALID:
+		//				isLoggedIn = true;
+		//				break;
+		//				}
+		//			}
+		//		}
 		if (globalSettings.isLive()) {
 			OSMRouter.setLive();
 		}
@@ -111,8 +109,8 @@ public class ManagingThread extends Thread {
 		File loadedLevelDatFile = new File(gameFolder, "level.dat");
 		if (!loadedLevelDatFile.exists()) {
 			try {
-//				URL src = ManagingThread.class.getResource("/config/level.dat");
-//				FileUtils.copyURLToFile(src, loadedLevelDatFile);
+				//				URL src = ManagingThread.class.getResource("/config/level.dat");
+				//				FileUtils.copyURLToFile(src, loadedLevelDatFile);
 				LevelDat loadedLevelDat = new LevelDat(loadedLevelDatFile);
 				String gameName = gameFolder.getName();
 				loadedLevelDat.setName(gameName);
@@ -123,7 +121,7 @@ public class ManagingThread extends Thread {
 				return;
 			}
 		}
-		
+
 		HeightsCache.deleteCache();
 
 		//now we need to create all our downloaders;
@@ -141,10 +139,10 @@ public class ManagingThread extends Thread {
 
 					regionWriter.addTask(p.x, p.z);
 				}
-//				double minDistance = pointManager.getDistanceToEdge(gameFolder);
-//				if (minDistance < 512) {
-//					System.err.println("Warning: minDistance " + minDistance);
-//				}
+				//				double minDistance = pointManager.getDistanceToEdge(gameFolder);
+				//				if (minDistance < 512) {
+				//					System.err.println("Warning: minDistance " + minDistance);
+				//				}
 				Thread.sleep(1000);
 			}
 		} catch (InterruptedException e) {
