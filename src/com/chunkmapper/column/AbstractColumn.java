@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Random;
 
 import com.chunkmapper.chunk.Chunk;
+import com.chunkmapper.enumeration.Biome;
 import com.chunkmapper.enumeration.Block;
 import com.chunkmapper.enumeration.Blocka;
 import com.chunkmapper.enumeration.DataSource;
@@ -12,11 +13,11 @@ import com.chunkmapper.enumeration.LenteTree;
 import com.chunkmapper.reader.HeightsReader;
 
 public abstract class AbstractColumn {
-	public static final Globcover TYPE = Globcover.NoData;
 	public static final Random RANDOM = new Random();
 	public final int absx, absz, h;
 	public LenteTree lenteTree;
 	public boolean IS_URBAN = false, IS_FOREST = false, HAS_WATER = false;
+	public byte biome = Biome.Ocean;
 	protected AbstractColumn(int absx, int absz) {
 		this.absx = absx;
 		this.absz = absz;

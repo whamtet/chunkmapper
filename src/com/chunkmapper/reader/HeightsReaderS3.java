@@ -53,6 +53,7 @@ public class HeightsReaderS3 implements HeightsReader {
 		double lon1 = regionx * 512. / 3600 - buffer, lon2 = lon1 + 512. / 3600 + 2 * buffer;
 		double lat2 = -regionz * 512. / 3600 + buffer, lat1 = lat2 - 512. / 3600 - 2 * buffer;
 
+		//this part gets height data from possibly more than one degree square
 		int loni1 = (int) Math.floor(lon1), loni2 = (int) Math.floor(lon2);
 		int lati1 = (int) Math.floor(lat1), lati2 = (int) Math.floor(lat2);
 		int width = loni2 - loni1 + 1, height = lati2 - lati1 + 1;

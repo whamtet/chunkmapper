@@ -1,6 +1,7 @@
 package com.chunkmapper.column;
 
 import com.chunkmapper.chunk.Chunk;
+import com.chunkmapper.enumeration.Biome;
 import com.chunkmapper.enumeration.Block;
 import com.chunkmapper.enumeration.Blocka;
 import com.chunkmapper.enumeration.DataSource;
@@ -9,6 +10,7 @@ import com.chunkmapper.enumeration.Gate;
 import com.chunkmapper.enumeration.Globcover;
 import com.chunkmapper.reader.FarmTypeReader;
 import com.chunkmapper.reader.HeightsReader;
+import com.chunkmapper.reader.UniformHeightsReader;
 import com.chunkmapper.writer.HorseWriter;
 import com.chunkmapper.writer.MobWriter;
 
@@ -16,10 +18,17 @@ public class RainfedCrops extends AbstractColumn {
 	public static final Globcover TYPE = Globcover.RainfedCrops;
 	//	public final byte cropType;
 	public final FarmType farmType;
-
+	
 	public RainfedCrops(int absx, int absz, FarmType farmType, HeightsReader heightsReader) {
 		super(absx, absz, heightsReader);
 		this.farmType = farmType;
+		super.biome = Biome.Savanna;
+	}
+	
+	public static void main(String[] args) throws Exception {
+		HeightsReader r = new UniformHeightsReader();
+		AbstractColumn col = new RainfedCrops(0, 0, FarmType.Carrots, r);
+		System.out.println(col.biome);
 	}
 
 	public void addColumn(Chunk chunk) {

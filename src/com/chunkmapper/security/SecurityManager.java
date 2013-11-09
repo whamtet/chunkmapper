@@ -184,8 +184,7 @@ public class SecurityManager {
 		return false;
 	}
 	public static void main(String[] args) throws Exception {
-		System.out.println(getKey());
-		System.out.println(isOfflineValid());
+		System.out.println("hi");
 	}
 
 }

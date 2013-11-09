@@ -8,6 +8,7 @@ import java.util.Random;
 import org.apache.commons.io.FileUtils;
 
 import com.chunkmapper.chunk.Chunk;
+import com.chunkmapper.enumeration.Biome;
 import com.chunkmapper.enumeration.LenteTree;
 import com.chunkmapper.nbt.NbtIo;
 import com.chunkmapper.nbt.RegionFile;
@@ -50,6 +51,7 @@ public class TestArtifact {
 		int chunkx = 0, chunkz = 0;
 		Chunk chunk = new Chunk(chunkx, chunkz, heights, chunkx, chunkz);
 		GenericWriter.addGrass(chunk);
+		
 //		ArtifactWriter.placePrison(chunk);
 //		ArtifactWriter.placeMarket(chunk);
 //		ArtifactWriter.placeLibrary(chunk);

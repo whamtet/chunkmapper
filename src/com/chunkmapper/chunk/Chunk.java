@@ -297,4 +297,8 @@ public class Chunk {
 		}
 	}
 
+	public void setBiome(int x, int z, byte biome) {
+		Biomes[z*16+x] = biome;
+	}
+
 }

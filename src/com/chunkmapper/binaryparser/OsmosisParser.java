@@ -34,7 +34,9 @@ public class OsmosisParser {
 	private static final ConcurrentHashMap<Point, OverpassObject> cache = new ConcurrentHashMap<Point, OverpassObject>();
 	private static final HashMap<URL, URL> lockMap = new HashMap<URL, URL>();
 	private static Object masterLock = new Object();
-		private static final ConcurrentHashMap<URL, FileContents> cache2 = new ConcurrentHashMap<URL, FileContents>();
+	
+	//still being accessed concurrently so best to be safe.
+	private static final ConcurrentHashMap<URL, FileContents> cache2 = new ConcurrentHashMap<URL, FileContents>();
 	private static ArrayList<Rectangle> rectangles;
 	private static Object key = new Object();
 

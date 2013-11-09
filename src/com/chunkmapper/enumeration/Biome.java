@@ -1,8 +1,42 @@
 package com.chunkmapper.enumeration;
-
-public enum Biome {
-	PLAINS ((byte) 1), DESERT ((byte) 2), FOREST ((byte) 4), TAIGA ((byte) 5), ICE ((byte) 12), JUNGLE ((byte) 21),
-	PINE ((byte) 30), SPARSE_FOREST ((byte) 31), OCEAN ((byte) 0), SWAMP ((byte) 6);
-	public final byte val;
-	Biome(byte b) {val = b;}
-}
+  public class Biome {
+  		public static final byte Ocean = 0;
+		public static final byte Plains = 1;
+		public static final byte Desert = 2;
+		public static final byte ExtremeHills = 3;
+		public static final byte Forest = 4;
+		public static final byte Taiga = 5;
+		public static final byte Swampland = 6;
+		public static final byte River = 7;
+		public static final byte Hell = 8;
+		public static final byte Sky = 9;
+		public static final byte FrozenOcean = 10;
+		public static final byte FrozenRiver = 11;
+		public static final byte IcePlains = 12;
+		public static final byte IceMountains = 13;
+		public static final byte MushroomIsland = 14;
+		public static final byte MushroomIslandShore = 15;
+		public static final byte Beach = 16;
+		public static final byte DesertHills = 17;
+		public static final byte ForestHills = 18;
+		public static final byte TaigaHills = 19;
+		public static final byte ExtremeHillsEdge = 20;
+		public static final byte Jungle = 21;
+		public static final byte JungleHills = 22;
+		public static final byte JungleEdge = 23;
+		public static final byte DeepOcean = 24;
+		public static final byte StoneBeach = 25;
+		public static final byte ColdBeach = 26;
+		public static final byte BirchForest = 27;
+		public static final byte BirchForestHills = 28;
+		public static final byte RoofedForest = 29;
+		public static final byte ColdTaiga = 30;
+		public static final byte ColdTaigaHills = 31;
+		public static final byte MegaTaiga = 32;
+		public static final byte MegaTaigaHills = 33;
+		public static final byte Savanna = 35;
+		public static final byte SavannaPlateau = 36;
+		public static final byte Mesa = 37;
+		public static final byte MesaPlateauF = 38;
+		public static final byte MesaPlateau = 39;
+  }

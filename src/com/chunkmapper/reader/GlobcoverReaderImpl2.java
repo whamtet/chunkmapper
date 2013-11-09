@@ -2,31 +2,25 @@ package com.chunkmapper.reader;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintWriter;
-import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashSet;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
-
-import org.apache.commons.io.FileUtils;
 
 import com.chunkmapper.FileValidator;
 import com.chunkmapper.Utila;
 import com.chunkmapper.admin.BucketInfo;
 import com.chunkmapper.enumeration.Globcover;
 import com.chunkmapper.math.Matthewmatics;
+import com.chunkmapper.parser.Nominatim;
 import com.chunkmapper.protoc.FileContainer.FileInfo;
 import com.chunkmapper.protoc.FileContainer.FileList;
 import com.chunkmapper.protoc.admin.FileListManager;
-import com.chunkmapper.protoc.admin.ServerInfoManager;
 
 public class GlobcoverReaderImpl2 implements GlobcoverReader {
 	public static final int REGION_WIDTH = 50;
@@ -136,8 +130,8 @@ public class GlobcoverReaderImpl2 implements GlobcoverReader {
 //		return true;
 	}
 	public static void main(String[] args) throws Exception {
-//		double[] latlon = geocode.core.placeToCoords("auckland, nz");
-		double[] latlon = {-43.88, -176.15};
+		double[] latlon = Nominatim.getPoint("new plymouth, nz");
+//		double[] latlon = {-43.88, -176.15};
 		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
 		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
 //		int globx = Matthewmatics.div(regionx, REGION_WIDTH), globz = Matthewmatics.div(regionz, REGION_WIDTH);
@@ -146,7 +140,13 @@ public class GlobcoverReaderImpl2 implements GlobcoverReader {
 //		FileUtils.copyFile(cacheFile, destFile);
 //		Runtime.getRuntime().exec("open " + destFile.toString());
 		GlobcoverReaderImpl2 reader = new GlobcoverReaderImpl2(regionx, regionz);
-		System.out.println(reader.mostlyLand());
+		HashSet<Globcover> globcovers = new HashSet<Globcover>();
+		for (int i = 0; i < 512; i++) {
+			for (int j = 0; j < 512; j++) {
+				globcovers.add(reader.getGlobcover(i, j));
+			}
+		}
+		System.out.println(globcovers);
 //		System.out.println(reader.getGlobcover(100, 100));
 		
 //		PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter("/Users/matthewmolloy/python/wms/data.csv")));

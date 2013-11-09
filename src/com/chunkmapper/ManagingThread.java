@@ -32,6 +32,9 @@ public class ManagingThread extends Thread {
 	public ManagingThread(double lat, double lon, File gameFolder, MappedSquareManager mappedSquareManager,
 			PlayerIconManager playerIconManager, GlobalSettings globalSettings, JFrame appFrame,
 			GeneratingLayer generatingLayer) {
+//		if (true) {
+//			throw new RuntimeException();
+//		}
 		this.generatingLayer = generatingLayer;
 		this.appFrame = appFrame;
 		this.globalSettings = globalSettings;

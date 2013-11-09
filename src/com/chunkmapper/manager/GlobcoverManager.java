@@ -40,6 +40,7 @@ import com.chunkmapper.enumeration.Block;
 import com.chunkmapper.enumeration.FarmType;
 import com.chunkmapper.enumeration.Globcover;
 import com.chunkmapper.math.Matthewmatics;
+import com.chunkmapper.parser.Nominatim;
 import com.chunkmapper.reader.DensityReader;
 import com.chunkmapper.reader.FarmTypeReader;
 import com.chunkmapper.reader.FerryReader;
@@ -81,10 +82,26 @@ public class GlobcoverManager {
 	private final ArtifactWriter artifactWriter = new ArtifactWriter();
 	public final int regionx, regionz;
 	public final Random RANDOM = new Random();
-	private final VineyardReader vineyardReader;
-	private final OrchardReader orchardReader;
 
-	private final AbstractColumn[][] columns = new AbstractColumn[512][512];
+	public final AbstractColumn[][] columns = new AbstractColumn[512][512];
+	
+	public static void main(String[] args) throws Exception {
+		double[] latlon = Nominatim.getPoint("new plymouth, nz");
+//		double[] latlon = {-43.88, -176.15};
+		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
+		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
+		GlobcoverManager manager = new GlobcoverManager(regionx, regionz, 1);
+		
+		for (int i = 0; i < 512; i++) {
+			for (int j = 0; j < 512; j++) {
+				if (manager.columns[i][j] instanceof RainfedCrops) {
+					System.out.println("crops");
+					System.exit(0);
+				}
+			}
+		}
+		System.out.println("no crops");
+	}
 
 	public GlobcoverManager(int regionx, int regionz, int verticalExaggeration) throws FileNotYetAvailableException, IOException, IllegalArgumentException, NoSuchElementException, InterruptedException, URISyntaxException, DataFormatException {
 		this.regionx = regionx; this.regionz = regionz;
@@ -94,8 +111,6 @@ public class GlobcoverManager {
 		allWater = heightsReader.isAllWater() && !ferryReader.hasAFerry;
 		
 		if (allWater) {
-			orchardReader = null;
-			vineyardReader = null;
 			railReader = null;
 			poiReader = null;
 			densityReader = null;
@@ -106,8 +121,8 @@ public class GlobcoverManager {
 			hutReader = null;
 			return;
 		}
-		orchardReader = new OrchardReader(regionx, regionz);
-		vineyardReader = new VineyardReader(regionx, regionz);
+		OrchardReader orchardReader = new OrchardReader(regionx, regionz);
+		VineyardReader vineyardReader = new VineyardReader(regionx, regionz);
 		hutReader = new HutReader(regionx, regionz);
 		pathReader = new PathReader(regionx, regionz);
 		highwayReader = new XapiHighwayReader(regionx, regionz, heightsReader);
@@ -123,7 +138,7 @@ public class GlobcoverManager {
 		boolean includeLivestock = !railReader.hasRails;
 
 		FarmTypeReader farmTypeReader = null;
-		if (includeLivestock)
+//		if (includeLivestock)
 			farmTypeReader = new FarmTypeReader();
 		poiReader = new POIReader(regionx, regionz);
 
@@ -147,7 +162,6 @@ public class GlobcoverManager {
 					continue;
 				}
 
-				final int h = heightsReader.getHeightij(i, j);
 				if (lakeReader.hasWaterij(i, j)) {
 					columns[i][j] = new Lake(absx, absz, heightsReader);
 					continue;
@@ -275,6 +289,7 @@ public class GlobcoverManager {
 			for (int j = 0; j < 16; j++) {
 				AbstractColumn col = columns[i + chunkz*16][j + chunkx*16];
 				col.addColumn(chunk);
+				chunk.setBiome(j, i, col.biome);
 				chunkHasUrban |= col.IS_URBAN;
 				chunkAllForest &= col.IS_FOREST;
 				chunkHasWater |= col.HAS_WATER;

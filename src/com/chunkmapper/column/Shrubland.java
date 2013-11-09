@@ -3,6 +3,7 @@ package com.chunkmapper.column;
 import java.io.IOException;
 
 import com.chunkmapper.chunk.Chunk;
+import com.chunkmapper.enumeration.Biome;
 import com.chunkmapper.enumeration.Globcover;
 import com.chunkmapper.enumeration.LenteTree;
 import com.chunkmapper.math.StaticSobol;
@@ -18,6 +19,7 @@ public class Shrubland extends AbstractColumn {
 		if (StaticSobol.hasObject(absx, absz, treeSpacing)) {
 				lenteTree = LenteTree.randomTree(LenteTree.Shrubland);
 		}
+		super.biome = Biome.Savanna;
 	}
 	public Shrubland(int absx, int absz, HeightsReader heightsReader) {
 		this(absx, absz, heightsReader, 4);
