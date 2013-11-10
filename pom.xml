@@ -25,6 +25,7 @@
 		<artifactId>httpclient</artifactId>
 		<version>4.3</version>
 	</dependency>
+        
 	
   <dependency>
   	<groupId>commons-io</groupId>
@@ -41,5 +42,11 @@
   	<artifactId>simple</artifactId>
   	<version>5.1.5</version>
   </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpmime</artifactId>
+      <version>4.2.3</version>
+      <type>jar</type>
+    </dependency>
   </dependencies>
 </project>

@@ -12,6 +12,7 @@ import com.chunkmapper.chunk.Chunk;
 import com.chunkmapper.interfaces.MappedSquareManager;
 import com.chunkmapper.interfaces.PointManager;
 import com.chunkmapper.manager.GlobcoverManager;
+import com.chunkmapper.mapper.Mapper2;
 import com.chunkmapper.nbt.NbtIo;
 import com.chunkmapper.nbt.RegionFile;
 
@@ -105,6 +106,8 @@ public class RegionWriter extends Tasker {
 		pointManager.updateStore(task);
 		gameMetaInfo.incrementChunksMade();
 		mappedSquareManager.addPoint(new Point(task.x + rootPoint.x, task.z + rootPoint.z));
+                
+                Mapper2.postRegion(regionFolder, regionx, regionz, rootPoint);
 	}
 
 }
