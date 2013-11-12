@@ -107,7 +107,7 @@ public class RegionWriter extends Tasker {
 		gameMetaInfo.incrementChunksMade();
 		mappedSquareManager.addPoint(new Point(task.x + rootPoint.x, task.z + rootPoint.z));
                 
-                Mapper2.postRegion(regionFolder, regionx, regionz, rootPoint);
+        Mapper2.postRegion(regionFolder, task.x, task.z, rootPoint);
 	}
 
 }
