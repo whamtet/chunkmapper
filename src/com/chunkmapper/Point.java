@@ -1,8 +1,5 @@
 package com.chunkmapper;
 
-
-
-
 public class Point extends java.awt.Point implements Comparable<Point> {
 //	public static Point pointFromCoordinate(Coordinate c) {
 //		return new Point((int) (c.x * 3600), (int) -(c.y * 3600));

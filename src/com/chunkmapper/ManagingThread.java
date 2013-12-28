@@ -15,6 +15,7 @@ import com.chunkmapper.admin.OSMRouter;
 import com.chunkmapper.interfaces.GeneratingLayer;
 import com.chunkmapper.interfaces.GlobalSettings;
 import com.chunkmapper.interfaces.MappedSquareManager;
+import com.chunkmapper.interfaces.PlayerIconManager;
 import com.chunkmapper.interfaces.PointManager;
 import com.chunkmapper.rail.HeightsCache;
 import com.chunkmapper.writer.LevelDat;

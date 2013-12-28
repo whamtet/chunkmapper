@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
 import com.chunkmapper.reader.FileNotYetAvailableException;
@@ -44,7 +45,17 @@ public abstract class Tasker {
 
 
 	public Tasker(int numThreads) {
-		executorService = Executors.newFixedThreadPool(numThreads);
+		//executorService = Executors.newFixedThreadPool(numThreads);
+		executorService = Executors.newFixedThreadPool(numThreads, new ThreadFactory() {
+			@Override
+			public Thread newThread(Runnable arg0) {
+				Thread t = new Thread(arg0);
+				t.setPriority(Thread.MIN_PRIORITY);
+				// TODO Auto-generated method stub
+				return t;
+			}
+			
+		});
 		for (int i = 0; i < numThreads; i++) {
 			executorService.execute(new Runnable() {
 				public void run() {

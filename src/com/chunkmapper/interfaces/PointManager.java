@@ -12,7 +12,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import com.chunkmapper.PlayerIconManager;
 import com.chunkmapper.Point;
 import com.chunkmapper.math.Matthewmatics;
 import com.chunkmapper.nbt.CompoundTag;
