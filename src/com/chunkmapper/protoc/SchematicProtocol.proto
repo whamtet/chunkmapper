@@ -1,8 +1,6 @@
 syntax = "proto2";
 
-option optimize_for = LITE_RUNTIME;
 option java_package = "com.chunkmapper.protoc";
-
 
 message Schematic {
 	required bytes block_data = 1;

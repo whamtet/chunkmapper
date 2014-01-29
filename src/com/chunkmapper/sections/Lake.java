@@ -58,7 +58,7 @@ public class Lake extends Section {
 		return true;
 	}
 	public boolean isClosed() {
-		return points.get(0).equals(points.get(points.size() - 1));
+		return points.size() > 0 && points.get(0).equals(points.get(points.size() - 1));
 	}
 	public boolean isOpen() {
 		return !isClosed();

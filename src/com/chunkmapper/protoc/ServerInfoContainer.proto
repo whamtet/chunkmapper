@@ -2,7 +2,6 @@ syntax = "proto2";
 
 option java_package = "com.chunkmapper.protoc";
 
-option optimize_for = LITE_RUNTIME;
 message ServerInfo {
 	optional string rail_address = 1;
 	optional string river_address = 2;

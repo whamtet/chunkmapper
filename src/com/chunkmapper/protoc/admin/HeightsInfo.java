@@ -18,8 +18,11 @@ public class HeightsInfo {
 	private static void setPoints() {
 		InputStream in = null;
 		try {
+			System.out.println("d");
 			URL url = new URL(BucketInfo.getBucket("chunkmapper-admin") + "/heights2");
+			System.out.println("e");
 			in = new BufferedInputStream(url.openStream());
+			System.out.println("f");
 			HeightsContainer.Heights heights = HeightsContainer.Heights.parseFrom(in);
 			points = new HashSet<Point>();
 			Iterator<Integer> lats = heights.getLatsList().iterator(), lons = heights.getLonsList().iterator();
@@ -40,13 +43,17 @@ public class HeightsInfo {
 		}
 	}
 	public static boolean hasPoint(int lat, int lon) throws InterruptedException {
+		System.out.println("a");
 		synchronized(key) {
+			System.out.println("b");
 			while (points == null) {
+				System.out.println("c");
 				setPoints();
 				if (points == null)
 					Thread.sleep(1000);
 			}
 		}
+		System.out.println("e");
 		return points.contains(new Point(lat, lon));
 	}
 	public static void main(String[] args) throws Exception {

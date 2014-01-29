@@ -14,7 +14,9 @@ public class FarmTypeReader {
 		FarmType[] l = FarmType.getLivestockFarmTypes();
 		for (int i = 0; i < WIDTH; i++) {
 			for (int j = 0; j < WIDTH; j++) {
-				blockTypes[i][j] = l[random.nextInt(l.length)];
+//				blockTypes[i][j] = l[random.nextInt(l.length)];
+				//note: was 4
+				blockTypes[i][j] = l[random.nextInt(4)];
 			}
 		}
 	}

@@ -1,10 +1,11 @@
+#begin main
 -keep public class com.chunkmapper.Test
 -keep public class com.chunkmapper.parser.Nominatim {
 	public static double[] getPoint(java.lang.String);
 }
 -keep public class com.chunkmapper.Utila {
-        public static final int CHUNK_START;
-        public static final int CHUNK_END;
+    public static final int CHUNK_START;
+    public static final int CHUNK_END;
 	public static final int HEIGHTS_START;
 	public static final java.io.File CACHE;
 	public static final int Y_SCALE;
@@ -22,14 +23,12 @@
       public <init>(double, double, java.io.File, com.chunkmapper.interfaces.MappedSquareManager, com.chunkmapper.interfaces.PlayerIconManager, com.chunkmapper.interfaces.GlobalSettings, javax.swing.JFrame, com.chunkmapper.interfaces.GeneratingLayer);
       public static void blockingShutDown(com.chunkmapper.ManagingThread);
 }
-
 -keep interface com.chunkmapper.interfaces.GeneratingLayer
 -keep public interface com.chunkmapper.interfaces.GlobalSettings {
 	public boolean isLive();
 	public int getVerticalExaggeration();
 	public void setIsLive(boolean);
 	public void setVerticalExaggeration(int);
-
 }
 -keep public class com.chunkmapper.writer.LevelDat {
       public com.chunkmapper.Point getPlayerPosition();
@@ -39,6 +38,8 @@
       public final com.chunkmapper.Point rootPoint;
       public final int verticalExaggeration;
 }
--keep interface com.chunkmapper.interfaces.MappedSquareManager
+-keep public interface com.chunkmapper.interfaces.MappedSquareManager {
+      public void addPoint(com.chunkmapper.Point);
+}
 -keep interface com.chunkmapper.interfaces.PointManager
 -keep interface com.chunkmapper.interfaces.PlayerIconManager

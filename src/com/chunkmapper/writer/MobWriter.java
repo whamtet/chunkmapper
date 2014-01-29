@@ -11,13 +11,6 @@ import com.chunkmapper.reader.NameReader;
 
 public class MobWriter {
 	public static final Random RANDOM = new Random();
-	private static void shit() {
-		CompoundTag c = new CompoundTag();
-		//		:TAG_End :TAG_Byte :TAG_Short :TAG_Int :TAG_Long
-		//        :TAG_Float :TAG_Double :TAG_Byte_Array :TAG_String
-		//        :TAG_List :TAG_Compound :TAG_Int_Array])
-		ListTag l;
-	}
 	public static void addVillager(Chunk chunk, int profession, double x, double y, double z, boolean isChild) {
 
 		CompoundTag anon4 = new CompoundTag();

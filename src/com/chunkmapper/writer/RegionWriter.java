@@ -86,7 +86,6 @@ public class RegionWriter extends Tasker {
 
 		RegionFile regionFile = new RegionFile(f);
 
-		//
 		for (int x = 0; x < 32; x++) {
 			for (int z = 0; z < 32; z++) {
 				if (Thread.interrupted()) {
@@ -107,7 +106,7 @@ public class RegionWriter extends Tasker {
 		gameMetaInfo.incrementChunksMade();
 		mappedSquareManager.addPoint(new Point(task.x + rootPoint.x, task.z + rootPoint.z));
                 
-        Mapper2.postRegion(regionFolder, task.x, task.z, rootPoint);
+//        Mapper2.postRegion(regionFolder, task.x, task.z, rootPoint);
 	}
 
 }
