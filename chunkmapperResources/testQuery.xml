@@ -1,0 +1,15 @@
+<query type="relation">
+<has-kv k="natural" v="water" />
+</query>
+<print />
+<recurse type="relation-way" />
+<print />
+<recurse type="way-node" />
+<print />
+
+<query type="way">
+<has-kv k="natural" v="water" />
+</query>
+<print />
+<recurse type="way-node" />
+<print />

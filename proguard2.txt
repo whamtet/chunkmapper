@@ -1,0 +1,5 @@
+-keep public class com.chunkmapper.gui.Main {
+	public static void main(java.lang.String[]);
+}
+
+-dontusemixedcaseclassnames
