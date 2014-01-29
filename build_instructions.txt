@@ -2,12 +2,12 @@
 2)mkdir -p target/inspect
 3)cd target/inspect
 4)unzip ../chunkmapper2-0.0.1-SNAPSHOT.jar
-5)Open project in Eclipse and try running com.chunkmapper.gui.Main.  Java will complain about missing classpath entry
+5)Open project in Eclipse and try running com.chunkmapper.gui.Main.  Java will complain about missing classpath entry.  You may need to convert to maven project.
 6)Run Configurations -> Classpath -> Add gluegen-rt.jar, jogl-all.jar, gluegen & jogl natives.
 Order seems to be important: chunkmapper, jogl-all.jar, gluegen-rt.jar, maven-deps, runtime natives.
 7)Clean and rerun.  Should be sucessful.
-8)Export above run configuration, including build.xml
-9)Open build.xml and delete maven references to jogl-all and gluegen-rt (but retain runtime references).
+8)Export above run configuration, including build.xml.  Package required libraries into generated JAR.
+9)Open build.xml and delete maven references to jogl-all and gluegen-rt (but retain runtime references).  Also delete <fileset> reference to chunkmapper classes
 10)Add
 <fileset dir="/Users/matthewmolloy/workspace/chunkmapper2/target/inspect"/>
 <fileset dir="/Users/matthewmolloy/workspace/chunkmapper2/chunkmapperResources"/>
