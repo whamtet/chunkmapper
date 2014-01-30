@@ -9,28 +9,12 @@
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<plugins>
-			<!-- <plugin>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<configuration>
-					<archive>
-						<manifest>
-							<mainClass>com.chunkmapper.gui.Main</mainClass>
-						</manifest>
-					</archive>
-					<descriptorRefs>
-						<descriptorRef>jar-with-dependencies</descriptorRef>
-					</descriptorRefs>
-				</configuration>
-				<executions>
-					<execution>
-						<id>make-assembly</id> this is used for inheritance merges
-						<phase>package</phase> bind to the packaging phase
-						<goals>
-							<goal>single</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin> -->
+			<!-- <plugin> <artifactId>maven-assembly-plugin</artifactId> <configuration> 
+				<archive> <manifest> <mainClass>com.chunkmapper.gui.Main</mainClass> </manifest> 
+				</archive> <descriptorRefs> <descriptorRef>jar-with-dependencies</descriptorRef> 
+				</descriptorRefs> </configuration> <executions> <execution> <id>make-assembly</id> 
+				this is used for inheritance merges <phase>package</phase> bind to the packaging 
+				phase <goals> <goal>single</goal> </goals> </execution> </executions> </plugin> -->
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.0</version>
@@ -113,39 +97,37 @@
 		<dependency>
 			<groupId>gov.nasa</groupId>
 			<artifactId>gdal</artifactId>
-			<version>2.0.0</version>
+			<version>912.1822</version>
 		</dependency>
 		<dependency>
 			<groupId>gov.nasa</groupId>
 			<artifactId>gluegen-rt</artifactId>
-			<version>2.0.0</version>
-			<scope>provided</scope>
+			<version>912.1822</version>
 		</dependency>
 		<dependency>
 			<groupId>gov.nasa</groupId>
 			<artifactId>jogl-all</artifactId>
-			<version>2.0.0</version>
-			<scope>provided</scope>
+			<version>912.1822</version>
 		</dependency>
 		<dependency>
 			<groupId>gov.nasa</groupId>
 			<artifactId>plugin</artifactId>
-			<version>2.0.0</version>
+			<version>912.1822</version>
 		</dependency>
 		<dependency>
 			<groupId>gov.nasa</groupId>
 			<artifactId>vpf-symbols</artifactId>
-			<version>2.0.0</version>
+			<version>912.1822</version>
 		</dependency>
 		<dependency>
 			<groupId>gov.nasa</groupId>
 			<artifactId>worldwind</artifactId>
-			<version>2.0.0</version>
+			<version>912.1822</version>
 		</dependency>
 		<dependency>
 			<groupId>gov.nasa</groupId>
 			<artifactId>worldwindx</artifactId>
-			<version>2.0.0</version>
+			<version>912.1822</version>
 		</dependency>
 	</dependencies>
 </project>
