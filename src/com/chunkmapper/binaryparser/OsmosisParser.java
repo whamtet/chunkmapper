@@ -5,9 +5,8 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.EOFException;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -27,7 +26,6 @@ import com.chunkmapper.parser.OverpassObject.Relation;
 import com.chunkmapper.parser.OverpassObject.Way;
 import com.chunkmapper.parser.OverpassParser;
 import com.chunkmapper.protoc.OSMContainer;
-import com.chunkmapper.protoc.admin.ProtocPrinter;
 
 public class OsmosisParser {
 	public static final int NODE = 0, WAY = 1, RELATION = 2;
@@ -125,8 +123,8 @@ public class OsmosisParser {
 	private static ArrayList<Rectangle> getRectangles() {
 		try {
 			URL url = new URL("http://chunkbackend.appspot.com/static/osm.txt");
-			//			BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
-			BufferedReader br = new BufferedReader(new FileReader(new File("/Users/matthewmolloy/python/webstore/static/osm.txt")));
+			BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
+//			BufferedReader br = new BufferedReader(new FileReader(new File("/Users/matthewmolloy/python/webstore/static/osm.txt")));
 			ArrayList<Rectangle> out = new ArrayList<Rectangle>();
 			String line;
 			while ((line = br.readLine()) != null) {

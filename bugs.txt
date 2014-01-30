@@ -1,0 +1,4 @@
+-highlighting of icons
+-windows after double cancellation
+-predownload image of earth
+-select minecraft location menu

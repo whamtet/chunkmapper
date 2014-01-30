@@ -45,7 +45,6 @@ public abstract class Tasker {
 
 
 	public Tasker(int numThreads) {
-		//executorService = Executors.newFixedThreadPool(numThreads);
 		executorService = Executors.newFixedThreadPool(numThreads, new ThreadFactory() {
 			@Override
 			public Thread newThread(Runnable arg0) {
