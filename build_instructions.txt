@@ -9,7 +9,12 @@ Order seems to be important: chunkmapper, jogl-all.jar, gluegen-rt.jar, maven-de
 8)Export above run configuration, including build.xml.  Package required libraries into generated JAR.
 9)Open build.xml and delete maven references to jogl-all and gluegen-rt (but retain runtime references).  Also delete <fileset> reference to chunkmapper classes
 10)Add
-<fileset dir="/Users/matthewmolloy/workspace/chunkmapper2/target/inspect"/>
-<fileset dir="/Users/matthewmolloy/workspace/chunkmapper2/chunkmapperResources"/>
-11)cd <directory containing build.xml>
-12)ant
+<fileset dir="/Users/matthewmolloy/workspace/chunkmapper/target/inspect"/>
+<fileset dir="/Users/matthewmolloy/workspace/chunkmapper/chunkmapperResources"/>
+11)Add extra build task
+<target name="exe" depends="create_run_jar">
+	<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="launch4j.jar:xstream.jar" />
+	<launch4j configFile="launch4j.xml" />
+</target>
+12)cd <directory containing build.xml>
+13)ant

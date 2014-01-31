@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project default="create_run_jar" name="Create Runnable Jar for Project chunkmapper3 with Jar-in-Jar Loader">
+<project default="create_run_jar" name="Create Runnable Jar for Project chunkmapper with Jar-in-Jar Loader">
     <!--this file was created by Eclipse Runnable JAR Export Wizard-->
     <!--ANT 1.7 is required                                        -->
     <target name="create_run_jar">
-        <jar destfile="/Users/matthewmolloy/Desktop/testjar/Chunkmapper.jar">
+        <jar destfile="Chunkmapper.jar">
             <manifest>
                 <attribute name="Main-Class" value="org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader"/>
                 <attribute name="Rsrc-Main-Class" value="com.chunkmapper.gui.Main"/>
                 <attribute name="Class-Path" value="."/>
-                <attribute name="Rsrc-Class-Path" value="./ gluegen-rt.jar jogl-all.jar protobuf-java-2.5.0.jar httpclient-4.3.jar httpcore-4.3.jar commons-logging-1.1.3.jar commons-codec-1.6.jar commons-io-2.3.jar simple-5.1.5.jar httpmime-4.2.3.jar gdal-912.1822.jar gluegen-rt-912.1822.jar jogl-all-912.1822.jar plugin-912.1822.jar vpf-symbols-912.1822.jar worldwind-912.1822.jar worldwindx-912.1822.jar gluegen-rt-natives-linux-amd64.jar gluegen-rt-natives-linux-i586.jar gluegen-rt-natives-macosx-universal.jar gluegen-rt-natives-windows-amd64.jar gluegen-rt-natives-windows-i586.jar jogl-all-natives-linux-amd64.jar jogl-all-natives-linux-i586.jar jogl-all-natives-macosx-universal.jar jogl-all-natives-windows-amd64.jar jogl-all-natives-windows-i586.jar"/>
+                <attribute name="Rsrc-Class-Path" value="./ jogl-all.jar gluegen-rt.jar protobuf-java-2.5.0.jar httpclient-4.3.jar httpcore-4.3.jar commons-logging-1.1.3.jar commons-codec-1.6.jar commons-io-2.3.jar simple-5.1.5.jar httpmime-4.2.3.jar gdal-912.1822.jar gluegen-rt-912.1822.jar jogl-all-912.1822.jar plugin-912.1822.jar vpf-symbols-912.1822.jar worldwind-912.1822.jar worldwindx-912.1822.jar gluegen-rt-natives-linux-amd64.jar gluegen-rt-natives-linux-i586.jar gluegen-rt-natives-macosx-universal.jar gluegen-rt-natives-windows-amd64.jar gluegen-rt-natives-windows-i586.jar jogl-all-natives-linux-amd64.jar jogl-all-natives-linux-i586.jar jogl-all-natives-macosx-universal.jar jogl-all-natives-windows-amd64.jar jogl-all-natives-windows-i586.jar"/>
             </manifest>
             <zipfileset src="jar-in-jar-loader.zip"/>
-            <fileset dir="/Users/matthewmolloy/workspace/chunkmapper/target/inspect"/>
-            <fileset dir="/Users/matthewmolloy/workspace/chunkmapper/chunkmapperResources"/>
-            <zipfileset dir="/Users/matthewmolloy/Downloads/worldwind-daily-912.1822" includes="gluegen-rt.jar"/>
-            <zipfileset dir="/Users/matthewmolloy/Downloads/worldwind-daily-912.1822" includes="jogl-all.jar"/>
+            <fileset dir="/Users/matthewmolloy/workspace/chunkmapper/target/classes"/>
+        	<fileset dir="/Users/matthewmolloy/workspace/chunkmapper/chunkmapperResources"/>
+            <zipfileset dir="/Users/matthewmolloy/Downloads/ww2" includes="jogl-all.jar"/>
+            <zipfileset dir="/Users/matthewmolloy/Downloads/ww2" includes="gluegen-rt.jar"/>
             <zipfileset dir="/Users/matthewmolloy/.m2/repository/com/google/protobuf/protobuf-java/2.5.0" includes="protobuf-java-2.5.0.jar"/>
             <zipfileset dir="/Users/matthewmolloy/.m2/repository/org/apache/httpcomponents/httpclient/4.3" includes="httpclient-4.3.jar"/>
             <zipfileset dir="/Users/matthewmolloy/.m2/repository/org/apache/httpcomponents/httpcore/4.3" includes="httpcore-4.3.jar"/>
@@ -28,21 +28,54 @@
             <zipfileset dir="/Users/matthewmolloy/.m2/repository/gov/nasa/vpf-symbols/912.1822" includes="vpf-symbols-912.1822.jar"/>
             <zipfileset dir="/Users/matthewmolloy/.m2/repository/gov/nasa/worldwind/912.1822" includes="worldwind-912.1822.jar"/>
             <zipfileset dir="/Users/matthewmolloy/.m2/repository/gov/nasa/worldwindx/912.1822" includes="worldwindx-912.1822.jar"/>
-            <zipfileset dir="/Users/matthewmolloy/Downloads/worldwind-daily-912.1822" includes="gluegen-rt-natives-linux-amd64.jar"/>
-            <zipfileset dir="/Users/matthewmolloy/Downloads/worldwind-daily-912.1822" includes="gluegen-rt-natives-linux-i586.jar"/>
-            <zipfileset dir="/Users/matthewmolloy/Downloads/worldwind-daily-912.1822" includes="gluegen-rt-natives-macosx-universal.jar"/>
-            <zipfileset dir="/Users/matthewmolloy/Downloads/worldwind-daily-912.1822" includes="gluegen-rt-natives-windows-amd64.jar"/>
-            <zipfileset dir="/Users/matthewmolloy/Downloads/worldwind-daily-912.1822" includes="gluegen-rt-natives-windows-i586.jar"/>
-            <zipfileset dir="/Users/matthewmolloy/Downloads/worldwind-daily-912.1822" includes="jogl-all-natives-linux-amd64.jar"/>
-            <zipfileset dir="/Users/matthewmolloy/Downloads/worldwind-daily-912.1822" includes="jogl-all-natives-linux-i586.jar"/>
-            <zipfileset dir="/Users/matthewmolloy/Downloads/worldwind-daily-912.1822" includes="jogl-all-natives-macosx-universal.jar"/>
-            <zipfileset dir="/Users/matthewmolloy/Downloads/worldwind-daily-912.1822" includes="jogl-all-natives-windows-amd64.jar"/>
-            <zipfileset dir="/Users/matthewmolloy/Downloads/worldwind-daily-912.1822" includes="jogl-all-natives-windows-i586.jar"/>
+            <zipfileset dir="/Users/matthewmolloy/Downloads/ww2" includes="gluegen-rt-natives-linux-amd64.jar"/>
+            <zipfileset dir="/Users/matthewmolloy/Downloads/ww2" includes="gluegen-rt-natives-linux-i586.jar"/>
+            <zipfileset dir="/Users/matthewmolloy/Downloads/ww2" includes="gluegen-rt-natives-macosx-universal.jar"/>
+            <zipfileset dir="/Users/matthewmolloy/Downloads/ww2" includes="jogl-all-natives-linux-amd64.jar"/>
+            <zipfileset dir="/Users/matthewmolloy/Downloads/ww2" includes="jogl-all-natives-linux-i586.jar"/>
+            <zipfileset dir="/Users/matthewmolloy/Downloads/ww2" includes="jogl-all-natives-macosx-universal.jar"/>
         </jar>
     </target>
-    <target name="exe" depends="create_run_jar">
-	<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="launch4j.jar:xstream.jar" />
-	<launch4j configFile="launch4j.xml" />
-    </target>
-
+	<target name="windows_jar">
+	        <jar destfile="Chunkmapper_Windows.jar">
+	            <manifest>
+	                <attribute name="Main-Class" value="org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader"/>
+	                <attribute name="Rsrc-Main-Class" value="com.chunkmapper.gui.Main"/>
+	                <attribute name="Class-Path" value="."/>
+	                <attribute name="Rsrc-Class-Path" value="./ jogl-all.jar gluegen-rt.jar protobuf-java-2.5.0.jar httpclient-4.3.jar httpcore-4.3.jar commons-logging-1.1.3.jar commons-codec-1.6.jar commons-io-2.3.jar simple-5.1.5.jar httpmime-4.2.3.jar gdal-912.1822.jar gluegen-rt-912.1822.jar jogl-all-912.1822.jar plugin-912.1822.jar vpf-symbols-912.1822.jar worldwind-912.1822.jar worldwindx-912.1822.jar gluegen-rt-natives-linux-amd64.jar gluegen-rt-natives-linux-i586.jar gluegen-rt-natives-macosx-universal.jar gluegen-rt-natives-windows-amd64.jar gluegen-rt-natives-windows-i586.jar jogl-all-natives-linux-amd64.jar jogl-all-natives-linux-i586.jar jogl-all-natives-macosx-universal.jar jogl-all-natives-windows-amd64.jar jogl-all-natives-windows-i586.jar"/>
+	            </manifest>
+	            <zipfileset src="jar-in-jar-loader.zip"/>
+	            <fileset dir="/Users/matthewmolloy/workspace/chunkmapper/target/classes"/>
+	        	<fileset dir="/Users/matthewmolloy/workspace/chunkmapper/chunkmapperResources"/>
+	            <zipfileset dir="/Users/matthewmolloy/Downloads/ww2" includes="jogl-all.jar"/>
+	            <zipfileset dir="/Users/matthewmolloy/Downloads/ww2" includes="gluegen-rt.jar"/>
+	            <zipfileset dir="/Users/matthewmolloy/.m2/repository/com/google/protobuf/protobuf-java/2.5.0" includes="protobuf-java-2.5.0.jar"/>
+	            <zipfileset dir="/Users/matthewmolloy/.m2/repository/org/apache/httpcomponents/httpclient/4.3" includes="httpclient-4.3.jar"/>
+	            <zipfileset dir="/Users/matthewmolloy/.m2/repository/org/apache/httpcomponents/httpcore/4.3" includes="httpcore-4.3.jar"/>
+	            <zipfileset dir="/Users/matthewmolloy/.m2/repository/commons-logging/commons-logging/1.1.3" includes="commons-logging-1.1.3.jar"/>
+	            <zipfileset dir="/Users/matthewmolloy/.m2/repository/commons-codec/commons-codec/1.6" includes="commons-codec-1.6.jar"/>
+	            <zipfileset dir="/Users/matthewmolloy/.m2/repository/commons-io/commons-io/2.3" includes="commons-io-2.3.jar"/>
+	            <zipfileset dir="/Users/matthewmolloy/.m2/repository/self/simple/5.1.5" includes="simple-5.1.5.jar"/>
+	            <zipfileset dir="/Users/matthewmolloy/.m2/repository/org/apache/httpcomponents/httpmime/4.2.3" includes="httpmime-4.2.3.jar"/>
+	            <zipfileset dir="/Users/matthewmolloy/.m2/repository/gov/nasa/gdal/912.1822" includes="gdal-912.1822.jar"/>
+	            <zipfileset dir="/Users/matthewmolloy/.m2/repository/gov/nasa/plugin/912.1822" includes="plugin-912.1822.jar"/>
+	            <zipfileset dir="/Users/matthewmolloy/.m2/repository/gov/nasa/vpf-symbols/912.1822" includes="vpf-symbols-912.1822.jar"/>
+	            <zipfileset dir="/Users/matthewmolloy/.m2/repository/gov/nasa/worldwind/912.1822" includes="worldwind-912.1822.jar"/>
+	            <zipfileset dir="/Users/matthewmolloy/.m2/repository/gov/nasa/worldwindx/912.1822" includes="worldwindx-912.1822.jar"/>
+	            <zipfileset dir="/Users/matthewmolloy/Downloads/ww2" includes="gluegen-rt-natives-windows-amd64.jar"/>
+	            <zipfileset dir="/Users/matthewmolloy/Downloads/ww2" includes="gluegen-rt-natives-windows-i586.jar"/>
+	            <zipfileset dir="/Users/matthewmolloy/Downloads/ww2" includes="jogl-all-natives-windows-amd64.jar"/>
+	            <zipfileset dir="/Users/matthewmolloy/Downloads/ww2" includes="jogl-all-natives-windows-i586.jar"/>
+	        </jar>
+	    </target>
+	<target name="exe" depends="windows_jar">
+		<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="launch4j.jar:xstream.jar" />
+		<launch4j configFile="launch4j.xml" />
+	</target>
+	<target name="clean">
+		<delete file="Chunkmapper.jar"/>
+		<delete file="Chunkmapper_Windows.jar"/>
+		<delete file="Chunkmapper.exe"/>
+	</target>
+	<target name="all" depends="exe, create_run_jar"/>
 </project>
