@@ -45,30 +45,9 @@ public class GlobcoverReaderImpl2 implements GlobcoverReader {
 
 	public GlobcoverReaderImpl2(int regionx, int regionz) throws FileNotYetAvailableException, IOException, InterruptedException {
 		int globx = Matthewmatics.div(regionx, REGION_WIDTH), globz = Matthewmatics.div(regionz, REGION_WIDTH);
-		
+
 		File cacheFile = new File(CACHE_DIR, "f_" + globx + "_" + globz + Utila.BINARY_SUFFIX);
 		BufferedImage im;
-		if (FileValidator.checkValid(cacheFile)) {
-			im = ImageIO.read(cacheFile);
-		} else {
-			String base = "/f_" + globx + "_" + globz + Utila.BINARY_SUFFIX;
-			URL url = new URL(BucketInfo.getBucket("chunkmapper-mat") + base);
-//			URL url = null;
-//			//need to find matching root;
-//			for (FileInfo info : FileListManager.getGlobcoverFileList().getFilesList()) {
-//				if (info.getFile().equals(base)) {
-//					url = new URL(ServerInfoManager.getServerInfo().getGlobcoverAddress() + "data/"
-//							+ info.getParent() + info.getFile());
-//				}
-//			}
-			im = ImageIO.read(url);
-			//now save it as well.
-			ImageIO.write(im, "png", cacheFile);
-			FileValidator.setValid(cacheFile);
-		}
-
-		byte[] buffer = ((DataBufferByte) im.getRaster().getDataBuffer()).getData();
-		
 		
 		int i = Matthewmatics.mod(regionz, REGION_WIDTH), j = Matthewmatics.mod(regionx, REGION_WIDTH);
 		int totalWidth = 512 * REGION_WIDTH / 10;
@@ -77,15 +56,50 @@ public class GlobcoverReaderImpl2 implements GlobcoverReader {
 		datax = x2 - x1;
 		dataz = z2 - z1;
 		data = new Globcover[dataz][datax];
+		
+		if (FileValidator.checkValid(cacheFile)) {
+			im = ImageIO.read(cacheFile);
+		} else {
+			String base = "/f_" + globx + "_" + globz + Utila.BINARY_SUFFIX;
+			URL url = new URL(BucketInfo.getBucket("chunkmapper-mat") + base);
+			//			URL url = null;
+			//			//need to find matching root;
+			//			for (FileInfo info : FileListManager.getGlobcoverFileList().getFilesList()) {
+			//				if (info.getFile().equals(base)) {
+			//					url = new URL(ServerInfoManager.getServerInfo().getGlobcoverAddress() + "data/"
+			//							+ info.getParent() + info.getFile());
+			//				}
+			//			}
+			try {
+				im = ImageIO.read(url);
+				//now save it as well.
+				ImageIO.write(im, "png", cacheFile);
+				FileValidator.setValid(cacheFile);
+			} catch (Exception e) {
+				e.printStackTrace();
+				//binaries need to be sorted.
+				for (int z = 0; z < dataz; z++) {
+					for (int x = 0; x < datax; x++) {
+						data[z][x] = Globcover.NoData;
+					}
+				}
+				return;
+			}
+		}
+
+		byte[] buffer = ((DataBufferByte) im.getRaster().getDataBuffer()).getData();
+
+
+		
 		int xdrag = regionx < 0 ? totalWidth - im.getWidth() : 0;
 		int zdrag = regionz < 0 ? totalWidth - im.getHeight() : 0;
 		x1 -= xdrag; x2 -= xdrag;
 		z1 -= zdrag; z2 -= zdrag;
-		
+
 		int imWidth = im.getWidth(), imHeight = im.getHeight();
 		for (int z = z1; z < z2; z++) {
 			for (int x = x1; x < x2; x++) {
-				if (z < 0 | z >= imHeight || x < 0 || x >= imWidth) {
+				if (z < 0 || z >= imHeight || x < 0 || x >= imWidth) {
 					data[z-z1][x-x1] = Globcover.NoData;
 				} else {
 					data[z-z1][x-x1] = Globcover.getGlobcover(buffer[z*imWidth + x]);
@@ -127,18 +141,18 @@ public class GlobcoverReaderImpl2 implements GlobcoverReader {
 			mostlyLand = k > dataz * datax / 2;
 		}
 		return mostlyLand;
-//		return true;
+		//		return true;
 	}
 	public static void main(String[] args) throws Exception {
-		double[] latlon = Nominatim.getPoint("new plymouth, nz");
-//		double[] latlon = {-43.88, -176.15};
+		double[] latlon = Nominatim.getPoint("Saigon");
+		//		double[] latlon = {-43.88, -176.15};
 		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
 		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
-//		int globx = Matthewmatics.div(regionx, REGION_WIDTH), globz = Matthewmatics.div(regionz, REGION_WIDTH);
-//		File cacheFile = new File(CACHE_DIR, "f_" + globx + "_" + globz + Utila.BINARY_SUFFIX);
-//		File destFile = new File("image.png");
-//		FileUtils.copyFile(cacheFile, destFile);
-//		Runtime.getRuntime().exec("open " + destFile.toString());
+		//		int globx = Matthewmatics.div(regionx, REGION_WIDTH), globz = Matthewmatics.div(regionz, REGION_WIDTH);
+		//		File cacheFile = new File(CACHE_DIR, "f_" + globx + "_" + globz + Utila.BINARY_SUFFIX);
+		//		File destFile = new File("image.png");
+		//		FileUtils.copyFile(cacheFile, destFile);
+		//		Runtime.getRuntime().exec("open " + destFile.toString());
 		GlobcoverReaderImpl2 reader = new GlobcoverReaderImpl2(regionx, regionz);
 		HashSet<Globcover> globcovers = new HashSet<Globcover>();
 		for (int i = 0; i < 512; i++) {
@@ -147,23 +161,23 @@ public class GlobcoverReaderImpl2 implements GlobcoverReader {
 			}
 		}
 		System.out.println(globcovers);
-//		System.out.println(reader.getGlobcover(100, 100));
-		
-//		PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter("/Users/matthewmolloy/python/wms/data.csv")));
-//		for (int i = 0; i < 512; i++) {
-//			for (int j = 0; j < 512; j++) {
-//				pw.println(reader.getValueij(i, j));
-//			}
-//		}
-//		pw.close();
-		
+		//		System.out.println(reader.getGlobcover(100, 100));
+
+		//		PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter("/Users/matthewmolloy/python/wms/data.csv")));
+		//		for (int i = 0; i < 512; i++) {
+		//			for (int j = 0; j < 512; j++) {
+		//				pw.println(reader.getValueij(i, j));
+		//			}
+		//		}
+		//		pw.close();
+
 	}
 	private static void checkFileInfo() throws IOException {
 		InputStream in = new FileInputStream(new File("/Users/matthewmolloy/workspace/chunkmapper-static/public/mat/master.pbf"));
 		FileList manager = FileList.parseFrom(in);
 		in.close();
 		for (FileInfo info : FileListManager.getGlobcoverFileList().getFilesList()) {
-//		for (FileInfo info : manager.getFilesList()) {
+			//		for (FileInfo info : manager.getFilesList()) {
 			System.out.println(info.getParent());
 		}
 		System.exit(0);

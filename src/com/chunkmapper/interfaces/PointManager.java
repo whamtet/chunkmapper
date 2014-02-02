@@ -52,6 +52,8 @@ public class PointManager {
 				reader.close();
 			} catch (IOException e) {
 				e.printStackTrace();
+			} catch (NumberFormatException e) {
+				e.printStackTrace();
 			}
 		}
 	}

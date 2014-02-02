@@ -24,16 +24,6 @@ public class Utila {
 			//linux
 			MINECRAFT_DIR = new File(FileUtils.getUserDirectory(), "/.minecraft");
 		}
-//		//set Cache
-//		
-//		if (os.indexOf("win") >= 0) {
-//			CACHE = new File(FileUtils.getUserDirectory(), "\\.chunkmapper");
-//		} else if (os.indexOf("mac") >= 0) {
-//			CACHE = new File("/Library/Caches/Chunkmapper");
-//		} else {
-//			//linux
-//			CACHE = new File(FileUtils.getUserDirectory(), "/.chunkmapper");
-//		}
 		CACHE = new File(FileUtils.getUserDirectory(), ".chunkmapper");
 		CACHE.mkdirs();
 	}

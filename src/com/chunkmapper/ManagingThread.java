@@ -106,9 +106,16 @@ public class ManagingThread extends Thread {
 				e.printStackTrace();
 				throw new RuntimeException();
 			}
+//			} catch (NumberFormatException e) {
+//				System.out.println("done");
+//				e.printStackTrace();
+//				gameMetaInfo = new GameMetaInfo(metaInfoFile, lat, lon, globalSettings.getVerticalExaggeration());
+//			}
 		} else {
 			gameMetaInfo = new GameMetaInfo(metaInfoFile, lat, lon, globalSettings.getVerticalExaggeration());
+			//is saved automatically
 		}
+		System.out.println("here");
 
 		File loadedLevelDatFile = new File(gameFolder, "level.dat");
 		if (!loadedLevelDatFile.exists()) {
@@ -135,7 +142,7 @@ public class ManagingThread extends Thread {
 			regionWriter = new RegionWriter(pointManager, gameMetaInfo.rootPoint, regionFolder, 
 					gameMetaInfo, mappedSquareManager, gameMetaInfo.verticalExaggeration);
 
-
+			System.out.println("truly starting");
 			//now we loop for ETERNITY!!!
 			while (true) {
 				HashSet<Point> pointsToWrite = pointManager.getNewPoints(gameFolder, gameMetaInfo.rootPoint, chunkmapperDir, playerIconManager);
@@ -143,10 +150,7 @@ public class ManagingThread extends Thread {
 
 					regionWriter.addTask(p.x, p.z);
 				}
-				//				double minDistance = pointManager.getDistanceToEdge(gameFolder);
-				//				if (minDistance < 512) {
-				//					System.err.println("Warning: minDistance " + minDistance);
-				//				}
+
 				Thread.sleep(1000);
 			}
 		} catch (InterruptedException e) {

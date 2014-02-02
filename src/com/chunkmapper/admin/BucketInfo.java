@@ -32,7 +32,7 @@ public class BucketInfo {
 	private static void initMap() {
 		BufferedReader br = null;
 		try {
-			URL url = new URL("http://chunkbackend.appspot.com/static/buckets.txt");
+			URL url = new URL(URLs.BUCKET_INFO);
 			br = new BufferedReader(new InputStreamReader(url.openStream()));
 			map = new HashMap<String, String>();
 			String line;

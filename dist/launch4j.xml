@@ -1,12 +1,13 @@
 <launch4jConfig>
   <headerType>gui</headerType>
-  <jar>Chunkmapper_Windows.jar</jar>
+  <jar>Chunkmapper.jar</jar>
   <outfile>Chunkmapper.exe</outfile>
   <errTitle>Chunkmapper</errTitle>
   <chdir>.</chdir>
   <!-- <icon>SimpleApp.ico</icon> -->
   <jre>
     <minVersion>1.6.0</minVersion>
+    <maxHeapSize>1024</maxHeapSize>  
   </jre>
   <!-- <splash> -->
   <!--   <file>splash.bmp</file> -->

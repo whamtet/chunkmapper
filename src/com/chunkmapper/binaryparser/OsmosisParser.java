@@ -19,6 +19,7 @@ import java.util.zip.DataFormatException;
 import com.chunkmapper.Point;
 import com.chunkmapper.Zip;
 import com.chunkmapper.admin.BucketInfo;
+import com.chunkmapper.admin.URLs;
 import com.chunkmapper.parser.Nominatim;
 import com.chunkmapper.parser.OverpassObject;
 import com.chunkmapper.parser.OverpassObject.Node;
@@ -122,7 +123,7 @@ public class OsmosisParser {
 	}
 	private static ArrayList<Rectangle> getRectangles() {
 		try {
-			URL url = new URL("http://chunkbackend.appspot.com/static/osm.txt");
+			URL url = new URL(URLs.OSM);
 			BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
 //			BufferedReader br = new BufferedReader(new FileReader(new File("/Users/matthewmolloy/python/webstore/static/osm.txt")));
 			ArrayList<Rectangle> out = new ArrayList<Rectangle>();

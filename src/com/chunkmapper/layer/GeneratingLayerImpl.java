@@ -111,7 +111,7 @@ public class GeneratingLayerImpl extends RenderableLayer implements SelectListen
 			wwd.getInputHandler().addMouseMotionListener(selector);
 		} else {
 			//need to read in player position
-//			try {
+			try {
 				LevelDat loadedLevelDat;
 					loadedLevelDat = new LevelDat(new File(gameFolder, "level.dat"));
 					Point relativePlayerPoint = loadedLevelDat.getPlayerPosition();
@@ -121,11 +121,19 @@ public class GeneratingLayerImpl extends RenderableLayer implements SelectListen
 					double lon = (relativePlayerPoint.x + info.rootPoint.x * 512) / 3600.;
 					wwd.getSceneController().setVerticalExaggeration(info.verticalExaggeration);
 					startThread(lat, lon);
-//			} catch (IOException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//				cancel();
-//			}
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				//same as if awaitingSelectPoint
+				selector = new StartPointSelector(wwd, this, gameFolder);
+				wwd.getInputHandler().addMouseListener(selector);
+				wwd.getInputHandler().addMouseMotionListener(selector);
+				awaitingSelectPoint = true;
+				
+				//also make sure that the file is deleted.
+				File chunkmapperDir = new File(gameFolder, "chunkmapper");
+				(new File(chunkmapperDir, GameMetaInfo.STORE_NAME)).delete();
+			}
 		}
 	}
 	/* (non-Javadoc)
