@@ -10,9 +10,10 @@ public class Utila {
 	public static final File CACHE;
 	public static final int Y_SCALE = 31;
 	public static final String BINARY_SUFFIX = "_.txt";
-	public static final File MINECRAFT_DIR;
+	public static File MINECRAFT_DIR;
 	static {
 		String os = System.getProperty("os.name").toLowerCase();
+		
 		if (os.indexOf("win") >= 0) {
 			File appData = new File(System.getenv("APPDATA"));
 			MINECRAFT_DIR = new File(appData, ".minecraft");

@@ -66,6 +66,7 @@ public class LocServer implements Container {
 				body.print(USER_NOT_FOUND);
 			}
 			body.close();
+			
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

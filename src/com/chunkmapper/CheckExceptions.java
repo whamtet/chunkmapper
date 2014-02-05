@@ -4,8 +4,20 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class CheckExceptions {
+	
+	private static ArrayList<String> slurp(File f) throws IOException {
+		ArrayList<String> out = new ArrayList<String>();
+		BufferedReader br = new BufferedReader(new FileReader(f));
+		String line;
+		while ((line = br.readLine()) != null) {
+			out.add(line);
+		}
+		return out;
+	}
+	
 	public static void checkFile(File f) throws IOException {
 		BufferedReader br = new BufferedReader(new FileReader(f));
 		int i = 0;
@@ -30,7 +42,7 @@ public class CheckExceptions {
 		}
 	}
 	public static void main(String[] args) throws Exception {
-		File f = new File("/Users/matthewmolloy/workspace/chunkmapper2/src/");
+		File f = new File("/Users/matthewmolloy/workspace/chunkmapper/src/");
 		checkAllFiles(f);
 	}
 

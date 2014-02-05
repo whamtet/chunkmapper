@@ -77,10 +77,21 @@
     <span class="kw">def</span> run(self):
         os.system(<span class="str">'java -jar /Users/matthewmolloy/workspace/chunkmapper/dist/Chunkmapper.jar'</span>)
 
+<span class="kw">class</span> MyClass2(Thread):
+    <span class="kw">def</span> run(self):
+        os.system(<span class="str">'java -jar /Users/matthewmolloy/workspace/chunkmapper/dist/Chunkmapper.jar -flawed'</span>)
+
 <span class="kw">def</span> launch_chunkmapper():
     <span class="kw">if</span> <span class="kw">not</span> exists(<img src="1391382376214-1.png" />):
         <span class="kw">print</span> <span class="str">'No Chunkmapper Window detected.  Starting new one.'</span>
         myClass = MyClass()
+        myClass.start()
+        <span class="skw">wait</span>(<img src="1391381716886.png" />, <span class="dig">20</span>)
+
+<span class="kw">def</span> launch_flawed_chunkmapper():
+    <span class="kw">if</span> <span class="kw">not</span> exists(<img src="1391382376214-1.png" />):
+        <span class="kw">print</span> <span class="str">'No Chunkmapper Window detected.  Starting new one.'</span>
+        myClass = MyClass2()
         myClass.start()
         <span class="skw">wait</span>(<img src="1391381716886.png" />, <span class="dig">20</span>)
 
@@ -124,9 +135,12 @@
     <span class="skw">click</span>(match)
     <span class="skw">click</span>(<img src="1391573755018.png" />)
 
-create_test_map()
-cancel_generation()
-delete()
+<span class="kw">def</span> resume():
+    <span class="kw">print</span> <span class="str">'Resuming Map Generation.'</span>
+    zoom_out()
+    <span class="skw">click</span>(<img src="1391573621573.png" />)
+
+launch_flawed_chunkmapper()
 <span class="kw">print</span> <span class="str">'done'</span>
 </pre>
 </body>

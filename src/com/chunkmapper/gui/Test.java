@@ -12,7 +12,7 @@ public class Test {
 	 * @throws Exception 
 	 */
 	public static void main(String[] args) throws Exception {
-		throw new RuntimeException("hi");
+		System.out.println("hi");
 	}
 
 }

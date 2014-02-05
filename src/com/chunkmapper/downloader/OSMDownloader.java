@@ -41,8 +41,6 @@ import com.chunkmapper.parser.CoastlineParser;
 import com.chunkmapper.parser.HighwayParser;
 import com.chunkmapper.parser.LakeParser;
 import com.chunkmapper.parser.Nominatim;
-import com.chunkmapper.parser.POIParser;
-import com.chunkmapper.parser.Parser;
 import com.chunkmapper.parser.RailParser;
 import com.chunkmapper.parser.RiverParser;
 import com.chunkmapper.protoc.ServerInfoContainer.ServerInfo;

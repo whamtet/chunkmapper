@@ -5,13 +5,24 @@ class MyClass(Thread):
     def run(self):
         os.system('java -jar /Users/matthewmolloy/workspace/chunkmapper/dist/Chunkmapper.jar')
 
+class MyClass2(Thread):
+    def run(self):
+        os.system('java -jar /Users/matthewmolloy/workspace/chunkmapper/dist/Chunkmapper.jar -flawed')
+        
 def launch_chunkmapper():
     if not exists("1391382376214-1.png"):
         print 'No Chunkmapper Window detected.  Starting new one.'
         myClass = MyClass()
         myClass.start()
         wait("1391381716886.png", 20)
-        
+
+def launch_flawed_chunkmapper():
+    if not exists("1391382376214-1.png"):
+        print 'No Chunkmapper Window detected.  Starting new one.'
+        myClass = MyClass2()
+        myClass.start()
+        wait("1391381716886.png", 20)
+
 
 def go_to(location):
     print 'Going to ' + location + '.'
@@ -52,7 +63,10 @@ def delete():
     click(match)
     click("1391573755018.png")
 
-create_test_map()
-cancel_generation()
-delete()
+def resume():
+    print 'Resuming Map Generation.'
+    zoom_out()
+    click("1391573621573.png")
+
+launch_flawed_chunkmapper()
 print 'done'

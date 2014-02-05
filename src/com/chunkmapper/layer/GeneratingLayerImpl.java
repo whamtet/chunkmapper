@@ -180,7 +180,8 @@ public class GeneratingLayerImpl extends RenderableLayer implements SelectListen
 					((Component) wwd).setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 				}
 				if (managingThread != null) {
-					ManagingThread.blockingShutDown(managingThread);
+//					ManagingThread.blockingShutDown(managingThread);
+					managingThread.interrupt();
 					managingThread = null;
 				}
 				if (mappedSquareManager != null) {

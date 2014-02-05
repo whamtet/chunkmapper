@@ -16,12 +16,11 @@ import gov.nasa.worldwindx.examples.util.HotSpotController;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Toolkit;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.IOException;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import com.chunkmapper.Utila;
 import com.chunkmapper.interfaces.GlobalSettings;
@@ -78,6 +77,8 @@ public class Main extends ApplicationTemplate
 
 	public static void main(String[] args)
 	{
+		if (args.length > 0 && args[0].equals("-flawed"))
+			Utila.MINECRAFT_DIR = new File("poo");
 		ApplicationTemplate.start("Chunkmapper", AppFrame.class);
 	}
 }
