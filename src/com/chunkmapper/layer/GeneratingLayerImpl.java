@@ -62,7 +62,7 @@ public class GeneratingLayerImpl extends RenderableLayer implements SelectListen
 	private final String gameName;
 	private final MainLayer mainLayer;
 	private StartPointSelector selector;
-	private boolean awaitingSelectPoint;
+//	private boolean awaitingSelectPoint;
 	private ManagingThread managingThread;
 	private MappedSquareManagerImpl mappedSquareManager;
 	private PlayerIconManagerImpl playerIconManager;
@@ -76,7 +76,7 @@ public class GeneratingLayerImpl extends RenderableLayer implements SelectListen
 		this.globalSettings = globalSettings;
 		this.appFrame = appFrame;
 		gameFolder = new File(savesDir, gameName);
-		awaitingSelectPoint = !gameFolder.exists();
+		boolean awaitingSelectPoint = !gameFolder.exists();
 
 		this.mainLayer = mainLayer;
 		this.gameName = gameName;
@@ -106,13 +106,15 @@ public class GeneratingLayerImpl extends RenderableLayer implements SelectListen
 		this.wwd.addSelectListener(this);
 
 		if (awaitingSelectPoint) {
-			selector = new StartPointSelector(wwd, this, gameFolder);
-			wwd.getInputHandler().addMouseListener(selector);
-			wwd.getInputHandler().addMouseMotionListener(selector);
+			startCenteredThread();
+			//skip selection of point, just choose middle point in view.
+//			selector = new StartPointSelector(wwd, this, gameFolder);
+//			wwd.getInputHandler().addMouseListener(selector);
+//			wwd.getInputHandler().addMouseMotionListener(selector);
 		} else {
 			//need to read in player position
 			try {
-				LevelDat loadedLevelDat;
+					LevelDat loadedLevelDat;
 					loadedLevelDat = new LevelDat(new File(gameFolder, "level.dat"));
 					Point relativePlayerPoint = loadedLevelDat.getPlayerPosition();
 					File chunkmapperDir = new File(gameFolder, "chunkmapper");
@@ -122,18 +124,31 @@ public class GeneratingLayerImpl extends RenderableLayer implements SelectListen
 					wwd.getSceneController().setVerticalExaggeration(info.verticalExaggeration);
 					startThread(lat, lon);
 			} catch (NumberFormatException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				//same as if awaitingSelectPoint
-				selector = new StartPointSelector(wwd, this, gameFolder);
-				wwd.getInputHandler().addMouseListener(selector);
-				wwd.getInputHandler().addMouseMotionListener(selector);
-				awaitingSelectPoint = true;
-				
 				//also make sure that the file is deleted.
 				File chunkmapperDir = new File(gameFolder, "chunkmapper");
 				(new File(chunkmapperDir, GameMetaInfo.STORE_NAME)).delete();
+				
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				//same as if awaitingSelectPoint
+				startCenteredThread();
+				
 			}
+		}
+	}
+	private void startCenteredThread() {
+		View v = wwd.getView();
+		final Position p = v.getCurrentEyePosition();
+		if (p != null) {
+			System.out.println(p);
+			
+			if (v != null) {
+				v.goTo(p, 512*30*10);
+			}
+			((Component) wwd).setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+			
+			double lat = p.getLatitude().degrees, lon = p.getLongitude().degrees;
+			startThread(lat, lon);
 		}
 	}
 	/* (non-Javadoc)
@@ -325,7 +340,7 @@ public class GeneratingLayerImpl extends RenderableLayer implements SelectListen
 		return sb.toString();
 	}
 	public void notifySelected() {
-		this.awaitingSelectPoint = false;
+//		this.awaitingSelectPoint = false;
 		this.update();
 	}
 	protected String makeAnnotationText(LayerList layers)
@@ -333,12 +348,12 @@ public class GeneratingLayerImpl extends RenderableLayer implements SelectListen
 		if (isCancelling) {
 			return "Cancelling...";
 		}
-		if (awaitingSelectPoint) {
-			return divWidth(7) + "Click Globe <br />\n"
-					+ "To Select Start Point<br /><br />\n"
-					+ divWidth(14) + "<font color=\"#b0b0b0\">*** <br />\n"
-					+ divWidth(11) + "<a href=\"cancel\"><font color=\"#b0b0b0\">Cancel</a>";
-		}
+//		if (awaitingSelectPoint) {
+//			return divWidth(7) + "Click Globe <br />\n"
+//					+ "To Select Start Point<br /><br />\n"
+//					+ divWidth(14) + "<font color=\"#b0b0b0\">*** <br />\n"
+//					+ divWidth(11) + "<a href=\"cancel\"><font color=\"#b0b0b0\">Cancel</a>";
+//		}
 		return String.format("<b>Generating %s...</b><br /><br />\n", gameName)
 				+ "Blue Boxes Show Map Extent<br /><br />\n"
 				+ divWidth(5) + "<a href=\"zoom\"><font color=\"#b0b0b0\">Center Current Position</a><br />"
@@ -369,9 +384,9 @@ public class GeneratingLayerImpl extends RenderableLayer implements SelectListen
 		if (isCancelling) {
 			y = (int) (viewport.getHeight() - 80 - viewport.getWidth() * .1);
 			x = (int) (20 + viewport.getWidth() * 0.04);
-		} else if (awaitingSelectPoint) {
-			y = (int) (viewport.getHeight() - 150 - viewport.getWidth() * .1);
-			x = 20;
+//		} else if (awaitingSelectPoint) {
+//			y = (int) (viewport.getHeight() - 150 - viewport.getWidth() * .1);
+//			x = 20;
 		} else {
 			y =	(int) (viewport.getHeight() - 190 - viewport.getWidth() * .1) - 15;
 			x = 20;

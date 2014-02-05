@@ -16,6 +16,8 @@ import gov.nasa.worldwindx.examples.util.HotSpotController;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.IOException;
 
@@ -50,7 +52,6 @@ public class Main extends ApplicationTemplate
 		{
 			super(true, false, false); // Don't include the layer panel; we're using the on-screen layer tree.
 			
-			
 			//add our own layer
 			getWwd().getModel().getLayers().add(new MSVirtualEarthLayer());
 			
@@ -60,14 +61,13 @@ public class Main extends ApplicationTemplate
 			WWUtil.alignComponent(null, this, AVKey.CENTER);
 			
 			File minecraftDir = Utila.MINECRAFT_DIR;
-			
 			if (!minecraftDir.exists()) {
 				getWwd().getModel().getLayers().add(new MCNotAvailableLayer(this.getWwd(), this, globalSettings));
 			} else {
 				addMainLayer(this.getWwd(), minecraftDir, this, globalSettings);
 			}
 			this.setIconImage(new javax.swing.ImageIcon(getClass().getResource("/images/ChunkmapperIcon.png")).getImage());
-
+			
 		}
 
 		

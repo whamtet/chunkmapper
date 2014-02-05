@@ -5,10 +5,12 @@
  */
 package com.chunkmapper.layer;
 
+import gov.nasa.worldwind.View;
 import gov.nasa.worldwind.WorldWindow;
 import gov.nasa.worldwind.avlist.AVKey;
 import gov.nasa.worldwind.event.SelectEvent;
 import gov.nasa.worldwind.event.SelectListener;
+import gov.nasa.worldwind.geom.Position;
 import gov.nasa.worldwind.geom.Vec4;
 import gov.nasa.worldwind.layers.Layer;
 import gov.nasa.worldwind.layers.LayerList;
@@ -27,13 +29,15 @@ import java.awt.Font;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
-import com.chunkmapper.gui.GlobalSettingsImpl;
 import com.chunkmapper.gui.GoToThread;
 import com.chunkmapper.gui.dialog.ConfirmDeleteDialog;
 import com.chunkmapper.gui.dialog.GoToDialog;
@@ -70,7 +74,7 @@ public class MainLayer extends RenderableLayer implements SelectListener
 	private static final int HAND_CURSOR = 0, DEFAULT_CURSOR = 1;
 	private final GlobalSettings globalSettings;
 
-	public MainLayer(WorldWindow wwd, JFrame appFrame, File minecraftDir, GlobalSettings globalSettings) throws IOException
+	public MainLayer(WorldWindow wwd, final JFrame appFrame, File minecraftDir, GlobalSettings globalSettings) throws IOException
 	{
 
 		this.globalSettings = globalSettings;
@@ -105,18 +109,48 @@ public class MainLayer extends RenderableLayer implements SelectListener
 		this.parentAnnotation.getAttributes().setInsets(new Insets(6, 6, 6, 6));
 		this.parentAnnotation.getAttributes().setBorderWidth(1);
 
-		//        locateMinecraftButton = new ScreenAnnotation("", new Point(0, 0));
-		//        locateMinecraftButton.getAttributes().setCornerRadius(0);
-		//        locateMinecraftButton.getAttributes().setFont(this.font);
-		//        locateMinecraftButton.getAttributes().setTextColor(Color.WHITE);
-		//        
-		//        locateMinecraftButton.setText("Locate Minecraft");
-		//        parentAnnotation.addChild(locateMinecraftButton);
-		//        
 		this.addRenderable(this.parentAnnotation);
 
 		// Listen to world window for select event
 		this.wwd.addSelectListener(this);
+
+		wwd.getInputHandler().addKeyListener(new KeyListener() {
+			@Override
+			public void keyPressed(KeyEvent arg0) {}
+			@Override
+			public void keyReleased(KeyEvent arg0) {}
+			@Override
+			public void keyTyped(KeyEvent arg0) {
+				switch (arg0.getKeyChar()) {
+				case 'g':
+					displayGotoDialog();
+					break;
+				case 'z':
+					zoomOut();
+					break;
+				}
+			}			
+		});
+	}
+	private void zoomOut() {
+		final View v = wwd.getView();
+		final Position p = v.getCurrentEyePosition();
+		if (p.elevation < 1.9e7) {
+			Thread t = new Thread(new Runnable() {
+				public void run() {
+					v.goTo(p, 2e7);
+					while (v.isAnimating()) {
+						try {
+							Thread.sleep(100);
+						} catch (InterruptedException e) {}
+					}
+					JOptionPane.showMessageDialog(appFrame, "Zoomed out.");
+				}
+			});
+			t.start();
+		} else {
+			JOptionPane.showMessageDialog(appFrame, "Zoomed out.");
+		}
 	}
 
 	public void selected(SelectEvent event) {
@@ -146,7 +180,7 @@ public class MainLayer extends RenderableLayer implements SelectListener
 								if (gameName != null) {
 									this.newlyCreatedGames.add(gameName);
 									update = true;
-									
+
 									wwd.getModel().getLayers().remove(this);
 									try {
 										wwd.getModel().getLayers().add(new GeneratingLayerImpl(wwd, appFrame, savesDir, gameName, this, globalSettings));
@@ -176,12 +210,7 @@ public class MainLayer extends RenderableLayer implements SelectListener
 								}
 							}
 							if (s.equals("goto")) {
-								GoToDialog d = new GoToDialog(appFrame);
-								d.setVisible(true);
-								String location = d.getPlace();
-								if (location != null) {
-									(new GoToThread(wwd, location)).start();
-								}
+								displayGotoDialog();
 							}
 						}
 					} else {
@@ -204,6 +233,16 @@ public class MainLayer extends RenderableLayer implements SelectListener
 			((Component) this.wwd).setCursor(Cursor.getDefaultCursor());
 			this.update();
 		}
+	}
+
+	public void displayGotoDialog() {
+		GoToDialog d = new GoToDialog(appFrame);
+		d.setVisible(true);
+		String location = d.getPlace();
+		if (location != null) {
+			(new GoToThread(wwd, location)).start();
+		}
+
 	}
 
 	/** Schedule the layer list for redrawing before the next render pass. */
