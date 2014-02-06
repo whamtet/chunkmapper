@@ -65,7 +65,7 @@ public class Main extends ApplicationTemplate
 			} else {
 				addMainLayer(this.getWwd(), minecraftDir, this, globalSettings);
 			}
-			this.setIconImage(new javax.swing.ImageIcon(getClass().getResource("/images/ChunkmapperIcon.png")).getImage());
+//			this.setIconImage(new javax.swing.ImageIcon(getClass().getResource("/images/ChunkmapperIcon.png")).getImage());
 			
 		}
 
@@ -74,11 +74,23 @@ public class Main extends ApplicationTemplate
 	public static void addMainLayer(WorldWindow wwd, File minecraftDir, JFrame appFrame, GlobalSettings globalSettings) throws IOException {
 		wwd.getModel().getLayers().add(new MainLayer(wwd, appFrame, minecraftDir, globalSettings));
 	}
+	
+	private static boolean hasFlawed(String[] args) {
+		for (String arg : args) {
+			if (arg.equals("-flawed"))
+				return true;
+		}
+		return false;
+	}
 
 	public static void main(String[] args)
 	{
-		if (args.length > 0 && args[0].equals("-flawed"))
+		if (hasFlawed(args))
 			Utila.MINECRAFT_DIR = new File("poo");
+		long availableMemory = Runtime.getRuntime().maxMemory();
+		if (availableMemory < 1000000000)
+			System.err.println("Warning: Xmx set too low: " + availableMemory);
+//		JOptionPane.showMessageDialog(null, Utila.MINECRAFT_DIR.toString());
 		ApplicationTemplate.start("Chunkmapper", AppFrame.class);
 	}
 }

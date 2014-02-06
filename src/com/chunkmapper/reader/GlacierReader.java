@@ -32,8 +32,7 @@ public class GlacierReader {
 		return hasGlacier[i][j];
 	}
 	private static ArrayList<Glacier> getLakes(int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
-		//NOTEE!!!!!
-//		OverpassObject o = OverpassParser.getTestObject(regionx, regionz);
+
 		OverpassObject o = OSMRouter.getObject(regionx, regionz);
 		
 		HashSet<Glacier> lakes = new HashSet<Glacier>();

@@ -8,9 +8,9 @@ public class MinecraftInstallFileFilter extends FileFilter {
 
 	@Override
 	public boolean accept(File arg0) {
-		
-		File binDir = new File(arg0, "bin"), minecraftJar = new File(binDir, "minecraft.jar");
-		return minecraftJar.exists();
+//		File minecraftJar = new File(arg0, "bin/minecraft.jar");
+//		return minecraftJar.exists();
+		return true;
 	}
 
 	@Override

@@ -29,6 +29,7 @@ public class ManagingThread extends Thread {
 	private final GlobalSettings globalSettings;
 	private final JFrame appFrame;
 	private final GeneratingLayer generatingLayer;
+	public RegionWriter regionWriter;
 
 	public ManagingThread(double lat, double lon, File gameFolder, MappedSquareManager mappedSquareManager,
 			PlayerIconManager playerIconManager, GlobalSettings globalSettings, JFrame appFrame,
@@ -136,7 +137,7 @@ public class ManagingThread extends Thread {
 		HeightsCache.deleteCache();
 
 		//now we need to create all our downloaders;
-		RegionWriter regionWriter = null;
+		regionWriter = null;
 		try {
 			PointManager pointManager = new PointManager(chunkmapperDir, mappedSquareManager, gameMetaInfo.rootPoint);
 			regionWriter = new RegionWriter(pointManager, gameMetaInfo.rootPoint, regionFolder, 
@@ -147,7 +148,6 @@ public class ManagingThread extends Thread {
 			while (true) {
 				HashSet<Point> pointsToWrite = pointManager.getNewPoints(gameFolder, gameMetaInfo.rootPoint, chunkmapperDir, playerIconManager);
 				for (Point p : pointsToWrite) {
-
 					regionWriter.addTask(p.x, p.z);
 				}
 
@@ -178,6 +178,7 @@ public class ManagingThread extends Thread {
 	}
 	public static void blockingShutDown(ManagingThread thread) {
 		thread.interrupt();
+		thread.regionWriter.blockingShutdownNow();
 		while(thread.isAlive()) {
 			try {
 				Thread.sleep(100);

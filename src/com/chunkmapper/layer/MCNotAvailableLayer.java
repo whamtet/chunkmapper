@@ -31,7 +31,9 @@ import java.io.IOException;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
+import com.chunkmapper.Utila;
 import com.chunkmapper.gui.Main;
 import com.chunkmapper.gui.MinecraftInstallFileFilter;
 import com.chunkmapper.interfaces.GlobalSettings;
@@ -123,8 +125,10 @@ public class MCNotAvailableLayer extends RenderableLayer implements SelectListen
 					update = true;
 				}
 				if (event.getEventAction().equals(SelectEvent.LEFT_CLICK)) {
-					File f = chooseMinecraftFile(appFrame);
+					File f = chooseMinecraftFile2(appFrame);
 					if (f != null) {
+						Utila.MINECRAFT_DIR = f;
+						Utila.spit(f);
 						wwd.getModel().getLayers().remove(this);
 						try {
 							Main.addMainLayer(wwd, f, appFrame, globalSettings);
@@ -154,13 +158,25 @@ public class MCNotAvailableLayer extends RenderableLayer implements SelectListen
 
 	private static File chooseMinecraftFile(JFrame appFrame) {
 		JFileChooser fc = new JFileChooser();		
-		fc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+		fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		fc.setAcceptAllFileFilterUsed(false);
-		fc.setFileFilter(new MinecraftInstallFileFilter());
+		fc.setFileHidingEnabled(false);
+//		fc.setFileFilter(new MinecraftInstallFileFilter());
 		fc.setDialogTitle("Select Minecraft Install Location");
-
 		fc.showOpenDialog(appFrame);
 		return fc.getSelectedFile();
+	}
+	private static File chooseMinecraftFile2(JFrame appFrame) {
+		while (true) {
+			File f = chooseMinecraftFile(appFrame);
+			if (f == null)
+				return null;
+			if (!(new File(f, "saves")).exists()) {
+				JOptionPane.showMessageDialog(appFrame, "Invalid Minecraft Location.");
+			} else {
+				return f;
+			}
+		}
 	}
 
 	/** Schedule the layer list for redrawing before the next render pass. */

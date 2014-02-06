@@ -3,11 +3,11 @@ from threading import Thread
 
 class MyClass(Thread):
     def run(self):
-        os.system('java -jar /Users/matthewmolloy/workspace/chunkmapper/dist/Chunkmapper.jar')
+        os.system('java -jar /Users/matthewmolloy/workspace/chunkmapper/dist/Chunkmapper.jar -Xmx1G')
 
 class MyClass2(Thread):
     def run(self):
-        os.system('java -jar /Users/matthewmolloy/workspace/chunkmapper/dist/Chunkmapper.jar -flawed')
+        os.system('java -jar /Users/matthewmolloy/workspace/chunkmapper/dist/Chunkmapper.jar -Xmx1G -flawed')
         
 def launch_chunkmapper():
     if not exists("1391382376214-1.png"):
@@ -38,7 +38,7 @@ def zoom_out():
     print 'Zooming out.'
     click("1391403833556.png")
     type("z")
-    wait("1391569149349.png")
+    wait("1391569149349.png", 10)
     type(Key.ENTER)
 
 def create_test_map():
@@ -68,5 +68,15 @@ def resume():
     zoom_out()
     click("1391573621573.png")
 
-launch_flawed_chunkmapper()
+def locate_minecraft_dir():
+    click("1391653158899.png")
+
+go_to('London')
+create_test_map()
+cancel_generation()
+for i in range(10):
+    resume()
+    wait(10)
+    cancel_generation()
+    
 print 'done'
