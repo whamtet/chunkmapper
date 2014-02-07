@@ -1,9 +1,6 @@
 package com.chunkmapper.reader;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,9 +9,7 @@ import java.util.zip.DataFormatException;
 
 import com.chunkmapper.Point;
 import com.chunkmapper.chunk.Chunk;
-import com.chunkmapper.downloader.OSMDownloader;
 import com.chunkmapper.enumeration.Blocka;
-import com.chunkmapper.enumeration.OSMSource;
 import com.chunkmapper.parser.HighwayParser;
 import com.chunkmapper.sections.HighwaySection;
 import com.chunkmapper.writer.ArtifactWriter;

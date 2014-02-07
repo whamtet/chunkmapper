@@ -6,8 +6,6 @@ import java.util.Collection;
 import java.util.zip.DataFormatException;
 
 import com.chunkmapper.Point;
-import com.chunkmapper.downloader.OSMDownloader;
-import com.chunkmapper.enumeration.OSMSource;
 import com.chunkmapper.parser.RiverParser;
 import com.chunkmapper.sections.RiverSection;
 

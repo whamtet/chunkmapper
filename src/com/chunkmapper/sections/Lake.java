@@ -66,6 +66,16 @@ public class Lake extends Section {
 	public Point getEndPoint() {
 		return points.get(points.size() - 1);
 	}
+	public boolean attach(Lake other) {
+		Point endPoint = points.get(points.size() - 1), otherStartPoint = other.points.get(0);
+		if (endPoint.equals(otherStartPoint)) {
+			for (int i = 1; i < other.points.size(); i++) {
+				points.add(other.points.get(i));
+			}
+			return true;
+		}
+		return false;
+	}
 	public boolean attachEitherEnd(Lake other) {
 		
 		Point startPoint = points.get(0), endPoint = points.get(points.size() - 1);

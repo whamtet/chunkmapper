@@ -8,7 +8,6 @@ import java.io.PrintWriter;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.zip.DataFormatException;
 
 import com.chunkmapper.Point;
@@ -35,52 +34,46 @@ public class GlacierReader {
 
 		OverpassObject o = OSMRouter.getObject(regionx, regionz);
 		
-		HashSet<Glacier> lakes = new HashSet<Glacier>();
+		ArrayList<Glacier> lakes = new ArrayList<Glacier>();
 		for (Way way : o.ways) {
 			if ("glacier".equals(way.map.get("natural"))) {
 				Glacier lake = new Glacier(way.points, way.bbox);
 				if (lake.isClosed()) {
 					lakes.add(lake);
-				} else {
-					System.out.println("skipping");
 				}
 			}
 		}
 		for (Relation relation : o.relations) {
+			
 			if ("glacier".equals(relation.map.get("natural")) && "multipolygon".equals(relation.map.get("type"))) {
+				
+				ArrayList<Glacier> glaciersToJoin = new ArrayList<Glacier>();
 				for (Way way : relation.ways) {
-					lakes.add(new Glacier(way.points, way.bbox));
+					glaciersToJoin.add(new Glacier(way.points, way.bbox));
+				}
+				
+				while (glaciersToJoin.size() > 0) {
+					
+					Glacier seedLake = glaciersToJoin.remove(0);
+					
+					boolean hasAdded = true;
+					while (hasAdded) {
+						hasAdded = false;
+						for (int i = 0; i < glaciersToJoin.size(); i++) {
+							if (seedLake.attach(glaciersToJoin.get(i))) {
+								glaciersToJoin.remove(i);
+								hasAdded = true;
+								i--;
+							}
+						}
+					}
+					if (seedLake.isClosed() && !seedLake.isPoint()) {
+						lakes.add(seedLake);
+					}
 				}
 			}
-		}
-		Glacier stub = null;
-		ArrayList<Glacier> closedLakes = new ArrayList<Glacier>();
-		
-		while (lakes.size() > 0) {
-			ArrayList<Glacier> attachedLakes = new ArrayList<Glacier>();
-			for (Glacier lake : lakes) {
-				if (stub == null) {
-					stub = lake;
-					attachedLakes.add(lake);
-				} else if (stub.attachEitherEnd(lake)) {
-					attachedLakes.add(lake);
-				}
-				if (stub.isClosed())
-					break;
-			}
-			for (Glacier lake : attachedLakes) {
-				lakes.remove(lake);
-			}
-			if (stub.isClosed()) {
-				closedLakes.add(stub);
-				stub = null;
-			} else if (attachedLakes.isEmpty()) {
-//				System.out.println("discarding");
-//				closedLakes.add(stub);
-				stub = null;
-			}
-		}
-		return closedLakes;
+		}		
+		return lakes;
 	}
 
 	public GlacierReader(int regionx, int regionz) throws IOException, FileNotYetAvailableException, URISyntaxException, DataFormatException, InterruptedException {

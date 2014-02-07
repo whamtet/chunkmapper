@@ -1,15 +1,11 @@
 package com.chunkmapper.reader;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.zip.DataFormatException;
 
 import com.chunkmapper.chunk.Chunk;
-import com.chunkmapper.downloader.OSMDownloader;
-import com.chunkmapper.enumeration.OSMSource;
-import com.chunkmapper.parser.Nominatim;
 import com.chunkmapper.parser.POIParser;
 import com.chunkmapper.sections.POI;
 import com.chunkmapper.writer.ArtifactWriter;

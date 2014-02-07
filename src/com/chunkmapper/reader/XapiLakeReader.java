@@ -33,86 +33,45 @@ public class XapiLakeReader implements LakeReader {
 		return hasWater[i][j];
 	}
 	private static ArrayList<Lake> getLakes(int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
-		//NOTEE!!!!!
-//		OverpassObject o = OverpassParser.getTestObject(regionx, regionz);
+
 		OverpassObject o = OSMRouter.getObject(regionx, regionz);
 		
-		HashSet<Lake> lakes = new HashSet<Lake>();
+		ArrayList<Lake> lakes = new ArrayList<Lake>();
 		for (Way way : o.ways) {
 			if ("water".equals(way.map.get("natural"))) {
 				Lake lake = new Lake(way.points, way.bbox);
-//				System.out.println("***");
-//				for (String k : way.map.keySet()) {
-//					System.out.println(k + ": " + way.map.get(k));
-//				}
 				if (lake.isClosed()) {
 					lakes.add(lake);
-				} else {
-					System.out.println("skipping");
 				}
 			}
 		}
-//		System.out.println("Relations");
 		for (Relation relation : o.relations) {
 			if ("water".equals(relation.map.get("natural")) && "multipolygon".equals(relation.map.get("type"))) {
+				ArrayList<Lake> lakesToJoin = new ArrayList<Lake>();
 				for (Way way : relation.ways) {
-//					Lake lake = new Lake(way.points, way.bbox);
-					lakes.add(new Lake(way.points, way.bbox));
-//					if (lake.isOpen()) {
-//						System.out.println(lake.points.size());
-//					}
+					lakesToJoin.add(new Lake(way.points, way.bbox));
 				}
-//				System.out.println("***");
-//				for (String k : relation.map.keySet()) {
-//					System.out.println(k + ": " + relation.map.get(k));
-//				}
-			}
-		}
-		Lake stub = null;
-		ArrayList<Lake> closedLakes = new ArrayList<Lake>();
-		
-		while (lakes.size() > 0) {
-			ArrayList<Lake> attachedLakes = new ArrayList<Lake>();
-			for (Lake lake : lakes) {
-				if (stub == null) {
-					stub = lake;
-					attachedLakes.add(lake);
-				} else if (stub.attachEitherEnd(lake)) {
-					attachedLakes.add(lake);
+				while (lakesToJoin.size() > 0) {
+					Lake seedLake = lakesToJoin.remove(0);
+					
+					boolean hasAdded = true;
+					while (hasAdded) {
+						hasAdded = false;
+						for (int i = 0; i < lakesToJoin.size(); i++) {
+							if (seedLake.attach(lakesToJoin.get(i))) {
+								lakesToJoin.remove(i);
+								hasAdded = true;
+								i--;
+							}
+						}
+					}
+					if (seedLake.isClosed() && !seedLake.isPoint()) {
+						lakes.add(seedLake);
+					}
 				}
-				if (stub.isClosed())
-					break;
 			}
-			for (Lake lake : attachedLakes) {
-				lakes.remove(lake);
-			}
-			if (stub.isClosed()) {
-				closedLakes.add(stub);
-				stub = null;
-			} else if (attachedLakes.isEmpty()) {
-//				System.out.println("discarding");
-//				closedLakes.add(stub);
-				stub = null;
-			}
-		}
-		return closedLakes;
-//				ArrayList<Point> points = new ArrayList<Point>();
-//				for (Way way : relation.ways) {
-//					if ("outer".equals(way.map.get("role"))) {
-//						for (Point point : way.points){
-//							points.add(point);
-//						}
-//					}
-//				}
-//				lakes.add(new Lake(points, relation.bbox, false, false));
-////				for (Way way : relation.ways){
-////					if ("inner".equals(way.map.get("role"))) {
-////						lakes.add(new Lake(way.points, relation.bbox, false, false));
-////					}
-////				}
-//			}
-//		}
-//		return lakes;
+		}		
+		return lakes;
 	}
 
 	public XapiLakeReader(int regionx, int regionz) throws IOException, FileNotYetAvailableException, URISyntaxException, DataFormatException, InterruptedException {
@@ -209,40 +168,35 @@ public class XapiLakeReader implements LakeReader {
 	private static <E> E wrappedGet(ArrayList<E> list, int i) {
 		return list.get(Matthewmatics.mod(i, list.size()));
 	}
-	//	private static class MyPoint extends com.chunkmapper.Point implements Comparable<Point> {
-	//
-	//		public MyPoint(int x, int z) {
-	//			super(x, z);
-	//			// TODO Auto-generated constructor stub
-	//		}
-	//
-	//		@Override
-	//		public int compareTo(Point arg0) {
-	//			Integer a = x;
-	//			Integer b = arg0.x;
-	//			return a.compareTo(b);
-	//		}
-	//
-	//	}
+
 
 	public static void main(String[] args) throws Exception {
-		double[] latlon = Nominatim.getPoint("rotorua, nz");
-		//		double[] latlon = Nominatim.getPoint("te anau, nz");
-		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
-		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512)-1;
-//		for (Lake lake : getLakes(regionx, regionz)) {
-//			System.out.println(lake.isClosed());
-//		}
-		LakeReader reader = new XapiLakeReader(regionx, regionz);
-
-		PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(new File("/Users/matthewmolloy/python/wms/data.csv"))));
-		for (int z = 0; z < 512; z++) {
-			for (int x = 0; x < 512; x++) {
-				pw.println(reader.hasWaterij(z, x) && (z > 0 || x > 0) ? 0 : 1);
+		OverpassObject o = OSMRouter.getObject(0, -363);
+		
+		HashSet<Lake> lakes = new HashSet<Lake>();
+		for (Way way : o.ways) {
+			if ("water".equals(way.map.get("natural"))) {
+				Lake lake = new Lake(way.points, way.bbox);
+				if (lake.isClosed()) {
+					lakes.add(lake);
+				} else {
+					System.out.println("skipping");
+				}
 			}
 		}
-		pw.close();
-		System.out.println("done");
+		for (Relation relation : o.relations) {
+			if ("water".equals(relation.map.get("natural")) && "multipolygon".equals(relation.map.get("type"))) {
+				for (Way way : relation.ways) {
+					lakes.add(new Lake(way.points, way.bbox));
+				}
+			}
+		}
+		for (Lake lake : lakes) {
+			if (lake.points.size() == 0) {
+				System.out.println(lake);
+			}
+		}
+
 	}
 
 }

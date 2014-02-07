@@ -109,15 +109,17 @@ public class Glacier extends Section {
 		l1.attachEitherEnd(l2);
 		System.out.println(l1.points);
 	}
-//	public boolean connect(Lake other) {
-//		if (points.get(points.size() - 1).equals(other.points.get(0))) {
-//			for (int i = 1; i < other.points.size(); i++) {
-//				points.add(other.points.get(i));
-//			}
-//			return true;
-//		}
-//		return false;
-//	}
+
+	public boolean attach(Glacier glacier) {
+		Point endPoint = points.get(points.size() - 1), otherStartPoint = glacier.points.get(0);
+		if (endPoint.equals(otherStartPoint)) {
+			for (int i = 1; i < glacier.points.size(); i++) {
+				points.add(glacier.points.get(i));
+			}
+			return true;
+		}
+		return false;
+	}
 	
 
 	
