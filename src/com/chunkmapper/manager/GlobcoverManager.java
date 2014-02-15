@@ -6,6 +6,7 @@ import java.util.NoSuchElementException;
 import java.util.Random;
 import java.util.zip.DataFormatException;
 
+import com.chunkmapper.admin.OSMRouter;
 import com.chunkmapper.chunk.Chunk;
 import com.chunkmapper.column.AbstractColumn;
 import com.chunkmapper.column.Bare;
@@ -41,6 +42,7 @@ import com.chunkmapper.enumeration.FarmType;
 import com.chunkmapper.enumeration.Globcover;
 import com.chunkmapper.math.Matthewmatics;
 import com.chunkmapper.parser.Nominatim;
+import com.chunkmapper.parser.OverpassObject;
 import com.chunkmapper.reader.DensityReader;
 import com.chunkmapper.reader.FarmTypeReader;
 import com.chunkmapper.reader.FerryReader;
@@ -84,14 +86,14 @@ public class GlobcoverManager {
 	public final Random RANDOM = new Random();
 
 	public final AbstractColumn[][] columns = new AbstractColumn[512][512];
-	
+
 	public static void main(String[] args) throws Exception {
 		double[] latlon = Nominatim.getPoint("new plymouth, nz");
-//		double[] latlon = {-43.88, -176.15};
+		//		double[] latlon = {-43.88, -176.15};
 		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
 		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
 		GlobcoverManager manager = new GlobcoverManager(regionx, regionz, 1);
-		
+
 		for (int i = 0; i < 512; i++) {
 			for (int j = 0; j < 512; j++) {
 				if (manager.columns[i][j] instanceof RainfedCrops) {
@@ -109,7 +111,7 @@ public class GlobcoverManager {
 		heightsReader = new HeightsReaderS3(regionx, regionz, verticalExaggeration);
 		ferryReader = new FerryReader(regionx, regionz);
 		allWater = heightsReader.isAllWater() && !ferryReader.hasAFerry;
-		
+
 		if (allWater) {
 			railReader = null;
 			poiReader = null;
@@ -121,29 +123,28 @@ public class GlobcoverManager {
 			hutReader = null;
 			return;
 		}
-		OrchardReader orchardReader = new OrchardReader(regionx, regionz);
-		VineyardReader vineyardReader = new VineyardReader(regionx, regionz);
-		hutReader = new HutReader(regionx, regionz);
-		pathReader = new PathReader(regionx, regionz);
-		highwayReader = new XapiHighwayReader(regionx, regionz, heightsReader);
-		boundaryReader = new XapiBoundaryReader(regionx, regionz);
-		rugbyReader = new RugbyReader(regionx, regionz);
-		densityReader = new DensityReader(regionx, regionz);
+		OverpassObject o = OSMRouter.getObject(regionx, regionz);
+		OrchardReader orchardReader = new OrchardReader(o, regionx, regionz);
+		VineyardReader vineyardReader = new VineyardReader(o, regionx, regionz);
+		hutReader = new HutReader(o, regionx, regionz);
+		pathReader = new PathReader(o, regionx, regionz);
+		highwayReader = new XapiHighwayReader(o, regionx, regionz, heightsReader);
+		boundaryReader = new XapiBoundaryReader(o, regionx, regionz);
+		rugbyReader = new RugbyReader(o, regionx, regionz);
+		densityReader = new DensityReader(o, regionx, regionz);
 		GlobcoverReader coverReader = new GlobcoverReaderImpl2(regionx, regionz);
-		GlacierReader glacierReader = new GlacierReader(regionx, regionz);
+		GlacierReader glacierReader = new GlacierReader(o, regionx, regionz);
 
-		LakeReader lakeReader = new XapiLakeReader(regionx, regionz);
-		XapiRiverReader riverReader = new XapiRiverReader(regionx, regionz, heightsReader);
-		railReader = new XapiRailReader(regionx, regionz, heightsReader, verticalExaggeration);
-		boolean includeLivestock = !railReader.hasRails;
+		LakeReader lakeReader = new XapiLakeReader(o, regionx, regionz);
+		XapiRiverReader riverReader = new XapiRiverReader(o, regionx, regionz, heightsReader);
+		railReader = new XapiRailReader(o, regionx, regionz, heightsReader, verticalExaggeration);
 
 		FarmTypeReader farmTypeReader = null;
-//		if (includeLivestock)
-			farmTypeReader = new FarmTypeReader();
-		poiReader = new POIReader(regionx, regionz);
+		farmTypeReader = new FarmTypeReader();
+		poiReader = new POIReader(o, regionx, regionz);
 
-//		XapiCoastlineReader coastlineReader = new XapiCoastlineReader(regionx, regionz, heightsReader);
-		XapiCoastlineReader coastlineReader = new XapiCoastlineReader(regionx, regionz, coverReader);
+		//		XapiCoastlineReader coastlineReader = new XapiCoastlineReader(regionx, regionz, heightsReader);
+		XapiCoastlineReader coastlineReader = new XapiCoastlineReader(o, regionx, regionz, coverReader);
 
 		for (int i = 0; i < 512; i++) {
 			for (int j = 0; j < 512; j++) {
@@ -182,9 +183,9 @@ public class GlobcoverManager {
 					columns[i][j] = new Snow(absx, absz, heightsReader);
 					continue;
 				}
-//				double absLat = absz > 0 ? absz / 3600. : -absz / 3600.;
+				//				double absLat = absz > 0 ? absz / 3600. : -absz / 3600.;
 				//				double snowLine = 4000 * (75 - absLat) / 75.;
-//				int realHeight = heightsReader.getRealHeightij(i, j);
+				//				int realHeight = heightsReader.getRealHeightij(i, j);
 				//				if (realHeight >= snowLine) {
 				//					columns[i][j] = new Snow(absx, absz, heightsReader);
 				//					continue;
@@ -323,7 +324,7 @@ public class GlobcoverManager {
 		boolean chunkHasRoad = false;
 		if (highwayReader.hasHighways)
 			chunkHasRoad = highwayReader.addRoad(chunkx, chunkz, chunk);
-		
+
 		//finally add rail
 		boolean chunkHasRail = false;
 		if (railReader != null && railReader.hasRails) {
@@ -361,9 +362,6 @@ public class GlobcoverManager {
 			case 2:
 				ArtifactWriter.placePrison(chunk);
 				break;
-				//			case 3:
-				//				ArtifactWriter.addGallows(chunk);
-				//				break;
 			default:
 				ArtifactWriter.addHouse(chunk);
 			}

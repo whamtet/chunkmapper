@@ -11,6 +11,7 @@ import com.chunkmapper.Point;
 import com.chunkmapper.chunk.Chunk;
 import com.chunkmapper.enumeration.Blocka;
 import com.chunkmapper.parser.HighwayParser;
+import com.chunkmapper.parser.OverpassObject;
 import com.chunkmapper.sections.HighwaySection;
 import com.chunkmapper.writer.ArtifactWriter;
 
@@ -90,12 +91,11 @@ public class XapiHighwayReader {
 		return out;
 	}
 
-	public XapiHighwayReader(int regionx, int regionz, HeightsReader heightsReader) throws IllegalArgumentException, NoSuchElementException, IOException, InterruptedException, FileNotYetAvailableException, URISyntaxException, DataFormatException {
+	public XapiHighwayReader(OverpassObject o, int regionx, int regionz, HeightsReader heightsReader) throws IllegalArgumentException, NoSuchElementException, IOException, InterruptedException, FileNotYetAvailableException, URISyntaxException, DataFormatException {
 
-		Collection<HighwaySection> allSections = HighwayParser.getHighwaySections(regionx, regionz);
+		Collection<HighwaySection> allSections = HighwayParser.getHighwaySections(o, regionx, regionz);
 
 		hasHighways = allSections.size() > 0;
-		System.out.println(allSections.size());
 
 		for (HighwaySection highwaySection : allSections) {
 			boolean allowAscend = !highwaySection.hasTunnel;

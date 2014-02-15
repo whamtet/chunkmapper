@@ -5,7 +5,11 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.EOFException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
@@ -16,7 +20,9 @@ import java.util.Iterator;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.zip.DataFormatException;
 
+import com.chunkmapper.FileValidator;
 import com.chunkmapper.Point;
+import com.chunkmapper.Utila;
 import com.chunkmapper.Zip;
 import com.chunkmapper.admin.BucketInfo;
 import com.chunkmapper.admin.URLs;
@@ -30,14 +36,23 @@ import com.chunkmapper.protoc.OSMContainer;
 
 public class OsmosisParser {
 	public static final int NODE = 0, WAY = 1, RELATION = 2;
-	private static final ConcurrentHashMap<Point, OverpassObject> cache = new ConcurrentHashMap<Point, OverpassObject>();
 	private static final HashMap<URL, URL> lockMap = new HashMap<URL, URL>();
 	private static Object masterLock = new Object();
-	
+//	private static ConcurrentHashMap<Point, OverpassObject> cache = new ConcurrentHashMap<Point, OverpassObject>();
 	//still being accessed concurrently so best to be safe.
-	private static final ConcurrentHashMap<URL, FileContents> cache2 = new ConcurrentHashMap<URL, FileContents>();
+	private static ConcurrentHashMap<URL, FileContents> cache2 = new ConcurrentHashMap<URL, FileContents>();
 	private static ArrayList<Rectangle> rectangles;
 	private static Object key = new Object();
+	public static final File CACHE = new File(Utila.CACHE, "Osmosis");
+	
+	public static void flushCache() {
+//		cache = new ConcurrentHashMap<Point, OverpassObject>();
+		cache2 = new ConcurrentHashMap<URL, FileContents>();
+	}
+	
+	static {
+		CACHE.mkdirs();
+	}
 
 	private static URL getLock(URL url) {
 		synchronized(masterLock) {
@@ -49,16 +64,16 @@ public class OsmosisParser {
 			}
 		}
 	}
-
 	public static OverpassObject getObject(int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
-		Point p = new Point(regionx, regionz);
-		if (cache.containsKey(p)) {
-			return cache.get(p);
-		} else {
-			OverpassObject o = doGetObject(regionx, regionz);
-			cache.put(p, o);
-			return o;
-		}
+//		Point p = new Point(regionx, regionz);
+//		if (cache.containsKey(p)) {
+//			return cache.get(p);
+//		} else {
+//			OverpassObject o = doGetObject(regionx, regionz);
+//			cache.put(p, o);
+//			return o;
+//		}
+		return doGetObject(regionx, regionz);
 	}
 
 	private static OverpassObject doGetObject(int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
@@ -144,25 +159,9 @@ public class OsmosisParser {
 		}
 	}
 	public static void main(String[] args) throws Exception {
-		//		checkPlace("new plymouth, nz");
-		//		checkPlace("sydney");
-		//		checkPlace("brisbane");
-		checkPlace("london");
+		System.out.println((new URL("http://www.google.com/you")).getPath());
 	}
-	private static void checkPlace(String place) throws MalformedURLException, URISyntaxException, IOException, InterruptedException, DataFormatException {
-		System.out.println("checking " + place);
-		double[] latlon = Nominatim.getPoint(place);
-		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
-		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
-		System.out.println(getObject(regionx, regionz));
-		//		FileContents fileContents = getFileContents(regionx, regionz);
-		//		System.out.println(fileContents);
-		//		for (OSMContainer.Relation relation : fileContents.relations) {
-		//			ProtocPrinter.PrintRelation(relation);
-		//		}
-		System.out.println(OverpassParser.getObject(regionx, regionz));
-		System.out.println("***");
-	}
+
 	private static FileContents getFileContents(int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
 
 		setRectangles();
@@ -185,15 +184,24 @@ public class OsmosisParser {
 			if (cache2.containsKey(url)) {
 				return cache2.get(url);
 			}
-			System.out.println(url);
+			
 			FileContents out = new FileContents();
+			byte[] data;
+			File cache = new File(CACHE, url.getPath().substring(1));
+			if (FileValidator.checkValid(cache)) {
+				data = Zip.readFully(new FileInputStream(cache));
+			} else {
+				data = Zip.inflate(url.openStream());
+				Zip.writeFully(cache, data);
+				FileValidator.setValid(cache);
+			}
 
-			DataInputStream in = new DataInputStream(new ByteArrayInputStream(Zip.inflate(url.openStream())));
+			DataInputStream in = new DataInputStream(new ByteArrayInputStream(data));
 			try {
 				while(true) {
 					byte type = in.readByte();
 					int len = in.readInt();
-					byte[] data = new byte[len];
+					data = new byte[len];
 					in.readFully(data);
 
 					switch(type) {

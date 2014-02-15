@@ -24,7 +24,7 @@ import com.chunkmapper.protoc.admin.FileListManager;
 
 public class GlobcoverReaderImpl2 implements GlobcoverReader {
 	public static final int REGION_WIDTH = 50;
-	private static final File CACHE_DIR = new File(Utila.CACHE, "mat");
+	public static final File CACHE_DIR = new File(Utila.CACHE, "mat");
 	static {
 		CACHE_DIR.mkdirs();
 	}
@@ -172,16 +172,7 @@ public class GlobcoverReaderImpl2 implements GlobcoverReader {
 		//		pw.close();
 
 	}
-	private static void checkFileInfo() throws IOException {
-		InputStream in = new FileInputStream(new File("/Users/matthewmolloy/workspace/chunkmapper-static/public/mat/master.pbf"));
-		FileList manager = FileList.parseFrom(in);
-		in.close();
-		for (FileInfo info : FileListManager.getGlobcoverFileList().getFilesList()) {
-			//		for (FileInfo info : manager.getFilesList()) {
-			System.out.println(info.getParent());
-		}
-		System.exit(0);
-	}
+	
 
 
 

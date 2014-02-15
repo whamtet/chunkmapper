@@ -1,6 +1,4 @@
--highlighting of icons
--windows after double cancellation
 -predownload image of earth
--select minecraft location menu
-
--hidden threads after cancellation?
+-check ram overload
+-fix caching for live mode
+-examine for further efficiencies

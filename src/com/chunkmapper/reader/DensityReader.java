@@ -5,19 +5,20 @@ import java.net.URISyntaxException;
 import java.util.Random;
 import java.util.zip.DataFormatException;
 
+import com.chunkmapper.parser.OverpassObject;
 import com.chunkmapper.parser.POIParser;
 import com.chunkmapper.sections.POI;
 
 public class DensityReader {
 	public final float[][] data = new float[32][32];
 	private final Random random = new Random();
-	public DensityReader(int regionx0, int regionz0) throws IOException, URISyntaxException, InterruptedException, DataFormatException {
+	public DensityReader(OverpassObject o, int regionx0, int regionz0) throws IOException, URISyntaxException, InterruptedException, DataFormatException {
 		//loop through neighbours
 		for (int regionx = regionx0 - 1; regionx <= regionx0 + 1; regionx++) {
 			for (int regionz = regionz0 - 1; regionz <= regionz0 + 1; regionz++) {
 				//for each neighbour, get points of interest
 				
-				for (POI poi : POIParser.getPois(regionx, regionz)) {
+				for (POI poi : POIParser.getPois(o, regionx, regionz)) {
 					if (poi.population != null && (poi.type.equals("city")
 							|| poi.type.equals("town") || poi.type.equals("village") || poi.type.equals("hamlet")
 							|| poi.type.equals("suburb") || poi.type.equals("neighbourhood")

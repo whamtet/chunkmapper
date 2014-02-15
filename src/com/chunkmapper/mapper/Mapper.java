@@ -14,7 +14,7 @@ import com.chunkmapper.nbt.CompoundTag;
 import com.chunkmapper.nbt.ListTag;
 import com.chunkmapper.nbt.NbtIo;
 import com.chunkmapper.nbt.RegionFile;
-
+//Class to generate top down map pngs ala MCMapLive
 public class Mapper {
 	private static final int[] brightnessLookup = new int[256];
 	private static final int WIDTH = 1024, HEIGHT = 512;

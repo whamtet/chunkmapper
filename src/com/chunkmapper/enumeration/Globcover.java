@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public enum Globcover {
+	//contains info about the Globcover storage format
 	IrrigatedCrops, RainfedCrops, CroplandWithVegetation, VegetationWithCropland, BroadleafEvergreen,
 	ClosedBroadleafDeciduous, OpenBroadleafDeciduous, ClosedNeedleleafEvergreen, OpenNeedleleaf,
 	MixedBroadNeedleleaf, ForestShrublandWithGrass, GrassWithForestShrubland, Shrubland, Grassland,

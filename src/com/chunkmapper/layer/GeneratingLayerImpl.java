@@ -136,6 +136,7 @@ public class GeneratingLayerImpl extends RenderableLayer implements SelectListen
 			}
 		}
 	}
+	//instead of choosing start point, just default to center position
 	private void startCenteredThread() {
 		View v = wwd.getView();
 		final Position p = v.getCurrentEyePosition();

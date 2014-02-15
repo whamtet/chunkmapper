@@ -5,13 +5,14 @@ import java.util.Collection;
 import java.util.zip.DataFormatException;
 
 import com.chunkmapper.chunk.Chunk;
+import com.chunkmapper.parser.OverpassObject;
 import com.chunkmapper.parser.POIParser;
 import com.chunkmapper.sections.POI;
 
 public class RugbyReader {
 	private final Collection<POI> pois;
-	public RugbyReader(int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
-		pois = POIParser.getPois(regionx, regionz);
+	public RugbyReader(OverpassObject o, int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
+		pois = POIParser.getPois(o, regionx, regionz);
 	}
 	public static class RugbyField {
 		public final String name;

@@ -13,8 +13,7 @@ import com.chunkmapper.sections.RailSection;
 
 public class RailParser extends Parser {
 	
-	public static ArrayList<RailSection> getRailSection(int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
-		OverpassObject o = OSMRouter.getObject(regionx, regionz);
+	public static ArrayList<RailSection> getRailSection(OverpassObject o, int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
 		ArrayList<RailSection> out = new ArrayList<RailSection>();
 		for (Way way : o.ways) {
 			if (way.map.containsKey("railway")) {

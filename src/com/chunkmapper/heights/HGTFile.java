@@ -22,7 +22,7 @@ public class HGTFile {
 	public static final int SIZE = 1201*1201*2;
 	private static Object masterLock = new Object();
 	private static HashMap<Point, Point> lockMap = new HashMap<Point, Point>();
-	private static final File CACHE_DIR = new File(Utila.CACHE, "srtm");
+	public static final File CACHE_DIR = new File(Utila.CACHE, "srtm");
 	static {
 		CACHE_DIR.mkdirs();
 	}

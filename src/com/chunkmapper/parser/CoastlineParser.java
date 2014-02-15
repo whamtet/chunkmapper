@@ -14,8 +14,7 @@ import com.chunkmapper.sections.Coastline;
 
 public class CoastlineParser extends Parser {
 	
-	public static HashSet<Coastline> getCoastlines(int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
-		OverpassObject o = OSMRouter.getObject(regionx, regionz);
+	public static HashSet<Coastline> getCoastlines(OverpassObject o, int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
 		HashSet<Coastline> coastlines = new HashSet<Coastline>();
 		for (Way way : o.ways) {
 			if ("coastline".equals(way.map.get("natural"))) {

@@ -9,13 +9,9 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-
+//Can't remember what this is for
 public class Utilb {
 	private static Cursor cursor;
-	private static void printDimensions(String s) throws IOException {
-		BufferedImage im = ImageIO.read(new File(s));
-		System.out.println(im.getWidth() + ", " + im.getHeight());
-	}
 //	public static void main(String[] args) throws Exception {
 //		printDimensions("src/images/START.png");
 //		printDimensions("src/images/CANCEL.png");

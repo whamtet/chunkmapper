@@ -29,7 +29,6 @@ public class SingleTerrainManager {
 		for (int i = 0; i < 512; i++) {
 			for (int j = 0; j < 512; j++) {
 				columns[i][j] = new Shrubland(j, i, heightsReader);
-				//				columns[i][j] = new Coast(j, i);
 			}
 		}
 

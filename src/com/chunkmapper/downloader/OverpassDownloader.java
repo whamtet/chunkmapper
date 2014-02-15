@@ -1,11 +1,8 @@
 package com.chunkmapper.downloader;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
@@ -33,8 +30,13 @@ import com.chunkmapper.Point;
 public class OverpassDownloader {
 	private static final int NUM_DOWNLOADING_THREADS = 6;
 	private static final DefaultHttpClient httpclient = Downloader.getHttpClient();
-	private static final ConcurrentHashMap<Point, ArrayList<String>> generalCache = new ConcurrentHashMap<Point, ArrayList<String>>();
+	private static ConcurrentHashMap<Point, ArrayList<String>> generalCache = new ConcurrentHashMap<Point, ArrayList<String>>();
 	private static final String generalQuery, testQuery;
+
+	public static void flushCache() {
+		generalCache = new ConcurrentHashMap<Point, ArrayList<String>>();
+	}
+
 	static {
 		String q1 = null;
 		String q2 = null;
@@ -48,25 +50,25 @@ public class OverpassDownloader {
 		testQuery = q2;
 	}
 	public static void main(String[] args) throws Exception {
-//		double[] latlon = Nominatim.getPoint("sydney");
-//		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
-//		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
+		//		double[] latlon = Nominatim.getPoint("sydney");
+		//		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
+		//		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
 		int regionx = 1060, regionz = 238;
 		System.out.println(getLines(regionx, regionz, false).size());
 	}
 
-	public static ArrayList<String> getLines(int regionx, int regionz, boolean test) throws IOException {
-		Point p = new Point(regionx, regionz);
-		if (generalCache.containsKey(p)) {
-			return generalCache.get(p);
-		} else {
-			String query = test ? testQuery : generalQuery;
-			ArrayList<String> lines = doGetLines(query, regionx, regionz);
-			generalCache.put(p, lines);
-			return lines;
+		public static ArrayList<String> getLines(int regionx, int regionz, boolean test) throws IOException {
+			Point p = new Point(regionx, regionz);
+			if (generalCache.containsKey(p)) {
+				return generalCache.get(p);
+			} else {
+				String query = test ? testQuery : generalQuery;
+				ArrayList<String> lines = doGetLines(query, regionx, regionz);
+				generalCache.put(p, lines);
+				return lines;
+			}
 		}
-	}
-	
+
 	private static ArrayList<String> doGetLines(String query, int regionx, int regionz) throws IOException {
 		final double REGION_WIDTH_IN_DEGREES = 512 / 3600.;
 		double lon1 = regionx * REGION_WIDTH_IN_DEGREES;
@@ -80,9 +82,9 @@ public class OverpassDownloader {
 		HttpResponse response = null;
 		HttpEntity entity = null;
 		BufferedReader in = null;
-		
+
 		try {
-			
+
 			httpPost = new HttpPost("http://www.overpass-api.de/api/interpreter");
 			httpPost.setEntity(new StringEntity(queryString));
 			response = httpclient.execute(httpPost);
@@ -94,12 +96,12 @@ public class OverpassDownloader {
 				lines.add(tempLine);
 			}
 			//write into temp file
-//			PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter("lines.xml")));
-//			for (String line : lines) {
-//				pw.println(line);
-//			}
-//			pw.close();
-//			Runtime.getRuntime().exec("open lines.xml");
+			//			PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter("lines.xml")));
+			//			for (String line : lines) {
+			//				pw.println(line);
+			//			}
+			//			pw.close();
+			//			Runtime.getRuntime().exec("open lines.xml");
 			return lines;
 		} finally {
 			try {
@@ -110,12 +112,12 @@ public class OverpassDownloader {
 				e1.printStackTrace();
 			}
 			if (entity != null)
-			EntityUtils.consumeQuietly(entity);
+				EntityUtils.consumeQuietly(entity);
 			if (httpPost != null)
-			httpPost.releaseConnection();
+				httpPost.releaseConnection();
 		}
 	}
-	
+
 
 	private static String getQuery(String queryFile) throws IOException {
 		URL src = OverpassDownloader.class.getResource(queryFile);

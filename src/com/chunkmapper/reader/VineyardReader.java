@@ -20,8 +20,7 @@ import com.chunkmapper.sections.RenderingSection;
 public class VineyardReader {
 	public boolean[][] hasVineyard = new boolean[512][512];
 
-	public VineyardReader(int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
-		OverpassObject o = OSMRouter.getObject(regionx, regionz);
+	public VineyardReader(OverpassObject o, int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
 		ArrayList<RenderingSection> sections = new ArrayList<RenderingSection>();
 		for (Way way : o.ways) {
 			if ("vineyard".equals(way.map.get("landuse")) || "grape".equals(way.map.get("crop"))) {
@@ -88,19 +87,19 @@ public class VineyardReader {
 			}
 		}
 	}
-	public static void main(String[] args) throws Exception {
-		double[] latlon = Nominatim.getPoint("motueka, nz");
-		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
-		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
-		VineyardReader reader = new VineyardReader(regionx, regionz);
-		PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(new File("/Users/matthewmolloy/python/wms/data.csv"))));
-		for (int i = 0; i < 512; i++) {
-			for (int j = 0; j < 512; j++) {
-				pw.println(reader.hasVineyard[i][j] ? 1 : 0);
-			}
-		}
-		pw.close();
-		System.out.println("done");
-	}
+//	public static void main(String[] args) throws Exception {
+//		double[] latlon = Nominatim.getPoint("motueka, nz");
+//		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
+//		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
+//		VineyardReader reader = new VineyardReader(regionx, regionz);
+//		PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(new File("/Users/matthewmolloy/python/wms/data.csv"))));
+//		for (int i = 0; i < 512; i++) {
+//			for (int j = 0; j < 512; j++) {
+//				pw.println(reader.hasVineyard[i][j] ? 1 : 0);
+//			}
+//		}
+//		pw.close();
+//		System.out.println("done");
+//	}
 
 }

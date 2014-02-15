@@ -21,8 +21,7 @@ public class OrchardReader {
 	public boolean[][] hasOrchard = new boolean[512][512];
 	public final boolean hasAnOrchard;
 
-	public OrchardReader(int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
-		OverpassObject o = OSMRouter.getObject(regionx, regionz);
+	public OrchardReader(OverpassObject o, int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
 		ArrayList<RenderingSection> sections = new ArrayList<RenderingSection>();
 		for (Way way : o.ways) {
 			if ("orchard".equals(way.map.get("landuse")) || "orchard".equals(way.map.get("agriculture"))) {
@@ -91,18 +90,18 @@ public class OrchardReader {
 		}
 	}
 	public static void main(String[] args) throws Exception {
-		double[] latlon = Nominatim.getPoint("motueka, nz");
-		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
-		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
-		OrchardReader reader = new OrchardReader(regionx, regionz);
-		PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(new File("/Users/matthewmolloy/python/wms/data.csv"))));
-		for (int i = 0; i < 512; i++) {
-			for (int j = 0; j < 512; j++) {
-				pw.println(reader.hasOrchard[i][j] ? 1 : 0);
-			}
-		}
-		pw.close();
-		System.out.println("done");
+//		double[] latlon = Nominatim.getPoint("motueka, nz");
+//		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
+//		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
+////		OrchardReader reader = new OrchardReader(regionx, regionz);
+//		PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(new File("/Users/matthewmolloy/python/wms/data.csv"))));
+//		for (int i = 0; i < 512; i++) {
+//			for (int j = 0; j < 512; j++) {
+//				pw.println(reader.hasOrchard[i][j] ? 1 : 0);
+//			}
+//		}
+//		pw.close();
+//		System.out.println("done");
 	}
 
 }

@@ -9,6 +9,11 @@ import java.io.PrintWriter;
 
 import org.apache.commons.io.FileUtils;
 
+import com.chunkmapper.binaryparser.OsmosisParser;
+import com.chunkmapper.heights.HGTFile;
+import com.chunkmapper.rail.HeightsCache;
+import com.chunkmapper.reader.GlobcoverReaderImpl2;
+
 public class Utila {
 	public static final int CHUNK_START = 4, CHUNK_END = 20;
 	public static final int HEIGHTS_START = 20;
@@ -18,6 +23,7 @@ public class Utila {
 	public static File MINECRAFT_DIR;
 	private static final File customDirStore;
 
+	//spit and slurp have something to do with a custom Minecraft location
 	private static String slurp(File f) {
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(f));
@@ -37,6 +43,15 @@ public class Utila {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	public static void clearCache() throws IOException {
+		FileUtils.deleteDirectory(CACHE);
+		CACHE.mkdirs();
+		OsmosisParser.CACHE.mkdirs();
+		GlobcoverReaderImpl2.CACHE_DIR.mkdirs();
+		HeightsCache.HEIGHTS_CACHE.mkdirs();
+		HGTFile.CACHE_DIR.mkdirs();
+		HGTFile.CACHE_DIR.mkdirs();
 	}
 	static {
 		CACHE = new File(FileUtils.getUserDirectory(), ".chunkmapper");

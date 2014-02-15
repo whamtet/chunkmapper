@@ -14,9 +14,8 @@ import com.chunkmapper.sections.Boundary;
 
 public class BoundaryParser extends Parser {
 
-	public static HashSet<Boundary> getBoundaries(int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
+	public static HashSet<Boundary> getBoundaries(OverpassObject o, int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
 		HashSet<Boundary> out = new HashSet<Boundary>();
-		OverpassObject o = OSMRouter.getObject(regionx, regionz);
 		for (Way way : o.ways) {
 			if ("administrative".equals(way.map.get("boundary"))) {
 				String leftArea = null, rightArea = null;

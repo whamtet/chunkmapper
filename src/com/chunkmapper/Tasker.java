@@ -66,6 +66,7 @@ public abstract class Tasker {
 							doTask(task);
 
 						} catch (InterruptedException e) {
+							e.printStackTrace();
 							return;
 						} catch (FileNotYetAvailableException e) {
 							e.printStackTrace();

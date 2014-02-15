@@ -804,7 +804,6 @@ public class LayerManagerLayer extends RenderableLayer implements SelectListener
         int i = 0;
         for (Layer layer : layers)
         {
-        	System.out.println(layer);
             if (!this.isMinimized() || layer == this)
             {
                 color = (i == this.selectedIndex) ? this.highlightColor : this.color;

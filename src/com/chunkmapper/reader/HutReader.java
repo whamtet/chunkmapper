@@ -23,8 +23,7 @@ public class HutReader {
 			this.name = name;
 		}
 	}
-	public HutReader(int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
-		OverpassObject o = OSMRouter.getObject(regionx, regionz);
+	public HutReader(OverpassObject o, int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
 		for (Node node : o.nodes) {
 			String tourism = node.map.get("tourism");
 			if ("alpine_hut".equals(tourism) || "wilderness_hut".equals(tourism)) {
@@ -41,13 +40,12 @@ public class HutReader {
 			}
 		}
 	}
-	public static void main(String[] args) throws Exception {
-		double[] latlon = Nominatim.getPoint("brown hut, nz");
-		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
-		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
-		HutReader reader = new HutReader(regionx, regionz);
-//		System.out.println(reader.points.size());
-	}
+//	public static void main(String[] args) throws Exception {
+//		double[] latlon = Nominatim.getPoint("brown hut, nz");
+//		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
+//		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
+//		HutReader reader = new HutReader(regionx, regionz);
+//	}
 	
 
 }

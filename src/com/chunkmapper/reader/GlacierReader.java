@@ -30,10 +30,8 @@ public class GlacierReader {
 	public boolean hasGlacierij(int i, int j) {
 		return hasGlacier[i][j];
 	}
-	private static ArrayList<Glacier> getLakes(int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
+	private static ArrayList<Glacier> getLakes(OverpassObject o, int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
 
-		OverpassObject o = OSMRouter.getObject(regionx, regionz);
-		
 		ArrayList<Glacier> lakes = new ArrayList<Glacier>();
 		for (Way way : o.ways) {
 			if ("glacier".equals(way.map.get("natural"))) {
@@ -76,44 +74,10 @@ public class GlacierReader {
 		return lakes;
 	}
 
-	public GlacierReader(int regionx, int regionz) throws IOException, FileNotYetAvailableException, URISyntaxException, DataFormatException, InterruptedException {
+	public GlacierReader(OverpassObject o, int regionx, int regionz) throws IOException, FileNotYetAvailableException, URISyntaxException, DataFormatException, InterruptedException {
 
 
-		ArrayList<Glacier> lakes = getLakes(regionx, regionz);
-
-		//		ArrayList<Lake> openLakes = new ArrayList<Lake>(), closedLakes = new ArrayList<Lake>();
-		//		for (Lake lake : lakes) {
-		//			if (lake.isClosed()) {
-		//				closedLakes.add(lake);
-		//			} else {
-		//				openLakes.add(lake);
-		//			}
-		//		}
-		//		outer: for (Lake lakeToClose : openLakes) {
-		//			for (Lake closedLake : closedLakes) {
-		//				if (closedLake.contains(lakeToClose)) {
-		//					continue outer;
-		//				}
-		//			}
-		//			int i;
-		//			for (i = 0; lakeToClose.isOpen() && i < 100; i++) {
-		//				Point endPoint = lakeToClose.getEndPoint();
-		//				int regionxd = Matthewmatics.div(endPoint.x, 512), regionzd = Matthewmatics.div(endPoint.z, 512);
-		//				Collection<Lake> lakes2 = regionxd == regionx && regionzd == regionz ?
-		//						openLakes : getLakes(regionxd, regionzd);
-		//				for (Lake lake : lakes2) {
-		//					lakeToClose.connect(lake);
-		//					if (lakeToClose.isClosed()) {
-		//						closedLakes.add(lakeToClose);
-		//						break;
-		//					}
-		//				}
-		//			}
-		//			if (i == 100) {
-		//				System.out.println("quitting");
-		//				return;
-		//			}
-		//		}
+		ArrayList<Glacier> lakes = getLakes(o, regionx, regionz);
 
 		ArrayList<RenderingSection> sections = new ArrayList<RenderingSection>();
 		for (Glacier lake : lakes) {
@@ -186,21 +150,21 @@ public class GlacierReader {
 	//
 	//	}
 
-	public static void main(String[] args) throws Exception {
-		System.out.println("starting");
-		double[] latlon = Nominatim.getPoint("nassihorn, switzerland");
-		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
-		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
-		GlacierReader reader = new GlacierReader(regionx, regionz);
-
-		PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(new File("/Users/matthewmolloy/python/wms/data.csv"))));
-		for (int z = 0; z < 512; z++) {
-			for (int x = 0; x < 512; x++) {
-				pw.println(reader.hasGlacierij(z, x) && (z > 0 || x > 0) ? 1 : 0);
-			}
-		}
-		pw.close();
-		System.out.println("done");
-	}
+//	public static void main(String[] args) throws Exception {
+//		System.out.println("starting");
+//		double[] latlon = Nominatim.getPoint("nassihorn, switzerland");
+//		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
+//		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
+//		GlacierReader reader = new GlacierReader(regionx, regionz);
+//
+//		PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(new File("/Users/matthewmolloy/python/wms/data.csv"))));
+//		for (int z = 0; z < 512; z++) {
+//			for (int x = 0; x < 512; x++) {
+//				pw.println(reader.hasGlacierij(z, x) && (z > 0 || x > 0) ? 1 : 0);
+//			}
+//		}
+//		pw.close();
+//		System.out.println("done");
+//	}
 
 }

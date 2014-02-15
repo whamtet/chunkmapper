@@ -13,9 +13,8 @@ import com.chunkmapper.sections.RiverSection;
 
 public class RiverParser extends Parser {
 	
-	public static ArrayList<RiverSection> getRiverSections(int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
+	public static ArrayList<RiverSection> getRiverSections(OverpassObject o, int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
 		ArrayList<RiverSection> out = new ArrayList<RiverSection>();
-		OverpassObject o = OSMRouter.getObject(regionx, regionz);
 		for (Way way : o.ways) {
 			if ("river".equals(way.map.get("waterway"))) {
 				out.add(new RiverSection(way.points));
@@ -26,7 +25,6 @@ public class RiverParser extends Parser {
 	
 	public static Collection<RiverSection> getRiverSections(ArrayList<String> lines) {
 		HashMap<Long, Point> locations = getLocations(lines);
-		System.out.println(locations.size());
 		ArrayList<RiverSection> riverSections = new ArrayList<RiverSection>();
 //		HashMap<String, RiverSection> riverSections = new HashMap<String, RiverSection>();
 		

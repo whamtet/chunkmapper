@@ -10,15 +10,14 @@ import java.util.zip.DataFormatException;
 import com.chunkmapper.Point;
 import com.chunkmapper.enumeration.CircleRail;
 import com.chunkmapper.enumeration.StraightRail;
+import com.chunkmapper.parser.OverpassObject;
 import com.chunkmapper.parser.RailParser;
 import com.chunkmapper.rail.HeightsManager;
 import com.chunkmapper.sections.RailSection;
 
 public class XapiRailReader {
-	//	private int chunkx, chunkz;
 	public short[][] heights = new short[512][512];
 	private byte[][] railType = new byte[512][512];
-	//	public boolean[][] special = new boolean[512][512];
 	public final boolean hasRails;
 	private final int x0, z0;
 	private final static int MIN_SPACING = 20; //stops players getting dizzy
@@ -70,10 +69,10 @@ public class XapiRailReader {
 		this.railType[z][x] = railType;
 	}
 
-	public XapiRailReader(int regionx, int regionz, HeightsReader heightsReader, int verticalExaggeration) throws IllegalArgumentException, NoSuchElementException, IOException, InterruptedException, FileNotYetAvailableException, URISyntaxException, DataFormatException {
+	public XapiRailReader(OverpassObject o, int regionx, int regionz, HeightsReader heightsReader, int verticalExaggeration) throws IllegalArgumentException, NoSuchElementException, IOException, InterruptedException, FileNotYetAvailableException, URISyntaxException, DataFormatException {
 		x0 = regionx * 512; z0 = regionz * 512;
 
-		Collection<RailSection> allSections = RailParser.getRailSection(regionx, regionz); 
+		Collection<RailSection> allSections = RailParser.getRailSection(o, regionx, regionz); 
 
 		hasRails = allSections.size() > 0;
 		if (!hasRails) {
@@ -250,14 +249,6 @@ public class XapiRailReader {
 
 	}
 
-//	public short getHeight(int x, int z) {
-////		return heights[com.chunkmapper.math.Matthewmatics.mod(z, 512)][com.chunkmapper.math.Matthewmatics.mod(x, 512)];
-//		return heights[z - z0][x - x0];
-//	}
-//	public byte getRailType(int x, int z) {
-////		return railType[com.chunkmapper.math.Matthewmatics.mod(z, 512)][com.chunkmapper.math.Matthewmatics.mod(x, 512)];
-//		return railType[z - z0][x - x0];
-//	}
 	public boolean hasRailij(int i, int j) {
 		return heights[i][j] != 0;
 	}

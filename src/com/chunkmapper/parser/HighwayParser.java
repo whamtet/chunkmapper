@@ -64,9 +64,8 @@ public class HighwayParser extends Parser {
 		}
 		return highwaySections;
 	}
-	public static ArrayList<HighwaySection> getHighwaySections(int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
+	public static ArrayList<HighwaySection> getHighwaySections(OverpassObject o, int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
 		ArrayList<HighwaySection> out = new ArrayList<HighwaySection>();
-		OverpassObject o = OSMRouter.getObject(regionx, regionz);
 		for (Way way : o.ways) {
 			String k = way.map.get("highway");
 			if ("motorway".equals(k) || "trunk".equals(k) || "primary".equals(k)) {

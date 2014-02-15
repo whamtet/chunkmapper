@@ -32,10 +32,8 @@ public class XapiLakeReader implements LakeReader {
 	public boolean hasWaterij(int i, int j) {
 		return hasWater[i][j];
 	}
-	private static ArrayList<Lake> getLakes(int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
+	private static ArrayList<Lake> getLakes(OverpassObject o, int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
 
-		OverpassObject o = OSMRouter.getObject(regionx, regionz);
-		
 		ArrayList<Lake> lakes = new ArrayList<Lake>();
 		for (Way way : o.ways) {
 			if ("water".equals(way.map.get("natural"))) {
@@ -74,10 +72,10 @@ public class XapiLakeReader implements LakeReader {
 		return lakes;
 	}
 
-	public XapiLakeReader(int regionx, int regionz) throws IOException, FileNotYetAvailableException, URISyntaxException, DataFormatException, InterruptedException {
+	public XapiLakeReader(OverpassObject o, int regionx, int regionz) throws IOException, FileNotYetAvailableException, URISyntaxException, DataFormatException, InterruptedException {
 
 
-		ArrayList<Lake> lakes = getLakes(regionx, regionz);
+		ArrayList<Lake> lakes = getLakes(o, regionx, regionz);
 
 		//		ArrayList<Lake> openLakes = new ArrayList<Lake>(), closedLakes = new ArrayList<Lake>();
 		//		for (Lake lake : lakes) {
@@ -193,7 +191,7 @@ public class XapiLakeReader implements LakeReader {
 		}
 		for (Lake lake : lakes) {
 			if (lake.points.size() == 0) {
-				System.out.println(lake);
+//				System.out.println(lake);
 			}
 		}
 

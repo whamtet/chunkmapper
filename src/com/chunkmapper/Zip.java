@@ -8,6 +8,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -166,6 +167,13 @@ public class Zip {
 		return uncompressed;
 		
 		
+	}
+	public static void writeFully(File f, byte[] data) throws IOException {
+		//FileOutputStream and DataOutputStream do not support integer return of sucessful bytes written
+		//Presumably complete write is guranteed
+		FileOutputStream out = new FileOutputStream(f);
+		out.write(data);
+		out.close();
 	}
 
 }

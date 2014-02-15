@@ -11,7 +11,6 @@ public class HeightsManager {
 	private RailTypeCache railTypeCache;
 	private final int verticalExaggeration;
 
-	private int numReloads = 0;
 
 	public HeightsManager(int verticalExaggeration) {
 		this.verticalExaggeration = verticalExaggeration;
@@ -23,7 +22,6 @@ public class HeightsManager {
 		} else {
 			if (cache != null)
 				cache.save();
-			numReloads++;
 			cache = new HeightsCache(neededPoint, verticalExaggeration);
 			return cache.getHeight(x, z);
 		}
@@ -38,12 +36,6 @@ public class HeightsManager {
 			cache = new HeightsCache(neededPoint, verticalExaggeration);
 			cache.setHeight(x, z, h);
 		}
-	}
-	public void save() throws IOException {
-		if (cache != null)
-			cache.save();
-		if (railTypeCache != null)
-			railTypeCache.save();
 	}
 	public boolean hasRail(int x, int z) throws IOException {
 		Point neededPoint = Point.getRegionPoint(x, z);

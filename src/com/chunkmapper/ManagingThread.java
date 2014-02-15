@@ -12,11 +12,14 @@ import javax.swing.JFrame;
 import org.apache.commons.io.FileUtils;
 
 import com.chunkmapper.admin.OSMRouter;
+import com.chunkmapper.binaryparser.OsmosisParser;
+import com.chunkmapper.downloader.OverpassDownloader;
 import com.chunkmapper.interfaces.GeneratingLayer;
 import com.chunkmapper.interfaces.GlobalSettings;
 import com.chunkmapper.interfaces.MappedSquareManager;
 import com.chunkmapper.interfaces.PlayerIconManager;
 import com.chunkmapper.interfaces.PointManager;
+import com.chunkmapper.parser.OverpassParser;
 import com.chunkmapper.rail.HeightsCache;
 import com.chunkmapper.writer.LevelDat;
 import com.chunkmapper.writer.RegionWriter;
@@ -186,6 +189,10 @@ public class ManagingThread extends Thread {
 				e.printStackTrace();
 			}
 		}
+		//clear out caches.
+		OverpassDownloader.flushCache();
+		OsmosisParser.flushCache();
+		OverpassParser.flushCache();
 
 	}
 

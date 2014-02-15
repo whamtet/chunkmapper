@@ -1,21 +1,11 @@
 package com.chunkmapper.parser;
 
 import java.awt.Rectangle;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import com.chunkmapper.FileValidator;
 import com.chunkmapper.Point;
-import com.chunkmapper.resourceinfo.XapiLakeResourceInfo;
 import com.chunkmapper.sections.Lake;
 
 public class LakeParser extends Parser {

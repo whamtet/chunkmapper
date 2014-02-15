@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.zip.DataFormatException;
 
 import com.chunkmapper.Point;
+import com.chunkmapper.parser.OverpassObject;
 import com.chunkmapper.parser.RiverParser;
 import com.chunkmapper.sections.RiverSection;
 
@@ -54,9 +55,9 @@ public class XapiRiverReader {
 
 
 
-	public XapiRiverReader(int regionx, int regionz, HeightsReader heightsReader) throws FileNotYetAvailableException, IOException, URISyntaxException, DataFormatException, InterruptedException {
+	public XapiRiverReader(OverpassObject o, int regionx, int regionz, HeightsReader heightsReader) throws FileNotYetAvailableException, IOException, URISyntaxException, DataFormatException, InterruptedException {
 
-		Collection<RiverSection> riverSections = RiverParser.getRiverSections(regionx, regionz);
+		Collection<RiverSection> riverSections = RiverParser.getRiverSections(o, regionx, regionz);
 
 		System.out.println(riverSections.size());
 		for (RiverSection riverSection : riverSections) {
