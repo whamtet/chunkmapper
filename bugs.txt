@@ -1,4 +1,4 @@
 -predownload image of earth
--check ram overload
 -fix caching for live mode
 -examine for further efficiencies
+-invalid network warning

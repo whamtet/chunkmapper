@@ -88,6 +88,8 @@ public class SettingsDialog extends JDialog {
 				}
 			}
 		});
+		long availableMemory = Runtime.getRuntime().maxMemory();
+		JLabel lblNewLabel_2 = new JLabel("xmx " + availableMemory);
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
 		gl_contentPanel.setHorizontalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
@@ -105,7 +107,10 @@ public class SettingsDialog extends JDialog {
 							.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
 								.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 325, GroupLayout.PREFERRED_SIZE)
 								.addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 144, GroupLayout.PREFERRED_SIZE)))
-						.addComponent(btnClearCache))
+						.addComponent(btnClearCache)
+						.addGroup(gl_contentPanel.createSequentialGroup()
+							.addContainerGap()
+							.addComponent(lblNewLabel_2)))
 					.addContainerGap(50, Short.MAX_VALUE))
 		);
 		gl_contentPanel.setVerticalGroup(
@@ -121,7 +126,9 @@ public class SettingsDialog extends JDialog {
 						.addComponent(spinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGap(18)
 					.addComponent(btnClearCache)
-					.addContainerGap(43, Short.MAX_VALUE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(lblNewLabel_2)
+					.addContainerGap(21, Short.MAX_VALUE))
 		);
 		contentPanel.setLayout(gl_contentPanel);
 		{

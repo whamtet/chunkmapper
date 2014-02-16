@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project default="create_run_jar" name="Create Runnable Jar for Project chunkmapper with Jar-in-Jar Loader">
     <taskdef name="jarbundler"
-             classpathref="jarbundler-2.2.0.jar"
              classname="net.sourceforge.jarbundler.JarBundler" />
     <!--this file was created by Eclipse Runnable JAR Export Wizard-->
     <!--ANT 1.7 is required                                        -->
@@ -18,7 +17,7 @@
             <zipfileset dir="../lib" includes="jai_core.jar"/>
             <zipfileset dir="../lib" includes="libmlib_jai.so.zip"/>
             <zipfileset dir="../lib" includes="mlibwrapper_jai.jar"/>
-            <fileset dir="../target/classes"/>
+            <fileset dir="../target/${classes}"/>
             <fileset dir="../chunkmapperResources"/>
             <zipfileset dir="../lib" includes="jogl-all.jar"/>
             <zipfileset dir="../lib" includes="gluegen-rt.jar"/>
@@ -62,4 +61,5 @@
                     jar="Chunkmapper.jar"
                     vmoptions="-Xmx1G"/>
     </target>
+	<target name="all" depends="app, exe" />
 </project>

@@ -5,6 +5,15 @@
 	<groupId>com.chunkmapper</groupId>
 	<artifactId>chunkmapper2</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<pluginRepositories>
+        <pluginRepository>
+            <id>licel</id>
+            <url>https://licel.ru/m2</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
 
 	<build>
 		<sourceDirectory>src</sourceDirectory>
@@ -17,7 +26,7 @@
 					<target>1.6</target>
 				</configuration>
 			</plugin>
-			<!-- <plugin>
+			<plugin>
 				<groupId>com.github.wvengen</groupId>
 				<artifactId>proguard-maven-plugin</artifactId>
 				<version>2.0.6</version>
@@ -45,7 +54,27 @@
 						<lib>${java.home}/lib/rt.jar</lib>
 					</libs>
 				</configuration>
-			</plugin> -->
+			</plugin>
+			<plugin>            
+                <groupId>com.licel</groupId>
+                <artifactId>stringer-maven-plugin</artifactId>
+                <version>1.5.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>stringer</goal>
+                        </goals>
+                        <configuration>
+                           <checkCaller>false</checkCaller>
+                           <integrityProtection>false</integrityProtection>
+                           <resourceEncryption>false</resourceEncryption>
+                           <optimize>true</optimize><!-- this appears to speed things up a bit -->
+                            
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
 		</plugins>
 
 	</build>
