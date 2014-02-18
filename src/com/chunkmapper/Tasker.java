@@ -1,13 +1,12 @@
 package com.chunkmapper;
 
+import java.net.UnknownHostException;
 import java.util.HashSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
-
-import com.chunkmapper.reader.FileNotYetAvailableException;
 
 
 public abstract class Tasker {
@@ -64,11 +63,11 @@ public abstract class Tasker {
 						try {
 							task = getTask();
 							doTask(task);
-
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 							return;
-						} catch (FileNotYetAvailableException e) {
+						} catch (UnknownHostException e) {
+							ManagingThread.setNetworkProblems();
 							e.printStackTrace();
 							try {
 								Thread.sleep(1000);

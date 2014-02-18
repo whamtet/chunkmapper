@@ -66,9 +66,9 @@
                             <goal>stringer</goal>
                         </goals>
                         <configuration>
-                           <checkCaller>false</checkCaller>
-                           <integrityProtection>false</integrityProtection>
-                           <resourceEncryption>false</resourceEncryption>
+                           <checkCaller>false</checkCaller><!-- slows things down quite a bit -->
+                           <integrityProtection>false</integrityProtection><!-- slows things down a little -->
+                           <resourceEncryption>false</resourceEncryption><!-- cannot load factory to goto -->
                            <optimize>true</optimize><!-- this appears to speed things up a bit -->
                             
                         </configuration>

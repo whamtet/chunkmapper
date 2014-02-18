@@ -1,19 +1,22 @@
 package com.chunkmapper;
 
+import java.awt.Dialog.ModalityType;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.URL;
 import java.util.HashSet;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import org.apache.commons.io.FileUtils;
 
+import com.chunkmapper.admin.BucketInfo;
 import com.chunkmapper.admin.OSMRouter;
 import com.chunkmapper.binaryparser.OsmosisParser;
-import com.chunkmapper.downloader.OverpassDownloader;
+import com.chunkmapper.gui.dialog.MustUpgradeDialog;
+import com.chunkmapper.gui.dialog.NoNetworkDialog;
 import com.chunkmapper.interfaces.GeneratingLayer;
 import com.chunkmapper.interfaces.GlobalSettings;
 import com.chunkmapper.interfaces.MappedSquareManager;
@@ -33,6 +36,26 @@ public class ManagingThread extends Thread {
 	private final JFrame appFrame;
 	private final GeneratingLayer generatingLayer;
 	public RegionWriter regionWriter;
+	private static boolean networkProblems;
+	private static Object networkProblemsGuard = new Object();
+	
+	public static void setNetworkProblems() {
+		synchronized(networkProblemsGuard) {
+			networkProblems = true;
+		}
+	}
+	
+	private static boolean hasNetworkProblems() {
+		synchronized(networkProblemsGuard) {
+			return networkProblems;
+		}
+	}
+	
+	private static void clearNetworkProblems() {
+		synchronized(networkProblemsGuard) {
+			networkProblems = false;
+		}
+	}
 
 	public ManagingThread(double lat, double lon, File gameFolder, MappedSquareManager mappedSquareManager,
 			PlayerIconManager playerIconManager, GlobalSettings globalSettings, JFrame appFrame,
@@ -49,8 +72,14 @@ public class ManagingThread extends Thread {
 		this.lon = lon;
 		this.gameFolder = gameFolder;
 	}
+	private static boolean continueWithoutNetwork() {
+		NoNetworkDialog d = new NoNetworkDialog();
+		d.setModalityType(ModalityType.APPLICATION_MODAL);
+		d.setVisible(true);
+		return d.continueGeneration;
+	}
 	public static void main(String[] args) throws Exception {
-		new ManagingThread(0, 0, null, null, null, null, null, null);
+		System.out.println(continueWithoutNetwork());
 	}
 	private static File prepareDir(File f, boolean delete) {
 		if (delete && f.exists()) {
@@ -68,28 +97,7 @@ public class ManagingThread extends Thread {
 
 	@Override
 	public void run() {
-		//first need to check security
-		//		if (!SecurityManager.isOfflineValid()) {
-		//			String email = null;
-		//			boolean isLoggedIn = false;
-		//			while(!isLoggedIn) {
-		//				LoginDialog dialog = new LoginDialog(appFrame, email);
-		//				dialog.setVisible(true);
-		//				if (dialog.cancelled) {
-		//					generatingLayer.cancel();
-		//					return;
-		//				}
-		//				email = dialog.getEmail();
-		//				switch(SecurityManager.onlineValidity(email, dialog.getPassword())) {
-		//				case SecurityManager.REQUIRES_LOGIN:
-		//				(new SuspiciousPasswordDialog(appFrame)).setVisible(true);
-		//				break;
-		//				case SecurityManager.VALID:
-		//				isLoggedIn = true;
-		//				break;
-		//				}
-		//			}
-		//		}
+
 		if (globalSettings.isLive()) {
 			OSMRouter.setLive();
 		}
@@ -155,6 +163,14 @@ public class ManagingThread extends Thread {
 				}
 
 				Thread.sleep(1000);
+				if (hasNetworkProblems()) {
+					if (continueWithoutNetwork()) {
+						clearNetworkProblems();
+					} else {
+						generatingLayer.cancel(true);
+						return;
+					}
+				}
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
@@ -179,8 +195,10 @@ public class ManagingThread extends Thread {
 		reader.close();
 		return out;
 	}
-	public static void blockingShutDown(ManagingThread thread) {
-		thread.interrupt();
+	public static void blockingShutDown(ManagingThread thread, boolean selfCalled) {
+		if (!selfCalled) {
+			thread.interrupt();
+		}
 		thread.regionWriter.blockingShutdownNow();
 		while(thread.isAlive()) {
 			try {
@@ -190,9 +208,8 @@ public class ManagingThread extends Thread {
 			}
 		}
 		//clear out caches.
-		OverpassDownloader.flushCache();
+//		OverpassDownloader.flushCache();
 		OsmosisParser.flushCache();
-		OverpassParser.flushCache();
 
 	}
 

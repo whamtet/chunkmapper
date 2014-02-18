@@ -47,6 +47,7 @@ public class SettingsDialog extends JDialog {
 	 * Create the dialog.
 	 * @param appFrame 
 	 * @param globalSettings3 
+	 * @throws  
 	 */
 	public SettingsDialog(JFrame appFrame, final GlobalSettings globalSettings) {
 		super(appFrame);
@@ -59,7 +60,14 @@ public class SettingsDialog extends JDialog {
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		
-		boolean allowLive = BucketInfo.allowLive();
+		boolean allowLive;
+		try {
+			allowLive = BucketInfo.allowLive();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			allowLive = false;
+		}
 		final JCheckBox checkBox = new JCheckBox("Live Mode");
 		checkBox.setEnabled(allowLive);
 		

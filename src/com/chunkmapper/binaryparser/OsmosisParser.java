@@ -163,7 +163,7 @@ public class OsmosisParser {
 	}
 
 	private static FileContents getFileContents(int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
-
+		
 		setRectangles();
 		FileContents out = new FileContents();
 		int x = regionx * 512, z = regionz * 512;
@@ -181,6 +181,7 @@ public class OsmosisParser {
 
 	private static FileContents readFile(URL url) throws IOException, DataFormatException {
 		synchronized(getLock(url)) {
+			
 			if (cache2.containsKey(url)) {
 				return cache2.get(url);
 			}

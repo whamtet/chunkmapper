@@ -44,8 +44,7 @@ public class FerryReader {
 			}
 		}
 	}
-	public FerryReader(int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
-		OverpassObject o = OSMRouter.getObject(regionx, regionz);
+	public FerryReader(OverpassObject o, int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
 		for (Way way : o.ways) {
 			if ("ferry".equals(way.map.get("route"))) {
 				for (int i = 0; i < way.points.size() - 1; i++) {

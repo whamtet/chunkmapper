@@ -30,12 +30,12 @@ import com.chunkmapper.Point;
 public class OverpassDownloader {
 	private static final int NUM_DOWNLOADING_THREADS = 6;
 	private static final DefaultHttpClient httpclient = Downloader.getHttpClient();
-	private static ConcurrentHashMap<Point, ArrayList<String>> generalCache = new ConcurrentHashMap<Point, ArrayList<String>>();
+//	private static ConcurrentHashMap<Point, ArrayList<String>> generalCache = new ConcurrentHashMap<Point, ArrayList<String>>();
 	private static final String generalQuery, testQuery;
 
-	public static void flushCache() {
-		generalCache = new ConcurrentHashMap<Point, ArrayList<String>>();
-	}
+//	public static void flushCache() {
+//		generalCache = new ConcurrentHashMap<Point, ArrayList<String>>();
+//	}
 
 	static {
 		String q1 = null;
@@ -50,23 +50,21 @@ public class OverpassDownloader {
 		testQuery = q2;
 	}
 	public static void main(String[] args) throws Exception {
-		//		double[] latlon = Nominatim.getPoint("sydney");
-		//		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
-		//		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
 		int regionx = 1060, regionz = 238;
 		System.out.println(getLines(regionx, regionz, false).size());
 	}
 
 		public static ArrayList<String> getLines(int regionx, int regionz, boolean test) throws IOException {
-			Point p = new Point(regionx, regionz);
-			if (generalCache.containsKey(p)) {
-				return generalCache.get(p);
-			} else {
-				String query = test ? testQuery : generalQuery;
-				ArrayList<String> lines = doGetLines(query, regionx, regionz);
-				generalCache.put(p, lines);
-				return lines;
-			}
+//			Point p = new Point(regionx, regionz);
+//			if (generalCache.containsKey(p)) {
+//				return generalCache.get(p);
+//			} else {
+//				String query = test ? testQuery : generalQuery;
+//				ArrayList<String> lines = doGetLines(query, regionx, regionz);
+//				generalCache.put(p, lines);
+//				return lines;
+//			}
+			return doGetLines(generalQuery, regionx, regionz);
 		}
 
 	private static ArrayList<String> doGetLines(String query, int regionx, int regionz) throws IOException {
@@ -95,13 +93,6 @@ public class OverpassDownloader {
 			while ((tempLine = in.readLine()) != null) {
 				lines.add(tempLine);
 			}
-			//write into temp file
-			//			PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter("lines.xml")));
-			//			for (String line : lines) {
-			//				pw.println(line);
-			//			}
-			//			pw.close();
-			//			Runtime.getRuntime().exec("open lines.xml");
 			return lines;
 		} finally {
 			try {

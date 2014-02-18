@@ -109,7 +109,8 @@ public class GlobcoverManager {
 		this.regionx = regionx; this.regionz = regionz;
 
 		heightsReader = new HeightsReaderS3(regionx, regionz, verticalExaggeration);
-		ferryReader = new FerryReader(regionx, regionz);
+		OverpassObject o = OSMRouter.getObject(regionx, regionz);
+		ferryReader = new FerryReader(o, regionx, regionz);
 		allWater = heightsReader.isAllWater() && !ferryReader.hasAFerry;
 
 		if (allWater) {
@@ -123,7 +124,7 @@ public class GlobcoverManager {
 			hutReader = null;
 			return;
 		}
-		OverpassObject o = OSMRouter.getObject(regionx, regionz);
+		
 		OrchardReader orchardReader = new OrchardReader(o, regionx, regionz);
 		VineyardReader vineyardReader = new VineyardReader(o, regionx, regionz);
 		hutReader = new HutReader(o, regionx, regionz);

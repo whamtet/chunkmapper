@@ -168,33 +168,5 @@ public class XapiLakeReader implements LakeReader {
 	}
 
 
-	public static void main(String[] args) throws Exception {
-		OverpassObject o = OSMRouter.getObject(0, -363);
-		
-		HashSet<Lake> lakes = new HashSet<Lake>();
-		for (Way way : o.ways) {
-			if ("water".equals(way.map.get("natural"))) {
-				Lake lake = new Lake(way.points, way.bbox);
-				if (lake.isClosed()) {
-					lakes.add(lake);
-				} else {
-					System.out.println("skipping");
-				}
-			}
-		}
-		for (Relation relation : o.relations) {
-			if ("water".equals(relation.map.get("natural")) && "multipolygon".equals(relation.map.get("type"))) {
-				for (Way way : relation.ways) {
-					lakes.add(new Lake(way.points, way.bbox));
-				}
-			}
-		}
-		for (Lake lake : lakes) {
-			if (lake.points.size() == 0) {
-//				System.out.println(lake);
-			}
-		}
-
-	}
 
 }

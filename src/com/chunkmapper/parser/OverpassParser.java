@@ -17,34 +17,35 @@ import com.chunkmapper.parser.OverpassObject.Relation;
 import com.chunkmapper.parser.OverpassObject.Way;
 
 public class OverpassParser extends Parser {
-	private static ConcurrentHashMap<Point, OverpassObject> cache = new ConcurrentHashMap<Point, OverpassObject>();
+//	private static ConcurrentHashMap<Point, OverpassObject> cache = new ConcurrentHashMap<Point, OverpassObject>();
 
-	private static ArrayList<String> getLines() throws IOException {
-		
-		BufferedReader reader = new BufferedReader(new FileReader("test.xml"));
-		ArrayList<String> out = new ArrayList<String>();
-		String line;
-		while ((line = reader.readLine()) != null) {
-			out.add(line);
-		}
-		reader.close();
-		return out;
-	}
+//	private static ArrayList<String> getLines() throws IOException {
+//		
+//		BufferedReader reader = new BufferedReader(new FileReader("test.xml"));
+//		ArrayList<String> out = new ArrayList<String>();
+//		String line;
+//		while ((line = reader.readLine()) != null) {
+//			out.add(line);
+//		}
+//		reader.close();
+//		return out;
+//	}
 	
-	public static void flushCache() {
-		cache = new ConcurrentHashMap<Point, OverpassObject>();
-	}
+//	public static void flushCache() {
+//		cache = new ConcurrentHashMap<Point, OverpassObject>();
+//	}
 	public static OverpassObject getObject(int regionx, int regionz) throws IOException {
 		//		if (true)
 		//		throw new RuntimeException("Don't call me");
-		Point p = new Point(regionx, regionz);
-		if (cache.containsKey(p)) {
-			return cache.get(p);
-		} else {
-			OverpassObject o = doGetObject(regionx, regionz, false);
-			cache.put(p, o);
-			return o;
-		}
+//		Point p = new Point(regionx, regionz);
+//		if (cache.containsKey(p)) {
+//			return cache.get(p);
+//		} else {
+//			OverpassObject o = doGetObject(regionx, regionz, false);
+//			cache.put(p, o);
+//			return o;
+//		}
+		return doGetObject(regionx, regionz, false);
 	}
 	public static OverpassObject getTestObject(int regionx, int regionz) throws IOException {
 		return doGetObject(regionx, regionz, true);

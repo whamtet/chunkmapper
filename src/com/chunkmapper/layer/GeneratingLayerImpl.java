@@ -170,6 +170,9 @@ public class GeneratingLayerImpl extends RenderableLayer implements SelectListen
 		managingThread.start();
 	}
 	public void cancel() {
+		cancel(false);
+	}
+	public void cancel(final boolean selfCalled) {
 
 		isCancelling = true;
 		update();
@@ -181,7 +184,7 @@ public class GeneratingLayerImpl extends RenderableLayer implements SelectListen
 					((Component) wwd).setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 				}
 				if (managingThread != null) {
-					ManagingThread.blockingShutDown(managingThread);
+					ManagingThread.blockingShutDown(managingThread, selfCalled);
 //					managingThread.interrupt();
 					managingThread = null;
 				}

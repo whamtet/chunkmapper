@@ -29,6 +29,7 @@ import java.awt.Font;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.Dialog.ModalityType;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
@@ -38,9 +39,11 @@ import java.util.HashSet;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import com.chunkmapper.admin.BucketInfo;
 import com.chunkmapper.gui.GoToThread;
 import com.chunkmapper.gui.dialog.ConfirmDeleteDialog;
 import com.chunkmapper.gui.dialog.GoToDialog;
+import com.chunkmapper.gui.dialog.MustUpgradeDialog;
 import com.chunkmapper.gui.dialog.NewMapDialog;
 import com.chunkmapper.interfaces.GlobalSettings;
 
@@ -173,7 +176,7 @@ public class MainLayer extends RenderableLayer implements SelectListener
 					if (s != null) {
 						((Component) this.wwd).setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 						if (event.getEventAction().equals(SelectEvent.LEFT_CLICK)) {
-							if (s.equals("create")) {
+							if (s.equals("create") && !mustUpgrade()) {
 								NewMapDialog dialog = new NewMapDialog(this, this.appFrame);
 								dialog.setVisible(true);
 								String gameName = dialog.getGameName();
@@ -199,7 +202,7 @@ public class MainLayer extends RenderableLayer implements SelectListener
 									update = true;
 								}
 							}
-							if (s.endsWith("Resume")) {
+							if (s.endsWith("Resume") && !mustUpgrade()) {
 								wwd.getModel().getLayers().remove(this);
 								String gameName = s.substring(0, s.length() - 6);
 								try {
@@ -233,6 +236,15 @@ public class MainLayer extends RenderableLayer implements SelectListener
 			((Component) this.wwd).setCursor(Cursor.getDefaultCursor());
 			this.update();
 		}
+	}
+	private static boolean mustUpgrade() {
+		boolean mustUpgrade = BucketInfo.mustUpgrade();
+		if (mustUpgrade) {
+			MustUpgradeDialog d = new MustUpgradeDialog();
+			d.setModalityType(ModalityType.APPLICATION_MODAL);
+			d.setVisible(true);
+		}
+		return mustUpgrade;
 	}
 
 	public void displayGotoDialog() {

@@ -1,4 +1,3 @@
 -predownload image of earth
--fix caching for live mode
 -examine for further efficiencies
--invalid network warning
+-cancellation about 30 secs into generation

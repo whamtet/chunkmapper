@@ -15,9 +15,9 @@ import com.chunkmapper.protoc.HeightsContainer;
 public class HeightsInfo {
 	private static HashSet<Point> points;
 	private static Object key = new Object();
-	private static void setPoints() {
+	private static void setPoints() throws IOException {
 		InputStream in = null;
-		try {
+//		try {
 			URL url = new URL(BucketInfo.getBucket("chunkmapper-admin") + "/heights2");
 			in = new BufferedInputStream(url.openStream());
 			HeightsContainer.Heights heights = HeightsContainer.Heights.parseFrom(in);
@@ -26,20 +26,20 @@ public class HeightsInfo {
 			while (lats.hasNext()) {
 				points.add(new Point(lats.next(), lons.next()));
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			points = null;
-		} finally {
-			if (in != null)
-				try {
-					in.close();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-		}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			points = null;
+//		} finally {
+//			if (in != null)
+//				try {
+//					in.close();
+//				} catch (IOException e1) {
+//					// TODO Auto-generated catch block
+//					e1.printStackTrace();
+//				}
+//		}
 	}
-	public static boolean hasPoint(int lat, int lon) throws InterruptedException {
+	public static boolean hasPoint(int lat, int lon) throws InterruptedException, IOException {
 		synchronized(key) {
 			while (points == null) {
 				setPoints();
