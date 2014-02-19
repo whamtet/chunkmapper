@@ -71,9 +71,9 @@ def resume():
 def locate_minecraft_dir():
     click("1391653158899.png")
 
-#go_to('Tokyo')
-#create_test_map()
-#cancel_generation()
+go_to('Tokyo')
+create_test_map()
+cancel_generation()
 for i in range(10):
     resume()
     wait(10)

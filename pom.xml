@@ -55,7 +55,7 @@
 					</libs>
 				</configuration>
 			</plugin>
-			<plugin>            
+			<plugin>
                 <groupId>com.licel</groupId>
                 <artifactId>stringer-maven-plugin</artifactId>
                 <version>1.5.1</version>
@@ -70,7 +70,7 @@
                            <integrityProtection>false</integrityProtection><!-- slows things down a little -->
                            <resourceEncryption>false</resourceEncryption><!-- cannot load factory to goto -->
                            <optimize>true</optimize><!-- this appears to speed things up a bit -->
-                            
+                           <verbose>true</verbose>
                         </configuration>
                     </execution>
                 </executions>

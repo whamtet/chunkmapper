@@ -252,7 +252,8 @@ public class MainLayer extends RenderableLayer implements SelectListener
 		d.setVisible(true);
 		String location = d.getPlace();
 		if (location != null) {
-			(new GoToThread(wwd, location)).start();
+			GoToThread t = new GoToThread(appFrame, wwd, location);
+			t.start();
 		}
 
 	}

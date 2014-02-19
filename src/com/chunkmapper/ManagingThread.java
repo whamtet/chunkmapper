@@ -6,24 +6,23 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.zip.DataFormatException;
 
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 
 import org.apache.commons.io.FileUtils;
 
-import com.chunkmapper.admin.BucketInfo;
 import com.chunkmapper.admin.OSMRouter;
 import com.chunkmapper.binaryparser.OsmosisParser;
-import com.chunkmapper.gui.dialog.MustUpgradeDialog;
 import com.chunkmapper.gui.dialog.NoNetworkDialog;
 import com.chunkmapper.interfaces.GeneratingLayer;
 import com.chunkmapper.interfaces.GlobalSettings;
 import com.chunkmapper.interfaces.MappedSquareManager;
 import com.chunkmapper.interfaces.PlayerIconManager;
 import com.chunkmapper.interfaces.PointManager;
-import com.chunkmapper.parser.OverpassParser;
 import com.chunkmapper.rail.HeightsCache;
+import com.chunkmapper.reader.HeightsReader;
+import com.chunkmapper.reader.HeightsReaderS3;
 import com.chunkmapper.writer.LevelDat;
 import com.chunkmapper.writer.RegionWriter;
 
@@ -118,26 +117,32 @@ public class ManagingThread extends Thread {
 				e.printStackTrace();
 				throw new RuntimeException();
 			}
-//			} catch (NumberFormatException e) {
-//				System.out.println("done");
-//				e.printStackTrace();
-//				gameMetaInfo = new GameMetaInfo(metaInfoFile, lat, lon, globalSettings.getVerticalExaggeration());
-//			}
 		} else {
 			gameMetaInfo = new GameMetaInfo(metaInfoFile, lat, lon, globalSettings.getVerticalExaggeration());
-			//is saved automatically
 		}
 		System.out.println("here");
 
 		File loadedLevelDatFile = new File(gameFolder, "level.dat");
 		if (!loadedLevelDatFile.exists()) {
 			try {
-				//				URL src = ManagingThread.class.getResource("/config/level.dat");
-				//				FileUtils.copyURLToFile(src, loadedLevelDatFile);
 				LevelDat loadedLevelDat = new LevelDat(loadedLevelDatFile);
 				String gameName = gameFolder.getName();
 				loadedLevelDat.setName(gameName);
-				loadedLevelDat.setPlayerPosition(lon * 3600 - gameMetaInfo.rootPoint.x * 512, 250, - lat * 3600 - gameMetaInfo.rootPoint.z * 512);
+				//need to set altitude correctly.
+				int altitude;
+				try {
+					HeightsReader heightsReader = new HeightsReaderS3(gameMetaInfo.rootPoint.x, gameMetaInfo.rootPoint.z, globalSettings.getVerticalExaggeration());
+					altitude = heightsReader.getHeightxz((int) (lon * 3600), (int) (-lat * 3600)) + 20;
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					return;
+				} catch (DataFormatException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					altitude = 250;
+				}
+				loadedLevelDat.setPlayerPosition(lon * 3600 - gameMetaInfo.rootPoint.x * 512, altitude, - lat * 3600 - gameMetaInfo.rootPoint.z * 512);
 				loadedLevelDat.save();
 			} catch (IOException e) {
 				e.printStackTrace();

@@ -59,7 +59,6 @@ public class XapiRiverReader {
 
 		Collection<RiverSection> riverSections = RiverParser.getRiverSections(o, regionx, regionz);
 
-		System.out.println(riverSections.size());
 		for (RiverSection riverSection : riverSections) {
 			for (int i = 0; i < riverSection.points.size() - 1; i++) {
 				Point p1 = riverSection.points.get(i), p2 = riverSection.points.get(i+1);

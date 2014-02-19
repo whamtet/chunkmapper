@@ -1,5 +1,6 @@
 package com.chunkmapper;
 
+import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.HashSet;
 import java.util.concurrent.ExecutorService;
@@ -52,12 +53,12 @@ public abstract class Tasker {
 				// TODO Auto-generated method stub
 				return t;
 			}
-			
+
 		});
 		for (int i = 0; i < numThreads; i++) {
 			executorService.execute(new Runnable() {
 				public void run() {
-					
+
 					while(true) {
 						Point task = null;
 						try {
@@ -77,7 +78,16 @@ public abstract class Tasker {
 								e1.printStackTrace();
 								return;
 							}
-							
+						} catch (SocketException e) {
+							ManagingThread.setNetworkProblems();
+							e.printStackTrace();
+							try {
+								Thread.sleep(1000);
+								addTask(task);
+							} catch (InterruptedException e1) {
+								e1.printStackTrace();
+								return;
+							}
 						} catch (Exception e) {
 							e.printStackTrace();
 							try {
@@ -94,10 +104,10 @@ public abstract class Tasker {
 						}
 					}
 				}
-		});
+			});
+		}
 	}
-}
-protected abstract void doTask(Point p) throws Exception;
+	protected abstract void doTask(Point p) throws Exception;
 
 
 }

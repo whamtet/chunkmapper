@@ -1,3 +1,2 @@
--predownload image of earth
--examine for further efficiencies
--cancellation about 30 secs into generation
+-cancellation over ocean
+-packaging for mac using ant

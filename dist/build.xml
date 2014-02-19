@@ -61,5 +61,14 @@
                     jar="Chunkmapper.jar"
                     vmoptions="-Xmx1G"/>
     </target>
-	<target name="all" depends="app, exe" />
+    <target name="dmg" depends="app">
+        <exec executable="hdiutil">
+            <arg line="create -ov -srcfolder Chunkmapper.app Chunkmapper.dmg"/>
+        </exec>
+        <exec executable="hdiutil">
+            <arg line="internet-enable -yes Chunkmapper.dmg"/>
+        </exec>
+    </target>
+
+    <target name="all" depends="dmg, exe" />
 </project>
