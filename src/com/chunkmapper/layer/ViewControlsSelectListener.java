@@ -338,7 +338,9 @@ public class ViewControlsSelectListener implements SelectListener
             this.pressedControlType = controlType;
             if (controlType.equals("trash it")) {
             	SettingsDialog d = new SettingsDialog(appFrame, globalSettings);
+//            	GoToDialog d = new GoToDialog(appFrame);
             	d.setVisible(true);
+//            	event.consume();
             }
 
             // Consume drag events, but do not consume left press events. It is not necessary to consume left press

@@ -1,2 +1,2 @@
--cancellation over ocean
--packaging for mac using ant
+-settings dialog
+-grid on mcmap

@@ -2,6 +2,7 @@
 <project default="create_run_jar" name="Create Runnable Jar for Project chunkmapper with Jar-in-Jar Loader">
     <taskdef name="jarbundler"
              classname="net.sourceforge.jarbundler.JarBundler" />
+	<property name="chunkmapper" value="Chunkmapper-beta" />
     <!--this file was created by Eclipse Runnable JAR Export Wizard-->
     <!--ANT 1.7 is required                                        -->
     <target name="create_run_jar">
@@ -52,23 +53,40 @@
     </target>
     <target name="clean">
 	<delete file="Chunkmapper.jar"/>
-	<delete file="Chunkmapper.exe"/>
+	<delete file="${chunkmapper}.exe"/>
+        <delete file="${chunkmapper}.dmg"/>
+        <delete dir="${chunkmapper}.app"/>
+        <delete file="${chunkmapper}.zip"/>
     </target>
     <target name="app" depends="create_run_jar">
         <jarbundler dir="."
-                    name="Chunkmapper"
+                    name="${chunkmapper}"
                     mainclass="org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader"
                     jar="Chunkmapper.jar"
                     vmoptions="-Xmx1G"/>
     </target>
-    <target name="dmg" depends="app">
+	<available file="${chunkmapper}.dmg" property="${chunkmapper}.dmg.present" />
+    <target name="dmg" depends="app" unless="${chunkmapper}.dmg.present">
         <exec executable="hdiutil">
-            <arg line="create -ov -srcfolder Chunkmapper.app Chunkmapper.dmg"/>
+            <arg line="create -ov -srcfolder ${chunkmapper}.app ${chunkmapper}.dmg"/>
         </exec>
         <exec executable="hdiutil">
-            <arg line="internet-enable -yes Chunkmapper.dmg"/>
+            <arg line="internet-enable -yes ${chunkmapper}.dmg"/>
         </exec>
     </target>
+    <target name="linux" depends="create_run_jar">
+        <zip destfile="${chunkmapper}.zip">
+            <zipfileset dir="." includes="Chunkmapper.jar" />
+            <zipfileset dir="." includes="README.txt" />
+            <zipfileset dir="." includes="Chunkmapper.bat" />
+            <zipfileset dir="." includes="Chunkmapper.sh" />
+        </zip>
+    </target>
+    <target name="copy" depends="dmg, exe, linux">
+        <copy file="${chunkmapper}.dmg" todir="/Users/matthewmolloy/python/chunkmapper-download/static" />
+        <copy file="${chunkmapper}.zip" todir="/Users/matthewmolloy/python/chunkmapper-download/static" />
+        <copy file="${chunkmapper}.exe" todir="/Users/matthewmolloy/python/chunkmapper-download/static" />
+    </target>
 
-    <target name="all" depends="dmg, exe" />
+    <target name="all" depends="dmg, exe, linux" />
 </project>

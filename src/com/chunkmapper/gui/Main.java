@@ -85,6 +85,7 @@ public class Main extends ApplicationTemplate
 
 	public static void main(String[] args)
 	{
+//		LicenseManager.checkLicense(null);
 		if (hasFlawed(args))
 			Utila.MINECRAFT_DIR = new File("poo");
 		long availableMemory = Runtime.getRuntime().maxMemory();

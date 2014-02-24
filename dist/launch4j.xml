@@ -1,7 +1,7 @@
 <launch4jConfig>
   <headerType>gui</headerType>
   <jar>Chunkmapper.jar</jar>
-  <outfile>Chunkmapper.exe</outfile>
+  <outfile>Chunkmapper-beta.exe</outfile>
   <errTitle>Chunkmapper</errTitle>
   <chdir>.</chdir>
   <!-- <icon>SimpleApp.ico</icon> -->

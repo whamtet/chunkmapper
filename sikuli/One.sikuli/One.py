@@ -54,7 +54,7 @@ def cancel_generation():
     print 'Cancelling Map Generation.'
     zoom_out()
     click("1391573005711.png")
-    wait("1391573029160.png", 20)
+    wait("1391573029160.png", 30)
 
 def delete():
     print 'Deleting Map.'
@@ -71,12 +71,13 @@ def resume():
 def locate_minecraft_dir():
     click("1391653158899.png")
 
-go_to('Tokyo')
+go_to('London')
 create_test_map()
 cancel_generation()
-for i in range(10):
+for i in range(5):
     resume()
     wait(10)
     cancel_generation()
-    
+
+delete()
 print 'done'
