@@ -7,12 +7,8 @@ import java.io.DataInputStream;
 import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,24 +16,30 @@ import java.util.Iterator;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.zip.DataFormatException;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+
 import com.chunkmapper.FileValidator;
 import com.chunkmapper.Point;
 import com.chunkmapper.Utila;
 import com.chunkmapper.Zip;
 import com.chunkmapper.admin.BucketInfo;
 import com.chunkmapper.admin.URLs;
-import com.chunkmapper.parser.Nominatim;
+import com.chunkmapper.downloader.Downloader;
 import com.chunkmapper.parser.OverpassObject;
 import com.chunkmapper.parser.OverpassObject.Node;
 import com.chunkmapper.parser.OverpassObject.Relation;
 import com.chunkmapper.parser.OverpassObject.Way;
-import com.chunkmapper.parser.OverpassParser;
 import com.chunkmapper.protoc.OSMContainer;
 
 public class OsmosisParser {
 	public static final int NODE = 0, WAY = 1, RELATION = 2;
 	private static final HashMap<URL, URL> lockMap = new HashMap<URL, URL>();
 	private static Object masterLock = new Object();
+	private static DefaultHttpClient httpclient = Downloader.getHttpClient();
 //	private static ConcurrentHashMap<Point, OverpassObject> cache = new ConcurrentHashMap<Point, OverpassObject>();
 	//still being accessed concurrently so best to be safe.
 	private static ConcurrentHashMap<URL, FileContents> cache2 = new ConcurrentHashMap<URL, FileContents>();
@@ -52,6 +54,11 @@ public class OsmosisParser {
 	
 	static {
 		CACHE.mkdirs();
+	}
+	public static void shutdown() {
+		httpclient.close();
+		//start new downloader
+		httpclient = Downloader.getHttpClient();
 	}
 
 	private static URL getLock(URL url) {
@@ -192,7 +199,14 @@ public class OsmosisParser {
 			if (FileValidator.checkValid(cache)) {
 				data = Zip.readFully(new FileInputStream(cache));
 			} else {
-				data = Zip.inflate(url.openStream());
+				HttpGet httpGet = new HttpGet(url.toString());
+				HttpResponse response = httpclient.execute(httpGet);
+				HttpEntity entity = response.getEntity();
+				data = Zip.inflate(entity.getContent());
+				
+				EntityUtils.consumeQuietly(entity);
+				httpGet.releaseConnection();
+				
 				Zip.writeFully(cache, data);
 				FileValidator.setValid(cache);
 			}

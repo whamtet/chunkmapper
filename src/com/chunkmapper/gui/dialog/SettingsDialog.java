@@ -70,12 +70,16 @@ public class SettingsDialog extends JDialog {
 		}
 		final JCheckBox checkBox = new JCheckBox("Live Mode");
 		checkBox.setEnabled(allowLive);
+		if (allowLive) {
+			checkBox.setSelected(globalSettings.isLive());
+		}
 		
 		String color = allowLive ? "black" : "gray";
 		JLabel lblNewLabel = new JLabel(String.format("<html><font color=\"%s\">Include the latest changes from Open Street Map.  Map may generate slowly.\n</html>", color));
 		
 		final JSpinner spinner = new JSpinner();
 		spinner.setModel(new SpinnerNumberModel(1, 0, 10, 1));
+		spinner.setValue(globalSettings.getVerticalExaggeration());
 		
 		JLabel lblNewLabel_1 = new JLabel("<html>\nVertical Exaggeration\n(New maps only)\n</html>");
 		

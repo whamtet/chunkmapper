@@ -59,6 +59,9 @@ public class ManagingThread extends Thread {
 	public ManagingThread(double lat, double lon, File gameFolder, MappedSquareManager mappedSquareManager,
 			PlayerIconManager playerIconManager, GlobalSettings globalSettings, JFrame appFrame,
 			GeneratingLayer generatingLayer) {
+		clearNetworkProblems();
+		System.out.println("Vertical Exaggeration: " + globalSettings.getVerticalExaggeration());
+		System.out.println("Live Mode: " + globalSettings.isLive());
 //		if (true) {
 //			throw new RuntimeException();
 //		}

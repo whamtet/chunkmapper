@@ -66,7 +66,7 @@
                     vmoptions="-Xmx1G"/>
     </target>
 	<available file="${chunkmapper}.dmg" property="${chunkmapper}.dmg.present" />
-    <target name="dmg" depends="app" unless="${chunkmapper}.dmg.present">
+    <target name="dmg" depends="app"><!-- unless="${chunkmapper}.dmg.present">-->
         <exec executable="hdiutil">
             <arg line="create -ov -srcfolder ${chunkmapper}.app ${chunkmapper}.dmg"/>
         </exec>

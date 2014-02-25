@@ -8,7 +8,9 @@ import java.util.concurrent.PriorityBlockingQueue;
 import com.chunkmapper.GameMetaInfo;
 import com.chunkmapper.Point;
 import com.chunkmapper.Tasker;
+import com.chunkmapper.binaryparser.OsmosisParser;
 import com.chunkmapper.chunk.Chunk;
+import com.chunkmapper.downloader.OverpassDownloader;
 import com.chunkmapper.interfaces.MappedSquareManager;
 import com.chunkmapper.interfaces.PointManager;
 import com.chunkmapper.manager.GlobcoverManager;
@@ -37,7 +39,6 @@ public class RegionWriter extends Tasker {
 			
 			return a.distance(playerPosition) < b.distance(playerPosition) ? -1 : 1;
 		}
-
 	});
 
 	public RegionWriter(PointManager pointManager, Point rootPoint, File regionFolder, 
@@ -64,6 +65,11 @@ public class RegionWriter extends Tasker {
 			pointsAdded.add(p);
 			taskQueue2.add(p);
 		}
+	}
+	public void blockingShutdownNow() {
+		OverpassDownloader.shutdown();
+		OsmosisParser.shutdown();
+		super.blockingShutdownNow();
 	}
 
 	public void addRegion(int regionx, int regionz) {
@@ -100,13 +106,10 @@ public class RegionWriter extends Tasker {
 			}
 		}
 		regionFile.close();
-
-
 		pointManager.updateStore(task);
 		gameMetaInfo.incrementChunksMade();
 		mappedSquareManager.addPoint(new Point(task.x + rootPoint.x, task.z + rootPoint.z));
                 
-//        Mapper2.postRegion(regionFolder, task.x, task.z, rootPoint);
 	}
 
 }

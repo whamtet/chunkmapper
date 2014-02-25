@@ -71,53 +71,64 @@
 </div>
 <pre class="sikuli-code">
 <span class="kw">import</span> os
-<span class="kw">from</span> threading <span class="kw">import</span> Thread
 
-<span class="kw">class</span> MyClass(Thread):
-    <span class="kw">def</span> run(self):
-        os.system(<span class="str">'java -jar /Users/matthewmolloy/workspace/chunkmapper/dist/Chunkmapper.jar -Xmx1G'</span>)
+<span class="kw">def</span> zoom_out():
+    <span class="kw">print</span> <span class="str">'Zooming out.'</span>
+    <span class="skw">click</span>(<img src="1393304419160.png" />)
 
-<span class="kw">class</span> MyClass2(Thread):
-    <span class="kw">def</span> run(self):
-        os.system(<span class="str">'java -jar /Users/matthewmolloy/workspace/chunkmapper/dist/Chunkmapper.jar -Xmx1G -flawed'</span>)
+    <span class="skw">type</span>(<span class="str">"z"</span>)
 
-<span class="kw">def</span> launch_chunkmapper():
-    <span class="kw">if</span> <span class="kw">not</span> exists(<img src="1391382376214-1.png" />):
-        <span class="kw">print</span> <span class="str">'No Chunkmapper Window detected.  Starting new one.'</span>
-        myClass = MyClass()
-        myClass.start()
-        <span class="skw">wait</span>(<img src="1391381716886.png" />, <span class="dig">20</span>)
-
-<span class="kw">def</span> launch_flawed_chunkmapper():
-    <span class="kw">if</span> <span class="kw">not</span> exists(<img src="1391382376214-1.png" />):
-        <span class="kw">print</span> <span class="str">'No Chunkmapper Window detected.  Starting new one.'</span>
-        myClass = MyClass2()
-        myClass.start()
-        <span class="skw">wait</span>(<img src="1391381716886.png" />, <span class="dig">20</span>)
+    <span class="kw">if</span> os == <span class="str">'osx'</span>:
+        <span class="skw">wait</span>(<img src="1391569149349.png" />, <span class="dig">10</span>)
+    <span class="kw">if</span> os == <span class="str">'win8'</span>:
+        <span class="skw">wait</span>(<img src="1393290452737.png" />, <span class="dig">10</span>)
+    <span class="kw">if</span> os == <span class="str">'win7'</span>:
+        <span class="skw">wait</span>(<img src="1393307972388.png" />, <span class="dig">10</span>)
+    <span class="skw">type</span>(Key.ENTER)
 
 
 <span class="kw">def</span> go_to(location):
     <span class="kw">print</span> <span class="str">'Going to '</span> + location + <span class="str">'.'</span>
     zoom_out()
-    <span class="skw">click</span>(<img src="1391569331744.png" />)
-    <span class="skw">wait</span>(<img src="1391406711654.png" />)
+    <span class="kw">if</span> os == <span class="str">'osx'</span>:
+        <span class="skw">click</span>(<img src="1391569331744.png" />)
+    <span class="kw">if</span> os == <span class="str">'win8'</span>:
+        <span class="skw">click</span>(<img src="1393305580835.png" />)
+    <span class="kw">if</span> os == <span class="str">'win7'</span>:
+        <span class="skw">click</span>(<img src="1393308025153.png" />)
+
+
+    <span class="kw">if</span> os == <span class="str">'osx'</span>:
+        <span class="skw">wait</span>(<img src="1391406711654.png" />)
+    <span class="kw">if</span> os == <span class="str">'win8'</span>:
+        <span class="skw">wait</span>(<img src="1393303877488.png" />)
+    <span class="kw">if</span> os == <span class="str">'win7'</span>:
+        <span class="skw">wait</span>(<img src="1393308430082.png" />)
+
+
     <span class="skw">type</span>(location)
     <span class="skw">wait</span>(<span class="dig">0.5</span>)
     <span class="skw">type</span>(Key.ENTER)
     <span class="skw">wait</span>(<span class="dig">10</span>)
 
-<span class="kw">def</span> zoom_out():
-    <span class="kw">print</span> <span class="str">'Zooming out.'</span>
-    <span class="skw">click</span>(<img src="1391403833556.png" />)
-    <span class="skw">type</span>(<span class="str">"z"</span>)
-    <span class="skw">wait</span>(<img src="1391569149349.png" />, <span class="dig">10</span>)
+
     <span class="skw">type</span>(Key.ENTER)
 
 <span class="kw">def</span> create_test_map():
     <span class="kw">print</span> <span class="str">'Creating Test Map.'</span>
     zoom_out()
-    <span class="skw">click</span>(<img src="1391571736710.png" />)
-    <span class="skw">wait</span>(<img src="1391571803329.png" />)
+    <span class="kw">if</span> os == <span class="str">'osx'</span>:
+        <span class="skw">click</span>(<img src="1391571736710.png" />)
+    <span class="kw">if</span> os == <span class="str">'win8'</span>:
+        <span class="skw">click</span>(<img src="1393306543389.png" />)
+    <span class="kw">if</span> os == <span class="str">'win7'</span>:
+
+
+    <span class="kw">if</span> os == <span class="str">'osx'</span>:
+        <span class="skw">wait</span>(<img src="1391571803329.png" />)
+    <span class="kw">if</span> os == <span class="str">'win8'</span>:
+        <span class="skw">wait</span>(<img src="1393303969077.png" />)
+
     <span class="skw">type</span>(<span class="str">"test"</span>)
     <span class="skw">wait</span>(<span class="dig">0.5</span>)
     <span class="skw">type</span>(Key.ENTER)
@@ -125,23 +136,46 @@
 <span class="kw">def</span> cancel_generation():
     <span class="kw">print</span> <span class="str">'Cancelling Map Generation.'</span>
     zoom_out()
-    <span class="skw">click</span>(<img src="1391573005711.png" />)
-    <span class="skw">wait</span>(<img src="1391573029160.png" />, <span class="dig">30</span>)
+    <span class="kw">if</span> os == <span class="str">'osx'</span>:
+        <span class="skw">click</span>(<img src="1391573005711.png" />)
+    <span class="kw">if</span> os == <span class="str">'win8'</span>:
+        <span class="skw">click</span>(<img src="1393306739115.png" />)
+
+    <span class="kw">if</span> os == <span class="str">'osx'</span>:
+        <span class="skw">wait</span>(<img src="1391573029160.png" />, <span class="dig">30</span>)
+    <span class="kw">if</span> os == <span class="str">'win8'</span>:
+        <span class="skw">wait</span>(<img src="1393306858924.png" />, <span class="dig">30</span>)
+
 
 <span class="kw">def</span> delete():
     <span class="kw">print</span> <span class="str">'Deleting Map.'</span>
     zoom_out()
-    match = <span class="skw">find</span>(Pattern(<img src="1391573621573.png" />).targetOffset(<span class="dig">50</span>,<span class="dig">0</span>))
-    <span class="skw">click</span>(match)
-    <span class="skw">click</span>(<img src="1391573755018.png" />)
+    <span class="kw">if</span> os == <span class="str">'osx'</span>:
+        match = <span class="skw">find</span>(Pattern(<img src="1391573621573.png" />).targetOffset(<span class="dig">50</span>,<span class="dig">0</span>))
+        <span class="skw">click</span>(match)
+    <span class="kw">if</span> os == <span class="str">'win8'</span>:
+        match = <span class="skw">find</span>(Pattern(<img src="1393307287561.png" />).targetOffset(<span class="dig">50</span>, <span class="dig">0</span>))
+        <span class="skw">click</span>(match)
+
+    <span class="kw">if</span> os == <span class="str">'osx'</span>:
+        <span class="skw">click</span>(<img src="1391573755018.png" />)
+    <span class="kw">if</span> os == <span class="str">'win8'</span>:
+        <span class="skw">click</span>(<img src="1393307447268.png" />)
+
 
 <span class="kw">def</span> resume():
     <span class="kw">print</span> <span class="str">'Resuming Map Generation.'</span>
     zoom_out()
-    <span class="skw">click</span>(<img src="1391573621573.png" />)
+    <span class="kw">if</span> os == <span class="str">'osx'</span>:
+        <span class="skw">click</span>(<img src="1391573621573.png" />)
+    <span class="kw">if</span> os == <span class="str">'win8'</span>:
+        <span class="skw">click</span>(<img src="1393306939427.png" />)
+
 
 <span class="kw">def</span> locate_minecraft_dir():
     <span class="skw">click</span>(<img src="1391653158899.png" />)
+
+os = <span class="str">'win7'</span>
 
 go_to(<span class="str">'London'</span>)
 create_test_map()
@@ -150,8 +184,8 @@ cancel_generation()
     resume()
     <span class="skw">wait</span>(<span class="dig">10</span>)
     cancel_generation()
-
 delete()
+
 <span class="kw">print</span> <span class="str">'done'</span>
 </pre>
 </body>
