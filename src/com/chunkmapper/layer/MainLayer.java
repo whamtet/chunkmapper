@@ -24,12 +24,12 @@ import gov.nasa.worldwind.util.Logging;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
+import java.awt.Dialog.ModalityType;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.Dialog.ModalityType;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
@@ -39,9 +39,10 @@ import java.util.HashSet;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import org.apache.commons.io.FileUtils;
+
 import com.chunkmapper.admin.BucketInfo;
 import com.chunkmapper.gui.GoToThread;
-import com.chunkmapper.gui.dialog.ConfirmDeleteDialog;
 import com.chunkmapper.gui.dialog.GoToDialog;
 import com.chunkmapper.gui.dialog.MustUpgradeDialog;
 import com.chunkmapper.gui.dialog.NewMapDialog;
@@ -76,6 +77,11 @@ public class MainLayer extends RenderableLayer implements SelectListener
 
 	private static final int HAND_CURSOR = 0, DEFAULT_CURSOR = 1;
 	private final GlobalSettings globalSettings;
+	
+	public static void main(String[] args) throws Exception {
+		String message = "Delete game foo?";
+		System.out.println(JOptionPane.showConfirmDialog(null, message, "", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE));
+	}
 
 	public MainLayer(WorldWindow wwd, final JFrame appFrame, File minecraftDir, GlobalSettings globalSettings) throws IOException
 	{
@@ -195,9 +201,18 @@ public class MainLayer extends RenderableLayer implements SelectListener
 							}
 							if (s.endsWith("Delete")) {
 								String gameName = s.substring(0, s.length() - 6);
-								ConfirmDeleteDialog d = new ConfirmDeleteDialog(appFrame, gameName, savesDir);
-								d.setVisible(true);
-								if (d.hasDeletedSomething) {
+//								ConfirmDeleteDialog d = new ConfirmDeleteDialog(appFrame, gameName, savesDir);
+//								d.setVisible(true);
+								String message = "Delete " + gameName + "?";
+								int delete = JOptionPane.showConfirmDialog(appFrame, message, "", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+								if (delete == JOptionPane.OK_OPTION) {
+									File f = new File(savesDir, gameName);
+									try {
+										FileUtils.deleteDirectory(f);
+									} catch (IOException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
 									newlyCreatedGames.remove(gameName);
 									update = true;
 								}

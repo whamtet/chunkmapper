@@ -84,6 +84,18 @@ public class GlobcoverManager {
 	private final ArtifactWriter artifactWriter = new ArtifactWriter();
 	public final int regionx, regionz;
 	public final Random RANDOM = new Random();
+//	private long lastTime;
+//	private long profileCounter;
+	
+//	private void init() {
+//		lastTime = System.currentTimeMillis();
+//	}
+//	private void printTimeElapsed() {
+//		long currentTime = System.currentTimeMillis();
+//		System.out.println(profileCounter + ": " + (currentTime - lastTime));
+//		lastTime = currentTime;
+//		profileCounter++;
+//	}
 
 	public final AbstractColumn[][] columns = new AbstractColumn[512][512];
 
@@ -109,8 +121,12 @@ public class GlobcoverManager {
 		this.regionx = regionx; this.regionz = regionz;
 
 		heightsReader = new HeightsReaderS3(regionx, regionz, verticalExaggeration);
+		
+		Thread.sleep(0);
 		OverpassObject o = OSMRouter.getObject(regionx, regionz);
+		Thread.sleep(0);
 		ferryReader = new FerryReader(o, regionx, regionz);
+		Thread.sleep(0);
 		allWater = heightsReader.isAllWater() && !ferryReader.hasAFerry;
 
 		if (allWater) {
@@ -126,26 +142,41 @@ public class GlobcoverManager {
 		}
 		
 		OrchardReader orchardReader = new OrchardReader(o, regionx, regionz);
+		Thread.sleep(0);
 		VineyardReader vineyardReader = new VineyardReader(o, regionx, regionz);
+		Thread.sleep(0);
 		hutReader = new HutReader(o, regionx, regionz);
+		Thread.sleep(0);
 		pathReader = new PathReader(o, regionx, regionz);
+		Thread.sleep(0);
 		highwayReader = new XapiHighwayReader(o, regionx, regionz, heightsReader);
+		Thread.sleep(0);
 		boundaryReader = new XapiBoundaryReader(o, regionx, regionz);
+		Thread.sleep(0);
 		rugbyReader = new RugbyReader(o, regionx, regionz);
+		Thread.sleep(0);
 		densityReader = new DensityReader(o, regionx, regionz);
+		Thread.sleep(0);
 		GlobcoverReader coverReader = new GlobcoverReaderImpl2(regionx, regionz);
+		Thread.sleep(0);
 		GlacierReader glacierReader = new GlacierReader(o, regionx, regionz);
+		Thread.sleep(0);
 
 		LakeReader lakeReader = new XapiLakeReader(o, regionx, regionz);
+		Thread.sleep(0);
 		XapiRiverReader riverReader = new XapiRiverReader(o, regionx, regionz, heightsReader);
+		Thread.sleep(0);
 		railReader = new XapiRailReader(o, regionx, regionz, heightsReader, verticalExaggeration);
+		Thread.sleep(0);
 
 		FarmTypeReader farmTypeReader = null;
 		farmTypeReader = new FarmTypeReader();
 		poiReader = new POIReader(o, regionx, regionz);
+		Thread.sleep(0);
 
 		//		XapiCoastlineReader coastlineReader = new XapiCoastlineReader(regionx, regionz, heightsReader);
 		XapiCoastlineReader coastlineReader = new XapiCoastlineReader(o, regionx, regionz, coverReader);
+		Thread.sleep(0);
 
 		for (int i = 0; i < 512; i++) {
 			for (int j = 0; j < 512; j++) {
@@ -184,14 +215,6 @@ public class GlobcoverManager {
 					columns[i][j] = new Snow(absx, absz, heightsReader);
 					continue;
 				}
-				//				double absLat = absz > 0 ? absz / 3600. : -absz / 3600.;
-				//				double snowLine = 4000 * (75 - absLat) / 75.;
-				//				int realHeight = heightsReader.getRealHeightij(i, j);
-				//				if (realHeight >= snowLine) {
-				//					columns[i][j] = new Snow(absx, absz, heightsReader);
-				//					continue;
-				//				}
-				//now for the rest
 				Globcover coverType = coverReader.getGlobcover(i, j);
 				switch (coverType) {
 				case IrrigatedCrops:

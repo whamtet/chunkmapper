@@ -19,13 +19,21 @@ import com.chunkmapper.nbt.NbtIo;
 import com.chunkmapper.nbt.RegionFile;
 
 public class RegionWriter extends Tasker {
-	public static final int NUM_WRITING_THREADS = Runtime.getRuntime().availableProcessors() + 1;
+//	public static final int NUM_WRITING_THREADS = Runtime.getRuntime().availableProcessors() + 1;
+	public static final int NUM_WRITING_THREADS = numThreads();
 	public final Point rootPoint;
 	public final File regionFolder;
 	private final GameMetaInfo gameMetaInfo;
 	private final MappedSquareManager mappedSquareManager;
 	private final PointManager pointManager;
 	private final int verticalExaggeration;
+	
+	private static int numThreads() {
+		int numThreads = Runtime.getRuntime().availableProcessors() / 2;
+		if (numThreads < 1)
+			return 1;
+		return numThreads;
+	}
 	private final PriorityBlockingQueue<Point> taskQueue2 = new PriorityBlockingQueue<Point>(11, 
 			new Comparator<Point>() {
 		public int compare(Point a, Point b) {

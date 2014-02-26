@@ -37,19 +37,19 @@ public class ManagingThread extends Thread {
 	public RegionWriter regionWriter;
 	private static boolean networkProblems;
 	private static Object networkProblemsGuard = new Object();
-	
+
 	public static void setNetworkProblems() {
 		synchronized(networkProblemsGuard) {
 			networkProblems = true;
 		}
 	}
-	
+
 	private static boolean hasNetworkProblems() {
 		synchronized(networkProblemsGuard) {
 			return networkProblems;
 		}
 	}
-	
+
 	private static void clearNetworkProblems() {
 		synchronized(networkProblemsGuard) {
 			networkProblems = false;
@@ -62,9 +62,9 @@ public class ManagingThread extends Thread {
 		clearNetworkProblems();
 		System.out.println("Vertical Exaggeration: " + globalSettings.getVerticalExaggeration());
 		System.out.println("Live Mode: " + globalSettings.isLive());
-//		if (true) {
-//			throw new RuntimeException();
-//		}
+		//		if (true) {
+		//			throw new RuntimeException();
+		//		}
 		this.generatingLayer = generatingLayer;
 		this.appFrame = appFrame;
 		this.globalSettings = globalSettings;
@@ -208,16 +208,22 @@ public class ManagingThread extends Thread {
 			thread.interrupt();
 		}
 		thread.regionWriter.blockingShutdownNow();
-		while(thread.isAlive()) {
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+		System.out.println("a");
+		if (!selfCalled) {
+			System.out.println("b");
+			while(thread.isAlive()) {
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
 		}
+		System.out.println("c");
 		//clear out caches.
-//		OverpassDownloader.flushCache();
+		//		OverpassDownloader.flushCache();
 		OsmosisParser.flushCache();
+		System.err.println("shut down thread");
 
 	}
 

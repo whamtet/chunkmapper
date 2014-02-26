@@ -74,7 +74,11 @@
 
 <span class="kw">def</span> zoom_out():
     <span class="kw">print</span> <span class="str">'Zooming out.'</span>
-    <span class="skw">click</span>(<img src="1393304419160.png" />)
+    <span class="kw">try</span>:
+        <span class="skw">click</span>(<img src="1393304419160.png" />)
+        <span class="skw">click</span>(<img src="1393304419160.png" />)
+    <span class="kw">except</span> FindFailed:
+        <span class="skw">click</span>(<img src="1393308929042.png" />)
 
     <span class="skw">type</span>(<span class="str">"z"</span>)
 
@@ -84,6 +88,13 @@
         <span class="skw">wait</span>(<img src="1393290452737.png" />, <span class="dig">10</span>)
     <span class="kw">if</span> os == <span class="str">'win7'</span>:
         <span class="skw">wait</span>(<img src="1393307972388.png" />, <span class="dig">10</span>)
+    <span class="kw">if</span> os == <span class="str">'winxp'</span>:
+        <span class="skw">wait</span>(<img src="1393310561703.png" />, <span class="dig">10</span>)
+    <span class="kw">if</span> os == <span class="str">'ubuntu'</span>:
+        <span class="skw">wait</span>(<img src="1393325264417.png" />, <span class="dig">10</span>)
+    <span class="kw">if</span> os == <span class="str">'fedora'</span>:
+        <span class="skw">wait</span>(<img src="1393383702659.png" />, <span class="dig">10</span>)
+
     <span class="skw">type</span>(Key.ENTER)
 
 
@@ -96,6 +107,12 @@
         <span class="skw">click</span>(<img src="1393305580835.png" />)
     <span class="kw">if</span> os == <span class="str">'win7'</span>:
         <span class="skw">click</span>(<img src="1393308025153.png" />)
+    <span class="kw">if</span> os == <span class="str">'winxp'</span>:
+        <span class="skw">click</span>(<img src="1393310590115.png" />)
+    <span class="kw">if</span> os == <span class="str">'ubuntu'</span>:
+        <span class="skw">click</span>(<img src="1393325300477.png" />)
+    <span class="kw">if</span> os == <span class="str">'fedora'</span>:
+        <span class="skw">click</span>(<img src="1393383746956.png" />)
 
 
     <span class="kw">if</span> os == <span class="str">'osx'</span>:
@@ -104,6 +121,12 @@
         <span class="skw">wait</span>(<img src="1393303877488.png" />)
     <span class="kw">if</span> os == <span class="str">'win7'</span>:
         <span class="skw">wait</span>(<img src="1393308430082.png" />)
+    <span class="kw">if</span> os == <span class="str">'winxp'</span>:
+        <span class="skw">wait</span>(<img src="1393310630183.png" />)
+    <span class="kw">if</span> os == <span class="str">'ubuntu'</span>:
+        <span class="skw">wait</span>(<img src="1393325333646.png" />)
+    <span class="kw">if</span> os == <span class="str">'fedora'</span>:
+        <span class="skw">wait</span>(<img src="1393383779164.png" />)
 
 
     <span class="skw">type</span>(location)
@@ -122,12 +145,27 @@
     <span class="kw">if</span> os == <span class="str">'win8'</span>:
         <span class="skw">click</span>(<img src="1393306543389.png" />)
     <span class="kw">if</span> os == <span class="str">'win7'</span>:
+        <span class="skw">click</span>(<img src="1393308569993.png" />)
+    <span class="kw">if</span> os == <span class="str">'winxp'</span>:
+        <span class="skw">click</span>(<img src="1393310661652.png" />)
+    <span class="kw">if</span> os == <span class="str">'ubuntu'</span>:
+        <span class="skw">click</span>(<img src="1393325362176.png" />)
+    <span class="kw">if</span> os == <span class="str">'fedora'</span>:
+        <span class="skw">click</span>(<img src="1393383807840.png" />)
 
 
     <span class="kw">if</span> os == <span class="str">'osx'</span>:
         <span class="skw">wait</span>(<img src="1391571803329.png" />)
     <span class="kw">if</span> os == <span class="str">'win8'</span>:
         <span class="skw">wait</span>(<img src="1393303969077.png" />)
+    <span class="kw">if</span> os == <span class="str">'win7'</span>:
+        <span class="skw">wait</span>(<img src="1393308611482.png" />)
+    <span class="kw">if</span> os == <span class="str">'winxp'</span>:
+        <span class="skw">wait</span>(<img src="1393310691918.png" />)
+    <span class="kw">if</span> os == <span class="str">'ubuntu'</span>:
+        <span class="skw">wait</span>(<img src="1393381457308.png" />) <span class="cmt">#it's ok, buddy</span>
+    <span class="kw">if</span> os == <span class="str">'fedora'</span>:
+        <span class="skw">wait</span>(<img src="1393384660525.png" />)
 
     <span class="skw">type</span>(<span class="str">"test"</span>)
     <span class="skw">wait</span>(<span class="dig">0.5</span>)
@@ -140,11 +178,30 @@
         <span class="skw">click</span>(<img src="1391573005711.png" />)
     <span class="kw">if</span> os == <span class="str">'win8'</span>:
         <span class="skw">click</span>(<img src="1393306739115.png" />)
+    <span class="kw">if</span> os == <span class="str">'win7'</span>:
+        <span class="skw">click</span>(<img src="1393309115460.png" />)
+    <span class="kw">if</span> os == <span class="str">'winxp'</span>:
+        <span class="skw">click</span>(<img src="1393310724681.png" />)
+    <span class="kw">if</span> os == <span class="str">'ubuntu'</span>:
+        <span class="skw">click</span>(<img src="1393325427889.png" />)
+    <span class="kw">if</span> os == <span class="str">'fedora'</span>:
+        <span class="skw">click</span>(<img src="1393383989673.png" />)
+
 
     <span class="kw">if</span> os == <span class="str">'osx'</span>:
         <span class="skw">wait</span>(<img src="1391573029160.png" />, <span class="dig">30</span>)
     <span class="kw">if</span> os == <span class="str">'win8'</span>:
         <span class="skw">wait</span>(<img src="1393306858924.png" />, <span class="dig">30</span>)
+    <span class="kw">if</span> os == <span class="str">'win7'</span>:
+        <span class="skw">wait</span>(<img src="1393309169047.png" />, <span class="dig">30</span>)
+    <span class="kw">if</span> os == <span class="str">'winxp'</span>:
+        <span class="skw">wait</span>(<img src="1393310820275.png" />, <span class="dig">30</span>)
+    <span class="kw">if</span> os == <span class="str">'ubuntu'</span>:
+        <span class="skw">wait</span>(<img src="1393325461587.png" />, <span class="dig">30</span>)
+    <span class="kw">if</span> os == <span class="str">'fedora'</span>:
+        <span class="skw">wait</span>(<img src="1393384015700.png" />, <span class="dig">30</span>)
+
+
 
 
 <span class="kw">def</span> delete():
@@ -156,11 +213,33 @@
     <span class="kw">if</span> os == <span class="str">'win8'</span>:
         match = <span class="skw">find</span>(Pattern(<img src="1393307287561.png" />).targetOffset(<span class="dig">50</span>, <span class="dig">0</span>))
         <span class="skw">click</span>(match)
+    <span class="kw">if</span> os == <span class="str">'win7'</span>:
+        match = <span class="skw">find</span>(Pattern(<img src="1393309257243.png" />).targetOffset(<span class="dig">50</span>, <span class="dig">0</span>))
+        <span class="skw">click</span>(match)
+    <span class="kw">if</span> os == <span class="str">'winxp'</span>:
+        match = <span class="skw">find</span>(Pattern(<img src="1393309257243.png" />).targetOffset(<span class="dig">50</span>, <span class="dig">0</span>))
+        <span class="skw">click</span>(match)
+    <span class="kw">if</span> os == <span class="str">'ubuntu'</span>:
+        match = <span class="skw">find</span>(Pattern(<img src="1393326622363.png" />).targetOffset(<span class="dig">50</span>, <span class="dig">0</span>))
+        <span class="skw">click</span>(match)
+    <span class="kw">if</span> os == <span class="str">'fedora'</span>:
+        match = <span class="skw">find</span>(Pattern(<img src="1393384057939.png" />).targetOffset(<span class="dig">50</span>, <span class="dig">0</span>))
+        <span class="skw">click</span>(match)
+
+
 
     <span class="kw">if</span> os == <span class="str">'osx'</span>:
         <span class="skw">click</span>(<img src="1391573755018.png" />)
     <span class="kw">if</span> os == <span class="str">'win8'</span>:
         <span class="skw">click</span>(<img src="1393307447268.png" />)
+    <span class="kw">if</span> os == <span class="str">'win7'</span>:
+        <span class="skw">click</span>(<img src="1393309304326.png" />)
+    <span class="kw">if</span> os == <span class="str">'winxp'</span>:
+        <span class="skw">click</span>(<img src="1393311952529.png" />)
+    <span class="kw">if</span> os == <span class="str">'ubuntu'</span>:
+        <span class="skw">click</span>(<img src="1393325677032.png" />)
+    <span class="kw">if</span> os == <span class="str">'fedora'</span>:
+        <span class="skw">click</span>(<img src="1393384112700.png" />)
 
 
 <span class="kw">def</span> resume():
@@ -170,14 +249,19 @@
         <span class="skw">click</span>(<img src="1391573621573.png" />)
     <span class="kw">if</span> os == <span class="str">'win8'</span>:
         <span class="skw">click</span>(<img src="1393306939427.png" />)
+    <span class="kw">if</span> os == <span class="str">'win7'</span>:
+        <span class="skw">click</span>(<img src="1393309334807.png" />)
+    <span class="kw">if</span> os == <span class="str">'winxp'</span>:
+        <span class="skw">click</span>(<img src="1393311987610.png" />)
+    <span class="kw">if</span> os == <span class="str">'ubuntu'</span>:
+        <span class="skw">click</span>(<img src="1393325711914.png" />)
+    <span class="kw">if</span> os == <span class="str">'fedora'</span>:
+        <span class="skw">click</span>(<img src="1393384143090.png" />)
 
 
-<span class="kw">def</span> locate_minecraft_dir():
-    <span class="skw">click</span>(<img src="1391653158899.png" />)
-
-os = <span class="str">'win7'</span>
-
-go_to(<span class="str">'London'</span>)
+os = <span class="str">'fedora'</span>
+<span class="skw">wait</span>(<span class="dig">1</span>)
+go_to(<span class="str">'New York'</span>)
 create_test_map()
 cancel_generation()
 <span class="kw">for</span> i <span class="kw">in</span> range(<span class="dig">5</span>):
@@ -185,6 +269,7 @@ cancel_generation()
     <span class="skw">wait</span>(<span class="dig">10</span>)
     cancel_generation()
 delete()
+
 
 <span class="kw">print</span> <span class="str">'done'</span>
 </pre>
