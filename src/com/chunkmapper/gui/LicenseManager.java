@@ -13,7 +13,7 @@ import com.chunkmapper.gui.ApplicationTemplate.AppFrame;
 import com.chunkmapper.gui.dialog.LicenseDialog;
 
 public class LicenseManager {
-	public static final String VERSION = "1.0";
+	public static final String VERSION = "beta";
 	public static final File LICENSE_FILE = new File(Utila.CACHE, "license.txt");
 	private static String getLicenseVersion() {
 		try {
