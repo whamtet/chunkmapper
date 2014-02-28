@@ -161,7 +161,9 @@ def delete():
     if os == 'win8':
         click("1393307447268.png")
     if os == 'win7':
-        click("1393309304326.png")
+        click("1393557266062.png")
+        
+        
     if os == 'winxp':
         click("1393311952529.png")
     if os == 'ubuntu':

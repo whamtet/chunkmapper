@@ -45,7 +45,7 @@ public class LicenseDialog extends JDialog {
 		super(frame);
 		this.setModalityType(ModalityType.APPLICATION_MODAL);
 		setTitle("Chunkmapper License");
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 682, 435);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -56,19 +56,17 @@ public class LicenseDialog extends JDialog {
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPanel.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 424, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(10, Short.MAX_VALUE))
+					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 561, Short.MAX_VALUE))
 		);
 		gl_contentPanel.setVerticalGroup(
-			gl_contentPanel.createParallelGroup(Alignment.TRAILING)
-				.addGroup(Alignment.LEADING, gl_contentPanel.createSequentialGroup()
+			gl_contentPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPanel.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 218, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 268, Short.MAX_VALUE)
+					.addContainerGap())
 		);
 		
 		JTextPane textPane = new JTextPane();
-		textPane.setContentType("text/html");
 		scrollPane.setViewportView(textPane);
 		contentPanel.setLayout(gl_contentPanel);
 		{
@@ -103,7 +101,7 @@ public class LicenseDialog extends JDialog {
 	}
 	private static String getLicense() {
 		try {
-			InputStream in = LicenseDialog.class.getResource("/license.txt").openStream();
+			InputStream in = LicenseDialog.class.getResource("/LICENSE.txt").openStream();
 			BufferedReader br = new BufferedReader(new InputStreamReader(in));
 			String line;
 			StringBuilder sb = new StringBuilder();

@@ -133,11 +133,11 @@
 			<artifactId>plugin</artifactId>
 			<version>912.1822</version>
 		</dependency>
-		<dependency>
+		<!-- <dependency>
 			<groupId>gov.nasa</groupId>
 			<artifactId>vpf-symbols</artifactId>
 			<version>912.1822</version>
-		</dependency>
+		</dependency> -->
 		<dependency>
 			<groupId>gov.nasa</groupId>
 			<artifactId>worldwind</artifactId>

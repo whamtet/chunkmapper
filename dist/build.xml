@@ -32,7 +32,7 @@
             <zipfileset dir="${user.home}/.m2/repository/org/apache/httpcomponents/httpmime/4.2.3" includes="httpmime-4.2.3.jar"/>
             <zipfileset dir="${user.home}/.m2/repository/gov/nasa/gdal/912.1822" includes="gdal-912.1822.jar"/>
             <zipfileset dir="${user.home}/.m2/repository/gov/nasa/plugin/912.1822" includes="plugin-912.1822.jar"/>
-            <zipfileset dir="${user.home}/.m2/repository/gov/nasa/vpf-symbols/912.1822" includes="vpf-symbols-912.1822.jar"/>
+<!--            <zipfileset dir="${user.home}/.m2/repository/gov/nasa/vpf-symbols/912.1822" includes="vpf-symbols-912.1822.jar"/> -->
             <zipfileset dir="${user.home}/.m2/repository/gov/nasa/worldwind/912.1822" includes="worldwind-912.1822.jar"/>
             <zipfileset dir="${user.home}/.m2/repository/gov/nasa/worldwindx/912.1822" includes="worldwindx-912.1822.jar"/>
             <zipfileset dir="../lib" includes="gluegen-rt-natives-linux-amd64.jar"/>
@@ -78,6 +78,7 @@
         <zip destfile="${chunkmapper}.zip">
             <zipfileset dir="." includes="Chunkmapper.jar" />
             <zipfileset dir="." includes="README.txt" />
+            <zipfileset dir="../chunkmapperResources" includes="LICENSE.txt" />
             <zipfileset dir="." includes="Chunkmapper.bat" />
             <zipfileset dir="." includes="Chunkmapper.sh" />
         </zip>

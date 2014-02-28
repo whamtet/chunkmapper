@@ -123,7 +123,6 @@ public class ManagingThread extends Thread {
 		} else {
 			gameMetaInfo = new GameMetaInfo(metaInfoFile, lat, lon, globalSettings.getVerticalExaggeration());
 		}
-		System.out.println("here");
 
 		File loadedLevelDatFile = new File(gameFolder, "level.dat");
 		if (!loadedLevelDatFile.exists()) {
@@ -145,6 +144,7 @@ public class ManagingThread extends Thread {
 					e.printStackTrace();
 					altitude = 250;
 				}
+				System.out.println("here");
 				loadedLevelDat.setPlayerPosition(lon * 3600 - gameMetaInfo.rootPoint.x * 512, altitude, - lat * 3600 - gameMetaInfo.rootPoint.z * 512);
 				loadedLevelDat.save();
 			} catch (IOException e) {
