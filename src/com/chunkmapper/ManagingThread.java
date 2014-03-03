@@ -144,7 +144,6 @@ public class ManagingThread extends Thread {
 					e.printStackTrace();
 					altitude = 250;
 				}
-				System.out.println("here");
 				loadedLevelDat.setPlayerPosition(lon * 3600 - gameMetaInfo.rootPoint.x * 512, altitude, - lat * 3600 - gameMetaInfo.rootPoint.z * 512);
 				loadedLevelDat.save();
 			} catch (IOException e) {

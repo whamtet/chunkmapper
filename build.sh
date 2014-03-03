@@ -4,7 +4,7 @@ mkdir inspect
 cd inspect
 unzip ../chunkmapper2-0.0.1-SNAPSHOT.jar
 cd ../../dist
-ant all -Dclasses=inspect
+ant copy -Dclasses=inspect
 #mkdir inspect
 #cd inspect
 #rm -r *

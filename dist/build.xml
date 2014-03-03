@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project default="create_run_jar" name="Create Runnable Jar for Project chunkmapper with Jar-in-Jar Loader">
     <taskdef name="jarbundler"
-             classname="net.sourceforge.jarbundler.JarBundler" />
+             classname="net.sourceforge.jarbundler.JarBundler"
+             classpath="../lib/jarbundler-2.2.0.jar">
+    </taskdef>
 	<property name="chunkmapper" value="Chunkmapper-beta" />
     <!--this file was created by Eclipse Runnable JAR Export Wizard-->
     <!--ANT 1.7 is required                                        -->
