@@ -3,17 +3,17 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.chunkmapper</groupId>
-	<artifactId>chunkmapper2</artifactId>
+	<artifactId>chunkmapper</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<pluginRepositories>
-        <pluginRepository>
-            <id>licel</id>
-            <url>https://licel.ru/m2</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </pluginRepository>
-    </pluginRepositories>
+		<pluginRepository>
+			<id>licel</id>
+			<url>https://licel.ru/m2</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
 
 	<build>
 		<sourceDirectory>src</sourceDirectory>
@@ -56,25 +56,27 @@
 				</configuration>
 			</plugin>
 			<plugin>
-                <groupId>com.licel</groupId>
-                <artifactId>stringer-maven-plugin</artifactId>
-                <version>1.5.1</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>stringer</goal>
-                        </goals>
-                        <configuration>
-                           <checkCaller>false</checkCaller><!-- slows things down quite a bit -->
-                           <integrityProtection>false</integrityProtection><!-- slows things down a little -->
-                           <resourceEncryption>false</resourceEncryption><!-- cannot load factory to goto -->
-                           <optimize>true</optimize><!-- this appears to speed things up a bit -->
-                           <verbose>true</verbose>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+				<groupId>com.licel</groupId>
+				<artifactId>stringer-maven-plugin</artifactId>
+				<version>1.5.1</version>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>stringer</goal>
+						</goals>
+						<configuration>
+							<checkCaller>false</checkCaller> <!-- slows things down quite a bit -->
+							<integrityProtection>false</integrityProtection><!-- slows things 
+								down a little -->
+							<resourceEncryption>false</resourceEncryption><!-- cannot load factory 
+								to goto -->
+							<optimize>true</optimize><!-- this appears to speed things up a bit -->
+							<verbose>true</verbose>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 
 	</build>
@@ -111,6 +113,12 @@
 			<type>jar</type>
 		</dependency>
 
+		<dependency>
+			<groupId>net.spy</groupId>
+			<artifactId>spymemcached</artifactId>
+			<version>2.10.6</version>
+		</dependency>
+
 		<!-- wwj deps -->
 
 		<dependency>
@@ -133,11 +141,9 @@
 			<artifactId>plugin</artifactId>
 			<version>912.1822</version>
 		</dependency>
-		<!-- <dependency>
-			<groupId>gov.nasa</groupId>
-			<artifactId>vpf-symbols</artifactId>
-			<version>912.1822</version>
-		</dependency> -->
+
+		<!-- <dependency> <groupId>gov.nasa</groupId> <artifactId>vpf-symbols</artifactId> 
+			<version>912.1822</version> </dependency> -->
 		<dependency>
 			<groupId>gov.nasa</groupId>
 			<artifactId>worldwind</artifactId>

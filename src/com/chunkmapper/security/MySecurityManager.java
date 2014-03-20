@@ -27,9 +27,15 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
-public class SecurityManager {
-	public static final int INVALID = 0, REQUIRES_LOGIN = 1, VALID = 2;
-	private static final File keyFile = new File(FileUtils.getUserDirectory(), ".chunkmapper/key");
+import com.chunkmapper.Utila;
+
+public class MySecurityManager {
+	
+	private static final File keyFile = new File(Utila.CACHE, "key");
+	
+	public static enum Status {
+		OK, HACKED, UNPAID, INVALID_PW;
+	}
 
 	private static String getRawKey() {
 		InetAddress ip = null;
@@ -66,7 +72,7 @@ public class SecurityManager {
 		sb.append(System.getProperty("user.name"));
 		return sb.toString();
 	}
-	public static String md5(String input) {
+	private static String md5(String input) {
 
 		String md5 = null;
 
@@ -92,8 +98,8 @@ public class SecurityManager {
 	private static String getKey() {
 		return md5(getRawKey());
 	}
-	private static String readEntireFile(File f) throws IOException {
-		FileReader in = new FileReader(f);
+	private static String readEntireFile() throws IOException {
+		FileReader in = new FileReader(keyFile);
 		StringBuilder contents = new StringBuilder();
 		char[] buffer = new char[4096];
 		int read = 0;
@@ -103,7 +109,7 @@ public class SecurityManager {
 		} while (read >= 0);
 		return contents.toString();
 	}
-	private static void spit(File f, String s) {
+	private static void spit(String s) {
 		try {
 			FileWriter out = new FileWriter(keyFile);
 			out.write(s);
@@ -112,76 +118,45 @@ public class SecurityManager {
 			e.printStackTrace();
 		}
 	}
-	public static int onlineValidity(String email, String password) {
-
+	private static Status getOnlineStatus(String email, String password) {
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpPost postRequest = new HttpPost(
-				"http://backend.chunkmapper.com/check");
+				"https://secure.chunkmapper.com/authenticate");
+		
 		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
 		nameValuePairs.add(new BasicNameValuePair("email", email));
 		nameValuePairs.add(new BasicNameValuePair("password", password));
+		
 		try {
 			postRequest.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		HttpResponse response = null;
-		try {
-			response = httpClient.execute(postRequest);
-		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		BufferedReader rd = null;
-		try {
-			rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-		} catch (IllegalStateException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		String responseLine = null;
-		try {
-			responseLine = rd.readLine();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
+			HttpResponse response = httpClient.execute(postRequest);
+			BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+			String responseLine = rd.readLine();
 			rd.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			if ("ok".equals(responseLine)) return Status.OK;
+			if ("hacked".equals(responseLine)) return Status.HACKED;
+			if ("unpaid".equals(responseLine)) return Status.UNPAID;
+			if ("invalid password".equals(responseLine)) return Status.INVALID_PW;
+			return null;
+			
+		} catch (Exception e) {
 			e.printStackTrace();
+			return null;
 		}
-		try {
-			int numLogins = Integer.parseInt(responseLine);
-			if (numLogins < 200) {
-				spit(keyFile, getKey());
-				return VALID;
-			} else {
-				return REQUIRES_LOGIN;
-			}
-		} catch (NumberFormatException e) {
-			e.printStackTrace();
-		}
-		return INVALID;
-
 	}
 	public static boolean isOfflineValid() {
-
 		try {
-			String key = readEntireFile(keyFile).trim();
+			String key = readEntireFile().trim();
 			return key.equals(getKey());
 		} catch (IOException e) {}
 		return false;
+	}
+	public static Status getStatus(String username, String password) {
+		Status s = getOnlineStatus(username, password);
+		if (s.equals(Status.OK)) {
+			spit(getKey());
+		}
+		return s;
 	}
 	public static void main(String[] args) throws Exception {
 		System.out.println("hi");

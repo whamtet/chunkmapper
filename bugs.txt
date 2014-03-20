@@ -1,3 +1,6 @@
--settings dialog
 -grid on mcmap
--if meta.txt only generates, will not appear in list, but will allow new creation, go to old spot and avoid cancellation.
+-if meta.txt only generates, will not appear in list, but will allow new creation, go to old spot and avoid cancellation.  This appears to be triggered by network problems.
+-land at sea
+-rivers blocking just before the coast
+-dragging over blue squares
+-south pole

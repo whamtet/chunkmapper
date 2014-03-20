@@ -1,5 +1,8 @@
 -keep public class com.chunkmapper.gui.Main {
 	public static void main(java.lang.String[]);
 }
+-keep public class com.chunkmapper.multiplayer.MPThread {
+      public static void main(java.lang.String[]);
+}
 
 -dontusemixedcaseclassnames

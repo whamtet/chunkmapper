@@ -10,6 +10,7 @@ import org.apache.commons.io.FileUtils;
 import com.chunkmapper.chunk.Chunk;
 import com.chunkmapper.enumeration.Biome;
 import com.chunkmapper.enumeration.LenteTree;
+import com.chunkmapper.enumeration.Villager;
 import com.chunkmapper.nbt.NbtIo;
 import com.chunkmapper.nbt.RegionFile;
 import com.chunkmapper.reader.HeightsReader;
@@ -51,6 +52,7 @@ public class TestArtifact {
 		int chunkx = 0, chunkz = 0;
 		Chunk chunk = new Chunk(chunkx, chunkz, heights, chunkx, chunkz);
 		GenericWriter.addGrass(chunk);
+		MobWriter.addVillager(chunk, Villager.Blacksmith, 8, 5, 8, false);
 		
 //		ArtifactWriter.placePrison(chunk);
 //		ArtifactWriter.placeMarket(chunk);

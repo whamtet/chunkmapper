@@ -10,18 +10,15 @@ import com.chunkmapper.GameMetaInfo;
 import com.chunkmapper.Point;
 import com.chunkmapper.parser.Nominatim;
 import com.chunkmapper.rail.HeightsCache;
+import com.chunkmapper.security.MySecurityManager;
+import com.chunkmapper.security.MySecurityManager.Status;
 import com.chunkmapper.writer.NeutralRegionWriter;
 
 public class MPThread {
 
 	public static void main(String[] args) throws Exception {
-		//for fresh restart
-//		File f = new File("/Users/matthewmolloy/images"), g = new File("/Users/matthewmolloy/.chunkmappermp");
-//		FileUtils.deleteDirectory(g);
-//		g.mkdir();
-//		FileUtils.copyDirectory(f, new File(g, "images"));
-//		start(new String[] {"mt everest"});
-		start(args);
+		getLatLon();
+		System.out.println("done");
 	}
 	private static File prepareDir(File f, boolean delete) {
 		if (delete && f.exists()) {
@@ -31,27 +28,58 @@ public class MPThread {
 				e.printStackTrace();
 			}
 		}
-		if (!f.exists()) {
-			f.mkdir();
-		}
+		f.mkdir();
 		return f;
 	}
-	private static void printUsageAndExit() {
-		System.out.println("Usage: ChunkmapperMultiplayer.java \"place name\"");
-		System.exit(0);
+	
+	private static void authenticate() {
+		if (!MySecurityManager.isOfflineValid()) {
+			System.out.println("Please Authenticate with your Chunkmapper account");
+			while(true) {
+				String email = InputAssistant.readLine("email: ");
+				String pw  = InputAssistant.readPassword("password: ");
+				System.out.println("One moment please...");
+				Status s = MySecurityManager.getStatus(email, pw);
+				switch(s) {
+				case OK:
+					return;
+				case HACKED:
+					System.out.println("Your account has been deactivated because of suspicious activity.");
+					System.out.println("Please email support@chunkmapper.com to reactivate your account.");
+					System.exit(0);
+				case UNPAID:
+					System.out.println("You have not paid for Chunkmapper yet.");
+					System.out.println("Please visit www.chunkmapper.com/buy");
+					System.exit(0);
+				case INVALID_PW:
+					System.out.println("Invalid email or password.  Please try again.");
+				}
+				
+			}
+		}
+	}
+	private static double[] getLatLon() {
+		System.out.println("Where would you like your map?");
+		while(true) {
+			String name = InputAssistant.readLine("Enter any real place name: ");
+			try {
+				if (name.trim().equals("")) throw new RuntimeException();
+				return Nominatim.getPoint(name);
+			} catch (Exception e) {
+				System.out.println("Sorry there was a problem.  Please try again.");
+			}
+		}
 	}
 
 
 	private static void start(String[] args) throws Exception {
+		System.out.println("Welcome to Chunkmapper Multiplayer");
 		double lat = 0, lon = 0;
 		
 		final int verticalExaggeration = 1;
 		File gameFolder = new File("world");
 		if (!gameFolder.exists()) {
-			if (args.length == 0) {
-				printUsageAndExit();
-			}
-			double[] latlon = Nominatim.getPoint(args[0]);
+			double[] latlon = getLatLon();
 			lat = latlon[0];
 			lon = latlon[1];
 		}

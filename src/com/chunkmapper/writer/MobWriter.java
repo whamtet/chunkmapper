@@ -111,6 +111,7 @@ public class MobWriter {
 		anon4.putByte("OnGround", (byte) 1);
 		anon4.putShort("HurtTime", (short) 0);
 		anon4.putInt("Profession", profession);
+		anon4.putString("CustomName", NameReader.getName());
 		anon4.putLong("UUIDMost", -3278007056630527295L);
 		anon4.putInt("Dimension", 0);
 		anon4.putShort("Air", (short) 300);

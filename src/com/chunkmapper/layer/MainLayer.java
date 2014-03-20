@@ -369,7 +369,7 @@ public class MainLayer extends RenderableLayer implements SelectListener
 		}
 
 		StringBuilder builder = new StringBuilder();
-		builder.append("<b>Chunkmapper Maps</b><br /><br />\n");
+		builder.append(divWidth(1) + "<b>Chunkmapper Maps</b><br /><br />\n");
 
 		numRows = gamesToDisplay.size();
 		for (String gameName : gamesToDisplay) {
@@ -379,8 +379,8 @@ public class MainLayer extends RenderableLayer implements SelectListener
 			builder.append(s + "<br />\n");
 		}
 		builder.append("<br />\n");
-		builder.append(divWidth(4) + "<a href=\"goto\"><font color=\"#b0b0b0\">Go To Location</a><br />");
-		builder.append(divWidth(3) + "<a href=\"create\"><font color=\"#b0b0b0\">Create New Map</a>");
+		builder.append(divWidth(6) + "<a href=\"goto\"><font color=\"#b0b0b0\">Go To Location</a><br />");
+		builder.append("<a href=\"create\"><font color=\"#b0b0b0\">Create New Chunkmap</a>");
 
 		//		System.out.print(builder.toString());
 		return builder.toString();

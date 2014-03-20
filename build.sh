@@ -2,9 +2,9 @@ mvn clean package
 cd target
 mkdir inspect
 cd inspect
-unzip ../chunkmapper2-0.0.1-SNAPSHOT.jar
+unzip ../chunkmapper-0.0.1-SNAPSHOT.jar
 cd ../../dist
-ant copy -Dclasses=inspect
+ant all -Dclasses=inspect -Dchunkmapper=Chunkmapper-beta
 #mkdir inspect
 #cd inspect
 #rm -r *

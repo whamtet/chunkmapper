@@ -6,6 +6,7 @@ import java.util.zip.DataFormatException;
 import com.chunkmapper.Point;
 import com.chunkmapper.admin.OSMRouter;
 import com.chunkmapper.chunk.Chunk;
+import com.chunkmapper.column.AbstractColumn;
 import com.chunkmapper.enumeration.Blocka;
 import com.chunkmapper.parser.OverpassObject;
 import com.chunkmapper.parser.OverpassObject.Way;
@@ -78,10 +79,11 @@ public class FerryReader {
 //		pw.close();
 //		System.out.println("done");
 //	}
-	public void addLillies(Chunk chunk, int chunkx, int chunkz) {
+	public void addLillies(Chunk chunk, int chunkx, int chunkz, AbstractColumn[][] columns) {
 		for (int i = 0; i < 16; i++) {
 			for (int j = 0; j < 16; j++) {
-				if (hasFerry[i + chunkz*16][j + chunkx*16]) {
+				AbstractColumn col = columns[i + chunkz*16][j + chunkx*16];
+				if (hasFerry[i + chunkz*16][j + chunkx*16] && !col.HAS_WATER) {
 					int h = chunk.getHeights(j, i);
 					chunk.Blocks[h][i][j] = Blocka.Lilly;
 				}

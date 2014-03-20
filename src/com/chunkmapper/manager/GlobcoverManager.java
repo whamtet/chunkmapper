@@ -399,7 +399,7 @@ public class GlobcoverManager {
 		}
 		pathReader.addPath(chunk, chunkx, chunkz);
 		//last but not least, add ferry
-		ferryReader.addLillies(chunk, chunkx, chunkz);
+		ferryReader.addLillies(chunk, chunkx, chunkz, columns);
 		hutReader.addHut(chunk);
 		return chunk;
 	}

@@ -40,7 +40,11 @@ This Agreement constitutes the complete and exclusive agreement between Matthew 
 
 CHUNKMAPPER PRIVACY POLICY
 
-Chunkmapper respects your privacy.  When you download Chunkmapper your IP address is privately recorded to collect statistics, however no personal information about you is obtained.  This data is not passed to any third parties.
+Chunkmapper respects your privacy.
+
+Unregistered Users:  When you download Chunkmapper your IP address is privately recorded to collect statistics, however no personal information about you is obtained.  This data is not passed to any third parties.
+
+Registered Users:  Your email is stored for password resetting purposes.  This is not passed to any third parties.
 
 Third party Licenses
 

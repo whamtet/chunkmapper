@@ -49,7 +49,7 @@ public abstract class Tasker {
 			@Override
 			public Thread newThread(Runnable arg0) {
 				Thread t = new Thread(arg0);
-				t.setPriority(Thread.MIN_PRIORITY);
+//				t.setPriority(Thread.MIN_PRIORITY);
 				// TODO Auto-generated method stub
 				return t;
 			}
