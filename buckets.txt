@@ -1,0 +1,10 @@
+chunkmapper-admin http://chunkmapper-admin.s3-website-us-east-1.amazonaws.com
+chunkmapper-heights http://chunkmapper-heights.s3-website-us-east-1.amazonaws.com
+chunkmapper-mat http://chunkmapper-mat.s3-website-us-east-1.amazonaws.com
+chunkmapper-heights2 http://chunkmapper-heights2.s3-website-us-east-1.amazonaws.com
+chunkmapper-osm http://chunkmapper-osm.s3-website-us-east-1.amazonaws.com
+chunkmapper-osm2 http://chunkmapper-osm2.s3-website-us-east-1.amazonaws.com
+allow-live yes
+chunkmapper-a http://chunkmapper-a.s3-website-us-east-1.amazonaws.com
+mu no
+supported-versions 0.1-MULTIPLAYER
