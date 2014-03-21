@@ -8,7 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import com.chunkmapper.Utila;
+import com.chunkmapper.admin.Utila;
 import com.chunkmapper.gui.ApplicationTemplate.AppFrame;
 import com.chunkmapper.gui.dialog.LicenseDialog;
 

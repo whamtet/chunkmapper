@@ -1,6 +1,6 @@
 package com.chunkmapper.reader;
 
-import com.chunkmapper.Utila;
+import com.chunkmapper.admin.Utila;
 
 public class UniformHeightsReader implements HeightsReader {
 	

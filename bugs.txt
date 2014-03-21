@@ -4,3 +4,4 @@
 -rivers blocking just before the coast
 -dragging over blue squares
 -south pole
+-priority in osx apps

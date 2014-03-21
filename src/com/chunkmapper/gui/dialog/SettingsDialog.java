@@ -20,8 +20,8 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
 
-import com.chunkmapper.Utila;
 import com.chunkmapper.admin.BucketInfo;
+import com.chunkmapper.admin.Utila;
 import com.chunkmapper.gui.GlobalSettingsImpl;
 import com.chunkmapper.interfaces.GlobalSettings;
 

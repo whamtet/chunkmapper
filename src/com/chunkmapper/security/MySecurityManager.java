@@ -27,7 +27,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
-import com.chunkmapper.Utila;
+import com.chunkmapper.admin.Utila;
 
 public class MySecurityManager {
 	

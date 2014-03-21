@@ -2,7 +2,7 @@ package com.chunkmapper.resourceinfo;
 
 import java.io.File;
 
-import com.chunkmapper.Utila;
+import com.chunkmapper.admin.Utila;
 
 public class GlobcoverResourceInfo extends ResourceInfo {
 	public static final String FORMAT_URL = 

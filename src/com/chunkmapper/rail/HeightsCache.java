@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.zip.DataFormatException;
 
 import com.chunkmapper.Point;
-import com.chunkmapper.Utila;
+import com.chunkmapper.admin.Utila;
 import com.chunkmapper.reader.FileNotYetAvailableException;
 import com.chunkmapper.reader.HeightsReader;
 import com.chunkmapper.reader.HeightsReaderS3;

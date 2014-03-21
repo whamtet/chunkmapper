@@ -24,10 +24,10 @@ import org.apache.http.util.EntityUtils;
 
 import com.chunkmapper.FileValidator;
 import com.chunkmapper.Point;
-import com.chunkmapper.Utila;
 import com.chunkmapper.Zip;
 import com.chunkmapper.admin.BucketInfo;
 import com.chunkmapper.admin.URLs;
+import com.chunkmapper.admin.Utila;
 import com.chunkmapper.downloader.Downloader;
 import com.chunkmapper.parser.OverpassObject;
 import com.chunkmapper.parser.OverpassObject.Node;

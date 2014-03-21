@@ -3,7 +3,7 @@ package com.chunkmapper.chunk;
 import java.awt.Point;
 import java.util.Random;
 
-import com.chunkmapper.Utila;
+import com.chunkmapper.admin.Utila;
 import com.chunkmapper.enumeration.Block;
 import com.chunkmapper.enumeration.StraightRail;
 import com.chunkmapper.nbt.CompoundTag;

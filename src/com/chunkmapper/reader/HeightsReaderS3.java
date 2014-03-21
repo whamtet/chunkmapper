@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.zip.DataFormatException;
 
-import com.chunkmapper.Utila;
+import com.chunkmapper.admin.Utila;
 import com.chunkmapper.heights.HGTFile2;
 import com.chunkmapper.parser.Nominatim;
 import com.chunkmapper.protoc.admin.HeightsInfo;

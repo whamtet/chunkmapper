@@ -22,7 +22,7 @@ import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import com.chunkmapper.Utila;
+import com.chunkmapper.admin.Utila;
 import com.chunkmapper.interfaces.GlobalSettings;
 import com.chunkmapper.layer.MCNotAvailableLayer;
 import com.chunkmapper.layer.MainLayer;

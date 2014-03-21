@@ -1,10 +1,12 @@
-package com.chunkmapper;
+package com.chunkmapper.admin;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
 import org.apache.commons.io.FileUtils;
@@ -15,6 +17,7 @@ import com.chunkmapper.rail.HeightsCache;
 import com.chunkmapper.reader.GlobcoverReaderImpl2;
 
 public class Utila {
+	public static final String VERSION = readVersion();
 	public static final int CHUNK_START = 4, CHUNK_END = 20;
 	public static final int HEIGHTS_START = 20;
 	public static final File CACHE;
@@ -22,6 +25,22 @@ public class Utila {
 	public static final String BINARY_SUFFIX = "_.txt";
 	public static File MINECRAFT_DIR;
 	private static final File customDirStore;
+	
+	private static String readVersion() {
+		try {
+			InputStream in = Utila.class.getResource("/version.txt").openStream();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+			String version = reader.readLine();
+			reader.close();
+			return version;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	public static void main(String[] args) {
+		System.out.println(readVersion());
+	}
 
 	//spit and slurp have something to do with a custom Minecraft location
 	private static String slurp(File f) {

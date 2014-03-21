@@ -12,7 +12,7 @@ import gov.nasa.worldwind.render.ShapeAttributes;
 import java.util.HashSet;
 
 import com.chunkmapper.Point;
-import com.chunkmapper.Utila;
+import com.chunkmapper.admin.Utila;
 import com.chunkmapper.interfaces.MappedSquareManager;
 
 public class MappedSquareManagerImpl implements MappedSquareManager {

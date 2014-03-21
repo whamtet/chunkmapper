@@ -33,7 +33,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import com.chunkmapper.Utila;
+import com.chunkmapper.admin.Utila;
 import com.chunkmapper.gui.Main;
 import com.chunkmapper.gui.MinecraftInstallFileFilter;
 import com.chunkmapper.interfaces.GlobalSettings;

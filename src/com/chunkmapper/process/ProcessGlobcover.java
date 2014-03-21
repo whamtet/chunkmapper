@@ -15,7 +15,7 @@ import javax.imageio.ImageIO;
 import org.apache.commons.io.FileUtils;
 
 import com.chunkmapper.Point;
-import com.chunkmapper.Utila;
+import com.chunkmapper.admin.Utila;
 import com.chunkmapper.protoc.FileContainer.FileInfo;
 import com.chunkmapper.protoc.FileContainer.FileList;
 import com.chunkmapper.reader.GlobcoverReaderImpl2;

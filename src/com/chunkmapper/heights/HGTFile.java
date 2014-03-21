@@ -13,9 +13,9 @@ import java.util.HashMap;
 import java.util.zip.ZipInputStream;
 
 import com.chunkmapper.FileValidator;
-import com.chunkmapper.Utila;
 import com.chunkmapper.Zip;
 import com.chunkmapper.admin.BucketInfo;
+import com.chunkmapper.admin.Utila;
 
 public class HGTFile {
 
