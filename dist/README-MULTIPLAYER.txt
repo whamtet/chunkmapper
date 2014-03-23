@@ -1,17 +1,12 @@
-Usage:
+MULTIPLAYER README
 
-java -Xmx1G -jar Chunkmapper-Multiplayer.java "place to start"
+java -Xmx1G -jar Chunkmapper-Multiplayer.jar
 
-e.g.
-
-java -Xmx1G -jar Chunkmapper-Multiplayer.java "nelson, new zealand"
-
-------
-Upon first execution Chunkmapper-Multiplayer will create server.properties and world/ directories.  The Minecraft server can then be run from the current directory AT THE SAME TIME as Chunkmapper.  Keep it going so that it can expand the map as players move.
+Upon first execution Chunkmapper Multiplayer will create server.properties and world/ directories.  The Minecraft server can then be run from the current directory AT THE SAME TIME as Chunkmapper.  Keep it going so that it can expand the map as players move.
 
 LIMITATION
 
-Single player chunkmapper can always generate terrain faster than the player can move, so you'll never run out of map.  If a large number of multiplayers move in opposite directions, however, Chunkmapper may not be able to keep up.  Multiplayer has no gui, so inspect the file
+Single player Chunkmapper can always generate terrain faster than the player can move, so you'll never run out of map.  If a large number of multiplayers move in opposite directions, however, Chunkmapper Multiplayer may not be able to keep up.  Multiplayer has no gui, so inspect the file
 world/chunkmapper/mappedSquares.txt
 
 ---mappedSquares.txt---

@@ -5,3 +5,10 @@
 -dragging over blue squares
 -south pole
 -priority in osx apps
+
+
+TODO
+
+-fix up fonts on premium
+-restrict single player
+-land out at sea

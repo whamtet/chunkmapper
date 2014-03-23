@@ -62,14 +62,13 @@ public class MySecurityManager {
 			e.printStackTrace();
 		}
 		StringBuilder sb = new StringBuilder();
-		sb.append(new String(mac));
-		sb.append(System.getProperty("java.home"));
-		sb.append(System.getProperty("java.vendor"));
-		sb.append(System.getProperty("java.version"));
-		sb.append(System.getProperty("os.arch"));
-		sb.append(System.getProperty("user.dir"));
-		sb.append(System.getProperty("user.home"));
-		sb.append(System.getProperty("user.name"));
+		sb.append(new String(mac) + "\n");
+		sb.append(System.getProperty("java.home") + "\n");
+		sb.append(System.getProperty("java.vendor") + "\n");
+		sb.append(System.getProperty("java.version") + "\n");
+		sb.append(System.getProperty("os.arch") + "\n");
+		sb.append(System.getProperty("user.home") + "\n");
+		sb.append(System.getProperty("user.name") + "\n");
 		return sb.toString();
 	}
 	private static String md5(String input) {
@@ -152,14 +151,16 @@ public class MySecurityManager {
 		return false;
 	}
 	public static Status getStatus(String username, String password) {
+		if (username == null || password == null) return Status.INVALID_PW;
+		if ("".equals(username.trim()) || "".equals(password.trim())) return Status.INVALID_PW;
 		Status s = getOnlineStatus(username, password);
-		if (s.equals(Status.OK)) {
+		if (Status.OK.equals(s)) {
 			spit(getKey());
 		}
 		return s;
 	}
 	public static void main(String[] args) throws Exception {
-		System.out.println("hi");
+		System.out.println(getRawKey());
 	}
 
 }

@@ -22,7 +22,10 @@ import java.io.IOException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import com.chunkmapper.admin.BucketInfo;
+import com.chunkmapper.admin.PreferenceManager;
 import com.chunkmapper.admin.Utila;
+import com.chunkmapper.gui.dialog.UpgradeAvailableDialog;
 import com.chunkmapper.interfaces.GlobalSettings;
 import com.chunkmapper.layer.MCNotAvailableLayer;
 import com.chunkmapper.layer.MainLayer;
@@ -85,6 +88,14 @@ public class Main extends ApplicationTemplate
 
 	public static void main(String[] args)
 	{
+		if (BucketInfo.mustUpgrade()) {
+			JOptionPane.showMessageDialog(null, "This version of Chunkmapper is no longer supported.  Visit www.chunkmapper.com to upgrade.");
+			System.exit(0);
+		}
+		if (!PreferenceManager.getIgnoreUpgrade() && BucketInfo.spUpgradeAvailable()) {
+			(new UpgradeAvailableDialog(null)).setVisible(true);
+			
+		}
 		LicenseManager.checkLicense(null);
 		if (hasFlawed(args))
 			Utila.MINECRAFT_DIR = new File("poo");

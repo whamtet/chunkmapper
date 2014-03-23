@@ -15,7 +15,7 @@ import com.chunkmapper.OpenURL;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-
+@Deprecated
 public class MustUpgradeDialog extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
@@ -75,19 +75,7 @@ public class MustUpgradeDialog extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton okButton = new JButton("Go");
-				okButton.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						OpenURL.openWebpage("http://www.chunkmapper.com");
-						dispose();
-					}
-				});
-				okButton.setActionCommand("OK");
-				buttonPane.add(okButton);
-				getRootPane().setDefaultButton(okButton);
-			}
-			{
-				JButton cancelButton = new JButton("Cancel");
+				JButton cancelButton = new JButton("OK");
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						dispose();

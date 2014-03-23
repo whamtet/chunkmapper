@@ -18,7 +18,8 @@ import com.chunkmapper.writer.NeutralRegionWriter;
 public class MPThread {
 
 	public static void main(String[] args) throws Exception {
-		start();
+		authenticate();
+		System.out.println("done");
 	}
 	private static File prepareDir(File f, boolean delete) {
 		if (delete && f.exists()) {
@@ -90,6 +91,7 @@ public class MPThread {
 		System.out.println("Welcome to Chunkmapper Multiplayer");
 		checkNetwork();
 		checkSupported();
+		authenticate();
 		double lat = 0, lon = 0;
 		
 		final int verticalExaggeration = 1;

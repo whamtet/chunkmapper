@@ -12,6 +12,7 @@ public class BucketInfo {
 	
 	public static void main(String[] args) {
 		System.out.println(versionSupported());
+		
 	}
 	public static boolean allowLive() throws IOException {
 		return "yes".equals(getBucket("allow-live"));
@@ -29,6 +30,23 @@ public class BucketInfo {
 			return getBucket("supported-versions").contains(Utila.VERSION);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+	}
+	public static boolean spUpgradeAvailable() {
+		try {
+			return !Utila.VERSION.equals(getBucket("latest-sp"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+		}
+	}
+	public static boolean mpUpgradeAvailable() {
+		try {
+			return !Utila.VERSION.equals(getBucket("latest-mp"));
+		} catch (IOException e) {
 			e.printStackTrace();
 			return false;
 		}

@@ -1,3 +1,4 @@
+python setVersion.py 0.1-SINGLEPLAYER
 mvn clean package
 cd target
 mkdir inspect

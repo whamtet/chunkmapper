@@ -43,10 +43,12 @@ import org.apache.commons.io.FileUtils;
 
 import com.chunkmapper.admin.BucketInfo;
 import com.chunkmapper.gui.GoToThread;
+import com.chunkmapper.gui.dialog.AccountDialog;
 import com.chunkmapper.gui.dialog.GoToDialog;
 import com.chunkmapper.gui.dialog.MustUpgradeDialog;
 import com.chunkmapper.gui.dialog.NewMapDialog;
 import com.chunkmapper.interfaces.GlobalSettings;
+import com.chunkmapper.security.MySecurityManager;
 
 public class MainLayer extends RenderableLayer implements SelectListener
 {
@@ -182,7 +184,7 @@ public class MainLayer extends RenderableLayer implements SelectListener
 					if (s != null) {
 						((Component) this.wwd).setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 						if (event.getEventAction().equals(SelectEvent.LEFT_CLICK)) {
-							if (s.equals("create") && !mustUpgrade()) {
+							if (s.equals("create") && !mustPurchase()) {
 								NewMapDialog dialog = new NewMapDialog(this, this.appFrame);
 								dialog.setVisible(true);
 								String gameName = dialog.getGameName();
@@ -217,7 +219,7 @@ public class MainLayer extends RenderableLayer implements SelectListener
 									update = true;
 								}
 							}
-							if (s.endsWith("Resume") && !mustUpgrade()) {
+							if (s.endsWith("Resume") && !mustPurchase()) {
 								wwd.getModel().getLayers().remove(this);
 								String gameName = s.substring(0, s.length() - 6);
 								try {
@@ -252,14 +254,20 @@ public class MainLayer extends RenderableLayer implements SelectListener
 			this.update();
 		}
 	}
-	private static boolean mustUpgrade() {
-		boolean mustUpgrade = BucketInfo.mustUpgrade();
-		if (mustUpgrade) {
-			MustUpgradeDialog d = new MustUpgradeDialog();
-			d.setModalityType(ModalityType.APPLICATION_MODAL);
-			d.setVisible(true);
-		}
-		return mustUpgrade;
+//	private static boolean mustUpgrade() {
+//		boolean mustUpgrade = BucketInfo.mustUpgrade();
+//		if (mustUpgrade) {
+//			MustUpgradeDialog d = new MustUpgradeDialog();
+//			d.setModalityType(ModalityType.APPLICATION_MODAL);
+//			d.setVisible(true);
+//		}
+//		return mustUpgrade;
+//	}
+	private boolean mustPurchase() {
+		if (MySecurityManager.isOfflineValid()) return false;
+		AccountDialog d = new AccountDialog(appFrame);
+		d.setVisible(true);
+		return !d.ok;
 	}
 
 	public void displayGotoDialog() {
