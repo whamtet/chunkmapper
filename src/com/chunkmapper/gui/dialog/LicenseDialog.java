@@ -16,13 +16,19 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.border.EmptyBorder;
+
+import com.chunkmapper.admin.MyLogger;
+import com.chunkmapper.admin.PreferenceManager;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JCheckBox;
 
 public class LicenseDialog extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 	public boolean licenseAccepted;
+	private JCheckBox chckbxSubmitAnonymousUsage;
 
 	/**
 	 * Launch the application.
@@ -77,10 +83,17 @@ public class LicenseDialog extends JDialog {
 				JButton okButton = new JButton("Accept");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
+						if (chckbxSubmitAnonymousUsage.isSelected()) {
+							PreferenceManager.setAllowUsageReports();
+						}
 						licenseAccepted = true;
 						dispose();
 					}
 				});
+				{
+					chckbxSubmitAnonymousUsage = new JCheckBox("Submit Anonymous Usage Reports");
+					buttonPane.add(chckbxSubmitAnonymousUsage);
+				}
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
@@ -111,7 +124,7 @@ public class LicenseDialog extends JDialog {
 			br.close();
 			return sb.toString();
 		} catch (IOException e) {
-			e.printStackTrace();
+			MyLogger.LOGGER.severe(MyLogger.printException(e));
 			return null;
 		}
 	}

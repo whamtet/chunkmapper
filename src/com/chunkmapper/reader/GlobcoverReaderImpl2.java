@@ -3,9 +3,7 @@ package com.chunkmapper.reader;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.Random;
@@ -18,9 +16,6 @@ import com.chunkmapper.admin.Utila;
 import com.chunkmapper.enumeration.Globcover;
 import com.chunkmapper.math.Matthewmatics;
 import com.chunkmapper.parser.Nominatim;
-import com.chunkmapper.protoc.FileContainer.FileInfo;
-import com.chunkmapper.protoc.FileContainer.FileList;
-import com.chunkmapper.protoc.admin.FileListManager;
 
 public class GlobcoverReaderImpl2 implements GlobcoverReader {
 	public static final int REGION_WIDTH = 50;

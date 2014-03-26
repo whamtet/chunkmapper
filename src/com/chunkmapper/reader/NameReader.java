@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.logging.Logger;
+
+import com.chunkmapper.admin.MyLogger;
 
 public class NameReader {
 	private static Random random = new Random();
@@ -20,8 +23,7 @@ public class NameReader {
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-			System.exit(0);
+			MyLogger.LOGGER.severe(MyLogger.printException(e));
 		}
 	}
 	public static String getName() {

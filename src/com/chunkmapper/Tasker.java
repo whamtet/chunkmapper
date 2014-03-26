@@ -8,6 +8,10 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
+
+import com.chunkmapper.admin.FeedbackManager;
+import com.chunkmapper.admin.MyLogger;
 
 
 public abstract class Tasker {
@@ -17,7 +21,7 @@ public abstract class Tasker {
 
 	public void shutdownNow() {
 		executorService.shutdownNow();
-		System.err.println("shut down " + this.getClass().toString());
+		MyLogger.LOGGER.info("shut down " + this.getClass().toString());
 	}
 	public void blockingShutdownNow() {
 		executorService.shutdownNow();
@@ -25,9 +29,9 @@ public abstract class Tasker {
 			executorService.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			MyLogger.LOGGER.info(MyLogger.printException(e));
 		}
-		System.err.println("shut down " + this.getClass().toString());
+		MyLogger.LOGGER.info("shut down " + this.getClass().toString());
 	}
 	public synchronized void addTask(int regionx, int regionz) {
 		Point p = new Point(regionx, regionz);
@@ -65,42 +69,42 @@ public abstract class Tasker {
 							task = getTask();
 							doTask(task);
 						} catch (InterruptedException e) {
-							e.printStackTrace();
+							MyLogger.LOGGER.info(MyLogger.printException(e));
 							return;
 						} catch (UnknownHostException e) {
 							ManagingThread.setNetworkProblems();
-							e.printStackTrace();
+							MyLogger.LOGGER.warning(MyLogger.printException(e));
 							try {
 								Thread.sleep(1000);
 								addTask(task);
 							} catch (InterruptedException e1) {
 								// TODO Auto-generated catch block
-								e1.printStackTrace();
+								MyLogger.LOGGER.info(MyLogger.printException(e));
 								return;
 							}
 						} catch (SocketException e) {
 							ManagingThread.setNetworkProblems();
-							e.printStackTrace();
+							MyLogger.LOGGER.warning(MyLogger.printException(e));
 							try {
 								Thread.sleep(1000);
 								addTask(task);
 							} catch (InterruptedException e1) {
-								e1.printStackTrace();
+								MyLogger.LOGGER.info(MyLogger.printException(e));
 								return;
 							}
 						} catch (Exception e) {
-							e.printStackTrace();
+							MyLogger.LOGGER.warning(MyLogger.printException(e));
 							try {
 								Thread.sleep(1000);
 								addTask(task);
 							} catch (InterruptedException e1) {
 								// TODO Auto-generated catch block
-								e1.printStackTrace();
+								MyLogger.LOGGER.info(MyLogger.printException(e));
 								return;
 							}
 
 						} catch (Error e) {
-							e.printStackTrace();
+							MyLogger.LOGGER.severe(MyLogger.printException(e));
 						}
 					}
 				}

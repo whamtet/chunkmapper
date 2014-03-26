@@ -27,6 +27,7 @@ import org.apache.http.util.EntityUtils;
 
 import com.chunkmapper.Point;
 import com.chunkmapper.Tasker;
+import com.chunkmapper.admin.MyLogger;
 
 
 public abstract class Downloader extends Tasker {
@@ -61,10 +62,10 @@ public abstract class Downloader extends Tasker {
 		try {
 			download(p, false);
 		} catch (ConnectTimeoutException e) {
-			e.printStackTrace();
+			MyLogger.LOGGER.warning(MyLogger.printException(e));
 			download(p, true);
 		} catch (SocketTimeoutException e) {
-			e.printStackTrace();
+			MyLogger.LOGGER.warning(MyLogger.printException(e));
 			download(p, true);
 		}
 	}

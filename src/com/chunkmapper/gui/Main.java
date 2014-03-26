@@ -23,6 +23,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import com.chunkmapper.admin.BucketInfo;
+import com.chunkmapper.admin.MyLogger;
 import com.chunkmapper.admin.PreferenceManager;
 import com.chunkmapper.admin.Utila;
 import com.chunkmapper.gui.dialog.UpgradeAvailableDialog;

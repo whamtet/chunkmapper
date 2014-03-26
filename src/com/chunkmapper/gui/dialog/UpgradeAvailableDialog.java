@@ -3,28 +3,29 @@ package com.chunkmapper.gui.dialog;
 import java.awt.BorderLayout;
 import java.awt.Desktop;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.net.URI;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JCheckBox;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.border.EmptyBorder;
 
 import com.chunkmapper.admin.PreferenceManager;
-
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class UpgradeAvailableDialog extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
+	private JCheckBox chckbxDontAskAgain;
 
 	/**
 	 * Launch the application.
@@ -59,6 +60,16 @@ public class UpgradeAvailableDialog extends JDialog {
 	 */
 	public UpgradeAvailableDialog(JFrame f) {
 		super(f);
+		this.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				System.out.println("closing");
+				if (chckbxDontAskAgain.isSelected()) {
+					PreferenceManager.setIgnoreUpgrade();
+				}
+			}
+			
+		});
+		
 		setTitle("Upgrade Available");
 		setModal(true);
 		setModalityType(ModalityType.APPLICATION_MODAL);
@@ -69,7 +80,7 @@ public class UpgradeAvailableDialog extends JDialog {
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		JLabel lblANewVersion = new JLabel("Upgrade Chunkmapper for the latest features and best performance.");
 		
-		final JCheckBox chckbxDontAskAgain = new JCheckBox("Don't ask again");
+		chckbxDontAskAgain = new JCheckBox("Don't ask again");
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
 		gl_contentPanel.setHorizontalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)

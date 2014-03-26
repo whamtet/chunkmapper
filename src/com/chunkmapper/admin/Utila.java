@@ -34,7 +34,7 @@ public class Utila {
 			reader.close();
 			return version;
 		} catch (IOException e) {
-			e.printStackTrace();
+			MyLogger.LOGGER.severe(MyLogger.printException(e));
 		}
 		return null;
 	}
@@ -50,7 +50,7 @@ public class Utila {
 			br.close();
 			return s;
 		} catch (IOException e) {
-			e.printStackTrace();
+			MyLogger.LOGGER.severe(MyLogger.printException(e));
 			return null;
 		}
 	}
@@ -60,7 +60,7 @@ public class Utila {
 			pw.println(f.getAbsolutePath());
 			pw.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+			MyLogger.LOGGER.severe(MyLogger.printException(e));
 		}
 	}
 	public static void clearCache() throws IOException {

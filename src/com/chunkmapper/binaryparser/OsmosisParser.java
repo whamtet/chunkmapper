@@ -26,6 +26,7 @@ import com.chunkmapper.FileValidator;
 import com.chunkmapper.Point;
 import com.chunkmapper.Zip;
 import com.chunkmapper.admin.BucketInfo;
+import com.chunkmapper.admin.MyLogger;
 import com.chunkmapper.admin.URLs;
 import com.chunkmapper.admin.Utila;
 import com.chunkmapper.downloader.Downloader;
@@ -161,7 +162,7 @@ public class OsmosisParser {
 			}
 			return out;
 		} catch (Exception e) {
-			e.printStackTrace();
+			MyLogger.LOGGER.warning(MyLogger.printException(e));
 			return null;
 		}
 	}

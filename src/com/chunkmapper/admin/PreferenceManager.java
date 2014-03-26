@@ -22,7 +22,7 @@ public class PreferenceManager {
 					data.put(split[0], split[1]);
 				}
 			} catch (IOException e) {
-				e.printStackTrace();
+				MyLogger.LOGGER.severe(MyLogger.printException(e));
 			}
 		}
 	}
@@ -34,7 +34,7 @@ public class PreferenceManager {
 			}
 			pw.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+			MyLogger.LOGGER.severe(MyLogger.printException(e));
 		}
 	}
 	public static boolean getIgnoreUpgrade() {
@@ -50,6 +50,13 @@ public class PreferenceManager {
 	public static void setIgnoreFeedback() {
 		data.put("ignore-feedback", "yes");
 		spit();
+	}
+	public static void setAllowUsageReports() {
+		data.put("submit-usage", "yes");
+		spit();
+	}
+	public static boolean getAllowUsageReports() {
+		return "yes".equals(data.get("submit-usage"));
 	}
 	
 	

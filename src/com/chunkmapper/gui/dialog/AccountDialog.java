@@ -101,7 +101,7 @@ public class AccountDialog extends JDialog {
 
 		setResizable(false);
 		setTitle("Verify Account");
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 450, 245);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -141,15 +141,19 @@ public class AccountDialog extends JDialog {
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
 						.addComponent(lblToCreateA)
 						.addComponent(lblNewLabel)
-						.addComponent(lblEmail)
-						.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblPassword)
-						.addComponent(passwordField, 134, 134, 134)
+						.addGroup(gl_contentPanel.createSequentialGroup()
+							.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(passwordField, 134, 134, 134))
+						.addGroup(gl_contentPanel.createSequentialGroup()
+							.addComponent(lblEmail)
+							.addGap(112)
+							.addComponent(lblPassword))
 						.addGroup(gl_contentPanel.createSequentialGroup()
 							.addComponent(btnCreateAccount)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btnResetButton)))
-					.addContainerGap(171, Short.MAX_VALUE))
+					.addContainerGap(147, Short.MAX_VALUE))
 		);
 		gl_contentPanel.setVerticalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
@@ -159,18 +163,18 @@ public class AccountDialog extends JDialog {
 					.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 					.addComponent(lblNewLabel)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(lblEmail)
+					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblEmail)
+						.addComponent(lblPassword))
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(lblPassword)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(passwordField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(passwordField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGap(18)
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnCreateAccount)
 						.addComponent(btnResetButton))
-					.addGap(23))
+					.addGap(66))
 		);
 		contentPanel.setLayout(gl_contentPanel);
 		{

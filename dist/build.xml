@@ -4,9 +4,9 @@
              classname="net.sourceforge.jarbundler.JarBundler"
              classpath="../lib/jarbundler-2.2.0.jar">
     </taskdef>
-	
+
 	<property name="Chunkmapper" value="Chunkmapper" />
-	
+
     <target name="multiplayer_jar">
         <jar destfile="Chunkmapper-Multiplayer.jar">
             <manifest>
@@ -32,12 +32,12 @@
         <jar destfile="Chunkmapper-Test.jar">
             <manifest>
                 <attribute name="Main-Class" value="org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader"/>
-                <attribute name="Rsrc-Main-Class" value="com.chunkmapper.security.MySecurityManager"/>
+                <attribute name="Rsrc-Main-Class" value="com.chunkmapper.Test"/>
                 <attribute name="Class-Path" value="."/>
                 <attribute name="Rsrc-Class-Path" value="./ protobuf-java-2.5.0.jar httpclient-4.3.jar httpcore-4.3.jar commons-logging-1.1.3.jar commons-codec-1.6.jar commons-io-2.3.jar simple-5.1.5.jar httpmime-4.2.3.jar"/>
             </manifest>
             <zipfileset src="jar-in-jar-loader.zip"/>
-            <fileset dir="../target/classes"/>
+            <fileset dir="../target/${classes}"/>
             <fileset dir="../chunkmapperResources"/>
             <zipfileset dir="${user.home}/.m2/repository/com/google/protobuf/protobuf-java/2.5.0" includes="protobuf-java-2.5.0.jar"/>
             <zipfileset dir="${user.home}/.m2/repository/org/apache/httpcomponents/httpclient/4.3" includes="httpclient-4.3.jar"/>
@@ -133,7 +133,7 @@
 			<arg line="internet-enable -yes Chunkmapper-Test.dmg"/>
 		</exec>
 	</target>
-	
+
 	<available file="${chunkmapper}.dmg" property="${chunkmapper}.dmg.present" />
     <target name="dmg" depends="app">
         <exec executable="hdiutil">

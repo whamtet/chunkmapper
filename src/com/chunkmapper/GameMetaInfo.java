@@ -8,6 +8,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import com.chunkmapper.admin.MyLogger;
+
 public class GameMetaInfo {
 	public final File store;
 	public final Point rootPoint;
@@ -53,7 +55,7 @@ public class GameMetaInfo {
 			pw.println(verticalExaggeration);
 			pw.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+			MyLogger.LOGGER.severe(MyLogger.printException(e));
 		}
 	}
 	//numChunksmade is the only mutable field, so its okay to lock on the whole object

@@ -6,11 +6,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.logging.Logger;
 
 import org.apache.commons.io.FileUtils;
 
 import com.chunkmapper.ManagingThread;
 import com.chunkmapper.Zip;
+import com.chunkmapper.admin.MyLogger;
 import com.chunkmapper.chunk.Chunk;
 import com.chunkmapper.enumeration.LenteTree;
 import com.chunkmapper.protoc.SchematicProtocol;
@@ -26,8 +28,8 @@ public class LenteTreeWriter {
 			try {
 				protocols.put(lenteTree, new SchematicProtocolWrapper("/trees/" + lenteTree.toString() + ".myschematic"));
 			} catch (Exception e) {
-				System.out.println(lenteTree);
-				e.printStackTrace();
+				MyLogger.LOGGER.severe(MyLogger.printException(e));
+				MyLogger.LOGGER.severe(lenteTree.toString());
 			}
 		}
 	}

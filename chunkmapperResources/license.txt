@@ -46,6 +46,8 @@ Unregistered Users:  When you download Chunkmapper your IP address is privately 
 
 Registered Users:  Your email is stored for password resetting purposes.  This is not passed to any third parties.
 
+Any anonymous usage data you volunteer to share will be kept to improve Chunkmapper.  It will not be passed to any third parties.
+
 Third party Licenses
 
 Chunkmapper utillises Protocol Buffers which are subject to the following license.

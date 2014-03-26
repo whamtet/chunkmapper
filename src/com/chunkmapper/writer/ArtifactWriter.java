@@ -1,9 +1,11 @@
 package com.chunkmapper.writer;
 
 import java.io.File;
+import java.util.logging.Logger;
 
 import org.apache.commons.io.FileUtils;
 
+import com.chunkmapper.admin.MyLogger;
 import com.chunkmapper.chunk.Chunk;
 import com.chunkmapper.enumeration.Block;
 import com.chunkmapper.enumeration.Blocka;
@@ -20,13 +22,14 @@ import com.chunkmapper.reader.RugbyReader.RugbyField;
 
 public class ArtifactWriter {
 	private static final SchematicProtocolWrapper hut;
+	private static final Logger logger = Logger.getLogger(ArtifactWriter.class.toString());
 	static {
 		SchematicProtocolWrapper hut2 = null;
 		try {
 			//			hut2 = new SchematicProtocolWrapper(new File(FileUtils.getUserDirectory(), "hut.myschematic"));
 			hut2 = new SchematicProtocolWrapper("/buildings/hut.myschematic");
 		} catch (Exception e) {
-			e.printStackTrace();
+			MyLogger.LOGGER.severe(MyLogger.printException(e));
 		}
 		hut = hut2;
 	}

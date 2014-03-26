@@ -3,6 +3,9 @@ package com.chunkmapper.resourceinfo;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.logging.Logger;
+
+import com.chunkmapper.admin.MyLogger;
 
 public abstract class ResourceInfo {
 //only contains info, doesn't do anything.
@@ -18,7 +21,7 @@ public abstract class ResourceInfo {
 		try {
 			urld = new URL(address);
 		} catch (MalformedURLException e) {
-			e.printStackTrace();
+			MyLogger.LOGGER.info(MyLogger.printException(e));
 		}
 		url = urld;
 		url2 = null;
@@ -32,13 +35,13 @@ public abstract class ResourceInfo {
 		try {
 			urld = new URL(address);
 		} catch (MalformedURLException e) {
-			e.printStackTrace();
+			MyLogger.LOGGER.info(MyLogger.printException(e));
 		}
 		url = urld;
 		try {
 			urld = new URL(address2);
 		} catch (MalformedURLException e) {
-			e.printStackTrace();
+			MyLogger.LOGGER.info(MyLogger.printException(e));
 		}
 		url2 = urld;
 	}

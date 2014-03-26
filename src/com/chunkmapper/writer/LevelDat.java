@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import com.chunkmapper.Point;
+import com.chunkmapper.admin.MyLogger;
 import com.chunkmapper.nbt.ByteTag;
 import com.chunkmapper.nbt.CompoundTag;
 import com.chunkmapper.nbt.DoubleTag;
@@ -39,7 +40,7 @@ public class LevelDat {
 		out.close();
 	}
 	public void setPlayerPosition(double x, double y, double z) {
-		System.out.println("setting player position to " + x + ", " + y + ", " + z);
+		MyLogger.LOGGER.info("setting player position to " + x + ", " + y + ", " + z);
 		CompoundTag Data = data.getCompound("Data");
 		Data.putInt("SpawnX", (int) x);
 		Data.putInt("SpawnY", (int) y);
@@ -59,18 +60,18 @@ public class LevelDat {
 		CompoundTag Data = data.getCompound("Data");
 		CompoundTag Player = Data.getCompound("Player");
 		ListTag<DoubleTag> Pos = (ListTag<DoubleTag>) Player.getList("Pos");
-		System.out.println(store);
-		System.out.println("***Pos***");
+		MyLogger.LOGGER.info(store.toString());
+		MyLogger.LOGGER.info("***Pos***");
 		for (int i = 0; i < 3; i++) {
-			System.out.println(Pos.get(i).data);
+			MyLogger.LOGGER.info(Pos.get(i).data + "");
 		}
-		System.out.println("***");
+		MyLogger.LOGGER.info("***");
 		double x = Pos.get(0).data;
 		double z = Pos.get(2).data;
 		return new Point((int) x, (int) z);
 	}
 	public void setName(String name) {
-		System.out.println("setting game name to " + name);
+		MyLogger.LOGGER.info("setting game name to " + name);
 		CompoundTag Data = data.getCompound("Data");
 		Data.putString("LevelName", name);
 	}

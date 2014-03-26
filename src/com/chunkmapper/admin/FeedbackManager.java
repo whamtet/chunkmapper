@@ -2,46 +2,57 @@ package com.chunkmapper.admin;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.logging.Handler;
-import java.util.logging.LogRecord;
+import java.util.Properties;
 import java.util.logging.SimpleFormatter;
 import java.util.logging.StreamHandler;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+
 public class FeedbackManager {
-	public static final ByteArrayOutputStream loggingStream = new ByteArrayOutputStream();
+	private static final ByteArrayOutputStream loggingStream = new ByteArrayOutputStream();
 	public static final StreamHandler streamHandler = new StreamHandler(loggingStream, new SimpleFormatter());
 	
-	public static void main(String[] args) {
-		
+	public static String getLogs() {
+		streamHandler.flush();
+		return loggingStream.toString();
 	}
-		
-	public static class FeedbackHandler extends Handler {
-		
-		public List<String> lines = Collections.synchronizedList(new ArrayList<String>());
-
-		@Override
-		public void publish(LogRecord record) {
-			// TODO Auto-generated method stub
-			lines.add(record.getMessage());
-			record.
+	public static void main(String[] args) throws Exception {
+		System.out.println(getProperties());
+	}
+	private static String getProperties() {
+		StringBuilder sb = new StringBuilder();
+		Properties p = System.getProperties();
+		for (Object k : p.keySet()) {
+			sb.append(k + ": " + p.get(k) + "\n");
 		}
-
-		@Override
-		public void flush() {
-			// TODO Auto-generated method stub
-			
+		return sb.toString();
+	}
+	public static void submitFeedback(List<NameValuePair> nameValuePairs) {
+		if (nameValuePairs == null) {
+			nameValuePairs = new ArrayList<NameValuePair>();
 		}
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpPost postRequest = new HttpPost(
+				"http://localhost:5000/feedback"
+				
+				);
 
-		@Override
-		public void close() throws SecurityException {
-			// TODO Auto-generated method stub
-			
+		nameValuePairs.add(new BasicNameValuePair("logs", getLogs()));
+		//system properties
+		nameValuePairs.add(new BasicNameValuePair("system_properties", getProperties()));
+		try {
+			postRequest.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+			HttpResponse response = httpClient.execute(postRequest);
+		} catch (Exception e) {
+			MyLogger.LOGGER.warning(MyLogger.printException(e));
 		}
-		
-	};
-	static {
 		
 	}
 	

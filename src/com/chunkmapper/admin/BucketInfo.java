@@ -9,49 +9,27 @@ import java.util.HashMap;
 public class BucketInfo {
 	private static HashMap<String, String> map;
 	private static Object key = new Object();
-	
+
 	public static void main(String[] args) {
 		System.out.println(versionSupported());
-		
+
 	}
 	public static boolean allowLive() throws IOException {
 		return "yes".equals(getBucket("allow-live"));
 	}
 	public static boolean mustUpgrade() {
-		try {
-			return "yes".equals(getBucket("mu"));
-		} catch (IOException e) {
-			e.printStackTrace();
-			return false;
-		}
+		return "yes".equals(getBucket("mu"));
 	}
 	public static boolean versionSupported() {
-		try {
-			return getBucket("supported-versions").contains(Utila.VERSION);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return false;
-		}
+		return getBucket("supported-versions").contains(Utila.VERSION);
 	}
 	public static boolean spUpgradeAvailable() {
-		try {
-			return !Utila.VERSION.equals(getBucket("latest-sp"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return false;
-		}
+		return !Utila.VERSION.equals(getBucket("latest-sp"));
 	}
 	public static boolean mpUpgradeAvailable() {
-		try {
-			return !Utila.VERSION.equals(getBucket("latest-mp"));
-		} catch (IOException e) {
-			e.printStackTrace();
-			return false;
-		}
+		return !Utila.VERSION.equals(getBucket("latest-mp"));
 	}
-	public static String getBucket(String key) throws IOException {
+	public static String getBucket(String key) {
 		synchronized(key) {
 			while (map == null) {
 				initMap();
@@ -67,9 +45,9 @@ public class BucketInfo {
 		}
 		return map.get(key);
 	}
-	private static void initMap() throws IOException {
+	private static void initMap() {
 		BufferedReader br = null;
-//		try {
+		try {
 			URL url = new URL(URLs.BUCKET_INFO);
 			br = new BufferedReader(new InputStreamReader(url.openStream()));
 			map = new HashMap<String, String>();
@@ -79,6 +57,9 @@ public class BucketInfo {
 				map.put(split[0], split[1]);
 			}
 			br.close();
+		} catch (IOException e) {
+			MyLogger.LOGGER.severe(MyLogger.printException(e));
+		}
 	}
 	public static boolean multiplayerInitMap() {
 		HashMap<String, String> localMap = null;

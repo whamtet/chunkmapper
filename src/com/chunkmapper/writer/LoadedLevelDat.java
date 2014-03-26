@@ -10,6 +10,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import com.chunkmapper.Point;
+import com.chunkmapper.admin.MyLogger;
 import com.chunkmapper.nbt.CompoundTag;
 import com.chunkmapper.nbt.DoubleTag;
 import com.chunkmapper.nbt.ListTag;
@@ -33,7 +34,7 @@ public class LoadedLevelDat {
 		out.close();
 	}
 	public void setPlayerPosition(double x, double y, double z) {
-		System.out.println("setting player position to " + x + ", " + y + ", " + z);
+		MyLogger.LOGGER.info("setting player position to " + x + ", " + y + ", " + z);
 		CompoundTag Data = data.getCompound("Data");
 		Data.putInt("SpawnX", (int) x);
 		Data.putInt("SpawnY", (int) y);
@@ -58,7 +59,7 @@ public class LoadedLevelDat {
 		return new Point((int) x, (int) z);
 	}
 	public void setName(String name) {
-		System.out.println("setting game name to " + name);
+		MyLogger.LOGGER.info("setting game name to " + name);
 		CompoundTag Data = data.getCompound("Data");
 		Data.putString("LevelName", name);
 	}

@@ -7,6 +7,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import com.chunkmapper.admin.MyLogger;
+
 public abstract class Reader {
 
 	public static ArrayList<Byte> getBlueIndices(File f) throws IOException {
@@ -33,7 +35,7 @@ public abstract class Reader {
 					if (r < 0) r += 256;
 					if (g < 0) g += 256;
 					if (b < 0) b += 256;
-					System.out.println(r + ", " + g + ", " + b);
+					MyLogger.LOGGER.info(r + ", " + g + ", " + b);
 				}
 			}
 		}

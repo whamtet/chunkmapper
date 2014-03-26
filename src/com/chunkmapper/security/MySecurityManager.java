@@ -29,12 +29,13 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
+import com.chunkmapper.admin.MyLogger;
 import com.chunkmapper.admin.Utila;
 
 public class MySecurityManager {
-	
+
 	private static final File keyFile = new File(Utila.CACHE, "key");
-	
+
 	public static enum Status {
 		OK, HACKED, UNPAID, INVALID_PW;
 	}
@@ -45,26 +46,29 @@ public class MySecurityManager {
 			ip = InetAddress.getLocalHost();
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			MyLogger.LOGGER.severe(MyLogger.printException(e));
 		}
 
 		NetworkInterface network = null;
 		try {
-			network = NetworkInterface.getByInetAddress(ip);
+			if (ip != null)
+				network = NetworkInterface.getByInetAddress(ip);
 		} catch (SocketException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			MyLogger.LOGGER.severe(MyLogger.printException(e));
 		}
 
 		byte[] mac = null;
 		try {
-			mac = network.getHardwareAddress();
+			if (network != null)
+				mac = network.getHardwareAddress();
 		} catch (SocketException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			MyLogger.LOGGER.severe(MyLogger.printException(e));
 		}
 		StringBuilder sb = new StringBuilder();
-		sb.append(new String(mac) + "\n");
+		if (mac != null)
+			sb.append(new String(mac) + "\n");
 		sb.append(System.getProperty("os.arch") + "\n");
 		sb.append(System.getProperty("user.home") + "\n");
 		sb.append(System.getProperty("user.name") + "\n");
@@ -89,7 +93,7 @@ public class MySecurityManager {
 
 		} catch (NoSuchAlgorithmException e) {
 
-			e.printStackTrace();
+			MyLogger.LOGGER.severe(MyLogger.printException(e));
 		}
 		return md5;
 	}
@@ -113,18 +117,18 @@ public class MySecurityManager {
 			out.write(s);
 			out.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+			MyLogger.LOGGER.severe(MyLogger.printException(e));
 		}
 	}
 	private static Status getOnlineStatus(String email, String password) {
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpPost postRequest = new HttpPost(
 				"https://secure.chunkmapper.com/authenticate");
-		
+
 		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
 		nameValuePairs.add(new BasicNameValuePair("email", email));
 		nameValuePairs.add(new BasicNameValuePair("password", password));
-		
+
 		try {
 			postRequest.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 			HttpResponse response = httpClient.execute(postRequest);
@@ -136,9 +140,9 @@ public class MySecurityManager {
 			if ("unpaid".equals(responseLine)) return Status.UNPAID;
 			if ("invalid password".equals(responseLine)) return Status.INVALID_PW;
 			return null;
-			
+
 		} catch (Exception e) {
-			e.printStackTrace();
+			MyLogger.LOGGER.severe(MyLogger.printException(e));
 			return null;
 		}
 	}
@@ -159,8 +163,8 @@ public class MySecurityManager {
 		return s;
 	}
 	public static void main(String[] args) throws Exception {
-		JOptionPane.showMessageDialog(null, getRawKey());
-		
+
+
 	}
 
 }

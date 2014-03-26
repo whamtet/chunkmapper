@@ -21,6 +21,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
 
 import com.chunkmapper.admin.BucketInfo;
+import com.chunkmapper.admin.FeedbackManager;
 import com.chunkmapper.admin.Utila;
 import com.chunkmapper.gui.GlobalSettingsImpl;
 import com.chunkmapper.interfaces.GlobalSettings;
@@ -29,6 +30,7 @@ public class SettingsDialog extends JDialog {
 	
 
 	private final JPanel contentPanel = new JPanel();
+	private final JButton btnSendReport;
 
 	/**
 	 * Launch the application.
@@ -102,6 +104,21 @@ public class SettingsDialog extends JDialog {
 		});
 		long availableMemory = Runtime.getRuntime().maxMemory();
 		JLabel lblNewLabel_2 = new JLabel("xmx " + availableMemory);
+		
+		btnSendReport = new JButton("Send Error Report");
+		btnSendReport.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				btnSendReport.setEnabled(false);
+				btnSendReport.setText("Sending...");
+				Thread t = new Thread(new Runnable() {
+					public void run() {
+						FeedbackManager.submitFeedback(null);
+						btnSendReport.setText("Report Sent");
+					}
+				});
+				t.start();
+			}
+		});
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
 		gl_contentPanel.setHorizontalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
@@ -119,7 +136,10 @@ public class SettingsDialog extends JDialog {
 							.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
 								.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 325, GroupLayout.PREFERRED_SIZE)
 								.addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 144, GroupLayout.PREFERRED_SIZE)))
-						.addComponent(btnClearCache)
+						.addGroup(gl_contentPanel.createSequentialGroup()
+							.addComponent(btnClearCache)
+							.addGap(18)
+							.addComponent(btnSendReport))
 						.addGroup(gl_contentPanel.createSequentialGroup()
 							.addContainerGap()
 							.addComponent(lblNewLabel_2)))
@@ -137,7 +157,9 @@ public class SettingsDialog extends JDialog {
 						.addComponent(lblNewLabel_1)
 						.addComponent(spinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGap(18)
-					.addComponent(btnClearCache)
+					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnClearCache)
+						.addComponent(btnSendReport))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(lblNewLabel_2)
 					.addContainerGap(21, Short.MAX_VALUE))

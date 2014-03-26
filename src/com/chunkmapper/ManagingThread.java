@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 
 import org.apache.commons.io.FileUtils;
 
+import com.chunkmapper.admin.MyLogger;
 import com.chunkmapper.admin.OSMRouter;
 import com.chunkmapper.binaryparser.OsmosisParser;
 import com.chunkmapper.gui.dialog.NoNetworkDialog;
@@ -60,8 +61,8 @@ public class ManagingThread extends Thread {
 			PlayerIconManager playerIconManager, GlobalSettings globalSettings, JFrame appFrame,
 			GeneratingLayer generatingLayer) {
 		clearNetworkProblems();
-		System.out.println("Vertical Exaggeration: " + globalSettings.getVerticalExaggeration());
-		System.out.println("Live Mode: " + globalSettings.isLive());
+		MyLogger.LOGGER.info("Vertical Exaggeration: " + globalSettings.getVerticalExaggeration());
+		MyLogger.LOGGER.info("Live Mode: " + globalSettings.isLive());
 		//		if (true) {
 		//			throw new RuntimeException();
 		//		}
@@ -80,15 +81,12 @@ public class ManagingThread extends Thread {
 		d.setVisible(true);
 		return d.continueGeneration;
 	}
-	public static void main(String[] args) throws Exception {
-		System.out.println(continueWithoutNetwork());
-	}
 	private static File prepareDir(File f, boolean delete) {
 		if (delete && f.exists()) {
 			try {
 				FileUtils.deleteDirectory(f);
 			} catch (IOException e) {
-				e.printStackTrace();
+				MyLogger.LOGGER.warning(MyLogger.printException(e));
 			}
 		}
 		if (!f.exists()) {
@@ -104,7 +102,7 @@ public class ManagingThread extends Thread {
 			OSMRouter.setLive();
 		}
 		generatingLayer.zoomTo();
-		System.out.println("generating " + gameFolder.getName());
+		MyLogger.LOGGER.info("generating " + gameFolder.getName());
 		if (!gameFolder.exists()) {
 			gameFolder.mkdirs();
 		}
@@ -117,8 +115,8 @@ public class ManagingThread extends Thread {
 			try {
 				gameMetaInfo = new GameMetaInfo(metaInfoFile);
 			} catch (IOException e) {
-				e.printStackTrace();
-				throw new RuntimeException();
+				MyLogger.LOGGER.severe(MyLogger.printException(e));
+				gameMetaInfo = new GameMetaInfo(metaInfoFile, lat, lon, globalSettings.getVerticalExaggeration());
 			}
 		} else {
 			gameMetaInfo = new GameMetaInfo(metaInfoFile, lat, lon, globalSettings.getVerticalExaggeration());
@@ -137,17 +135,17 @@ public class ManagingThread extends Thread {
 					altitude = heightsReader.getHeightxz((int) (lon * 3600), (int) (-lat * 3600)) + 20;
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					MyLogger.LOGGER.info(MyLogger.printException(e));
 					return;
 				} catch (DataFormatException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					MyLogger.LOGGER.warning(MyLogger.printException(e));
 					altitude = 250;
 				}
 				loadedLevelDat.setPlayerPosition(lon * 3600 - gameMetaInfo.rootPoint.x * 512, altitude, - lat * 3600 - gameMetaInfo.rootPoint.z * 512);
 				loadedLevelDat.save();
 			} catch (IOException e) {
-				e.printStackTrace();
+				MyLogger.LOGGER.warning((MyLogger.printException(e)));
 				return;
 			}
 		}
@@ -161,7 +159,7 @@ public class ManagingThread extends Thread {
 			regionWriter = new RegionWriter(pointManager, gameMetaInfo.rootPoint, regionFolder, 
 					gameMetaInfo, mappedSquareManager, gameMetaInfo.verticalExaggeration);
 
-			System.out.println("truly starting");
+			MyLogger.LOGGER.info("truly starting");
 			//now we loop for ETERNITY!!!
 			while (true) {
 				HashSet<Point> pointsToWrite = pointManager.getNewPoints(gameFolder, gameMetaInfo.rootPoint, chunkmapperDir, playerIconManager);
@@ -180,7 +178,7 @@ public class ManagingThread extends Thread {
 				}
 			}
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			MyLogger.LOGGER.info(MyLogger.printException(e));
 			if (regionWriter != null)
 				regionWriter.blockingShutdownNow();
 			return;
@@ -207,22 +205,17 @@ public class ManagingThread extends Thread {
 			thread.interrupt();
 		}
 		thread.regionWriter.blockingShutdownNow();
-		System.out.println("a");
 		if (!selfCalled) {
-			System.out.println("b");
 			while(thread.isAlive()) {
 				try {
 					Thread.sleep(100);
 				} catch (InterruptedException e) {
-					e.printStackTrace();
+					MyLogger.LOGGER.warning(MyLogger.printException(e));
 				}
 			}
 		}
-		System.out.println("c");
-		//clear out caches.
-		//		OverpassDownloader.flushCache();
 		OsmosisParser.flushCache();
-		System.err.println("shut down thread");
+		MyLogger.LOGGER.info("shut down thread");
 
 	}
 

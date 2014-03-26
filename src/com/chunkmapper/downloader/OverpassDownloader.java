@@ -26,6 +26,7 @@ import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
 
 import com.chunkmapper.Point;
+import com.chunkmapper.admin.MyLogger;
 
 public class OverpassDownloader {
 	private static final int NUM_DOWNLOADING_THREADS = 6;
@@ -50,7 +51,7 @@ public class OverpassDownloader {
 			q1 = getQuery("/mainQuery.xml");
 			q2 = getQuery("/testQuery.xml");
 		} catch (IOException e) {
-			e.printStackTrace();
+			MyLogger.LOGGER.severe(MyLogger.printException(e));
 		}
 		generalQuery = q1;
 		testQuery = q2;
@@ -106,7 +107,7 @@ public class OverpassDownloader {
 					in.close();
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				MyLogger.LOGGER.severe(MyLogger.printException(e1));
 			}
 			if (entity != null)
 				EntityUtils.consumeQuietly(entity);
