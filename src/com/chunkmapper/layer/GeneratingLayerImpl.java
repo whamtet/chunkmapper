@@ -37,6 +37,7 @@ import javax.swing.JFrame;
 import com.chunkmapper.GameMetaInfo;
 import com.chunkmapper.ManagingThread;
 import com.chunkmapper.Point;
+import com.chunkmapper.admin.FeedbackManager;
 import com.chunkmapper.gui.MappedSquareManagerImpl;
 import com.chunkmapper.gui.PlayerIconManagerImpl;
 import com.chunkmapper.gui.StartPointSelector;
@@ -135,6 +136,7 @@ public class GeneratingLayerImpl extends RenderableLayer implements SelectListen
 				
 			}
 		}
+		
 	}
 	//instead of choosing start point, just default to center position
 	private void startCenteredThread() {

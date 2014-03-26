@@ -44,6 +44,13 @@ public class PreferenceManager {
 		data.put("ignore-upgrade", "yes");
 		spit();
 	}
+	public static boolean getIgnoreFeedback() {
+		return "yes".equals(data.get("ignore-feedback"));
+	}
+	public static void setIgnoreFeedback() {
+		data.put("ignore-feedback", "yes");
+		spit();
+	}
 	
 	
 	

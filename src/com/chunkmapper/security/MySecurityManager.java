@@ -17,6 +17,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -63,9 +65,6 @@ public class MySecurityManager {
 		}
 		StringBuilder sb = new StringBuilder();
 		sb.append(new String(mac) + "\n");
-		sb.append(System.getProperty("java.home") + "\n");
-		sb.append(System.getProperty("java.vendor") + "\n");
-		sb.append(System.getProperty("java.version") + "\n");
 		sb.append(System.getProperty("os.arch") + "\n");
 		sb.append(System.getProperty("user.home") + "\n");
 		sb.append(System.getProperty("user.name") + "\n");
@@ -160,7 +159,8 @@ public class MySecurityManager {
 		return s;
 	}
 	public static void main(String[] args) throws Exception {
-		System.out.println(getRawKey());
+		JOptionPane.showMessageDialog(null, getRawKey());
+		
 	}
 
 }

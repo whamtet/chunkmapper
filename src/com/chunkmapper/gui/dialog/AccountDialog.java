@@ -6,6 +6,8 @@ import java.awt.Desktop;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.net.URI;
 
 import javax.swing.GroupLayout;
@@ -30,8 +32,11 @@ public class AccountDialog extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	private JTextField textField;
 	private JPasswordField passwordField;
+	private JButton okButton, cancelButton;
 	public boolean ok;
-	JLabel lblToCreateA;
+	JLabel lblToCreateA, lblChecking;
+	private JLabel lblNewLabel;
+	private JButton btnResetButton;
 
 	/**
 	 * Launch the application.
@@ -45,11 +50,11 @@ public class AccountDialog extends JDialog {
 			e.printStackTrace();
 		}
 	}
-	private void openWebpage() {
+	private void openWebpage(String s) {
 		Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
 		if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
 			try {
-				desktop.browse(new URI("http://www.chunkmapper.com"));
+				desktop.browse(new URI(s));
 				return;
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -80,9 +85,11 @@ public class AccountDialog extends JDialog {
 		case INVALID_PW:
 			lblToCreateA.setText("<html>Email or password invalid.</html>");
 			lblToCreateA.setForeground(Color.RED);
+			btnResetButton.setVisible(true);
 			return;
 		}
 	}
+
 
 	/**
 	 * Create the dialog.
@@ -91,31 +98,41 @@ public class AccountDialog extends JDialog {
 		super(f);
 		setModalityType(ModalityType.APPLICATION_MODAL);
 		setModal(true);
-		
+
 		setResizable(false);
 		setTitle("Verify Account");
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
-		
-		lblToCreateA = new JLabel("Please enter your account details");
-		
+
+		lblToCreateA = new JLabel("Chunkmapper account required");
+
 		JLabel lblEmail = new JLabel("Email");
-		
+
 		textField = new JTextField();
 		textField.setColumns(10);
-		
+
 		JLabel lblPassword = new JLabel("Password");
-		
+
 		passwordField = new JPasswordField();
-		
+
 		JButton btnCreateAccount = new JButton("Create Account");
 		btnCreateAccount.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				openWebpage();
+				openWebpage("https://secure.chunkmapper.com/forward-to-account");
 			}
 		});
+
+		lblNewLabel = new JLabel("Enter your details");
+		
+		btnResetButton = new JButton("Reset Password");
+		btnResetButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				openWebpage("https://secure.chunkmapper.com/forgot-password?email=" + textField.getText());
+			}
+		});
+		btnResetButton.setVisible(false);
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
 		gl_contentPanel.setHorizontalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
@@ -123,30 +140,37 @@ public class AccountDialog extends JDialog {
 					.addContainerGap()
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
 						.addComponent(lblToCreateA)
+						.addComponent(lblNewLabel)
 						.addComponent(lblEmail)
+						.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblPassword)
-						.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING, false)
-							.addComponent(passwordField, Alignment.LEADING)
-							.addComponent(textField, Alignment.LEADING))
-						.addComponent(btnCreateAccount))
-					.addContainerGap(227, Short.MAX_VALUE))
+						.addComponent(passwordField, 134, 134, 134)
+						.addGroup(gl_contentPanel.createSequentialGroup()
+							.addComponent(btnCreateAccount)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnResetButton)))
+					.addContainerGap(171, Short.MAX_VALUE))
 		);
 		gl_contentPanel.setVerticalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPanel.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(lblToCreateA)
-					.addPreferredGap(ComponentPlacement.RELATED)
+					.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addComponent(lblNewLabel)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addComponent(lblEmail)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(lblPassword)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(passwordField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(btnCreateAccount)
-					.addContainerGap(48, Short.MAX_VALUE))
+					.addGap(18)
+					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnCreateAccount)
+						.addComponent(btnResetButton))
+					.addGap(23))
 		);
 		contentPanel.setLayout(gl_contentPanel);
 		{
@@ -154,18 +178,32 @@ public class AccountDialog extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton okButton = new JButton("OK");
+				okButton = new JButton("OK");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						verifyAccount();
-					}
+						okButton.setEnabled(false);
+						cancelButton.setEnabled(false);
+						lblChecking.setVisible(true);
+						Thread t = new Thread(new Runnable() {
+							public void run() {
+								verifyAccount();
+								okButton.setEnabled(true);
+								cancelButton.setEnabled(true);
+								lblChecking.setVisible(false);
+							}});
+						t.start();
+					}						
 				});
+
+				lblChecking = new JLabel("Checking...");
+				lblChecking.setVisible(false);
+				buttonPane.add(lblChecking);
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
 			}
 			{
-				JButton cancelButton = new JButton("Cancel");
+				cancelButton = new JButton("Cancel");
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						dispose();
@@ -174,6 +212,22 @@ public class AccountDialog extends JDialog {
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
 			}
+			textField.addKeyListener(new KeyAdapter() {
+				@Override
+				public void keyPressed(KeyEvent e) {
+					if (e.getKeyChar() == KeyEvent.VK_ESCAPE) {
+						dispose();
+					}
+				}
+			});
+			passwordField.addKeyListener(new KeyAdapter() {
+				@Override
+				public void keyPressed(KeyEvent e) {
+					if (e.getKeyChar() == KeyEvent.VK_ESCAPE) {
+						dispose();
+					}
+				}
+			});
 		}
 	}
 }

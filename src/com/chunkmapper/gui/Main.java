@@ -38,11 +38,6 @@ import com.chunkmapper.layer.MainLayer;
  */
 public class Main extends ApplicationTemplate
 {
-	private static Image getIcon() {
-		Toolkit kit = Toolkit.getDefaultToolkit();
-		Image img = kit.createImage(Main.class.getResource("/images/ChunkmapperIcon.png"));
-		return img;
-	}
 	public static class AppFrame extends ApplicationTemplate.AppFrame
 	{
 		//        protected LayerTree layerTree;
@@ -68,7 +63,7 @@ public class Main extends ApplicationTemplate
 			} else {
 				addMainLayer(this.getWwd(), minecraftDir, this, globalSettings);
 			}
-//			this.setIconImage(new javax.swing.ImageIcon(getClass().getResource("/images/ChunkmapperIcon.png")).getImage());
+			this.setIconImage(new javax.swing.ImageIcon(getClass().getResource("/Globe.png")).getImage());
 			
 		}
 
@@ -102,7 +97,6 @@ public class Main extends ApplicationTemplate
 		long availableMemory = Runtime.getRuntime().maxMemory();
 		if (availableMemory < 1000000000)
 			System.err.println("Warning: Xmx set too low: " + availableMemory);
-//		JOptionPane.showMessageDialog(null, Utila.MINECRAFT_DIR.toString());
 		ApplicationTemplate.start("Chunkmapper", AppFrame.class);
 	}
 }

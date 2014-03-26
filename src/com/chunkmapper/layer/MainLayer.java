@@ -71,7 +71,7 @@ public class MainLayer extends RenderableLayer implements SelectListener
 	private Vec4 locationCenter = null;
 	private Vec4 locationOffset = null;
 
-	private final WorldMapLayer worldMapLayer;
+	//	private final WorldMapLayer worldMapLayer;
 	private final JFrame appFrame;
 	private final File savesDir;
 	private int numRows = 0;
@@ -79,7 +79,7 @@ public class MainLayer extends RenderableLayer implements SelectListener
 
 	private static final int HAND_CURSOR = 0, DEFAULT_CURSOR = 1;
 	private final GlobalSettings globalSettings;
-	
+
 	public static void main(String[] args) throws Exception {
 		String message = "Delete game foo?";
 		System.out.println(JOptionPane.showConfirmDialog(null, message, "", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE));
@@ -92,14 +92,14 @@ public class MainLayer extends RenderableLayer implements SelectListener
 		savesDir = new File(minecraftDir, "saves");
 		this.appFrame = appFrame;
 		LayerList ll = wwd.getModel().getLayers();
-		WorldMapLayer worldMapLayer = null;
-
-		for (int i = 0; i < ll.size(); i++) {
-			Layer l = ll.get(i);
-			if (l instanceof WorldMapLayer)
-				worldMapLayer = (WorldMapLayer) l;
-		}
-		this.worldMapLayer = worldMapLayer;
+		//		WorldMapLayer worldMapLayer = null;
+		//
+		//		for (int i = 0; i < ll.size(); i++) {
+		//			Layer l = ll.get(i);
+		//			if (l instanceof WorldMapLayer)
+		//				worldMapLayer = (WorldMapLayer) l;
+		//		}
+		//		this.worldMapLayer = worldMapLayer;
 
 		this.wwd = wwd;
 
@@ -203,8 +203,8 @@ public class MainLayer extends RenderableLayer implements SelectListener
 							}
 							if (s.endsWith("Delete")) {
 								String gameName = s.substring(0, s.length() - 6);
-//								ConfirmDeleteDialog d = new ConfirmDeleteDialog(appFrame, gameName, savesDir);
-//								d.setVisible(true);
+								//								ConfirmDeleteDialog d = new ConfirmDeleteDialog(appFrame, gameName, savesDir);
+								//								d.setVisible(true);
 								String message = "Delete " + gameName + "?";
 								int delete = JOptionPane.showConfirmDialog(appFrame, message, "", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 								if (delete == JOptionPane.OK_OPTION) {
@@ -254,15 +254,15 @@ public class MainLayer extends RenderableLayer implements SelectListener
 			this.update();
 		}
 	}
-//	private static boolean mustUpgrade() {
-//		boolean mustUpgrade = BucketInfo.mustUpgrade();
-//		if (mustUpgrade) {
-//			MustUpgradeDialog d = new MustUpgradeDialog();
-//			d.setModalityType(ModalityType.APPLICATION_MODAL);
-//			d.setVisible(true);
-//		}
-//		return mustUpgrade;
-//	}
+	//	private static boolean mustUpgrade() {
+	//		boolean mustUpgrade = BucketInfo.mustUpgrade();
+	//		if (mustUpgrade) {
+	//			MustUpgradeDialog d = new MustUpgradeDialog();
+	//			d.setModalityType(ModalityType.APPLICATION_MODAL);
+	//			d.setVisible(true);
+	//		}
+	//		return mustUpgrade;
+	//	}
 	private boolean mustPurchase() {
 		if (MySecurityManager.isOfflineValid()) return false;
 		AccountDialog d = new AccountDialog(appFrame);
@@ -359,21 +359,24 @@ public class MainLayer extends RenderableLayer implements SelectListener
 			takenGames.add(s);
 			gamesToDisplay.add(s);
 		}
-		for (File f : savesDir.listFiles()) {
-			//			try {
-			File loadedLevelDatFile = new File(f, "level.dat");
-			if (loadedLevelDatFile.exists()) {
-				takenGames.add(f.getName());
-				String gameName = f.getName();
-				//				String gameName = (new LevelDat(loadedLevelDatFile)).getGameName();
-				//				takenGames.add(gameName);
-				if ((new File(f, "chunkmapper")).isDirectory()) {
-					gamesToDisplay.add(gameName);
+		File[] todo = savesDir.listFiles();
+		if (todo != null) {
+			for (File f : todo) {
+				//			try {
+				File loadedLevelDatFile = new File(f, "level.dat");
+				if (loadedLevelDatFile.exists()) {
+					takenGames.add(f.getName());
+					String gameName = f.getName();
+					//				String gameName = (new LevelDat(loadedLevelDatFile)).getGameName();
+					//				takenGames.add(gameName);
+					if ((new File(f, "chunkmapper")).isDirectory()) {
+						gamesToDisplay.add(gameName);
+					}
 				}
+				//			} catch (IOException e) {
+				//				e.printStackTrace();
+				//			}
 			}
-			//			} catch (IOException e) {
-			//				e.printStackTrace();
-			//			}
 		}
 
 		StringBuilder builder = new StringBuilder();

@@ -4,7 +4,9 @@
              classname="net.sourceforge.jarbundler.JarBundler"
              classpath="../lib/jarbundler-2.2.0.jar">
     </taskdef>
-
+	
+	<property name="Chunkmapper" value="Chunkmapper" />
+	
     <target name="multiplayer_jar">
         <jar destfile="Chunkmapper-Multiplayer.jar">
             <manifest>
@@ -26,16 +28,16 @@
             <zipfileset dir="${user.home}/.m2/repository/org/apache/httpcomponents/httpmime/4.2.3" includes="httpmime-4.2.3.jar"/>
         </jar>
     </target>
-    <target name="custom_jar">
-        <jar destfile="Chunkmapper-Custom.jar">
+    <target name="test_jar">
+        <jar destfile="Chunkmapper-Test.jar">
             <manifest>
                 <attribute name="Main-Class" value="org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader"/>
-                <attribute name="Rsrc-Main-Class" value="${start}"/>
+                <attribute name="Rsrc-Main-Class" value="com.chunkmapper.security.MySecurityManager"/>
                 <attribute name="Class-Path" value="."/>
                 <attribute name="Rsrc-Class-Path" value="./ protobuf-java-2.5.0.jar httpclient-4.3.jar httpcore-4.3.jar commons-logging-1.1.3.jar commons-codec-1.6.jar commons-io-2.3.jar simple-5.1.5.jar httpmime-4.2.3.jar"/>
             </manifest>
             <zipfileset src="jar-in-jar-loader.zip"/>
-            <fileset dir="../target/${classes}"/>
+            <fileset dir="../target/classes"/>
             <fileset dir="../chunkmapperResources"/>
             <zipfileset dir="${user.home}/.m2/repository/com/google/protobuf/protobuf-java/2.5.0" includes="protobuf-java-2.5.0.jar"/>
             <zipfileset dir="${user.home}/.m2/repository/org/apache/httpcomponents/httpclient/4.3" includes="httpclient-4.3.jar"/>
@@ -94,10 +96,13 @@
 	<launch4j configFile="launch4j.xml" />
     </target>
     <target name="clean">
+    	<delete file="Chunkmapper-Test.jar" />
+    	<delete dir="Chunkmapper-Test.app" />
+    	<delete file="Chunkmapper-Test.dmg" />
         <delete file="Chunkmapper-Multiplayer.zip" />
         <delete file="Chunkmapper-Multiplayer.jar" />
-	<delete file="Chunkmapper.jar"/>
-	<delete file="${chunkmapper}.exe"/>
+		<delete file="Chunkmapper.jar"/>
+		<delete file="${chunkmapper}.exe"/>
         <delete file="${chunkmapper}.dmg"/>
         <delete dir="${chunkmapper}.app"/>
         <delete file="${chunkmapper}.zip"/>
@@ -107,11 +112,28 @@
                     name="${chunkmapper}"
                     mainclass="org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader"
                     jar="Chunkmapper.jar"
+        			icon="Globe.icns"
                     vmoptions="-Xmx1G"/>
         <exec executable="codesign">
             <arg line="--force --verify --verbose --sign &quot;Developer ID Application: Matthew Molloy&quot; ${chunkmapper}.app" />
         </exec>
     </target>
+	<target name="test_app" depends="test_jar">
+		<jarbundler dir="."
+			name="Chunkmapper-Test"
+			mainclass="org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader"
+			jar="Chunkmapper-Test.jar"
+			vmoptions="-Xmx1G" />
+	</target>
+	<target name="test_dmg" depends="test_app">
+		<exec executable="hdiutil">
+			<arg line="create -ov -srcfolder Chunkmapper-Test.app Chunkmapper-Test.dmg" />
+		</exec>
+		<exec executable="hdiutil">
+			<arg line="internet-enable -yes Chunkmapper-Test.dmg"/>
+		</exec>
+	</target>
+	
 	<available file="${chunkmapper}.dmg" property="${chunkmapper}.dmg.present" />
     <target name="dmg" depends="app">
         <exec executable="hdiutil">
