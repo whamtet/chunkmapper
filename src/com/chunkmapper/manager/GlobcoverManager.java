@@ -348,6 +348,8 @@ public class GlobcoverManager {
 		boolean chunkHasRoad = false;
 		if (highwayReader.hasHighways)
 			chunkHasRoad = highwayReader.addRoad(chunkx, chunkz, chunk);
+		
+		pathReader.addPath(chunk, chunkx, chunkz);
 
 		//finally add rail
 		boolean chunkHasRail = false;
@@ -397,7 +399,7 @@ public class GlobcoverManager {
 				ArtifactWriter.addTunnelIntoTheUnknown(chunk);
 			}
 		}
-		pathReader.addPath(chunk, chunkx, chunkz);
+		
 		//last but not least, add ferry
 		ferryReader.addLillies(chunk, chunkx, chunkz, columns);
 		hutReader.addHut(chunk);

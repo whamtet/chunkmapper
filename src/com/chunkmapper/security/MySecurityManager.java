@@ -37,7 +37,7 @@ public class MySecurityManager {
 	private static final File keyFile = new File(Utila.CACHE, "key");
 
 	public static enum Status {
-		OK, HACKED, UNPAID, INVALID_PW;
+		OK, HACKED, UNPAID, INVALID_PW, SSL_EXCEPTION;
 	}
 
 	private static String getRawKey() {
@@ -140,7 +140,10 @@ public class MySecurityManager {
 			if ("unpaid".equals(responseLine)) return Status.UNPAID;
 			if ("invalid password".equals(responseLine)) return Status.INVALID_PW;
 			return null;
-
+			
+		} catch (javax.net.ssl.SSLException e) {
+			MyLogger.LOGGER.severe(MyLogger.printException(e));
+			return Status.SSL_EXCEPTION;
 		} catch (Exception e) {
 			MyLogger.LOGGER.severe(MyLogger.printException(e));
 			return null;
@@ -154,6 +157,7 @@ public class MySecurityManager {
 		return false;
 	}
 	public static Status getStatus(String username, String password) {
+		MyLogger.LOGGER.info("getting status");
 		if (username == null || password == null) return Status.INVALID_PW;
 		if ("".equals(username.trim()) || "".equals(password.trim())) return Status.INVALID_PW;
 		Status s = getOnlineStatus(username, password);

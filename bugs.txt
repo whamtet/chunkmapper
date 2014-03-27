@@ -5,7 +5,7 @@
 -dragging over blue squares
 -south pole
 -priority in osx apps
-
+-after some time little man dissappears behind blue squares
 
 TODO
 

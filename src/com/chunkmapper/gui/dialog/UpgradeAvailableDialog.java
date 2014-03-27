@@ -16,6 +16,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
@@ -54,6 +55,7 @@ public class UpgradeAvailableDialog extends JDialog {
 				e.printStackTrace();
 			}
 		}
+		JOptionPane.showMessageDialog(this, "Please visit www.chunkmapper.com to upgrade.");
 	}
 	/**
 	 * Create the dialog.

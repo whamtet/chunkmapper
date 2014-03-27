@@ -37,6 +37,7 @@ public class AccountDialog extends JDialog {
 	JLabel lblToCreateA, lblChecking;
 	private JLabel lblNewLabel;
 	private JButton btnResetButton;
+	private JButton btnNewButton;
 
 	/**
 	 * Launch the application.
@@ -50,7 +51,7 @@ public class AccountDialog extends JDialog {
 			e.printStackTrace();
 		}
 	}
-	private void openWebpage(String s) {
+	private void openWebpage(String s, String alternative) {
 		Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
 		if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
 			try {
@@ -60,7 +61,7 @@ public class AccountDialog extends JDialog {
 				e.printStackTrace();
 			}
 		}
-		JOptionPane.showMessageDialog(this, "Please visit www.chunkmapper.com to create an account.");
+		JOptionPane.showMessageDialog(this, alternative);
 	}
 	private void verifyAccount() {
 		Status s = MySecurityManager.getStatus(textField.getText(), new String(passwordField.getPassword()));
@@ -69,6 +70,8 @@ public class AccountDialog extends JDialog {
 			lblToCreateA.setForeground(Color.RED);
 			return;
 		}
+		btnResetButton.setVisible(false);
+		btnNewButton.setVisible(false);
 		switch(s) {
 		case OK:
 			ok = true;
@@ -87,6 +90,10 @@ public class AccountDialog extends JDialog {
 			lblToCreateA.setForeground(Color.RED);
 			btnResetButton.setVisible(true);
 			return;
+		case SSL_EXCEPTION:
+			lblToCreateA.setText("SSL Exception");
+			lblToCreateA.setForeground(Color.RED);
+			btnNewButton.setVisible(true);
 		}
 	}
 
@@ -120,7 +127,9 @@ public class AccountDialog extends JDialog {
 		JButton btnCreateAccount = new JButton("Create Account");
 		btnCreateAccount.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				openWebpage("https://secure.chunkmapper.com/forward-to-account");
+				openWebpage("https://secure.chunkmapper.com/forward-to-account",
+						"Please visit www.chunkmapper.com to create an account."
+						);
 			}
 		});
 
@@ -129,18 +138,29 @@ public class AccountDialog extends JDialog {
 		btnResetButton = new JButton("Reset Password");
 		btnResetButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				openWebpage("https://secure.chunkmapper.com/forgot-password?email=" + textField.getText());
+				openWebpage("https://secure.chunkmapper.com/forgot-password?email=" + textField.getText(),
+						"Please visit www.chunkmapper.com to reset your password."
+						);
 			}
 		});
 		btnResetButton.setVisible(false);
+		
+		btnNewButton = new JButton("<HTML><U>How to fix...</U></HTML>");
+		btnNewButton.setVisible(false);
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				openWebpage("http://www.chunkmapper.com/troubleshooting.html",
+						"Please visit www.chunkmapper.com/troubleshooting.");
+			}
+		});
+		btnNewButton.setForeground(Color.BLUE);
+		btnNewButton.setBorderPainted(false);
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
 		gl_contentPanel.setHorizontalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPanel.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblToCreateA)
-						.addComponent(lblNewLabel)
 						.addGroup(gl_contentPanel.createSequentialGroup()
 							.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.UNRELATED)
@@ -152,14 +172,21 @@ public class AccountDialog extends JDialog {
 						.addGroup(gl_contentPanel.createSequentialGroup()
 							.addComponent(btnCreateAccount)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnResetButton)))
-					.addContainerGap(147, Short.MAX_VALUE))
+							.addComponent(btnResetButton))
+						.addGroup(gl_contentPanel.createSequentialGroup()
+							.addComponent(lblToCreateA)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnNewButton))
+						.addComponent(lblNewLabel))
+					.addContainerGap(114, Short.MAX_VALUE))
 		);
 		gl_contentPanel.setVerticalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPanel.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(lblToCreateA)
+					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblToCreateA)
+						.addComponent(btnNewButton))
 					.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 					.addComponent(lblNewLabel)
 					.addPreferredGap(ComponentPlacement.UNRELATED)

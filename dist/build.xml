@@ -5,7 +5,7 @@
              classpath="../lib/jarbundler-2.2.0.jar">
     </taskdef>
 
-	<property name="Chunkmapper" value="Chunkmapper" />
+	<property name="chunkmapper" value="Chunkmapper" />
 
     <target name="multiplayer_jar">
         <jar destfile="Chunkmapper-Multiplayer.jar">

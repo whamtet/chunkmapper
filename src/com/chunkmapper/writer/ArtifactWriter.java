@@ -505,6 +505,10 @@ public class ArtifactWriter {
 		if (spacesTillNextPoweredRail == 0 && canBePlaced) {
 			if (railType == StraightRail.North.val) {
 				chunk.Blocks[railHeight-1][z][x] = foundation;
+				if (!usePlanks) {
+					chunk.Blocks[railHeight-2][z][x] = foundation;
+					chunk.Blocks[railHeight-3][z][x] = foundation;
+				}
 				chunk.Blocks[railHeight][z][x] = Block.Powered_Rail.val;
 				chunk.Data[railHeight][z][x] = (byte) (railType + 8);
 
@@ -516,6 +520,10 @@ public class ArtifactWriter {
 			}
 			if (railType == StraightRail.East.val) {
 				chunk.Blocks[railHeight-1][z][x] = foundation;
+				if (!usePlanks) {
+					chunk.Blocks[railHeight-2][z][x] = foundation;
+					chunk.Blocks[railHeight-3][z][x] = foundation;
+				}
 				chunk.Blocks[railHeight][z][x] = Block.Powered_Rail.val;
 				chunk.Data[railHeight][z][x] = (byte) (railType + 8);
 
@@ -529,6 +537,10 @@ public class ArtifactWriter {
 
 		} else {
 			chunk.Blocks[railHeight-1][z][x] = foundation;
+			if (!usePlanks) {
+				chunk.Blocks[railHeight-2][z][x] = foundation;
+				chunk.Blocks[railHeight-3][z][x] = foundation;
+			}
 			chunk.Blocks[railHeight][z][x] = Block.Rail.val;
 			chunk.Data[railHeight][z][x] = railType;
 		}

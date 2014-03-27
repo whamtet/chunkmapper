@@ -189,7 +189,7 @@ def resume():
         click("1393384143090.png")
         
 
-os = 'fedora'
+os = 'winxp'
 wait(1)
 go_to('New York')
 create_test_map()

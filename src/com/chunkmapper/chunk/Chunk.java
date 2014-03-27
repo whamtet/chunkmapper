@@ -240,62 +240,70 @@ public class Chunk {
 		return true;
 	}
 
-	public void placeRail(int x, int z, short railHeight, byte railType, boolean overOcean,
-			boolean placeSpecial) {
-		byte foundation = overOcean ? Block.Planks.val : Block.Cobblestone.val;
-		
-		//now need to clear out some space
-		int x1 = x - 1, x2 = x + 1;
-		int z1 = z - 1, z2 = z + 1;
-		if (x1 < 0) x1 = 0;
-		if (z1 < 0) z1 = 0;
-		if (x2 > 15) x2 = 15;
-		if (z2 > 15) z2 = 15;
-		
-		for (int h = railHeight; h < railHeight + 3; h++) {
-			for (int xd = x1; xd <= x2; xd++) {
-				for (int zd = z1; zd <= z2; zd++) {
-					byte b = Blocks[h][zd][xd];
-					if (b != Block.Rail.val && b != Block.Powered_Rail.val 
-							&& b != Block.Redstone_Torch_Lit.val && b != Block.Cobblestone.val
-							&& b != Block.Planks.val) {
-						Blocks[h][zd][xd] = 0;
-					}
-				}
-			}
-		}
-		if (placeSpecial) {
-			for (int h = railHeight + 5; h < railHeight + 10; h++) {
-				Blocks[h][z][x] = Block.Gold_Block.val;
-			}
-		}
-		if (railType == StraightRail.North.val || railType == StraightRail.East.val)
-			spacesTillNextPoweredRail--;
-		
-		if (spacesTillNextPoweredRail == 0) {
-			spacesTillNextPoweredRail = 6;
-			
-			Blocks[railHeight-1][z][x] = foundation;
-			Blocks[railHeight][z][x] = Block.Powered_Rail.val;
-			Data[railHeight][z][x] = (byte) (railType + 8);
-			
-			if (railType == StraightRail.North.val){
-				int xPosition = x == 15 ? 14 : x + 1;
-				Blocks[railHeight-1][z][xPosition] = foundation;
-				Blocks[railHeight][z][xPosition] = Block.Redstone_Torch_Lit.val;
-				Data[railHeight][z][xPosition] = 0;
-			} else {
-				int zPosition = z == 15 ? 14 : z + 1;
-				Blocks[railHeight-1][zPosition][x] = foundation;
-				Blocks[railHeight][zPosition][x] = Block.Redstone_Torch_Lit.val;
-				Data[railHeight][zPosition][x] = 0;
-			}
-		} else {
-			Blocks[railHeight-1][z][x] = foundation;
-			Blocks[railHeight][z][x] = Block.Rail.val;
-			Data[railHeight][z][x] = railType;
-		}
-	}
+//	public void placeRail(int x, int z, short railHeight, byte railType, boolean overOcean,
+//			boolean placeSpecial) {
+//		byte foundation = overOcean ? Block.Planks.val : Block.Cobblestone.val;
+//		
+//		//now need to clear out some space
+//		int x1 = x - 1, x2 = x + 1;
+//		int z1 = z - 1, z2 = z + 1;
+//		if (x1 < 0) x1 = 0;
+//		if (z1 < 0) z1 = 0;
+//		if (x2 > 15) x2 = 15;
+//		if (z2 > 15) z2 = 15;
+//		
+//		for (int h = railHeight; h < railHeight + 3; h++) {
+//			for (int xd = x1; xd <= x2; xd++) {
+//				for (int zd = z1; zd <= z2; zd++) {
+//					byte b = Blocks[h][zd][xd];
+//					if (b != Block.Rail.val && b != Block.Powered_Rail.val 
+//							&& b != Block.Redstone_Torch_Lit.val && b != Block.Cobblestone.val
+//							&& b != Block.Planks.val) {
+//						Blocks[h][zd][xd] = 0;
+//					}
+//				}
+//			}
+//		}
+//		if (placeSpecial) {
+//			for (int h = railHeight + 5; h < railHeight + 10; h++) {
+//				Blocks[h][z][x] = Block.Gold_Block.val;
+//			}
+//		}
+//		if (railType == StraightRail.North.val || railType == StraightRail.East.val)
+//			spacesTillNextPoweredRail--;
+//		
+//		if (spacesTillNextPoweredRail == 0) {
+//			spacesTillNextPoweredRail = 6;
+//			
+//			Blocks[railHeight-1][z][x] = foundation;
+//			if (!overOcean) {
+//				Blocks[railHeight-2][z][x] = foundation;
+//				Blocks[railHeight-3][z][x] = foundation;
+//			}
+//			Blocks[railHeight][z][x] = Block.Powered_Rail.val;
+//			Data[railHeight][z][x] = (byte) (railType + 8);
+//			
+//			if (railType == StraightRail.North.val){
+//				int xPosition = x == 15 ? 14 : x + 1;
+//				Blocks[railHeight-1][z][xPosition] = foundation;
+//				Blocks[railHeight][z][xPosition] = Block.Redstone_Torch_Lit.val;
+//				Data[railHeight][z][xPosition] = 0;
+//			} else {
+//				int zPosition = z == 15 ? 14 : z + 1;
+//				Blocks[railHeight-1][zPosition][x] = foundation;
+//				Blocks[railHeight][zPosition][x] = Block.Redstone_Torch_Lit.val;
+//				Data[railHeight][zPosition][x] = 0;
+//			}
+//		} else {
+//			Blocks[railHeight-1][z][x] = foundation;
+//			if (!overOcean) {
+//				Blocks[railHeight-2][z][x] = foundation;
+//				Blocks[railHeight-3][z][x] = foundation;
+//			}
+//			Blocks[railHeight][z][x] = Block.Rail.val;
+//			Data[railHeight][z][x] = railType;
+//		}
+//	}
 
 	public void setBiome(int x, int z, byte biome) {
 		Biomes[z*16+x] = biome;

@@ -33,6 +33,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import com.chunkmapper.admin.FeedbackManager;
+import com.chunkmapper.admin.MyLogger;
 import com.chunkmapper.admin.PreferenceManager;
 import com.chunkmapper.gui.dialog.FeedbackDialog;
 import com.chunkmapper.interfaces.GlobalSettings;
@@ -327,21 +328,20 @@ public class ApplicationTemplate
 
 		try
 		{
-			final AppFrame frame = (AppFrame) appFrameClass.newInstance();
+			final AppFrame frame = new Main.AppFrame();
+//			final AppFrame frame = (AppFrame) appFrameClass.newInstance();
 			frame.addWindowListener(new WindowAdapter() {
 				public void windowClosing(WindowEvent e) {
 					if (MySecurityManager.isOfflineValid() && !PreferenceManager.getIgnoreFeedback()) {
 						(new FeedbackDialog()).setVisible(true);
 					} else if (PreferenceManager.getAllowUsageReports()) {
 						FeedbackManager.submitFeedback(null);
-						System.exit(0);
-					} else {
-						System.exit(0);
 					}
+					MyLogger.deleteLog();
 				}
 			});
 			frame.setTitle(appName);
-			frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			java.awt.EventQueue.invokeLater(new Runnable()
 			{
 				public void run()

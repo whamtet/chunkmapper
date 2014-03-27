@@ -15,26 +15,26 @@ public class HeightsManager {
 	public HeightsManager(int verticalExaggeration) {
 		this.verticalExaggeration = verticalExaggeration;
 	}
-	public short getHeight(int x, int z) throws IOException, InterruptedException, FileNotYetAvailableException, DataFormatException {
+	public int getHeight(int x, int z) throws IOException, InterruptedException, FileNotYetAvailableException, DataFormatException {
 		Point neededPoint = Point.getRegionPoint(x, z);
 		if (cache != null && neededPoint.equals(cache.regionPoint)) {
-			return cache.getHeight(x, z);
+			return cache.getHeight(x, z) + 2;
 		} else {
 			if (cache != null)
 				cache.save();
 			cache = new HeightsCache(neededPoint, verticalExaggeration);
-			return cache.getHeight(x, z);
+			return cache.getHeight(x, z) + 2;
 		}
 	}
-	public void setHeight(int x, int z, short h) throws IOException, InterruptedException, FileNotYetAvailableException, DataFormatException {
+	public void setHeight(int x, int z, int h) throws IOException, InterruptedException, FileNotYetAvailableException, DataFormatException {
 		Point neededPoint = Point.getRegionPoint(x, z);
 		if (cache != null && neededPoint.equals(cache.regionPoint)) {
-			cache.setHeight(x, z, h);
+			cache.setHeight(x, z, (short) (h - 2));
 		} else {
 			if (cache != null)
 				cache.save();
 			cache = new HeightsCache(neededPoint, verticalExaggeration);
-			cache.setHeight(x, z, h);
+			cache.setHeight(x, z, (short) (h - 2));
 		}
 	}
 	public boolean hasRail(int x, int z) throws IOException {
@@ -70,7 +70,7 @@ public class HeightsManager {
 			railTypeCache.setRailType(x, z, (byte) (b + 1));
 		}
 	}
-	public void setBoth(int x, int z, short h, byte b) throws IOException, InterruptedException, FileNotYetAvailableException, DataFormatException {
+	public void setBoth(int x, int z, int h, byte b) throws IOException, InterruptedException, FileNotYetAvailableException, DataFormatException {
 		setRailType(x, z, b);
 		setHeight(x, z, h);
 	}

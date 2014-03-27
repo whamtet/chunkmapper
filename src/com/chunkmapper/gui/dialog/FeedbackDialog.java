@@ -60,15 +60,16 @@ public class FeedbackDialog extends JDialog {
 		FeedbackManager.submitFeedback(l);
 	}
 	public FeedbackDialog() {
+		setModal(true);
 		this.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				if (chckbxDontAskAgain.isSelected()) {
 					PreferenceManager.setIgnoreFeedback();
 				}
 			}
-			public void windowClosed(WindowEvent e) {
-				System.exit(0);
-			}
+//			public void windowClosed(WindowEvent e) {
+//				System.exit(0);
+//			}
 		});
 		setTitle("Feedback");
 		setResizable(false);
@@ -152,7 +153,7 @@ public class FeedbackDialog extends JDialog {
 									PreferenceManager.setIgnoreFeedback();
 								}
 								submitFeedback();
-								System.exit(0);
+								dispose();
 							}
 						});
 						t.start();
@@ -173,7 +174,7 @@ public class FeedbackDialog extends JDialog {
 						if (chckbxDontAskAgain.isSelected()) {
 							PreferenceManager.setIgnoreFeedback();
 						}
-						System.exit(0);
+						dispose();
 					}
 				});
 				cancelButton.setActionCommand("Cancel");

@@ -58,7 +58,7 @@
 			<plugin>
 				<groupId>com.licel</groupId>
 				<artifactId>stringer-maven-plugin</artifactId>
-				<version>1.5.1</version>
+				<version>1.6.7</version>
 				<executions>
 					<execution>
 						<phase>package</phase>
@@ -66,12 +66,10 @@
 							<goal>stringer</goal>
 						</goals>
 						<configuration>
-							<checkCaller>false</checkCaller> <!-- slows things down quite a bit -->
-							<integrityProtection>false</integrityProtection><!-- slows things 
-								down a little -->
-							<resourceEncryption>false</resourceEncryption><!-- cannot load factory 
-								to goto -->
-							<optimize>true</optimize><!-- this appears to speed things up a bit -->
+							<checkCaller>false</checkCaller> 
+							<integrityProtection>false</integrityProtection>
+							<resourceEncryption>false</resourceEncryption>
+							<optimize>true</optimize>
 							<verbose>true</verbose>
 						</configuration>
 					</execution>

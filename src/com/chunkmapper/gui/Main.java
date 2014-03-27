@@ -14,8 +14,6 @@ import gov.nasa.worldwind.util.WWUtil;
 import gov.nasa.worldwindx.examples.util.HotSpotController;
 
 import java.awt.Dimension;
-import java.awt.Image;
-import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
 
@@ -23,9 +21,11 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import com.chunkmapper.admin.BucketInfo;
+import com.chunkmapper.admin.FeedbackManager;
 import com.chunkmapper.admin.MyLogger;
 import com.chunkmapper.admin.PreferenceManager;
 import com.chunkmapper.admin.Utila;
+import com.chunkmapper.gui.dialog.MessageDialog;
 import com.chunkmapper.gui.dialog.UpgradeAvailableDialog;
 import com.chunkmapper.interfaces.GlobalSettings;
 import com.chunkmapper.layer.MCNotAvailableLayer;
@@ -84,14 +84,18 @@ public class Main extends ApplicationTemplate
 
 	public static void main(String[] args)
 	{
+		
 		if (BucketInfo.mustUpgrade()) {
 			JOptionPane.showMessageDialog(null, "This version of Chunkmapper is no longer supported.  Visit www.chunkmapper.com to upgrade.");
 			System.exit(0);
 		}
 		if (!PreferenceManager.getIgnoreUpgrade() && BucketInfo.spUpgradeAvailable()) {
 			(new UpgradeAvailableDialog(null)).setVisible(true);
-			
 		}
+//		URL url = Main.class.getResource("/Globe.png");
+//		String msg = url == null ? "null" : url.toString();
+//		JOptionPane.showMessageDialog(null, msg);
+//		System.exit(0);
 		LicenseManager.checkLicense(null);
 		if (hasFlawed(args))
 			Utila.MINECRAFT_DIR = new File("poo");

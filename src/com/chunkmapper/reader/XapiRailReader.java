@@ -25,17 +25,17 @@ public class XapiRailReader {
 	/**
 	 * @param args
 	 */
-	private static void smoothHeights(short[] heights) {
+	private static void smoothHeights(int[] heights2) {
 
-		for (int i = 1; i < heights.length; i++) {
-			int a = heights[i-1], b = heights[i];
+		for (int i = 1; i < heights2.length; i++) {
+			int a = heights2[i-1], b = heights2[i];
 			if (a < b) {
 				//look for a small rut
 				for (int j = i - 2; j >= 0 && j >= i - MIN_RUT_SIZE; j--) {
-					if (heights[j] == b && heights[j+1] == a) {
+					if (heights2[j] == b && heights2[j+1] == a) {
 						//the hollow is too small and we have to remove it
 						for (int k = j + 1; k < i; k++) {
-							heights[k]++;
+							heights2[k]++;
 						}
 						break;
 					}
@@ -44,10 +44,10 @@ public class XapiRailReader {
 			if (a > b) {
 				//look for small mound
 				for (int j = i - 2; j >= 0 && j >= i - MIN_BUMP_SIZE; j--) {
-					if (heights[j] == b && heights[j+1] == a) {
+					if (heights2[j] == b && heights2[j+1] == a) {
 						//mound is too small
 						for (int k = j + 1; k < i; k++) {
-							heights[k]--;
+							heights2[k]--;
 						}
 						break;
 					}
@@ -61,11 +61,11 @@ public class XapiRailReader {
 		return x >= 0 && z >= 0 && x < 512 && z < 512;
 	}
 
-	private void setBoth(int x, int z, short h, byte railType) {
+	private void setBoth(int x, int z, int h, byte railType) {
 		x -= x0; z -= z0;
 		if (x < 0 || z < 0 || x > 511 || z > 511)
 			return;
-		heights[z][x] = h;
+		heights[z][x] =  (short) h;
 		this.railType[z][x] = railType;
 	}
 
@@ -102,13 +102,12 @@ public class XapiRailReader {
 				}
 			}
 			if (!hasInside)
-				continue;//because its all outside
+				continue;//because its all outside 512x512
 
 			goodPoints.add(lastPoint);
 
 			Point startPoint = goodPoints.get(0);
-			short h = heightsManager.getHeight(startPoint.x, startPoint.y);
-			//			this.setSpecial(startPoint.x, startPoint.z);
+			int h = heightsManager.getHeight(startPoint.x, startPoint.y);
 
 			for (int i = 0; i < goodPoints.size() - 1; i++) {
 				startPoint = goodPoints.get(i);
@@ -143,16 +142,6 @@ public class XapiRailReader {
 				//now we do the diagonal sections
 				int x = startPoint.x, z = startPoint.z;
 
-				//we need to check adjacent regions
-				//				if (heightsManager.hasRail(x - xStep, z)) {
-				//					h = heightsManager.getHeight(x - xStep, z);
-				//				}
-				//				if (heightsManager.hasRail(x, z - zStep)) {
-				//					h = heightsManager.getHeight(x, z - zStep);
-				//				}
-				//				if (heightsManager.hasRail(x, z)) {
-				//					h = heightsManager.getHeight(x, z);
-				//				}
 
 				byte firstBlock = heightsManager.hasRail(x, z - zStep) ? curveA : StraightRail.East.val;
 				heightsManager.setBoth(x, z, h, firstBlock);
@@ -177,10 +166,10 @@ public class XapiRailReader {
 
 					//now we try setting heights
 					int straightLength = endPoint.x > x ? endPoint.x - x : x - endPoint.x;
-					short[] heights = new short[straightLength + 1];
+					int[] heights = new int[straightLength + 1];
 					heights[0] = h;
 					for (int j = 1; j < straightLength + 1; j++) {
-						short targetHeight = heightsManager.getHeight(x + j * xStep, z);
+						int targetHeight = heightsManager.getHeight(x + j * xStep, z);
 						//need to check boundary conditions
 						boolean notRiseUpOnTurn = j > 1 || straightAtStart;
 						//						boolean noRutAtStart = j + x - startPoint.x >= MIN_RUT_SIZE;
@@ -211,9 +200,9 @@ public class XapiRailReader {
 				} else if (z != endPoint.z) {
 					//in this case, things will always be straight at the beginning
 					int straightLength = endPoint.z > z ? endPoint.z - z : z - endPoint.z;
-					short[] heights = new short[straightLength];
+					int[] heights = new int[straightLength];
 					for (int j = 0; j < straightLength; j++) {
-						short targetHeight = heightsManager.getHeight(x, z + j * zStep);
+						int targetHeight = heightsManager.getHeight(x, z + j * zStep);
 						//						boolean noRutAtStart = j + z - startPoint.z >= MIN_RUT_SIZE;
 						//						boolean noBumpAtEnd = endPoint.z - z - j >= MIN_BUMP_SIZE;
 						//						if (noRutAtStart && noBumpAtEnd && targetHeight > h)

@@ -26,7 +26,7 @@ public class FeedbackManager {
 	public static void main(String[] args) throws Exception {
 		System.out.println(getProperties());
 	}
-	private static String getProperties() {
+	public static String getProperties() {
 		StringBuilder sb = new StringBuilder();
 		Properties p = System.getProperties();
 		for (Object k : p.keySet()) {
@@ -40,8 +40,8 @@ public class FeedbackManager {
 		}
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpPost postRequest = new HttpPost(
-				"http://localhost:5000/feedback"
-				
+				//"http://localhost:5000/feedback"
+				"https://secure.chunkmapper.com/feedback"
 				);
 
 		nameValuePairs.add(new BasicNameValuePair("logs", getLogs()));
