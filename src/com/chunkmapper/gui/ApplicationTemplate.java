@@ -33,6 +33,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import com.chunkmapper.admin.FeedbackManager;
+import com.chunkmapper.admin.MyLogger;
 import com.chunkmapper.admin.PreferenceManager;
 import com.chunkmapper.gui.dialog.FeedbackDialog;
 import com.chunkmapper.gui.dialog.NoPurchaseDialog;
@@ -49,6 +50,9 @@ import com.chunkmapper.security.MySecurityManager;
  */
 public class ApplicationTemplate
 {
+	public static void main(String[] args) {
+		System.out.println("compiled");
+	}
 	public static class AppPanel extends JPanel
 	{
 		protected WorldWindow wwd;
@@ -112,6 +116,7 @@ public class ApplicationTemplate
 		protected AppPanel wwjPanel;
 		protected LayerPanel layerPanel;
 		protected StatisticsPanel statsPanel;
+		private boolean simpleGuiShown;
 
 		public AppFrame()
 		{
@@ -167,14 +172,23 @@ public class ApplicationTemplate
 				{
 					if (t instanceof WWAbsentRequirementException)
 					{
-						String message = "Computer does not meet minimum graphics requirements.\n";
-						message += "Please install up-to-date graphics driver and try again.\n";
-						message += "Reason: " + t.getMessage() + "\n";
-						message += "This program will end when you press OK.";
+						//						String message = "Computer does not meet minimum graphics requirements.\n";
+						//						message += "Please install up-to-date graphics driver and try again.\n";
+						//						message += "Reason: " + t.getMessage() + "\n";
+						//						message += "This program will end when you press OK.";
+						//
+						//						JOptionPane.showMessageDialog(AppFrame.this, message, "Unable to Start Program",
+						//								JOptionPane.ERROR_MESSAGE);
+						//						System.exit(-1);
+					}
+					MyLogger.LOGGER.severe("Rendering Exception Thrown");
+					MyLogger.LOGGER.severe(MyLogger.printException(t));
+					if (!simpleGuiShown) {
+						simpleGuiShown = true;	
 
-						JOptionPane.showMessageDialog(AppFrame.this, message, "Unable to Start Program",
-								JOptionPane.ERROR_MESSAGE);
-						System.exit(-1);
+						dispose();
+						SimplifiedGUI frame = new SimplifiedGUI();
+						frame.setVisible(true);
 					}
 				}
 			});
@@ -329,21 +343,10 @@ public class ApplicationTemplate
 		try
 		{
 			final AppFrame frame = new Main.AppFrame();
-//			final AppFrame frame = (AppFrame) appFrameClass.newInstance();
+			//			final AppFrame frame = (AppFrame) appFrameClass.newInstance();
 			frame.addWindowListener(new WindowAdapter() {
 				public void windowClosing(WindowEvent e) {
-					boolean purchased = MySecurityManager.isOfflineValid();
-					if (purchased && !PreferenceManager.getIgnoreFeedback()) {
-						(new FeedbackDialog()).setVisible(true);
-					} else if (!purchased && !PreferenceManager.getNoPurchaseShown()) {
-						NoPurchaseDialog d = new NoPurchaseDialog();
-						d.setVisible(true);
-						if (!d.submitted && PreferenceManager.getAllowUsageReports()) {
-							FeedbackManager.submitFeedback(null);
-						}
-					} else if (PreferenceManager.getAllowUsageReports()) {
-						FeedbackManager.submitFeedback(null);
-					}
+					manageFeedback();
 				}
 			});
 			frame.setTitle(appName);
@@ -362,6 +365,20 @@ public class ApplicationTemplate
 		{
 			e.printStackTrace();
 			return null;
+		}
+	}
+	public static void manageFeedback() {
+		boolean purchased = MySecurityManager.isOfflineValid();
+		if (purchased && !PreferenceManager.getIgnoreFeedback()) {
+			(new FeedbackDialog()).setVisible(true);
+		} else if (!purchased && !PreferenceManager.getNoPurchaseShown()) {
+			NoPurchaseDialog d = new NoPurchaseDialog();
+			d.setVisible(true);
+			if (!d.submitted && PreferenceManager.getAllowUsageReports()) {
+				FeedbackManager.submitFeedback(null);
+			}
+		} else if (PreferenceManager.getAllowUsageReports()) {
+			FeedbackManager.submitFeedback(null);
 		}
 	}
 

@@ -18,6 +18,7 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
 
+import com.chunkmapper.layer.GameAvailableInterface;
 import com.chunkmapper.layer.MainLayer;
 
 public class NewMapDialog extends JDialog {
@@ -40,12 +41,12 @@ public class NewMapDialog extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	private void checkInputValid(MainLayer mainLayer) {
+	private void checkInputValid(GameAvailableInterface mainLayer) {
 		String text = this.textField.getText();
 		if (text.equals("")) {
 			this.lblNewLabel.setVisible(false);
 			this.okButton.setEnabled(false);
-		} else if (mainLayer.takenGames.contains(text)) {
+		} else if (!mainLayer.gameAvailable(text)) {
 			this.okButton.setEnabled(false);
 			this.lblNewLabel.setVisible(true);
 		} else {
@@ -53,7 +54,7 @@ public class NewMapDialog extends JDialog {
 			this.lblNewLabel.setVisible(false);
 		}
 	}
-	public NewMapDialog(final MainLayer mainLayer, final JFrame frame) {
+	public NewMapDialog(final GameAvailableInterface mainLayer, final JFrame frame) {
 		super(frame);
 		setModalityType(ModalityType.DOCUMENT_MODAL);
 		setModal(true);

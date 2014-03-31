@@ -1,7 +1,9 @@
 package com.chunkmapper.admin;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.logging.FileHandler;
@@ -9,10 +11,41 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
+import com.chunkmapper.admin.Utila.OSType;
+
 public class MyLogger {
-	public static final Logger LOGGER = Logger.getLogger("");
+	public static final Logger LOGGER = Logger.getLogger("gov");
 	private static final boolean[] specialFlags = new boolean[SpecialLog.values().length];
 	
+//	public static void printGraphicsCard() {
+//		LOGGER.info(Utila.OS_TYPE.toString());
+//		if (Utila.OS_TYPE == OSType.WIN) {
+//			try {
+//		        String filePath = "foo.txt";
+//		        // Use "dxdiag /t" variant to redirect output to a given file
+//		        ProcessBuilder pb = new ProcessBuilder("cmd.exe","/c","dxdiag","/t",filePath);
+//		        Process p = pb.start();
+//		        p.waitFor();
+//
+//		        BufferedReader br = new BufferedReader(new FileReader(filePath));
+//		        String line;
+//		        StringBuilder sb = new StringBuilder();
+//		        while((line = br.readLine()) != null){
+//		            if(line.trim().startsWith("Card name:") || line.trim().startsWith("Current Mode:")){
+//		            	sb.append(line.trim() + "\n");
+//		            }
+//		        }
+//		        br.close();
+//		        (new File(filePath)).delete();
+//		        
+//		        LOGGER.info(sb.toString());
+//			} catch (InterruptedException ex) {
+//				LOGGER.warning(MyLogger.printException(ex));
+//		    } catch (IOException ex) {
+//		        LOGGER.warning(MyLogger.printException(ex));
+//		    }
+//		}
+//	}
 	public static enum SpecialLog { CONTROLS(0), GLOBE(1);
 		public final int val;
 		private SpecialLog(int val) {
@@ -26,8 +59,10 @@ public class MyLogger {
 			specialFlags[l.val] = true;
 		}
 	}
+	public static void init() {}
 
 	static {
+		
 		LOGGER.addHandler(FeedbackManager.streamHandler);
 		if (Utila.isMatt()) {
 			try {

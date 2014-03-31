@@ -25,6 +25,11 @@ public class Utila {
 	public static final String BINARY_SUFFIX = "_.txt";
 	public static File MINECRAFT_DIR;
 	private static final File customDirStore;
+	public static final OSType OS_TYPE;
+	
+	public static enum OSType {
+		WIN, MAC, OTHER;
+	}
 	
 	public static boolean isMatt() {
 		return System.getProperty("user.dir").startsWith("/Users/matthewmolloy");
@@ -81,18 +86,29 @@ public class Utila {
 	static {
 		CACHE = new File(FileUtils.getUserDirectory(), ".chunkmapper");
 		CACHE.mkdirs();
-		customDirStore = new File(CACHE, "customDir.txt");
 		
+		String os = System.getProperty("os.name").toLowerCase();
+		if (os.indexOf("win") >= 0) {
+			OS_TYPE = OSType.WIN;
+		} else if (os.indexOf("mac") >= 0) {
+			OS_TYPE = OSType.MAC;
+		} else {
+			OS_TYPE = OSType.OTHER;
+		}
+		
+		customDirStore = new File(CACHE, "customDir.txt");
 		if (customDirStore.exists()) {
 			MINECRAFT_DIR = new File(slurp(customDirStore));
 		} else {
-			String os = System.getProperty("os.name").toLowerCase();
-			if (os.indexOf("win") >= 0) {
+			switch (OS_TYPE) {
+			case WIN:
 				File appData = new File(System.getenv("APPDATA"));
 				MINECRAFT_DIR = new File(appData, ".minecraft");
-			} else if (os.indexOf("mac") >= 0) {
+				break;
+			case MAC:
 				MINECRAFT_DIR = new File(FileUtils.getUserDirectory(), "/Library/Application Support/minecraft");
-			} else {
+				break;
+			case OTHER:
 				MINECRAFT_DIR = new File(FileUtils.getUserDirectory(), "/.minecraft");
 			}
 		}

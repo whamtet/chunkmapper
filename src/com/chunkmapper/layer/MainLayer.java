@@ -12,10 +12,8 @@ import gov.nasa.worldwind.event.SelectEvent;
 import gov.nasa.worldwind.event.SelectListener;
 import gov.nasa.worldwind.geom.Position;
 import gov.nasa.worldwind.geom.Vec4;
-import gov.nasa.worldwind.layers.Layer;
 import gov.nasa.worldwind.layers.LayerList;
 import gov.nasa.worldwind.layers.RenderableLayer;
-import gov.nasa.worldwind.layers.WorldMapLayer;
 import gov.nasa.worldwind.pick.PickedObject;
 import gov.nasa.worldwind.render.DrawContext;
 import gov.nasa.worldwind.render.ScreenAnnotation;
@@ -24,7 +22,6 @@ import gov.nasa.worldwind.util.Logging;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
-import java.awt.Dialog.ModalityType;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Insets;
@@ -36,23 +33,21 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
 
+import javax.media.opengl.GLException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import org.apache.commons.io.FileUtils;
 
-import com.chunkmapper.admin.BucketInfo;
 import com.chunkmapper.admin.MyLogger;
-import com.chunkmapper.admin.MyLogger.SpecialLog;
 import com.chunkmapper.gui.GoToThread;
 import com.chunkmapper.gui.dialog.AccountDialog;
 import com.chunkmapper.gui.dialog.GoToDialog;
-import com.chunkmapper.gui.dialog.MustUpgradeDialog;
 import com.chunkmapper.gui.dialog.NewMapDialog;
 import com.chunkmapper.interfaces.GlobalSettings;
 import com.chunkmapper.security.MySecurityManager;
 
-public class MainLayer extends RenderableLayer implements SelectListener
+public class MainLayer extends RenderableLayer implements SelectListener, GameAvailableInterface
 {
 	protected WorldWindow wwd;
 	protected boolean update = true;
@@ -77,7 +72,8 @@ public class MainLayer extends RenderableLayer implements SelectListener
 	private final JFrame appFrame;
 	private final File savesDir;
 	private int numRows = 0;
-	public HashSet<String> takenGames, newlyCreatedGames = new HashSet<String>();
+	private HashSet<String> takenGames = new HashSet<String>();
+//	public HashSet<String> takenGames, newlyCreatedGames = new HashSet<String>();
 
 	private static final int HAND_CURSOR = 0, DEFAULT_CURSOR = 1;
 	private final GlobalSettings globalSettings;
@@ -191,7 +187,8 @@ public class MainLayer extends RenderableLayer implements SelectListener
 								dialog.setVisible(true);
 								String gameName = dialog.getGameName();
 								if (gameName != null) {
-									this.newlyCreatedGames.add(gameName);
+									takenGames.add(gameName);
+//									this.newlyCreatedGames.add(gameName);
 									update = true;
 
 									wwd.getModel().getLayers().remove(this);
@@ -221,7 +218,7 @@ public class MainLayer extends RenderableLayer implements SelectListener
 										// TODO Auto-generated catch block
 										e.printStackTrace();
 									}
-									newlyCreatedGames.remove(gameName);
+									takenGames.remove(gameName);
 									update = true;
 								}
 							}
@@ -365,10 +362,6 @@ public class MainLayer extends RenderableLayer implements SelectListener
 	{
 		this.takenGames = new HashSet<String>();
 		HashSet<String> gamesToDisplay = new HashSet<String>();
-		for (String s : newlyCreatedGames) {
-			takenGames.add(s);
-			gamesToDisplay.add(s);
-		}
 		File[] todo = savesDir.listFiles();
 		if (todo != null) {
 			for (File f : todo) {
@@ -432,5 +425,10 @@ public class MainLayer extends RenderableLayer implements SelectListener
 	public String toString()
 	{
 		return Logging.getMessage("layers.LayerManagerLayer.Name");
+	}
+
+	@Override
+	public boolean gameAvailable(String game) {
+		return !takenGames.contains(game);
 	}
 }

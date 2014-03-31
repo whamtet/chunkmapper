@@ -84,6 +84,7 @@ public class Main extends ApplicationTemplate
 
 	public static void main(String[] args)
 	{
+		MyLogger.init();
 		
 		if (BucketInfo.mustUpgrade()) {
 			JOptionPane.showMessageDialog(null, "This version of Chunkmapper is no longer supported.  Visit www.chunkmapper.com to upgrade.");
