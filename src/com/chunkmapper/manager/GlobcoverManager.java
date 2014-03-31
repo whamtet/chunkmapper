@@ -403,6 +403,9 @@ public class GlobcoverManager {
 		//last but not least, add ferry
 		ferryReader.addLillies(chunk, chunkx, chunkz, columns);
 		hutReader.addHut(chunk);
+		if (RANDOM.nextInt(100000) == 0) {
+			GenericWriter.addHeavenWaterFall(chunk);
+		}
 		return chunk;
 	}
 

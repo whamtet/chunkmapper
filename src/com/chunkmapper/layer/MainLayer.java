@@ -42,6 +42,8 @@ import javax.swing.JOptionPane;
 import org.apache.commons.io.FileUtils;
 
 import com.chunkmapper.admin.BucketInfo;
+import com.chunkmapper.admin.MyLogger;
+import com.chunkmapper.admin.MyLogger.SpecialLog;
 import com.chunkmapper.gui.GoToThread;
 import com.chunkmapper.gui.dialog.AccountDialog;
 import com.chunkmapper.gui.dialog.GoToDialog;
@@ -201,8 +203,12 @@ public class MainLayer extends RenderableLayer implements SelectListener
 									}
 								}
 							}
+							if (s.equals("create")) {
+								MyLogger.LOGGER.info("Clicked create");
+							}
 							if (s.endsWith("Delete")) {
 								String gameName = s.substring(0, s.length() - 6);
+								MyLogger.LOGGER.info("Deleting " + gameName);
 								//								ConfirmDeleteDialog d = new ConfirmDeleteDialog(appFrame, gameName, savesDir);
 								//								d.setVisible(true);
 								String message = "Delete " + gameName + "?";
@@ -222,6 +228,7 @@ public class MainLayer extends RenderableLayer implements SelectListener
 							if (s.endsWith("Resume") && !mustPurchase()) {
 								wwd.getModel().getLayers().remove(this);
 								String gameName = s.substring(0, s.length() - 6);
+								MyLogger.LOGGER.info("Resuming " + gameName);
 								try {
 									wwd.getModel().getLayers().add(new GeneratingLayerImpl(wwd, appFrame, savesDir, gameName, this, globalSettings));
 								} catch (IOException e) {
@@ -229,7 +236,9 @@ public class MainLayer extends RenderableLayer implements SelectListener
 									e.printStackTrace();
 								}
 							}
+							
 							if (s.equals("goto")) {
+								//logs in method
 								displayGotoDialog();
 							}
 						}
@@ -271,6 +280,7 @@ public class MainLayer extends RenderableLayer implements SelectListener
 	}
 
 	public void displayGotoDialog() {
+		MyLogger.LOGGER.info("Displaying Goto Dialog");
 		GoToDialog d = new GoToDialog(appFrame);
 		d.setVisible(true);
 		String location = d.getPlace();

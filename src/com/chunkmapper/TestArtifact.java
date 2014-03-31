@@ -52,7 +52,8 @@ public class TestArtifact {
 		int chunkx = 0, chunkz = 0;
 		Chunk chunk = new Chunk(chunkx, chunkz, heights, chunkx, chunkz);
 		GenericWriter.addGrass(chunk);
-		MobWriter.addVillager(chunk, Villager.Blacksmith, 8, 5, 8, false);
+		GenericWriter.addHeavenWaterFall(chunk);
+		
 		
 //		ArtifactWriter.placePrison(chunk);
 //		ArtifactWriter.placeMarket(chunk);

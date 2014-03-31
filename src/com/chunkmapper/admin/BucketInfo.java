@@ -6,6 +6,8 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.HashMap;
 
+import com.chunkmapper.gui.dialog.NoNetworkDialog;
+
 public class BucketInfo {
 	private static HashMap<String, String> map;
 	private static Object key = new Object();
@@ -59,6 +61,11 @@ public class BucketInfo {
 			br.close();
 		} catch (IOException e) {
 			MyLogger.LOGGER.severe(MyLogger.printException(e));
+			NoNetworkDialog d = new NoNetworkDialog();
+			d.setVisible(true);
+			if (!d.continueGeneration) {
+				System.exit(0);
+			}
 		}
 	}
 	public static boolean multiplayerInitMap() {

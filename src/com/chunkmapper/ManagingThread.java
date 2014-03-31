@@ -5,22 +5,24 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.util.HashSet;
 import java.util.zip.DataFormatException;
-
-import javax.swing.JFrame;
 
 import org.apache.commons.io.FileUtils;
 
 import com.chunkmapper.admin.MyLogger;
 import com.chunkmapper.admin.OSMRouter;
 import com.chunkmapper.binaryparser.OsmosisParser;
+import com.chunkmapper.gui.GlobalSettingsImpl;
 import com.chunkmapper.gui.dialog.NoNetworkDialog;
 import com.chunkmapper.interfaces.GeneratingLayer;
 import com.chunkmapper.interfaces.GlobalSettings;
 import com.chunkmapper.interfaces.MappedSquareManager;
 import com.chunkmapper.interfaces.PlayerIconManager;
 import com.chunkmapper.interfaces.PointManager;
+import com.chunkmapper.parser.Nominatim;
 import com.chunkmapper.rail.HeightsCache;
 import com.chunkmapper.reader.HeightsReader;
 import com.chunkmapper.reader.HeightsReaderS3;
@@ -33,11 +35,18 @@ public class ManagingThread extends Thread {
 	private final MappedSquareManager mappedSquareManager;
 	private final PlayerIconManager playerIconManager;
 	private final GlobalSettings globalSettings;
-	private final JFrame appFrame;
 	private final GeneratingLayer generatingLayer;
 	public RegionWriter regionWriter;
 	private static boolean networkProblems;
 	private static Object networkProblemsGuard = new Object();
+	
+	public static void main(String[] args) throws MalformedURLException, URISyntaxException, IOException {
+		double[] latlon = Nominatim.getPoint("Hollywood");
+		File gameFolder = new File("/Users/matthewmolloy/Library/Application Support/minecraft/saves/Hollywood");
+		GlobalSettings globalSettings = new GlobalSettingsImpl();
+		ManagingThread t = new ManagingThread(latlon[0], latlon[1], gameFolder, null, null, globalSettings, null);
+		t.run();
+	}
 
 	public static void setNetworkProblems() {
 		synchronized(networkProblemsGuard) {
@@ -58,7 +67,7 @@ public class ManagingThread extends Thread {
 	}
 
 	public ManagingThread(double lat, double lon, File gameFolder, MappedSquareManager mappedSquareManager,
-			PlayerIconManager playerIconManager, GlobalSettings globalSettings, JFrame appFrame,
+			PlayerIconManager playerIconManager, GlobalSettings globalSettings,
 			GeneratingLayer generatingLayer) {
 		clearNetworkProblems();
 		MyLogger.LOGGER.info("Vertical Exaggeration: " + globalSettings.getVerticalExaggeration());
@@ -67,7 +76,6 @@ public class ManagingThread extends Thread {
 		//			throw new RuntimeException();
 		//		}
 		this.generatingLayer = generatingLayer;
-		this.appFrame = appFrame;
 		this.globalSettings = globalSettings;
 		this.mappedSquareManager = mappedSquareManager;
 		this.playerIconManager = playerIconManager;
@@ -101,7 +109,8 @@ public class ManagingThread extends Thread {
 		if (globalSettings.isLive()) {
 			OSMRouter.setLive();
 		}
-		generatingLayer.zoomTo();
+		if (generatingLayer != null)
+			generatingLayer.zoomTo();
 		MyLogger.LOGGER.info("generating " + gameFolder.getName());
 		if (!gameFolder.exists()) {
 			gameFolder.mkdirs();
@@ -131,6 +140,7 @@ public class ManagingThread extends Thread {
 				//need to set altitude correctly.
 				int altitude;
 				try {
+					System.out.println("a");
 					HeightsReader heightsReader = new HeightsReaderS3(gameMetaInfo.rootPoint.x, gameMetaInfo.rootPoint.z, globalSettings.getVerticalExaggeration());
 					altitude = heightsReader.getHeightxz((int) (lon * 3600), (int) (-lat * 3600)) + 20;
 				} catch (InterruptedException e) {

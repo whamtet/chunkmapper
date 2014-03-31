@@ -168,7 +168,7 @@ public class GeneratingLayerImpl extends RenderableLayer implements SelectListen
 		mappedSquareManager = new MappedSquareManagerImpl(wwd);
 		playerIconManager = new PlayerIconManagerImpl(lat, lon, wwd);
 		managingThread = new ManagingThread(lat, lon, gameFolder, mappedSquareManager, playerIconManager,
-				globalSettings, appFrame, this);
+				globalSettings, this);
 		managingThread.start();
 	}
 	public void cancel() {

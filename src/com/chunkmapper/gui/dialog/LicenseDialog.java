@@ -92,6 +92,7 @@ public class LicenseDialog extends JDialog {
 				});
 				{
 					chckbxSubmitAnonymousUsage = new JCheckBox("Submit Anonymous Usage Reports");
+					chckbxSubmitAnonymousUsage.setSelected(true);
 					buttonPane.add(chckbxSubmitAnonymousUsage);
 				}
 				okButton.setActionCommand("OK");

@@ -11,6 +11,7 @@ import java.net.URISyntaxException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import com.chunkmapper.admin.MyLogger;
 import com.chunkmapper.gui.ApplicationTemplate.AppFrame;
 import com.chunkmapper.parser.Nominatim;
 

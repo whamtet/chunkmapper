@@ -10,12 +10,14 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 import com.chunkmapper.admin.BucketInfo;
+import com.chunkmapper.admin.MyLogger;
 import com.chunkmapper.protoc.HeightsContainer;
 
 public class HeightsInfo {
 	private static HashSet<Point> points;
 	private static Object key = new Object();
 	private static void setPoints() throws IOException {
+		MyLogger.LOGGER.config("Setting Points");
 		InputStream in = null;
 //		try {
 			URL url = new URL(BucketInfo.getBucket("chunkmapper-admin") + "/heights2");

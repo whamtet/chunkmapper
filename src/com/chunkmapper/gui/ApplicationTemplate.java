@@ -33,9 +33,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import com.chunkmapper.admin.FeedbackManager;
-import com.chunkmapper.admin.MyLogger;
 import com.chunkmapper.admin.PreferenceManager;
 import com.chunkmapper.gui.dialog.FeedbackDialog;
+import com.chunkmapper.gui.dialog.NoPurchaseDialog;
 import com.chunkmapper.interfaces.GlobalSettings;
 import com.chunkmapper.layer.ViewControlsLayer;
 import com.chunkmapper.layer.ViewControlsSelectListener;
@@ -332,12 +332,18 @@ public class ApplicationTemplate
 //			final AppFrame frame = (AppFrame) appFrameClass.newInstance();
 			frame.addWindowListener(new WindowAdapter() {
 				public void windowClosing(WindowEvent e) {
-					if (MySecurityManager.isOfflineValid() && !PreferenceManager.getIgnoreFeedback()) {
+					boolean purchased = MySecurityManager.isOfflineValid();
+					if (purchased && !PreferenceManager.getIgnoreFeedback()) {
 						(new FeedbackDialog()).setVisible(true);
+					} else if (!purchased && !PreferenceManager.getNoPurchaseShown()) {
+						NoPurchaseDialog d = new NoPurchaseDialog();
+						d.setVisible(true);
+						if (!d.submitted && PreferenceManager.getAllowUsageReports()) {
+							FeedbackManager.submitFeedback(null);
+						}
 					} else if (PreferenceManager.getAllowUsageReports()) {
 						FeedbackManager.submitFeedback(null);
 					}
-					MyLogger.deleteLog();
 				}
 			});
 			frame.setTitle(appName);

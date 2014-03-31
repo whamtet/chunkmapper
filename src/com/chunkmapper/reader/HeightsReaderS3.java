@@ -32,17 +32,11 @@ public class HeightsReaderS3 implements HeightsReader {
 	
 	public static void main(String[] args) throws Exception {
 		System.out.println("starting");
-		double[] latlon = Nominatim.getPoint("nassihorn, switzerland");
+		double[] latlon = Nominatim.getPoint("Hollywood");
 		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
 		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
-		HeightsReader reader = new HeightsReaderS3(regionx, regionz, 1);
-		PrintWriter pw = new PrintWriter("/Users/matthewmolloy/python/wms/data.csv");
-		for (int i = 0; i < 512; i++) {
-			for (int j = 0; j < 512; j++) {
-				pw.println(reader.getRealHeightij(i, j));
-			}
-		}
-		pw.close();
+		
+		HeightsReaderS3 hr = new HeightsReaderS3(regionx, regionz, 1);
 		System.out.println("done");
 	}
 
@@ -64,6 +58,7 @@ public class HeightsReaderS3 implements HeightsReader {
 				tempCache[i][j] = -1;
 			}
 		}
+//		System.out.println("b");
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
 				if (HeightsInfo.hasPoint(lati2 - i, loni1 + j)) {
@@ -76,6 +71,7 @@ public class HeightsReaderS3 implements HeightsReader {
 				}
 			}
 		}
+//		System.out.println("c");
 //		int rooti = (int) ((lati2 + 1 - lat2) * 1200);
 //		int rootj = (int) ((lon1 - loni1) * 1200);
 		double rooti = (lati2 + 1 - lat2) * 1200;
@@ -98,7 +94,6 @@ public class HeightsReaderS3 implements HeightsReader {
 //				cache[i][j] = tempCache[i1][j1];
 			}
 		}
-		
 //		PrintWriter pw = new PrintWriter("/Users/matthewmolloy/python/wms/data.csv");
 //		for (int i = 0; i < height * 1200; i++) {
 //			for (int j = 0; j < width * 1200; j++) {

@@ -31,6 +31,14 @@ public class PointManager {
 	public final static int RAD = 3, LON_RAD = 180 * 3600 / 512;
 	private static volatile Point currentPlayerPosition;
 	
+	public static void main(String[] args) throws Exception {
+		File f = new File("/Users/matthewmolloy/Library/Application Support/minecraft/saves/Alps/chunkmapper");
+		Point rootPoint = new Point(0, 0);
+		PointManager m = new PointManager(f, null, rootPoint);
+		File gameFolder = new File("/Users/matthewmolloy/Library/Application Support/minecraft/saves/Alps");
+		System.out.println(m.getNewPoints(gameFolder, rootPoint, f, null).size());
+	}
+
 	public static Point getCurrentPlayerPosition() {
 		return currentPlayerPosition;
 	}
@@ -47,7 +55,8 @@ public class PointManager {
 					Point p = new Point(Integer.parseInt(s[0]), Integer.parseInt(s[1]));
 					pointsFinished.add(p);
 					pointsAssigned.add(p);
-					mappedSquareManager.addPoint(new Point(p.x + rootPoint.x, p.z + rootPoint.z));
+					if (mappedSquareManager != null)
+						mappedSquareManager.addPoint(new Point(p.x + rootPoint.x, p.z + rootPoint.z));
 				}
 				reader.close();
 			} catch (IOException e) {
@@ -101,7 +110,8 @@ public class PointManager {
 	private static void updateIconManager(Point playerPosition, Point rootPoint, PlayerIconManager playerIconManager) {
 		double lon = (playerPosition.x + rootPoint.x*512) / 3600.;
 		double lat = -(playerPosition.z + rootPoint.z * 512) / 3600.;
-		playerIconManager.setLocation(lat, lon);
+		if (playerIconManager != null) 
+			playerIconManager.setLocation(lat, lon);
 	}
 	public HashSet<Point> getNewPoints(File gameFolder, Point rootPoint, File chunkmapperDir, PlayerIconManager playerIconManager) {
 		Point playerPosition = readPosition(gameFolder);
@@ -123,7 +133,7 @@ public class PointManager {
 		if (regionz1 <= -LON_RAD / 2) regionz1 = -LON_RAD / 2 + 1;
 		if (regionx2 >= LON_RAD) regionx2 = LON_RAD - 1;
 		if (regionz2 >= LON_RAD / 2) regionz2 = LON_RAD / 2 - 1;
-		
+
 		for (int regionx = regionx1; regionx <= regionx2; regionx++) {
 			for (int regionz = regionz1; regionz <= regionz2; regionz++) {
 				newPoints.add(new Point(regionx, regionz));

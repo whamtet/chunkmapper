@@ -8,6 +8,7 @@ import java.util.concurrent.PriorityBlockingQueue;
 import com.chunkmapper.GameMetaInfo;
 import com.chunkmapper.Point;
 import com.chunkmapper.Tasker;
+import com.chunkmapper.admin.MyLogger;
 import com.chunkmapper.binaryparser.OsmosisParser;
 import com.chunkmapper.chunk.Chunk;
 import com.chunkmapper.downloader.OverpassDownloader;
@@ -51,7 +52,7 @@ public class RegionWriter extends Tasker {
 
 	public RegionWriter(PointManager pointManager, Point rootPoint, File regionFolder, 
 			GameMetaInfo metaInfo, MappedSquareManager mappedSquareManager, int verticalExaggeration) {
-		super(NUM_WRITING_THREADS);
+		super(NUM_WRITING_THREADS, "RegionWriter");
 		this.verticalExaggeration = verticalExaggeration;
 		this.rootPoint = rootPoint;
 		this.regionFolder = regionFolder;
@@ -86,12 +87,12 @@ public class RegionWriter extends Tasker {
 	}
 	@Override
 	protected void doTask(Point task) throws Exception {
+		MyLogger.LOGGER.config("Writing point at " + task.toString());
 		int a = task.x, b = task.z;
 		int regionx = task.x + rootPoint.x, regionz = task.z + rootPoint.z;
 
 		File f = new File(regionFolder, "r." + a + "." + b + ".mca");
 		GlobcoverManager coverManager = new GlobcoverManager(regionx, regionz, verticalExaggeration);
-
 		if (coverManager.allWater) {
 			pointManager.updateStore(task);
 			mappedSquareManager.addPoint(new Point(task.x + rootPoint.x, task.z + rootPoint.z));
@@ -116,7 +117,8 @@ public class RegionWriter extends Tasker {
 		regionFile.close();
 		pointManager.updateStore(task);
 		gameMetaInfo.incrementChunksMade();
-		mappedSquareManager.addPoint(new Point(task.x + rootPoint.x, task.z + rootPoint.z));
+		if (mappedSquareManager != null)
+			mappedSquareManager.addPoint(new Point(task.x + rootPoint.x, task.z + rootPoint.z));
                 
 	}
 

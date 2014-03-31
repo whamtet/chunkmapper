@@ -6,7 +6,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -17,12 +16,10 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JOptionPane;
+import javax.net.ssl.SSLException;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
@@ -121,6 +118,7 @@ public class MySecurityManager {
 		}
 	}
 	private static Status getOnlineStatus(String email, String password) {
+		MyLogger.LOGGER.info("getting online status");
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpPost postRequest = new HttpPost(
 				"https://secure.chunkmapper.com/authenticate");
@@ -128,6 +126,8 @@ public class MySecurityManager {
 		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
 		nameValuePairs.add(new BasicNameValuePair("email", email));
 		nameValuePairs.add(new BasicNameValuePair("password", password));
+		
+		
 
 		try {
 			postRequest.setEntity(new UrlEncodedFormEntity(nameValuePairs));
@@ -141,7 +141,7 @@ public class MySecurityManager {
 			if ("invalid password".equals(responseLine)) return Status.INVALID_PW;
 			return null;
 			
-		} catch (javax.net.ssl.SSLException e) {
+		} catch (SSLException e) {
 			MyLogger.LOGGER.severe(MyLogger.printException(e));
 			return Status.SSL_EXCEPTION;
 		} catch (Exception e) {
@@ -157,10 +157,11 @@ public class MySecurityManager {
 		return false;
 	}
 	public static Status getStatus(String username, String password) {
-		MyLogger.LOGGER.info("getting status");
+		
 		if (username == null || password == null) return Status.INVALID_PW;
 		if ("".equals(username.trim()) || "".equals(password.trim())) return Status.INVALID_PW;
 		Status s = getOnlineStatus(username, password);
+		MyLogger.LOGGER.info("Status is " + s.toString());
 		if (Status.OK.equals(s)) {
 			spit(getKey());
 		}

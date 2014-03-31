@@ -18,8 +18,7 @@ import com.chunkmapper.writer.NeutralRegionWriter;
 public class MPThread {
 
 	public static void main(String[] args) throws Exception {
-		authenticate();
-		System.out.println("done");
+		start();
 	}
 	private static File prepareDir(File f, boolean delete) {
 		if (delete && f.exists()) {

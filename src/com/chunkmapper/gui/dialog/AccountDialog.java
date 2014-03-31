@@ -23,6 +23,7 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
 
+import com.chunkmapper.admin.MyLogger;
 import com.chunkmapper.security.MySecurityManager;
 import com.chunkmapper.security.MySecurityManager.Status;
 import java.awt.Dialog.ModalityType;
@@ -52,6 +53,7 @@ public class AccountDialog extends JDialog {
 		}
 	}
 	private void openWebpage(String s, String alternative) {
+		MyLogger.LOGGER.info("opening webpage " + s);
 		Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
 		if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
 			try {
@@ -103,6 +105,7 @@ public class AccountDialog extends JDialog {
 	 */
 	public AccountDialog(JFrame f) {
 		super(f);
+		MyLogger.LOGGER.info("opening Account Dialog");
 		setModalityType(ModalityType.APPLICATION_MODAL);
 		setModal(true);
 

@@ -48,13 +48,14 @@ public abstract class Tasker {
 	}
 
 
-	public Tasker(int numThreads) {
+	public Tasker(int numThreads, final String threadName) {
 		executorService = Executors.newFixedThreadPool(numThreads, new ThreadFactory() {
 			@Override
 			public Thread newThread(Runnable arg0) {
 				Thread t = new Thread(arg0);
 //				t.setPriority(Thread.MIN_PRIORITY);
 				// TODO Auto-generated method stub
+				t.setName(threadName);
 				return t;
 			}
 

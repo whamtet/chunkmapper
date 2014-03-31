@@ -37,6 +37,13 @@ public class PreferenceManager {
 			MyLogger.LOGGER.severe(MyLogger.printException(e));
 		}
 	}
+	public static boolean getNoPurchaseShown() {
+		return "yes".equals(data.get("no-purchase-shown"));
+	}
+	public static void setNoPurchaseShown() {
+		data.put("no-purchase-shown", "yes");
+		spit();
+	}
 	public static boolean getIgnoreUpgrade() {
 		return "yes".equals(data.get("ignore-upgrade"));
 	}

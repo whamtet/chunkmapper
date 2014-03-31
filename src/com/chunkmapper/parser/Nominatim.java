@@ -7,6 +7,8 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import com.chunkmapper.admin.MyLogger;
+
 public class Nominatim extends Parser {
 
 	private static String getString(String q) throws URISyntaxException, MalformedURLException, IOException {
@@ -22,6 +24,7 @@ public class Nominatim extends Parser {
 		return out;
 	}
 	public static double[] getPoint(String q) throws MalformedURLException, URISyntaxException, IOException {
+		MyLogger.LOGGER.info("Find coordinates for " + q);
 		try {
 			String response = getString(q);
 			String latStr = getValue(response, "lat"), lonStr = getValue(response, "lon");

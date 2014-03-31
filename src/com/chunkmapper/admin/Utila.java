@@ -26,6 +26,10 @@ public class Utila {
 	public static File MINECRAFT_DIR;
 	private static final File customDirStore;
 	
+	public static boolean isMatt() {
+		return System.getProperty("user.dir").startsWith("/Users/matthewmolloy");
+	}
+	
 	private static String readVersion() {
 		try {
 			InputStream in = Utila.class.getResource("/version.txt").openStream();
@@ -39,7 +43,7 @@ public class Utila {
 		return null;
 	}
 	public static void main(String[] args) {
-		System.out.println(readVersion());
+		System.out.println(isMatt());
 	}
 
 	//spit and slurp have something to do with a custom Minecraft location
@@ -64,12 +68,14 @@ public class Utila {
 		}
 	}
 	public static void clearCache() throws IOException {
-		FileUtils.deleteDirectory(CACHE);
-		CACHE.mkdirs();
+		
+		FileUtils.deleteDirectory(OsmosisParser.CACHE);
 		OsmosisParser.CACHE.mkdirs();
+		FileUtils.deleteDirectory(GlobcoverReaderImpl2.CACHE_DIR);
 		GlobcoverReaderImpl2.CACHE_DIR.mkdirs();
+		FileUtils.deleteDirectory(HeightsCache.HEIGHTS_CACHE);
 		HeightsCache.HEIGHTS_CACHE.mkdirs();
-		HGTFile.CACHE_DIR.mkdirs();
+		FileUtils.deleteDirectory(HGTFile.CACHE_DIR);
 		HGTFile.CACHE_DIR.mkdirs();
 	}
 	static {

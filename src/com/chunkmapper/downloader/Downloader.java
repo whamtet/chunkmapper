@@ -82,7 +82,7 @@ public abstract class Downloader extends Tasker {
 
 
 	public Downloader() {
-		super(NUM_DOWNLOADING_THREADS);
+		super(NUM_DOWNLOADING_THREADS, "Downloader");
 	}
 
 	public static DefaultHttpClient getHttpClient() {

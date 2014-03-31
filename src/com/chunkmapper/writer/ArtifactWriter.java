@@ -838,4 +838,5 @@ public class ArtifactWriter {
 		double z = 5.5, x = 4.5 + 2 * chunk.RANDOM.nextInt(3);
 		MobWriter.addVillager(chunk, Villager.Butcher, x, h, z, false);
 	}
+	
 }

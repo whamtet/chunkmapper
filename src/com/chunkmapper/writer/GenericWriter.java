@@ -14,6 +14,10 @@ public class GenericWriter {
 //		addBedrock(blocks, heights, 2);
 //	}
 	
+	public static void addHeavenWaterFall(Chunk chunk) {
+		chunk.Blocks[255][8][8] = Blocka.Water;
+	}
+	
 	public static void addGrass(Chunk chunk) {
 		for (int z = 0; z < 16; z++) {
 			for (int x = 0; x < 16; x++) {

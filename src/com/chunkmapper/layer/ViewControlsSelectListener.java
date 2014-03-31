@@ -31,6 +31,8 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.Timer;
 
+import com.chunkmapper.admin.MyLogger;
+import com.chunkmapper.admin.MyLogger.SpecialLog;
 import com.chunkmapper.gui.dialog.SettingsDialog;
 import com.chunkmapper.interfaces.GlobalSettings;
 
@@ -333,6 +335,7 @@ public class ViewControlsSelectListener implements SelectListener
             (event.getEventAction().equals(SelectEvent.DRAG) && controlType.equals(AVKey.VIEW_PAN)) ||
             (event.getEventAction().equals(SelectEvent.DRAG) && controlType.equals(AVKey.VIEW_LOOK)))
         {
+        	MyLogger.specialLog(SpecialLog.CONTROLS);
             // Handle left press on controls
             this.pressedControl = selectedObject;
             this.pressedControlType = controlType;
