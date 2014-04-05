@@ -20,7 +20,7 @@ public class HeightsInfo {
 		MyLogger.LOGGER.config("Setting Points");
 		InputStream in = null;
 //		try {
-			URL url = new URL(BucketInfo.getBucket("chunkmapper-admin") + "/heights2");
+			URL url = new URL(BucketInfo.map.get("chunkmapper-admin") + "/heights2");
 			in = new BufferedInputStream(url.openStream());
 			HeightsContainer.Heights heights = HeightsContainer.Heights.parseFrom(in);
 			points = new HashSet<Point>();

@@ -32,7 +32,9 @@ public class Utila {
 	}
 	
 	public static boolean isMatt() {
-		return System.getProperty("user.dir").startsWith("/Users/matthewmolloy");
+		
+		return System.getProperty("user.dir").startsWith("/Users/matthewmolloy")
+				|| "matthewmolloy".equals(System.getProperty("user.name"));
 	}
 	
 	private static String readVersion() {
@@ -47,8 +49,10 @@ public class Utila {
 		}
 		return null;
 	}
-	public static void main(String[] args) {
-		System.out.println(isMatt());
+	public static void main(String[] args) throws Exception {
+		(new File("c")).mkdir();
+		File f = File.createTempFile("launch4j", "beebee", new File("c"));
+		System.out.println(f);
 	}
 
 	//spit and slurp have something to do with a custom Minecraft location

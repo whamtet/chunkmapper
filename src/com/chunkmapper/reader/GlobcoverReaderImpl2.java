@@ -56,7 +56,7 @@ public class GlobcoverReaderImpl2 implements GlobcoverReader {
 			im = ImageIO.read(cacheFile);
 		} else {
 			String base = "/f_" + globx + "_" + globz + Utila.BINARY_SUFFIX;
-			URL url = new URL(BucketInfo.getBucket("chunkmapper-mat") + base);
+			URL url = new URL(BucketInfo.map.get("chunkmapper-mat") + base);
 			//			URL url = null;
 			//			//need to find matching root;
 			//			for (FileInfo info : FileListManager.getGlobcoverFileList().getFilesList()) {

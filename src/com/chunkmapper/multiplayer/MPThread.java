@@ -78,7 +78,7 @@ public class MPThread {
 		}
 	}
 	private static void checkNetwork() {
-		if (!BucketInfo.multiplayerInitMap()) {
+		if (!BucketInfo.initMap()) {
 			System.out.println("Chunkmapper could not connect with the internet.");
 			System.out.println("Please check your connection and try again.");
 			System.exit(0);

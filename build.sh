@@ -6,6 +6,7 @@ cd inspect
 unzip ../chunkmapper-0.0.1-SNAPSHOT.jar
 cd ../../dist
 ant all -Dclasses=inspect
+cp Chunkmapper.exe ~/clojure/chunkmapper-downloads/resources/dist/
 #ant app -Dclasses=inspect
 #open Chunkmapper.app
 #mkdir inspect

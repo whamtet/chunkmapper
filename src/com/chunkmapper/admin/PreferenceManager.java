@@ -18,8 +18,8 @@ public class PreferenceManager {
 				BufferedReader br = new BufferedReader(new FileReader(Cache));
 				String line;
 				while ((line = br.readLine()) != null) {
-					String[] split = line.split(" ");
-					data.put(split[0], split[1]);
+					int i = line.indexOf(" ");
+					data.put(line.substring(0, i), line.substring(i + 1));
 				}
 			} catch (IOException e) {
 				MyLogger.LOGGER.severe(MyLogger.printException(e));
@@ -65,8 +65,15 @@ public class PreferenceManager {
 	public static boolean getAllowUsageReports() {
 		return "yes".equals(data.get("submit-usage"));
 	}
-	
-	
-	
+	public static String getInitLog() {
+		return data.get("init-log");
+	}
+	public static void setInitLog(String s) {
+		data.put("init-log", s);
+		spit();
+	}
+	public static void main(String[] args) {
+		System.out.println(getInitLog());
+	}
 
 }

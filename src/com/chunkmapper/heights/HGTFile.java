@@ -71,7 +71,7 @@ public class HGTFile {
 				return data;
 			}
 			//need to read in
-			URL url = new URL(BucketInfo.getBucket("chunkmapper-heights") + "/" + fileName);
+			URL url = new URL(BucketInfo.map.get("chunkmapper-heights") + "/" + fileName);
 			ZipInputStream in = new ZipInputStream(url.openStream());
 			in.getNextEntry();
 			byte[] uncompressed = Zip.readFully(in);

@@ -10,3 +10,4 @@ mu no
 supported-versions 0.1-MULTIPLAYER;0.1-SINGLEPLAYER
 latest-sp 0.1-SINGLEPLAYER
 latest-mp 0.1-MULTIPLAYER
+log-user-url https://secure.chunkmapper.com/log-user
