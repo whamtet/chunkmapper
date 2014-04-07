@@ -118,8 +118,7 @@ public class GeneratingLayerImpl extends RenderableLayer implements SelectListen
 					LevelDat loadedLevelDat;
 					loadedLevelDat = new LevelDat(new File(gameFolder, "level.dat"));
 					Point relativePlayerPoint = loadedLevelDat.getPlayerPosition();
-					File chunkmapperDir = new File(gameFolder, "chunkmapper");
-					GameMetaInfo info = new GameMetaInfo(new File(chunkmapperDir, GameMetaInfo.STORE_NAME));
+					GameMetaInfo info = new GameMetaInfo(gameFolder, 0, 0, 0);
 					double lat = - (relativePlayerPoint.z + info.rootPoint.z * 512) / 3600.;
 					double lon = (relativePlayerPoint.x + info.rootPoint.x * 512) / 3600.;
 					wwd.getSceneController().setVerticalExaggeration(info.verticalExaggeration);

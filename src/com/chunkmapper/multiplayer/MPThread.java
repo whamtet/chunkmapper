@@ -112,17 +112,7 @@ public class MPThread {
 		prepareDir(new File(gameFolder, "players"), false);
 
 		File metaInfoFile = new File(chunkmapperDir, "meta.txt");
-		GameMetaInfo gameMetaInfo;
-		if (metaInfoFile.exists()) {
-			try {
-				gameMetaInfo = new GameMetaInfo(metaInfoFile);
-			} catch (IOException e) {
-				e.printStackTrace();
-				throw new RuntimeException();
-			}
-		} else {
-			gameMetaInfo = new GameMetaInfo(metaInfoFile, lat, lon, verticalExaggeration);
-		}
+		GameMetaInfo gameMetaInfo = new GameMetaInfo(metaInfoFile, lat, lon, verticalExaggeration);
 
 		LocServer.startLocServer(gameMetaInfo.rootPoint, gameFolder);
 		MPLevelDat.writeLevelDat(gameFolder, gameFolder.getName());

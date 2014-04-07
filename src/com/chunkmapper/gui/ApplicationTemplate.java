@@ -37,6 +37,7 @@ import com.chunkmapper.admin.MyLogger;
 import com.chunkmapper.admin.PreferenceManager;
 import com.chunkmapper.gui.dialog.FeedbackDialog;
 import com.chunkmapper.gui.dialog.NoPurchaseDialog;
+import com.chunkmapper.gui.simple.SimplifiedGUI;
 import com.chunkmapper.interfaces.GlobalSettings;
 import com.chunkmapper.layer.ViewControlsLayer;
 import com.chunkmapper.layer.ViewControlsSelectListener;

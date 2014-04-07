@@ -36,4 +36,16 @@ public class Nominatim extends Parser {
 			return null;
 		}
 	}
+	public static double[] getPointSafe(String q) {
+		MyLogger.LOGGER.info("Find coordinates for " + q);
+		try {
+			String response = getString(q);
+			String latStr = getValue(response, "lat"), lonStr = getValue(response, "lon");
+			double lat = Double.parseDouble(latStr), lon = Double.parseDouble(lonStr);
+			return new double[] {lat, lon};
+		} catch (Exception e) {
+			MyLogger.LOGGER.warning(MyLogger.printException(e));
+			return null;
+		}
+	}
 }

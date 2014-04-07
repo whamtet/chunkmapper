@@ -78,7 +78,7 @@ public class NoPurchaseDialog extends JDialog {
 
 		badInterface = new JCheckBox("Interface not working");
 
-		cantpay = new JCheckBox("Can't pay for it");
+		cantpay = new JCheckBox("I have no credit card");
 
 		dontwanttopay = new JCheckBox("Too expensive");
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);

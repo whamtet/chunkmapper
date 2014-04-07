@@ -22,6 +22,7 @@ import com.chunkmapper.interfaces.GlobalSettings;
 import com.chunkmapper.interfaces.MappedSquareManager;
 import com.chunkmapper.interfaces.PlayerIconManager;
 import com.chunkmapper.interfaces.PointManager;
+import com.chunkmapper.math.Matthewmatics;
 import com.chunkmapper.parser.Nominatim;
 import com.chunkmapper.rail.HeightsCache;
 import com.chunkmapper.reader.HeightsReader;
@@ -39,7 +40,7 @@ public class ManagingThread extends Thread {
 	public RegionWriter regionWriter;
 	private static boolean networkProblems;
 	private static Object networkProblemsGuard = new Object();
-	
+
 	public static void main(String[] args) throws MalformedURLException, URISyntaxException, IOException {
 		double[] latlon = Nominatim.getPoint("Hollywood");
 		File gameFolder = new File("/Users/matthewmolloy/Library/Application Support/minecraft/saves/Hollywood");
@@ -118,46 +119,39 @@ public class ManagingThread extends Thread {
 		File chunkmapperDir = prepareDir(new File(gameFolder, "chunkmapper"), false);
 		File regionFolder = prepareDir(new File(gameFolder, "region"), false);
 
-		File metaInfoFile = new File(chunkmapperDir, "meta.txt");
-		GameMetaInfo gameMetaInfo;
-		if (metaInfoFile.exists()) {
-			try {
-				gameMetaInfo = new GameMetaInfo(metaInfoFile);
-			} catch (IOException e) {
-				MyLogger.LOGGER.severe(MyLogger.printException(e));
-				gameMetaInfo = new GameMetaInfo(metaInfoFile, lat, lon, globalSettings.getVerticalExaggeration());
-			}
-		} else {
-			gameMetaInfo = new GameMetaInfo(metaInfoFile, lat, lon, globalSettings.getVerticalExaggeration());
+		GameMetaInfo gameMetaInfo = null;
+		try {
+			gameMetaInfo = new GameMetaInfo(gameFolder, lat, lon, globalSettings.getVerticalExaggeration());
+		} catch (IOException e1) {
+			MyLogger.LOGGER.severe(MyLogger.printException(e1));
 		}
 
 		File loadedLevelDatFile = new File(gameFolder, "level.dat");
-		if (!loadedLevelDatFile.exists()) {
+		try {
+			LevelDat loadedLevelDat = new LevelDat(loadedLevelDatFile);
+			String gameName = gameFolder.getName();
+			loadedLevelDat.setName(gameName);
+			//need to set altitude correctly.
+			int altitude;
 			try {
-				LevelDat loadedLevelDat = new LevelDat(loadedLevelDatFile);
-				String gameName = gameFolder.getName();
-				loadedLevelDat.setName(gameName);
-				//need to set altitude correctly.
-				int altitude;
-				try {
-					System.out.println("a");
-					HeightsReader heightsReader = new HeightsReaderS3(gameMetaInfo.rootPoint.x, gameMetaInfo.rootPoint.z, globalSettings.getVerticalExaggeration());
-					altitude = heightsReader.getHeightxz((int) (lon * 3600), (int) (-lat * 3600)) + 20;
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					MyLogger.LOGGER.info(MyLogger.printException(e));
-					return;
-				} catch (DataFormatException e) {
-					// TODO Auto-generated catch block
-					MyLogger.LOGGER.warning(MyLogger.printException(e));
-					altitude = 250;
-				}
-				loadedLevelDat.setPlayerPosition(lon * 3600 - gameMetaInfo.rootPoint.x * 512, altitude, - lat * 3600 - gameMetaInfo.rootPoint.z * 512);
-				loadedLevelDat.save();
-			} catch (IOException e) {
-				MyLogger.LOGGER.warning((MyLogger.printException(e)));
+				int absx = (int) (lon * 3600), absz = (int) (-lat * 3600);
+				int regionx = Matthewmatics.div(absx, 512), regionz = Matthewmatics.div(absz, 512);
+				HeightsReader heightsReader = new HeightsReaderS3(regionx, regionz, globalSettings.getVerticalExaggeration());
+				altitude = heightsReader.getHeightxz(absx, absz) + 20;
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				MyLogger.LOGGER.info(MyLogger.printException(e));
 				return;
+			} catch (DataFormatException e) {
+				// TODO Auto-generated catch block
+				MyLogger.LOGGER.warning(MyLogger.printException(e));
+				altitude = 250;
 			}
+			loadedLevelDat.setPlayerPosition(lon * 3600 - gameMetaInfo.rootPoint.x * 512, altitude, - lat * 3600 - gameMetaInfo.rootPoint.z * 512);
+			loadedLevelDat.save();
+		} catch (IOException e) {
+			MyLogger.LOGGER.warning((MyLogger.printException(e)));
+			return;
 		}
 
 		HeightsCache.deleteCache();
@@ -211,6 +205,7 @@ public class ManagingThread extends Thread {
 		return out;
 	}
 	public static void blockingShutDown(ManagingThread thread, boolean selfCalled) {
+		MyLogger.LOGGER.info("Starting to shut down thread.");
 		if (!selfCalled) {
 			thread.interrupt();
 		}

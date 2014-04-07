@@ -48,11 +48,5 @@ public class GoToThread extends Thread {
 			e.printStackTrace();
 		}
 	}
-	private static void placeNotFound() {
-		JOptionPane.showMessageDialog(null, "Location not Found");
-	}
-	public static void main(String[] args) throws Exception {
-		placeNotFound();
-	}
 
 }

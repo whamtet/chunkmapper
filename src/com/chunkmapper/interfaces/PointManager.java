@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 import com.chunkmapper.Point;
+import com.chunkmapper.admin.MyLogger;
 import com.chunkmapper.math.Matthewmatics;
 import com.chunkmapper.nbt.CompoundTag;
 import com.chunkmapper.nbt.DoubleTag;
@@ -30,6 +31,7 @@ public class PointManager {
 	private final File store;
 	public final static int RAD = 3, LON_RAD = 180 * 3600 / 512;
 	private static volatile Point currentPlayerPosition;
+	public static final String REGIONS_MADE = "regionsMade.txt";
 	
 	public static void main(String[] args) throws Exception {
 		File f = new File("/Users/matthewmolloy/Library/Application Support/minecraft/saves/Alps/chunkmapper");
@@ -45,7 +47,7 @@ public class PointManager {
 
 	public PointManager(File chunkmapperFolder, MappedSquareManager mappedSquareManager, Point rootPoint) {
 
-		store = new File(chunkmapperFolder, "regionsMade.txt");
+		store = new File(chunkmapperFolder, "REGIONS_MADE");
 		if (store.exists()) {
 			try {
 				BufferedReader reader = new BufferedReader(new FileReader(store));
@@ -57,12 +59,13 @@ public class PointManager {
 					pointsAssigned.add(p);
 					if (mappedSquareManager != null)
 						mappedSquareManager.addPoint(new Point(p.x + rootPoint.x, p.z + rootPoint.z));
+//						mappedSquareManager.addPoint(p);
 				}
 				reader.close();
 			} catch (IOException e) {
-				e.printStackTrace();
+				MyLogger.LOGGER.warning(MyLogger.printException(e));
 			} catch (NumberFormatException e) {
-				e.printStackTrace();
+				MyLogger.LOGGER.warning(MyLogger.printException(e));
 			}
 		}
 	}

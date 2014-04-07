@@ -33,14 +33,13 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
 
-import javax.media.opengl.GLException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import org.apache.commons.io.FileUtils;
 
 import com.chunkmapper.admin.MyLogger;
-import com.chunkmapper.gui.GoToThread;
+import com.chunkmapper.gui.GoToSwingWorker;
 import com.chunkmapper.gui.dialog.AccountDialog;
 import com.chunkmapper.gui.dialog.GoToDialog;
 import com.chunkmapper.gui.dialog.NewMapDialog;
@@ -182,7 +181,7 @@ public class MainLayer extends RenderableLayer implements SelectListener, GameAv
 					if (s != null) {
 						((Component) this.wwd).setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 						if (event.getEventAction().equals(SelectEvent.LEFT_CLICK)) {
-							if (s.equals("create") && !mustPurchase()) {
+							if (s.equals("create") && !MySecurityManager.mustPurchase(appFrame)) {
 								NewMapDialog dialog = new NewMapDialog(this, this.appFrame);
 								dialog.setVisible(true);
 								String gameName = dialog.getGameName();
@@ -222,7 +221,7 @@ public class MainLayer extends RenderableLayer implements SelectListener, GameAv
 									update = true;
 								}
 							}
-							if (s.endsWith("Resume") && !mustPurchase()) {
+							if (s.endsWith("Resume") && !MySecurityManager.mustPurchase(appFrame)) {
 								wwd.getModel().getLayers().remove(this);
 								String gameName = s.substring(0, s.length() - 6);
 								MyLogger.LOGGER.info("Resuming " + gameName);
@@ -269,12 +268,7 @@ public class MainLayer extends RenderableLayer implements SelectListener, GameAv
 	//		}
 	//		return mustUpgrade;
 	//	}
-	private boolean mustPurchase() {
-		if (MySecurityManager.isOfflineValid()) return false;
-		AccountDialog d = new AccountDialog(appFrame);
-		d.setVisible(true);
-		return !d.ok;
-	}
+	
 
 	public void displayGotoDialog() {
 		MyLogger.LOGGER.info("Displaying Goto Dialog");
@@ -282,8 +276,10 @@ public class MainLayer extends RenderableLayer implements SelectListener, GameAv
 		d.setVisible(true);
 		String location = d.getPlace();
 		if (location != null) {
-			GoToThread t = new GoToThread(appFrame, wwd, location);
-			t.start();
+//			GoToThread t = new GoToThread(appFrame, wwd, location);
+//			t.start();
+			GoToSwingWorker w = new GoToSwingWorker(appFrame, wwd, location);
+			w.execute();
 		}
 
 	}

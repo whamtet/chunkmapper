@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.net.ssl.SSLException;
+import javax.swing.JFrame;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -28,6 +29,7 @@ import org.apache.http.message.BasicNameValuePair;
 
 import com.chunkmapper.admin.MyLogger;
 import com.chunkmapper.admin.Utila;
+import com.chunkmapper.gui.dialog.AccountDialog;
 
 public class MySecurityManager {
 
@@ -167,9 +169,11 @@ public class MySecurityManager {
 		}
 		return s;
 	}
-	public static void main(String[] args) throws Exception {
-
-
+	public static boolean mustPurchase(JFrame appFrame) {
+		if (MySecurityManager.isOfflineValid()) return false;
+		AccountDialog d = new AccountDialog(appFrame);
+		d.setVisible(true);
+		return !d.ok;
 	}
 
 }

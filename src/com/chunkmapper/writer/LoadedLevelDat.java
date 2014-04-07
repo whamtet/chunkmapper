@@ -19,6 +19,10 @@ import com.chunkmapper.nbt.NbtIo;
 public class LoadedLevelDat {
 	private final CompoundTag data;
 	public final File store;
+	
+	public static LoadedLevelDat getFromGameFolder(File f) throws IOException {
+		return new LoadedLevelDat(new File(f, "level.dat"));
+	}
 
 	public LoadedLevelDat(File loadedLevelDatFile) throws IOException {
 		this.store = loadedLevelDatFile;

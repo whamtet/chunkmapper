@@ -20,7 +20,7 @@ public class PlayerIconManagerImpl implements PlayerIconManager {
 		this.lat = lat; this.lon = lon;
 		this.wwd = wwd;
 		layer = new IconLayer();
-		URL iconSource = PlayerIconManagerImpl.class.getResource("/images/steve2.jpeg");
+		URL iconSource = PlayerIconManagerImpl.class.getResource("/steve2.jpeg");
         icon = new UserFacingIcon(iconSource, Position.fromDegrees(lat, lon));
         layer.addIcon(icon);
         ApplicationTemplate.insertAfterPlacenames(wwd, layer);
