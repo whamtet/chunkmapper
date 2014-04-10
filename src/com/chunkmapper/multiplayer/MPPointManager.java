@@ -56,7 +56,7 @@ public class MPPointManager {
 					Point p = new Point(Integer.parseInt(s[0]), Integer.parseInt(s[1]));
 					pointsFinished.add(p);
 					pointsAssigned.add(p);
-					textDisplay.addPoint(new Point(rootPoint.x + p.x, rootPoint.z + p.z));
+					textDisplay.addFinishedPoint(new Point(rootPoint.x + p.x, rootPoint.z + p.z));
 				}
 				reader.close();
 			} catch (IOException e) {

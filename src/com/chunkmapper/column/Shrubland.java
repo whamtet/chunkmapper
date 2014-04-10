@@ -12,6 +12,7 @@ import com.chunkmapper.writer.LenteTreeWriter;
 
 public class Shrubland extends AbstractColumn {
 	public static final Globcover TYPE = Globcover.Shrubland;
+	public byte biome = Biome.Plains;
 
 	protected Shrubland(int absx, int absz,
 			HeightsReader heightsReader, int treeSpacing) {

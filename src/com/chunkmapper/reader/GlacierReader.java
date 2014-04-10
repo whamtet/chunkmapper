@@ -1,19 +1,19 @@
 package com.chunkmapper.reader;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.zip.DataFormatException;
 
+import com.chunkmapper.GameMetaInfo;
 import com.chunkmapper.Point;
+import com.chunkmapper.admin.BucketInfo;
 import com.chunkmapper.admin.OSMRouter;
+import com.chunkmapper.admin.Utila;
 import com.chunkmapper.math.Matthewmatics;
-import com.chunkmapper.parser.Nominatim;
 import com.chunkmapper.parser.OverpassObject;
 import com.chunkmapper.parser.OverpassObject.Relation;
 import com.chunkmapper.parser.OverpassObject.Way;
@@ -24,60 +24,21 @@ import com.chunkmapper.sections.RenderingSection;
 public class GlacierReader {
 	private boolean[][] hasGlacier = new boolean[512][512];
 
-	/* (non-Javadoc)
-	 * @see com.chunkmapper.reader.LakeReader#hasWaterij(int, int)
-	 */
-	public boolean hasGlacierij(int i, int j) {
-		return hasGlacier[i][j];
-	}
-	private static ArrayList<Glacier> getLakes(OverpassObject o, int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
-
-		ArrayList<Glacier> lakes = new ArrayList<Glacier>();
-		for (Way way : o.ways) {
-			if ("glacier".equals(way.map.get("natural"))) {
-				Glacier lake = new Glacier(way.points, way.bbox);
-				if (lake.isClosed()) {
-					lakes.add(lake);
-				}
-			}
-		}
-		for (Relation relation : o.relations) {
-			
-			if ("glacier".equals(relation.map.get("natural")) && "multipolygon".equals(relation.map.get("type"))) {
-				
-				ArrayList<Glacier> glaciersToJoin = new ArrayList<Glacier>();
-				for (Way way : relation.ways) {
-					glaciersToJoin.add(new Glacier(way.points, way.bbox));
-				}
-				
-				while (glaciersToJoin.size() > 0) {
-					
-					Glacier seedLake = glaciersToJoin.remove(0);
-					
-					boolean hasAdded = true;
-					while (hasAdded) {
-						hasAdded = false;
-						for (int i = 0; i < glaciersToJoin.size(); i++) {
-							if (seedLake.attach(glaciersToJoin.get(i))) {
-								glaciersToJoin.remove(i);
-								hasAdded = true;
-								i--;
-							}
-						}
-					}
-					if (seedLake.isClosed() && !seedLake.isPoint()) {
-						lakes.add(seedLake);
-					}
-				}
-			}
-		}		
-		return lakes;
+	public static void main(String[] args) throws Exception {
+		System.out.println("starting");
+		BucketInfo.initMap();
+		File f = new File(Utila.MINECRAFT_DIR, "saves/Scott Base");
+		GameMetaInfo info = new GameMetaInfo(f, 0, 0, 0);
+		int regionx = info.rootPoint.x, regionz = info.rootPoint.z - 1;
+		OverpassObject o = OSMRouter.getObject(regionx, regionz);
+		GlacierReader r = new GlacierReader(o, regionx, regionz);
+		System.out.println("done");
 	}
 
 	public GlacierReader(OverpassObject o, int regionx, int regionz) throws IOException, FileNotYetAvailableException, URISyntaxException, DataFormatException, InterruptedException {
 
 
-		ArrayList<Glacier> lakes = getLakes(o, regionx, regionz);
+		HashSet<Glacier> lakes = getLakes(o, regionx, regionz);
 
 		ArrayList<RenderingSection> sections = new ArrayList<RenderingSection>();
 		for (Glacier lake : lakes) {
@@ -134,6 +95,51 @@ public class GlacierReader {
 	private static <E> E wrappedGet(ArrayList<E> list, int i) {
 		return list.get(Matthewmatics.mod(i, list.size()));
 	}
+	public boolean hasGlacierij(int i, int j) {
+		return hasGlacier[i][j];
+	}
+	private static HashSet<Glacier> getLakes(OverpassObject o, int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
+
+		HashSet<Glacier> lakes = new HashSet<Glacier>();
+		for (Way way : o.ways) {
+			if ("glacier".equals(way.map.get("natural"))) {
+				Glacier lake = new Glacier(way.points, way.bbox);
+				if (lake.isClosed()) {
+					lakes.add(lake);
+				}
+			}
+		}
+		for (Relation relation : o.relations) {
+
+			if ("glacier".equals(relation.map.get("natural")) && "multipolygon".equals(relation.map.get("type"))) {
+				ArrayList<Glacier> glaciersToJoin = new ArrayList<Glacier>();
+				for (Way way : relation.ways) {
+					glaciersToJoin.add(new Glacier(way.points, way.bbox));
+				}
+
+				while (glaciersToJoin.size() > 0) {
+					Glacier seedLake = glaciersToJoin.remove(0);
+					boolean hasAdded;
+					do {
+						hasAdded = false;
+						for (int i = 0; i < glaciersToJoin.size(); i++) {
+							if (seedLake.attach(glaciersToJoin.get(i))) {
+
+								glaciersToJoin.remove(i);
+								hasAdded = true;
+								i--;
+							}
+						}
+					} while (hasAdded);
+					if (seedLake.isClosed() && !seedLake.isPoint()) {
+						lakes.add(seedLake);
+					}
+				}
+			}
+		}		
+		return lakes;
+	}
+
 	//	private static class MyPoint extends com.chunkmapper.Point implements Comparable<Point> {
 	//
 	//		public MyPoint(int x, int z) {
@@ -150,21 +156,21 @@ public class GlacierReader {
 	//
 	//	}
 
-//	public static void main(String[] args) throws Exception {
-//		System.out.println("starting");
-//		double[] latlon = Nominatim.getPoint("nassihorn, switzerland");
-//		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
-//		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
-//		GlacierReader reader = new GlacierReader(regionx, regionz);
-//
-//		PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(new File("/Users/matthewmolloy/python/wms/data.csv"))));
-//		for (int z = 0; z < 512; z++) {
-//			for (int x = 0; x < 512; x++) {
-//				pw.println(reader.hasGlacierij(z, x) && (z > 0 || x > 0) ? 1 : 0);
-//			}
-//		}
-//		pw.close();
-//		System.out.println("done");
-//	}
+	//	public static void main(String[] args) throws Exception {
+	//		System.out.println("starting");
+	//		double[] latlon = Nominatim.getPoint("nassihorn, switzerland");
+	//		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
+	//		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
+	//		GlacierReader reader = new GlacierReader(regionx, regionz);
+	//
+	//		PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(new File("/Users/matthewmolloy/python/wms/data.csv"))));
+	//		for (int z = 0; z < 512; z++) {
+	//			for (int x = 0; x < 512; x++) {
+	//				pw.println(reader.hasGlacierij(z, x) && (z > 0 || x > 0) ? 1 : 0);
+	//			}
+	//		}
+	//		pw.close();
+	//		System.out.println("done");
+	//	}
 
 }

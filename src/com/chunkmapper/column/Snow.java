@@ -1,13 +1,14 @@
 package com.chunkmapper.column;
 
 import com.chunkmapper.chunk.Chunk;
+import com.chunkmapper.enumeration.Biome;
 import com.chunkmapper.enumeration.Block;
 import com.chunkmapper.enumeration.Globcover;
 import com.chunkmapper.reader.HeightsReader;
 
 public class Snow extends AbstractColumn {
 	public static final Globcover TYPE = Globcover.Snow;
-
+	public byte biome = Biome.IcePlains;
 	public Snow(int absx, int absz, HeightsReader heightsReader) {
 		super(absx, absz, heightsReader);
 		// TODO Auto-generated constructor stub

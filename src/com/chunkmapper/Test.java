@@ -5,10 +5,10 @@ import java.util.TreeSet;
 
 public class Test {
 	public static void main(String[] args) throws Exception {
-		try {
-			throw new Exception();
-		} catch (Exception e) {
-			System.out.println(e.getCause());
+		String s = "Very sorry. ";
+		while (s.length() < 7988) {
+			s += "Very sorry. ";
 		}
+		System.out.println(s);
 	}
 }

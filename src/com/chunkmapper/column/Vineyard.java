@@ -1,13 +1,14 @@
 package com.chunkmapper.column;
 
 import com.chunkmapper.chunk.Chunk;
+import com.chunkmapper.enumeration.Biome;
 import com.chunkmapper.enumeration.Block;
 import com.chunkmapper.enumeration.Blocka;
 import com.chunkmapper.enumeration.DataSource;
 import com.chunkmapper.reader.HeightsReader;
 
 public class Vineyard extends AbstractColumn {
-
+	public byte biome = Biome.Plains;
 	public Vineyard(int absx, int absz, HeightsReader heightsReader) {
 		super(absx, absz, heightsReader);
 	}
@@ -23,7 +24,6 @@ public class Vineyard extends AbstractColumn {
 		if (i == 0) {
 			chunk.Blocks[h][z][x] = Block.Long_Grass.val;
 			chunk.Data[h][z][x] = DataSource.Long_Grass.val;
-			//			chunk.Data[h][z][x] = i == 1 ? DataSource.Fern.val : DataSource.Long_Grass.val; 
 		}
 
 		if (x % 3 == 0) {
@@ -36,11 +36,6 @@ public class Vineyard extends AbstractColumn {
 				chunk.Blocks[h+2][z][x] = Blocka.Leaves;
 			}
 		} else {
-			//			for (i = h; i < h + 2; i++) {
-			//				if (RANDOM.nextInt(10) == 0) {
-			//					chunk.Blocks[i][z][x] = Blocka.Leaves;
-			//				}
-			//			}
 		}
 	}
 

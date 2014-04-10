@@ -3,7 +3,7 @@
  * National Aeronautics and Space Administration.
  * All Rights Reserved.
  */
-package com.chunkmapper.layer;
+package com.chunkmapper.gui.layer;
 
 import gov.nasa.worldwind.SceneController;
 import gov.nasa.worldwind.WorldWindow;
@@ -31,10 +31,12 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.Timer;
 
+import com.chunkmapper.admin.GlobalSettings;
 import com.chunkmapper.admin.MyLogger;
 import com.chunkmapper.admin.MyLogger.SpecialLog;
+import com.chunkmapper.gui.Main;
+import com.chunkmapper.gui.dialog.AccountDialog;
 import com.chunkmapper.gui.dialog.SettingsDialog;
-import com.chunkmapper.interfaces.GlobalSettings;
 
 /**
  * Controller for onscreen view controls displayed by {@link ViewControlsLayer}.
@@ -344,6 +346,18 @@ public class ViewControlsSelectListener implements SelectListener
 //            	GoToDialog d = new GoToDialog(appFrame);
             	d.setVisible(true);
 //            	event.consume();
+            }
+            if (controlType.equals("auxiliary")) {
+//            	Main.AppFrame.addTestPath(wwd);
+//            	this.appFrame.dispose();
+//            	SimplifiedGUI.open();
+            	
+            	AccountDialog d = new AccountDialog(appFrame);
+        		d.setVisible(true);
+        		if (d.ok) {
+        			appFrame.setTitle("Chunkmapper");
+        			ViewControlsLayer.singleton.hideAuxiliaryButton();
+        		}
             }
 
             // Consume drag events, but do not consume left press events. It is not necessary to consume left press

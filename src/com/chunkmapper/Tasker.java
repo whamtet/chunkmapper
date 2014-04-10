@@ -106,6 +106,7 @@ public abstract class Tasker {
 
 						} catch (Error e) {
 							MyLogger.LOGGER.severe(MyLogger.printException(e));
+							MyLogger.LOGGER.severe(task.toString());
 						}
 					}
 				}

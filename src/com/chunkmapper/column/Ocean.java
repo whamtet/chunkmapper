@@ -6,7 +6,7 @@ import com.chunkmapper.enumeration.Globcover;
 
 public class Ocean extends AbstractColumn {
 	public static final Globcover TYPE = Globcover.Water;
-
+	
 	public Ocean(int absx, int absz) {
 		super(absx, absz);
 		super.HAS_WATER = true;

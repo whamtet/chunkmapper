@@ -3,7 +3,7 @@
  * National Aeronautics and Space Administration.
  * All Rights Reserved.
  */
-package com.chunkmapper.layer;
+package com.chunkmapper.gui.layer;
 
 import gov.nasa.worldwind.View;
 import gov.nasa.worldwind.WorldWindow;
@@ -38,12 +38,11 @@ import javax.swing.JOptionPane;
 
 import org.apache.commons.io.FileUtils;
 
+import com.chunkmapper.admin.GlobalSettings;
 import com.chunkmapper.admin.MyLogger;
 import com.chunkmapper.gui.GoToSwingWorker;
-import com.chunkmapper.gui.dialog.AccountDialog;
 import com.chunkmapper.gui.dialog.GoToDialog;
 import com.chunkmapper.gui.dialog.NewMapDialog;
-import com.chunkmapper.interfaces.GlobalSettings;
 import com.chunkmapper.security.MySecurityManager;
 
 public class MainLayer extends RenderableLayer implements SelectListener, GameAvailableInterface
@@ -181,7 +180,7 @@ public class MainLayer extends RenderableLayer implements SelectListener, GameAv
 					if (s != null) {
 						((Component) this.wwd).setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 						if (event.getEventAction().equals(SelectEvent.LEFT_CLICK)) {
-							if (s.equals("create") && !MySecurityManager.mustPurchase(appFrame)) {
+							if (s.equals("create") && (takenGames.size() < MySecurityManager.ALLOWED_GAMES || !MySecurityManager.mustPurchase(appFrame))) {
 								NewMapDialog dialog = new NewMapDialog(this, this.appFrame);
 								dialog.setVisible(true);
 								String gameName = dialog.getGameName();
@@ -221,7 +220,7 @@ public class MainLayer extends RenderableLayer implements SelectListener, GameAv
 									update = true;
 								}
 							}
-							if (s.endsWith("Resume") && !MySecurityManager.mustPurchase(appFrame)) {
+							if (s.endsWith("Resume") && (takenGames.size() < MySecurityManager.ALLOWED_GAMES + 1 || !MySecurityManager.mustPurchase(appFrame))) {
 								wwd.getModel().getLayers().remove(this);
 								String gameName = s.substring(0, s.length() - 6);
 								MyLogger.LOGGER.info("Resuming " + gameName);

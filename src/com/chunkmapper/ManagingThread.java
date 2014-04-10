@@ -12,13 +12,12 @@ import java.util.zip.DataFormatException;
 
 import org.apache.commons.io.FileUtils;
 
+import com.chunkmapper.admin.GlobalSettings;
 import com.chunkmapper.admin.MyLogger;
 import com.chunkmapper.admin.OSMRouter;
 import com.chunkmapper.binaryparser.OsmosisParser;
-import com.chunkmapper.gui.GlobalSettingsImpl;
 import com.chunkmapper.gui.dialog.NoNetworkDialog;
 import com.chunkmapper.interfaces.GeneratingLayer;
-import com.chunkmapper.interfaces.GlobalSettings;
 import com.chunkmapper.interfaces.MappedSquareManager;
 import com.chunkmapper.interfaces.PlayerIconManager;
 import com.chunkmapper.interfaces.PointManager;
@@ -27,6 +26,7 @@ import com.chunkmapper.parser.Nominatim;
 import com.chunkmapper.rail.HeightsCache;
 import com.chunkmapper.reader.HeightsReader;
 import com.chunkmapper.reader.HeightsReaderS3;
+import com.chunkmapper.security.MySecurityManager;
 import com.chunkmapper.writer.LevelDat;
 import com.chunkmapper.writer.RegionWriter;
 
@@ -44,7 +44,7 @@ public class ManagingThread extends Thread {
 	public static void main(String[] args) throws MalformedURLException, URISyntaxException, IOException {
 		double[] latlon = Nominatim.getPoint("Hollywood");
 		File gameFolder = new File("/Users/matthewmolloy/Library/Application Support/minecraft/saves/Hollywood");
-		GlobalSettings globalSettings = new GlobalSettingsImpl();
+		GlobalSettings globalSettings = new GlobalSettings();
 		ManagingThread t = new ManagingThread(latlon[0], latlon[1], gameFolder, null, null, globalSettings, null);
 		t.run();
 	}
@@ -132,9 +132,12 @@ public class ManagingThread extends Thread {
 			String gameName = gameFolder.getName();
 			loadedLevelDat.setName(gameName);
 			//need to set altitude correctly.
-			int altitude;
+			int absx = 0, absz = 0, altitude;
 			try {
-				int absx = (int) (lon * 3600), absz = (int) (-lat * 3600);
+				absx = (int) (lon * 3600);
+				absz = (int) (-lat * 3600);
+				if (!MySecurityManager.offlineValid)
+					absz = Matthewmatics.div(absz, 128) * 128 + 64;
 				int regionx = Matthewmatics.div(absx, 512), regionz = Matthewmatics.div(absz, 512);
 				HeightsReader heightsReader = new HeightsReaderS3(regionx, regionz, globalSettings.getVerticalExaggeration());
 				altitude = heightsReader.getHeightxz(absx, absz) + 20;
@@ -147,7 +150,7 @@ public class ManagingThread extends Thread {
 				MyLogger.LOGGER.warning(MyLogger.printException(e));
 				altitude = 250;
 			}
-			loadedLevelDat.setPlayerPosition(lon * 3600 - gameMetaInfo.rootPoint.x * 512, altitude, - lat * 3600 - gameMetaInfo.rootPoint.z * 512);
+			loadedLevelDat.setPlayerPosition(absx - gameMetaInfo.rootPoint.x * 512, altitude, absz - gameMetaInfo.rootPoint.z * 512);
 			loadedLevelDat.save();
 		} catch (IOException e) {
 			MyLogger.LOGGER.warning((MyLogger.printException(e)));
@@ -161,7 +164,7 @@ public class ManagingThread extends Thread {
 		try {
 			PointManager pointManager = new PointManager(chunkmapperDir, mappedSquareManager, gameMetaInfo.rootPoint);
 			regionWriter = new RegionWriter(pointManager, gameMetaInfo.rootPoint, regionFolder, 
-					gameMetaInfo, mappedSquareManager, gameMetaInfo.verticalExaggeration);
+					gameMetaInfo, mappedSquareManager, globalSettings);
 
 			MyLogger.LOGGER.info("truly starting");
 			//now we loop for ETERNITY!!!

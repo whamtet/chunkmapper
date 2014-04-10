@@ -68,7 +68,7 @@ public class ArtifactWriter {
 		addH(chunk, h, 15, 5);
 		//add signpost
 		if (rugbyField.name != null) {
-			ArtifactWriter.addSign(chunk, h, 1, 1, rugbyField.name.split(" "));
+			ArtifactWriter.addSign(chunk, h, 1, 1, rugbyField.name.split(" "), (byte) 0);
 		}
 	}
 	private static void addArch(Chunk chunk, int x0, int z0, int h, boolean lastArch) {
@@ -216,6 +216,9 @@ public class ArtifactWriter {
 		}
 	}
 	public static void addSign(Chunk chunk, int h, int z, int x, String[] lines) {
+		addSign(chunk, h, z, x, lines, (byte) 0);
+	}
+	public static void addSign(Chunk chunk, int h, int z, int x, String[] lines, byte orientation) {
 		x += chunk.xr;
 		z += chunk.zr;
 		CompoundTag sign = new CompoundTag();
@@ -227,6 +230,7 @@ public class ArtifactWriter {
 		x = Matthewmatics.mod(x, 16);
 		z = Matthewmatics.mod(z, 16);
 		chunk.Blocks[h][z][x] = Block.Sign_Placed_Floor.val;
+		chunk.Data[h][z][x] = orientation;
 
 		String Text1 = lines.length > 0 ? lines[0] : "";
 		String Text2 = lines.length > 1 ? lines[1] : "";
@@ -739,7 +743,7 @@ public class ArtifactWriter {
 		}
 		//add hut name
 		if (name != null) {
-			addSign(chunk, h, 2, 2, name.split(" "));
+			addSign(chunk, h, 2, 2, name.split(" "), (byte) 0);
 		}
 	}
 	private static int getMeanHeight(Chunk chunk, int x0, int z0, int width, int length) {

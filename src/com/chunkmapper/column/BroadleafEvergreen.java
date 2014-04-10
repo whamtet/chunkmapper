@@ -3,6 +3,7 @@ package com.chunkmapper.column;
 import java.io.IOException;
 
 import com.chunkmapper.chunk.Chunk;
+import com.chunkmapper.enumeration.Biome;
 import com.chunkmapper.enumeration.Globcover;
 import com.chunkmapper.enumeration.LenteTree;
 import com.chunkmapper.math.StaticSobol;
@@ -11,7 +12,7 @@ import com.chunkmapper.writer.LenteTreeWriter;
 
 public class BroadleafEvergreen extends AbstractColumn {
 	public static final Globcover TYPE = Globcover.BroadleafEvergreen;
-	
+	public byte biome = Biome.Jungle;
 	public BroadleafEvergreen(int absx, int absz, HeightsReader heightsReader) {
 		super(absx, absz, heightsReader);
 		super.IS_FOREST = true;

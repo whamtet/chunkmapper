@@ -32,9 +32,9 @@ public class XapiLakeReader implements LakeReader {
 	public boolean hasWaterij(int i, int j) {
 		return hasWater[i][j];
 	}
-	private static ArrayList<Lake> getLakes(OverpassObject o, int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
+	private static HashSet<Lake> getLakes(OverpassObject o, int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
 
-		ArrayList<Lake> lakes = new ArrayList<Lake>();
+		HashSet<Lake> lakes = new HashSet<Lake>();
 		for (Way way : o.ways) {
 			if ("water".equals(way.map.get("natural"))) {
 				Lake lake = new Lake(way.points, way.bbox);
@@ -75,41 +75,7 @@ public class XapiLakeReader implements LakeReader {
 	public XapiLakeReader(OverpassObject o, int regionx, int regionz) throws IOException, FileNotYetAvailableException, URISyntaxException, DataFormatException, InterruptedException {
 
 
-		ArrayList<Lake> lakes = getLakes(o, regionx, regionz);
-
-		//		ArrayList<Lake> openLakes = new ArrayList<Lake>(), closedLakes = new ArrayList<Lake>();
-		//		for (Lake lake : lakes) {
-		//			if (lake.isClosed()) {
-		//				closedLakes.add(lake);
-		//			} else {
-		//				openLakes.add(lake);
-		//			}
-		//		}
-		//		outer: for (Lake lakeToClose : openLakes) {
-		//			for (Lake closedLake : closedLakes) {
-		//				if (closedLake.contains(lakeToClose)) {
-		//					continue outer;
-		//				}
-		//			}
-		//			int i;
-		//			for (i = 0; lakeToClose.isOpen() && i < 100; i++) {
-		//				Point endPoint = lakeToClose.getEndPoint();
-		//				int regionxd = Matthewmatics.div(endPoint.x, 512), regionzd = Matthewmatics.div(endPoint.z, 512);
-		//				Collection<Lake> lakes2 = regionxd == regionx && regionzd == regionz ?
-		//						openLakes : getLakes(regionxd, regionzd);
-		//				for (Lake lake : lakes2) {
-		//					lakeToClose.connect(lake);
-		//					if (lakeToClose.isClosed()) {
-		//						closedLakes.add(lakeToClose);
-		//						break;
-		//					}
-		//				}
-		//			}
-		//			if (i == 100) {
-		//				System.out.println("quitting");
-		//				return;
-		//			}
-		//		}
+		HashSet<Lake> lakes = getLakes(o, regionx, regionz);
 
 		ArrayList<RenderingSection> sections = new ArrayList<RenderingSection>();
 		for (Lake lake : lakes) {

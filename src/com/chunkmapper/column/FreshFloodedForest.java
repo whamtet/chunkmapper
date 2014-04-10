@@ -3,6 +3,7 @@ package com.chunkmapper.column;
 import java.io.IOException;
 
 import com.chunkmapper.chunk.Chunk;
+import com.chunkmapper.enumeration.Biome;
 import com.chunkmapper.enumeration.Block;
 import com.chunkmapper.enumeration.Globcover;
 import com.chunkmapper.enumeration.LenteTree;
@@ -13,6 +14,7 @@ import com.chunkmapper.writer.LenteTreeWriter;
 public class FreshFloodedForest extends AbstractColumn {
 	public static final Globcover TYPE = Globcover.FreshFloodedForest;
 	public final boolean hasWater;
+	public byte biome = Biome.Swampland;
 
 	public FreshFloodedForest(int absx, int absz, HeightsReader heightsReader) {
 		super(absx, absz, heightsReader);

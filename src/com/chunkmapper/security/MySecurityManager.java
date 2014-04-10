@@ -34,10 +34,11 @@ import com.chunkmapper.gui.dialog.AccountDialog;
 public class MySecurityManager {
 
 	private static final File keyFile = new File(Utila.CACHE, "key");
-
+	public static final int ALLOWED_GAMES = Integer.MAX_VALUE / 2;
 	public static enum Status {
 		OK, HACKED, UNPAID, INVALID_PW, SSL_EXCEPTION;
 	}
+	public static boolean offlineValid;
 
 	private static String getRawKey() {
 		InetAddress ip = null;
@@ -151,10 +152,15 @@ public class MySecurityManager {
 			return null;
 		}
 	}
+//	public static boolean setOfflineValid() {
+//		offlineValid = isOfflineValid();
+//		return offlineValid;
+//	}
 	public static boolean isOfflineValid() {
 		try {
 			String key = readEntireFile().trim();
-			return key.equals(getKey());
+			offlineValid = key.equals(getKey());
+			return offlineValid;
 		} catch (IOException e) {}
 		return false;
 	}
@@ -166,6 +172,7 @@ public class MySecurityManager {
 		MyLogger.LOGGER.info("Status is " + s.toString());
 		if (Status.OK.equals(s)) {
 			spit(getKey());
+			offlineValid = true;
 		}
 		return s;
 	}

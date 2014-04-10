@@ -11,17 +11,40 @@ import java.util.Stack;
 import java.util.zip.DataFormatException;
 
 import com.chunkmapper.Point;
+import com.chunkmapper.admin.BucketInfo;
+import com.chunkmapper.admin.OSMRouter;
 import com.chunkmapper.parser.CoastlineParser;
 import com.chunkmapper.parser.Nominatim;
 import com.chunkmapper.parser.OverpassObject;
 import com.chunkmapper.sections.Coastline;
 
 public class XapiCoastlineReader {
-	private int[][] data = new int[512][512];
+	public int[][] data = new int[512][512];
 	private static final int BAND_WIDTH = 5;
 	private static final int COAST = BAND_WIDTH + 2, DOWN_COAST = -BAND_WIDTH - 2, UP_COAST = BAND_WIDTH + 3;
 	private static final int FINAL_COAST = BAND_WIDTH + 4;
 	private static final int FORESHORE = BAND_WIDTH + 5;
+	
+	public static void main(String[] args) throws Exception {
+		BucketInfo.initMap();
+		double[] latlon = Nominatim.getPoint("Blenheim, nz");
+		int regionx = (int) Math.floor(latlon[1] * 3600 / 512)+2;
+		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
+		GlobcoverReader coverReader = new GlobcoverReaderImpl2(regionx, regionz);
+		System.out.println(coverReader.mostlyLand());
+		OverpassObject o = OSMRouter.getObject(regionx, regionz);
+		XapiCoastlineReader reader = new XapiCoastlineReader(o, regionx, regionz, coverReader);
+		
+//		PrintWriter pw = new PrintWriter((new FileWriter("/Users/matthewmolloy/python/plot2d/data.csv")));
+//		for (int i = 0; i < 512; i++) {
+//			for (int j = 0; j < 512; j++) {
+//				pw.println(i == 0 && j == 0 ? 0 : reader.data[i][j]);
+//			}
+//		}
+//		pw.close();
+		reader.print(new File("/Users/matthewmolloy/python/plot2d/data.csv"));
+		System.out.println("done");
+	}
 
 	public boolean isCoastij(int i, int j) {
 		return data[i][j] == FINAL_COAST;
@@ -36,91 +59,12 @@ public class XapiCoastlineReader {
 	public int getValueij(int i, int j) {
 		return data[i][j];
 	}
-	private static void interpolate(int[][] mask, Point p1, Point p2, int regionx, int regionz, int fill, int endFill) {
-		int x0 = p1.x - regionx*512, z0 = p1.z - regionz*512;
-		int x2 = p2.x - regionx*512, z2 = p2.z - regionz*512;
 
-		int xstride = x2 - x0, zstride = z2 - z0;
-		if (xstride == 0 && zstride == 0) {
-			if (z0 >= 0 && x0 >= 0 && z0 < 512 && x0 < 512)
-				mask[z0][x0] = endFill;
-			return;
-		}
-		int width = xstride >= 0 ? xstride : -xstride;
-		int height = zstride >= 0 ? zstride : -zstride;
-		int xstep = xstride >= 0 ? 1 : -1;
-		int zstep = zstride >= 0 ? 1 : -1;
-
-		if (width >= height) {
-			for (int i = 0; i <= width; i++) {
-				int x = x0 + i*xstep;
-				int z = z0 + i * zstride / width;
-				if (z >= 0 && x >= 0 && z < 512 && x < 512)
-					mask[z][x] = i == 0 || i == width ? endFill : fill;
-			}
-		} else {
-			for (int i = 0; i <= height; i++) {
-				int x = x0 + i * xstride / height;
-				int z = z0 + i*zstep;
-				if (z >= 0 && x >= 0 && z < 512 && x < 512)
-					mask[z][x] = i == 0 || i == height ? endFill : fill;
-			}
-		}
-	}
-	private static void floodFill(int[][] data, int i1, int j1, int fill, int target) {
-		// data == hasLand
-		int h = data.length;
-		int w = data[0].length;
-
-		Stack<Integer> is = new Stack<Integer>();
-		Stack<Integer> js = new Stack<Integer>();
-		is.add(i1);
-		js.add(j1);
-
-		while (is.size() > 0) {
-			int i = is.pop();
-			int j = js.pop();
-
-			int jd;
-			for (jd = j; jd < w && data[i][jd] == target; jd++) {
-				data[i][jd] = fill;
-				if (i > 0 && data[i-1][jd] == target) {
-					is.add(i-1);
-					js.add(jd);
-				}
-				if (i < h-1 && data[i+1][jd] == target) {
-					is.add(i+1);
-					js.add(jd);
-				}
-			}
-			for (jd = j - 1; jd >= 0 && data[i][jd] == target; jd--) {
-				data[i][jd] = fill;
-				if (i > 0 && data[i-1][jd] == target) {
-					is.add(i-1);
-					js.add(jd);
-				}
-				if (i < h-1 && data[i+1][jd] == target) {
-					is.add(i+1);
-					js.add(jd);
-				}
-			}
-		}
-	}
 	public XapiCoastlineReader(OverpassObject o2, int regionx, int regionz, GlobcoverReader reader) throws IOException, URISyntaxException, DataFormatException, InterruptedException {
 
 		Collection<Coastline> coastlines = CoastlineParser.getCoastlines(o2, regionx, regionz);
 		//1062, 237
-		if (coastlines.size() == 0 || regionx == 1062 && regionz == 237) {
-			int fill = reader.mostlyLand() ? 1 : -1;
-			if (regionx == 1062 && regionz == 237)
-				fill = 1;
-			for (int i = 0; i < 512; i++) {
-				for (int j = 0; j < 512; j++) {
-					data[i][j] = fill;
-				}
-			}
-			return;
-		}
+		
 		for (Coastline coastline : coastlines) {
 			int limit = coastline.points.size() - 1;
 			for (int i = 0; i < limit; i++) {
@@ -133,6 +77,26 @@ public class XapiCoastlineReader {
 				}
 				interpolate(data, p1, p2, regionx, regionz, fill, COAST);
 			}
+		}
+		boolean hasCoastline = false;
+		outer: for (int i = 0; i < 512; i++) {
+			for (int j = 0; j < 512; j++) {
+				if (data[i][j] != 0) {
+					hasCoastline = true;
+					break outer;
+				}
+			}
+		}
+		if (!hasCoastline || regionx == 1062 && regionz == 237) {
+			int fill = reader.mostlyLand() ? 1 : -1;
+			if (regionx == 1062 && regionz == 237)
+				fill = 1;
+			for (int i = 0; i < 512; i++) {
+				for (int j = 0; j < 512; j++) {
+					data[i][j] = fill;
+				}
+			}
+			return;
 		}
 		for (int i = 0; i < 512; i++) {
 			for (int j = 0; j < 512; j++) {
@@ -208,6 +172,76 @@ public class XapiCoastlineReader {
 			}
 		}
 		pw.close();
+	}
+	private static void interpolate(int[][] mask, Point p1, Point p2, int regionx, int regionz, int fill, int endFill) {
+		int x0 = p1.x - regionx*512, z0 = p1.z - regionz*512;
+		int x2 = p2.x - regionx*512, z2 = p2.z - regionz*512;
+
+		int xstride = x2 - x0, zstride = z2 - z0;
+		if (xstride == 0 && zstride == 0) {
+			if (z0 >= 0 && x0 >= 0 && z0 < 512 && x0 < 512)
+				mask[z0][x0] = endFill;
+			return;
+		}
+		int width = xstride >= 0 ? xstride : -xstride;
+		int height = zstride >= 0 ? zstride : -zstride;
+		int xstep = xstride >= 0 ? 1 : -1;
+		int zstep = zstride >= 0 ? 1 : -1;
+
+		if (width >= height) {
+			for (int i = 0; i <= width; i++) {
+				int x = x0 + i*xstep;
+				int z = z0 + i * zstride / width;
+				if (z >= 0 && x >= 0 && z < 512 && x < 512)
+					mask[z][x] = i == 0 || i == width ? endFill : fill;
+			}
+		} else {
+			for (int i = 0; i <= height; i++) {
+				int x = x0 + i * xstride / height;
+				int z = z0 + i*zstep;
+				if (z >= 0 && x >= 0 && z < 512 && x < 512)
+					mask[z][x] = i == 0 || i == height ? endFill : fill;
+			}
+		}
+	}
+	private static void floodFill(int[][] data, int i1, int j1, int fill, int target) {
+		// data == hasLand
+		int h = data.length;
+		int w = data[0].length;
+
+		Stack<Integer> is = new Stack<Integer>();
+		Stack<Integer> js = new Stack<Integer>();
+		is.add(i1);
+		js.add(j1);
+
+		while (is.size() > 0) {
+			int i = is.pop();
+			int j = js.pop();
+
+			int jd;
+			for (jd = j; jd < w && data[i][jd] == target; jd++) {
+				data[i][jd] = fill;
+				if (i > 0 && data[i-1][jd] == target) {
+					is.add(i-1);
+					js.add(jd);
+				}
+				if (i < h-1 && data[i+1][jd] == target) {
+					is.add(i+1);
+					js.add(jd);
+				}
+			}
+			for (jd = j - 1; jd >= 0 && data[i][jd] == target; jd--) {
+				data[i][jd] = fill;
+				if (i > 0 && data[i-1][jd] == target) {
+					is.add(i-1);
+					js.add(jd);
+				}
+				if (i < h-1 && data[i+1][jd] == target) {
+					is.add(i+1);
+					js.add(jd);
+				}
+			}
+		}
 	}
 
 //	public static void main(String[] args) throws Exception {

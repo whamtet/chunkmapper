@@ -1,11 +1,12 @@
 package com.chunkmapper.column;
 
+import com.chunkmapper.enumeration.Biome;
 import com.chunkmapper.enumeration.Globcover;
 import com.chunkmapper.reader.HeightsReader;
 
 public class GrassWithForestShrubland extends MixedBroadNeedleleaf {
 	public static final Globcover TYPE = Globcover.GrassWithForestShrubland;
-
+	public byte biome = Biome.Plains;
 	public GrassWithForestShrubland(int absx, int absz,
 			HeightsReader heightsReader) {
 		super(absx, absz, heightsReader, 12);

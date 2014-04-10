@@ -30,10 +30,11 @@ import com.chunkmapper.admin.PreferenceManager;
 public class NoPurchaseDialog extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
-	private JCheckBox badInterface;
+	private JCheckBox tooSlow;
 	private JCheckBox cantpay;
 	private JCheckBox dontwanttopay;
 	public boolean submitted;
+	private JCheckBox chckbxTheMapsWere;
 	
 
 	/**
@@ -52,9 +53,11 @@ public class NoPurchaseDialog extends JDialog {
 	private void submitFeedback() {
 		submitted = true;
 		ArrayList<NameValuePair> l = new ArrayList<NameValuePair>();
-		l.add(new BasicNameValuePair("bad-interface", "" + badInterface.isSelected()));
+		l.add(new BasicNameValuePair("too-slow", "" + tooSlow.isSelected()));
 		l.add(new BasicNameValuePair("cant-pay", "" + cantpay.isSelected()));
 		l.add(new BasicNameValuePair("dont-want-to-pay", "" + dontwanttopay.isSelected()));
+		l.add(new BasicNameValuePair("not-interesting-enough", "" + chckbxTheMapsWere.isSelected()));
+		l.add(new BasicNameValuePair("version", "2"));
 		FeedbackManager.submitFeedback(l);
 	}
 	public NoPurchaseDialog() {
@@ -69,18 +72,20 @@ public class NoPurchaseDialog extends JDialog {
 		});
 		setTitle("Feedback");
 		setResizable(false);
-		setBounds(100, 100, 524, 198);
+		setBounds(100, 100, 524, 233);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 
 		JLabel lblPleaseHelpMake = new JLabel("Please tell us why you didn't purchase Chunkmapper (anonymous)");
 
-		badInterface = new JCheckBox("Interface not working");
+		tooSlow = new JCheckBox("It made my computer slow");
 
 		cantpay = new JCheckBox("I have no credit card");
 
 		dontwanttopay = new JCheckBox("Too expensive");
+		
+		chckbxTheMapsWere = new JCheckBox("The maps were not interesting enough");
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
 		gl_contentPanel.setHorizontalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
@@ -88,10 +93,11 @@ public class NoPurchaseDialog extends JDialog {
 					.addContainerGap()
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
 						.addComponent(lblPleaseHelpMake)
-						.addComponent(badInterface)
+						.addComponent(tooSlow)
 						.addComponent(cantpay)
-						.addComponent(dontwanttopay))
-					.addContainerGap(177, Short.MAX_VALUE))
+						.addComponent(dontwanttopay)
+						.addComponent(chckbxTheMapsWere))
+					.addContainerGap(92, Short.MAX_VALUE))
 		);
 		gl_contentPanel.setVerticalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
@@ -99,12 +105,14 @@ public class NoPurchaseDialog extends JDialog {
 					.addContainerGap()
 					.addComponent(lblPleaseHelpMake)
 					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(badInterface)
+					.addComponent(tooSlow)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(cantpay)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(dontwanttopay)
-					.addContainerGap(258, Short.MAX_VALUE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(chckbxTheMapsWere)
+					.addContainerGap(18, Short.MAX_VALUE))
 		);
 		contentPanel.setLayout(gl_contentPanel);
 		{

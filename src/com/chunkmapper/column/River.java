@@ -1,13 +1,14 @@
 package com.chunkmapper.column;
 
 import com.chunkmapper.chunk.Chunk;
+import com.chunkmapper.enumeration.Biome;
 import com.chunkmapper.enumeration.Block;
 import com.chunkmapper.enumeration.Globcover;
 import com.chunkmapper.reader.HeightsReader;
 
 public class River extends AbstractColumn {
 	public static final Globcover TYPE = Globcover.Water;
-
+	public byte biome = Biome.River;
 	public River(int absx, int absz, HeightsReader heightsReader) {
 		
 		super(absx, absz, heightsReader);

@@ -1,6 +1,7 @@
 package com.chunkmapper.column;
 
 import com.chunkmapper.chunk.Chunk;
+import com.chunkmapper.enumeration.Biome;
 import com.chunkmapper.enumeration.Block;
 import com.chunkmapper.enumeration.DataSource;
 import com.chunkmapper.enumeration.Globcover;
@@ -12,6 +13,7 @@ public class SalineFloodedForest extends AbstractColumn {
 	public static final Globcover TYPE = Globcover.SalineFloodedForest;
 	public final boolean hasWater;
 	private final int treeHeight;
+	public byte biome = Biome.Swampland;
 
 	public SalineFloodedForest(int absx, int absz, HeightsReader heightsReader) {
 		super(absx, absz, heightsReader);

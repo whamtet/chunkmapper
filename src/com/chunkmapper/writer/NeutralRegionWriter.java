@@ -44,11 +44,11 @@ public class NeutralRegionWriter extends Tasker {
 		int regionx = task.x + rootPoint.x, regionz = task.z + rootPoint.z;
 
 		File f = new File(regionFolder, "r." + a + "." + b + ".mca");
-		GlobcoverManager coverManager = new GlobcoverManager(regionx, regionz, verticalExaggeration);
+		GlobcoverManager coverManager = new GlobcoverManager(regionx, regionz, verticalExaggeration, false);
 
 		if (coverManager.allWater) {
 			pointManager.updateStore(task);
-			mappedSquareManager.addPoint(new Point(task.x + rootPoint.x, task.z + rootPoint.z));
+			mappedSquareManager.addFinishedPoint(new Point(task.x + rootPoint.x, task.z + rootPoint.z));
 			return;
 		}
 
@@ -73,7 +73,7 @@ public class NeutralRegionWriter extends Tasker {
 
 		pointManager.updateStore(task);
 		gameMetaInfo.incrementChunksMade();
-		mappedSquareManager.addPoint(new Point(task.x + rootPoint.x, task.z + rootPoint.z));
+		mappedSquareManager.addFinishedPoint(new Point(task.x + rootPoint.x, task.z + rootPoint.z));
 	}
 
 }

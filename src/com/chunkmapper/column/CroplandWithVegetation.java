@@ -3,6 +3,7 @@ package com.chunkmapper.column;
 import java.io.IOException;
 
 import com.chunkmapper.chunk.Chunk;
+import com.chunkmapper.enumeration.Biome;
 import com.chunkmapper.enumeration.Globcover;
 import com.chunkmapper.enumeration.LenteTree;
 import com.chunkmapper.math.StaticSobol;
@@ -14,6 +15,7 @@ public class CroplandWithVegetation extends AbstractColumn {
 	public static final int SHRUB = 0, SAVANNAH_TREE = 1;
 	public final int treeType;
 	public final byte cropType;
+	public byte biome = Biome.Plains;
 	public CroplandWithVegetation(int absx, int absz, byte cropType, HeightsReader heightsReader) {
 		this(absx, absz, cropType, heightsReader, 10);
 	}

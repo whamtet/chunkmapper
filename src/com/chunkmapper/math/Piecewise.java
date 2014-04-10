@@ -3,6 +3,12 @@ package com.chunkmapper.math;
 import java.util.ArrayList;
 
 public class Piecewise {
+	
+	public static class PiecewiseException extends RuntimeException {
+		public PiecewiseException(String s) {
+			super(s);
+		}
+	}
 
 	private ArrayList<Integer> xs = new ArrayList<Integer>();
 	private ArrayList<Integer> ys = new ArrayList<Integer>();
@@ -29,7 +35,7 @@ public class Piecewise {
 		for (int i = 0; i < xs.size() - 1; i++) {
 			if (xs.get(i) <= x && x <= xs.get(i + 1)) {
 				double delx = x - xs.get(i);
-				double dely = ys.get(i + 1) - ys.get(i);
+				int dely = ys.get(i + 1) - ys.get(i);
 				return ys.get(i) + delx*dely/(xs.get(i+1) - xs.get(i));
 			}
 		}
@@ -49,15 +55,5 @@ public class Piecewise {
 		}
 		return ys.get(ys.size()-1);
 	}
-//	public static void main(String[] args) {
-//		Piecewise p = new Piecewise();
-//		p.addControlPoint(0, 0);
-//		p.addControlPoint(3, 3);
-//		p.addControlPoint(5, 3);
-//		p.addControlPoint(7, 0);
-//		for (int i = -1; i < 20; i++) {
-//			System.out.println((i * 0.5) + ":" + p.interpolateDouble(i*0.5));
-//		}
-//	}
 
 }

@@ -32,6 +32,7 @@ public class PointManager {
 	public final static int RAD = 3, LON_RAD = 180 * 3600 / 512;
 	private static volatile Point currentPlayerPosition;
 	public static final String REGIONS_MADE = "regionsMade.txt";
+	private final MappedSquareManager mappedSquareManager;
 	
 	public static void main(String[] args) throws Exception {
 		File f = new File("/Users/matthewmolloy/Library/Application Support/minecraft/saves/Alps/chunkmapper");
@@ -46,8 +47,8 @@ public class PointManager {
 	}
 
 	public PointManager(File chunkmapperFolder, MappedSquareManager mappedSquareManager, Point rootPoint) {
-
-		store = new File(chunkmapperFolder, "REGIONS_MADE");
+		this.mappedSquareManager = mappedSquareManager;
+		store = new File(chunkmapperFolder, "regionsMade.txt");
 		if (store.exists()) {
 			try {
 				BufferedReader reader = new BufferedReader(new FileReader(store));
@@ -58,7 +59,7 @@ public class PointManager {
 					pointsFinished.add(p);
 					pointsAssigned.add(p);
 					if (mappedSquareManager != null)
-						mappedSquareManager.addPoint(new Point(p.x + rootPoint.x, p.z + rootPoint.z));
+						mappedSquareManager.addFinishedPoint(new Point(p.x + rootPoint.x, p.z + rootPoint.z));
 //						mappedSquareManager.addPoint(p);
 				}
 				reader.close();
@@ -124,10 +125,10 @@ public class PointManager {
 		int regionx0 = Matthewmatics.div(playerPosition.x, 512);
 		int regionz0 = Matthewmatics.div(playerPosition.z, 512);
 
-		return getSurroundingPoints(regionx0, regionz0);
+		return getSurroundingPoints(regionx0, regionz0, rootPoint);
 	}
 
-	private HashSet<Point> getSurroundingPoints(int regionx0, int regionz0) {
+	private HashSet<Point> getSurroundingPoints(int regionx0, int regionz0, Point rootPoint) {
 
 		HashSet<Point> newPoints = new HashSet<Point>();
 		int regionx1 = regionx0 - RAD, regionx2 = regionx0 + RAD;
@@ -148,6 +149,7 @@ public class PointManager {
 		}
 		for (Point p : newPoints) {
 			pointsAssigned.add(p);
+			mappedSquareManager.addUnfinishedPoint(new Point(p.x + rootPoint.x, p.z + rootPoint.z));
 		}
 		return newPoints;
 	}

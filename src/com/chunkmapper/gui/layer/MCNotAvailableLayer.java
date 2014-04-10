@@ -3,7 +3,7 @@
  * National Aeronautics and Space Administration.
  * All Rights Reserved.
  */
-package com.chunkmapper.layer;
+package com.chunkmapper.gui.layer;
 
 import gov.nasa.worldwind.WorldWindow;
 import gov.nasa.worldwind.avlist.AVKey;
@@ -33,10 +33,9 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import com.chunkmapper.admin.GlobalSettings;
 import com.chunkmapper.admin.Utila;
 import com.chunkmapper.gui.Main;
-import com.chunkmapper.gui.MinecraftInstallFileFilter;
-import com.chunkmapper.interfaces.GlobalSettings;
 
 public class MCNotAvailableLayer extends RenderableLayer implements SelectListener
 {

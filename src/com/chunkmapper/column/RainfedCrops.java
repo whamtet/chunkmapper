@@ -18,6 +18,7 @@ public class RainfedCrops extends AbstractColumn {
 	public static final Globcover TYPE = Globcover.RainfedCrops;
 	//	public final byte cropType;
 	public final FarmType farmType;
+	public byte biome = Biome.Plains;
 	
 	public RainfedCrops(int absx, int absz, FarmType farmType, HeightsReader heightsReader) {
 		super(absx, absz, heightsReader);

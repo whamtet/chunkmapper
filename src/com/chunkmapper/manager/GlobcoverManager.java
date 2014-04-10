@@ -24,6 +24,7 @@ import com.chunkmapper.column.Grassland;
 import com.chunkmapper.column.IrrigatedCrops;
 import com.chunkmapper.column.Lake;
 import com.chunkmapper.column.MixedBroadNeedleleaf;
+import com.chunkmapper.column.NoData;
 import com.chunkmapper.column.Ocean;
 import com.chunkmapper.column.OpenBroadleafDeciduous;
 import com.chunkmapper.column.OpenNeedleleaf;
@@ -66,6 +67,7 @@ import com.chunkmapper.reader.XapiHighwayReader;
 import com.chunkmapper.reader.XapiLakeReader;
 import com.chunkmapper.reader.XapiRailReader;
 import com.chunkmapper.reader.XapiRiverReader;
+import com.chunkmapper.security.MySecurityManager;
 import com.chunkmapper.writer.ArtifactWriter;
 import com.chunkmapper.writer.GenericWriter;
 
@@ -84,18 +86,19 @@ public class GlobcoverManager {
 	private final ArtifactWriter artifactWriter = new ArtifactWriter();
 	public final int regionx, regionz;
 	public final Random RANDOM = new Random();
-//	private long lastTime;
-//	private long profileCounter;
-	
-//	private void init() {
-//		lastTime = System.currentTimeMillis();
-//	}
-//	private void printTimeElapsed() {
-//		long currentTime = System.currentTimeMillis();
-//		System.out.println(profileCounter + ": " + (currentTime - lastTime));
-//		lastTime = currentTime;
-//		profileCounter++;
-//	}
+	private final boolean gaiaMode;
+	//	private long lastTime;
+	//	private long profileCounter;
+
+	//	private void init() {
+	//		lastTime = System.currentTimeMillis();
+	//	}
+	//	private void printTimeElapsed() {
+	//		long currentTime = System.currentTimeMillis();
+	//		System.out.println(profileCounter + ": " + (currentTime - lastTime));
+	//		lastTime = currentTime;
+	//		profileCounter++;
+	//	}
 
 	public final AbstractColumn[][] columns = new AbstractColumn[512][512];
 
@@ -104,7 +107,7 @@ public class GlobcoverManager {
 		//		double[] latlon = {-43.88, -176.15};
 		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
 		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
-		GlobcoverManager manager = new GlobcoverManager(regionx, regionz, 1);
+		GlobcoverManager manager = new GlobcoverManager(regionx, regionz, 1, false);
 
 		for (int i = 0; i < 512; i++) {
 			for (int j = 0; j < 512; j++) {
@@ -117,17 +120,17 @@ public class GlobcoverManager {
 		System.out.println("no crops");
 	}
 
-	public GlobcoverManager(int regionx, int regionz, int verticalExaggeration) throws FileNotYetAvailableException, IOException, IllegalArgumentException, NoSuchElementException, InterruptedException, URISyntaxException, DataFormatException {
+	public GlobcoverManager(int regionx, int regionz, int verticalExaggeration, boolean gaiaMode) throws FileNotYetAvailableException, IOException, IllegalArgumentException, NoSuchElementException, InterruptedException, URISyntaxException, DataFormatException {
 		this.regionx = regionx; this.regionz = regionz;
-
+		this.gaiaMode = gaiaMode;
 		heightsReader = new HeightsReaderS3(regionx, regionz, verticalExaggeration);
-		
+
 		Thread.sleep(0);
 		OverpassObject o = OSMRouter.getObject(regionx, regionz);
 		Thread.sleep(0);
-		ferryReader = new FerryReader(o, regionx, regionz);
+		ferryReader = gaiaMode ? null : new FerryReader(o, regionx, regionz);
 		Thread.sleep(0);
-		allWater = heightsReader.isAllWater() && !ferryReader.hasAFerry;
+		allWater = heightsReader.isAllWater() && ferryReader != null && !ferryReader.hasAFerry;
 
 		if (allWater) {
 			railReader = null;
@@ -140,22 +143,22 @@ public class GlobcoverManager {
 			hutReader = null;
 			return;
 		}
-		
+
 		OrchardReader orchardReader = new OrchardReader(o, regionx, regionz);
 		Thread.sleep(0);
 		VineyardReader vineyardReader = new VineyardReader(o, regionx, regionz);
 		Thread.sleep(0);
-		hutReader = new HutReader(o, regionx, regionz);
+		hutReader = gaiaMode ? null : new HutReader(o, regionx, regionz);
 		Thread.sleep(0);
-		pathReader = new PathReader(o, regionx, regionz);
+		pathReader = gaiaMode ? null : new PathReader(o, regionx, regionz);
 		Thread.sleep(0);
-		highwayReader = new XapiHighwayReader(o, regionx, regionz, heightsReader);
+		highwayReader = gaiaMode ? null : new XapiHighwayReader(o, regionx, regionz, heightsReader);
 		Thread.sleep(0);
-		boundaryReader = new XapiBoundaryReader(o, regionx, regionz);
+		boundaryReader = gaiaMode ? null : new XapiBoundaryReader(o, regionx, regionz);
 		Thread.sleep(0);
-		rugbyReader = new RugbyReader(o, regionx, regionz);
+		rugbyReader = gaiaMode ? null : new RugbyReader(o, regionx, regionz);
 		Thread.sleep(0);
-		densityReader = new DensityReader(o, regionx, regionz);
+		densityReader = gaiaMode ? null : new DensityReader(o, regionx, regionz);
 		Thread.sleep(0);
 		GlobcoverReader coverReader = new GlobcoverReaderImpl2(regionx, regionz);
 		Thread.sleep(0);
@@ -166,12 +169,11 @@ public class GlobcoverManager {
 		Thread.sleep(0);
 		XapiRiverReader riverReader = new XapiRiverReader(o, regionx, regionz, heightsReader);
 		Thread.sleep(0);
-		railReader = new XapiRailReader(o, regionx, regionz, heightsReader, verticalExaggeration);
+		railReader = gaiaMode ? null : new XapiRailReader(o, regionx, regionz, heightsReader, verticalExaggeration);
 		Thread.sleep(0);
 
-		FarmTypeReader farmTypeReader = null;
-		farmTypeReader = new FarmTypeReader();
-		poiReader = new POIReader(o, regionx, regionz);
+		FarmTypeReader farmTypeReader = gaiaMode ? null : new FarmTypeReader();
+		poiReader = gaiaMode ? null : new POIReader(o, regionx, regionz);
 		Thread.sleep(0);
 
 		//		XapiCoastlineReader coastlineReader = new XapiCoastlineReader(regionx, regionz, heightsReader);
@@ -280,7 +282,7 @@ public class GlobcoverManager {
 					columns[i][j] = new FloodedGrassland(absx, absz, heightsReader);
 					break;
 				case Urban:
-					columns[i][j] = new Urban(absx, absz, heightsReader);
+					columns[i][j] = gaiaMode ? new Grassland(absx, absz, heightsReader) : new Urban(absx, absz, heightsReader);
 					break;
 				case Bare:
 					columns[i][j] = new Bare(absx, absz, heightsReader);
@@ -292,7 +294,7 @@ public class GlobcoverManager {
 					columns[i][j] = new Snow(absx, absz, heightsReader);
 					break;
 				case NoData:
-					columns[i][j] = new Grassland(absx, absz, heightsReader);
+					columns[i][j] = new NoData(absx, absz, heightsReader);
 					break;
 				}
 			}
@@ -342,14 +344,16 @@ public class GlobcoverManager {
 		POIReader.addSpecialLandmarks(chunk);
 
 		//add country boundaries
-		boundaryReader.addBoundariesToChunk(chunkx, chunkz, chunk);
+		if (boundaryReader != null)
+			boundaryReader.addBoundariesToChunk(chunkx, chunkz, chunk);
 
 		//add some roads
 		boolean chunkHasRoad = false;
-		if (highwayReader.hasHighways)
+		if (highwayReader != null && highwayReader.hasHighways)
 			chunkHasRoad = highwayReader.addRoad(chunkx, chunkz, chunk);
-		
-		pathReader.addPath(chunk, chunkx, chunkz);
+
+		if (pathReader != null)
+			pathReader.addPath(chunk, chunkx, chunkz);
 
 		//finally add rail
 		boolean chunkHasRail = false;
@@ -372,11 +376,11 @@ public class GlobcoverManager {
 
 
 		//add a house
-		RugbyField rugbyField = rugbyReader.getRugbyField(chunk);
+		RugbyField rugbyField = rugbyReader == null ? null : rugbyReader.getRugbyField(chunk);
 		if (rugbyField != null && !chunkHasRail && !chunkHasWater && !chunkHasRoad) {
 			ArtifactWriter.addRugbyField(chunk, rugbyField);
-		} else if ((chunkHasUrban || densityReader.hasHouse(chunkx, chunkz)) && !chunkHasRail && !chunkHasWater
-				&& !chunkHasRoad) {
+		} else if ((chunkHasUrban || densityReader != null && densityReader.hasHouse(chunkx, chunkz))
+				&& !chunkHasRail && !chunkHasWater && !chunkHasRoad) {
 			int i = RANDOM.nextInt(100);
 			switch(i) {
 			case 0:
@@ -392,20 +396,26 @@ public class GlobcoverManager {
 				ArtifactWriter.addHouse(chunk);
 			}
 
-		} else if (chunkAllForest && !chunkHasRail && RANDOM.nextInt(100) == 0) {
+		} else if (chunkAllForest && !chunkHasRail && RANDOM.nextInt(100) == 0 && !gaiaMode) {
 			if (RANDOM.nextInt(2) == 0) {
 				ArtifactWriter.placeLookout(chunk);
 			} else {
 				ArtifactWriter.addTunnelIntoTheUnknown(chunk);
 			}
 		}
-		
+
 		//last but not least, add ferry
-		ferryReader.addLillies(chunk, chunkx, chunkz, columns);
-		hutReader.addHut(chunk);
-		if (RANDOM.nextInt(100000) == 0) {
-			GenericWriter.addHeavenWaterFall(chunk);
+		if (!gaiaMode) {
+			ferryReader.addLillies(chunk, chunkx, chunkz, columns);
+			hutReader.addHut(chunk);
+			if (RANDOM.nextInt(100000) == 0) {
+				GenericWriter.addHeavenWaterFall(chunk);
+			}
 		}
+		if (!MySecurityManager.offlineValid && abschunkz % 8 == 0)
+			GenericWriter.addNorthGlassWall(chunk);
+//		if (!MySecurityManager.offlineValid && abschunkx % 8 == 0)
+//			GenericWriter.addWestGlassWall(chunk);
 		return chunk;
 	}
 

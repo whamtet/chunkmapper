@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.zip.DataFormatException;
 
+import com.chunkmapper.admin.BucketInfo;
 import com.chunkmapper.admin.Utila;
 import com.chunkmapper.heights.HGTFile2;
 import com.chunkmapper.parser.Nominatim;
@@ -32,10 +33,11 @@ public class HeightsReaderS3 implements HeightsReader {
 	
 	public static void main(String[] args) throws Exception {
 		System.out.println("starting");
-		double[] latlon = Nominatim.getPoint("Hollywood");
+		BucketInfo.initMap();
+		double[] latlon = Nominatim.getPoint("Scott Base");
 		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
 		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
-		
+		System.out.printf("lat: %s, lon: %s", latlon[0], latlon[1]);
 		HeightsReaderS3 hr = new HeightsReaderS3(regionx, regionz, 1);
 		System.out.println("done");
 	}

@@ -17,7 +17,9 @@ def zoom_out():
     if os == 'win7':
         wait("1393307972388.png", 10)
     if os == 'winxp':
-        wait("1393310561703.png", 10)
+        #wait("1393310561703.png", 10)
+        wait("1396950310084.png", 10)
+        
     if os == 'ubuntu':
         wait("1393325264417.png", 10)
     if os == 'fedora':
@@ -189,7 +191,7 @@ def resume():
         click("1393384143090.png")
         
 
-os = 'winxp'
+os = 'ubuntu'
 wait(1)
 go_to('New York')
 create_test_map()

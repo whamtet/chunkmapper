@@ -25,9 +25,10 @@ import javax.swing.text.PlainDocument;
 import com.chunkmapper.GameMetaInfo;
 import com.chunkmapper.ManagingThread;
 import com.chunkmapper.Point;
+import com.chunkmapper.admin.GlobalSettings;
 import com.chunkmapper.admin.MyLogger;
-import com.chunkmapper.gui.GlobalSettingsImpl;
 import com.chunkmapper.gui.dialog.SettingsDialog;
+import com.chunkmapper.security.MySecurityManager;
 import com.chunkmapper.writer.LoadedLevelDat;
 
 public class GeneratingPanel extends JPanel {
@@ -35,8 +36,8 @@ public class GeneratingPanel extends JPanel {
 	private JTextField lonTextField;
 	private MapPanel panel;
 	private double lat = 0d, lon = 0d;
-	private JButton btnGenerateMap, btnFindLatLon, btnSettings;
-	private GlobalSettingsImpl globalSettings = new GlobalSettingsImpl();
+	private JButton btnGenerateMap, btnFindLatLon, btnSettings, btnDeleteMap;
+	private GlobalSettings globalSettings = new GlobalSettings();
 	private boolean generating;
 	private final File gameFolder;
 	private final SimplifiedGUI simplifiedGUI;
@@ -45,8 +46,8 @@ public class GeneratingPanel extends JPanel {
 	 * Create the panel.
 	 */
 	private void startGeneration() {
-		if (lat < -60) {
-			alert("Minimum Latitude is -60 (60 South)");
+		if (lat < -90) {
+			alert("Minimum Latitude is -90 (90 South)");
 			return;
 		}
 		if (lat > 90) {
@@ -74,19 +75,21 @@ public class GeneratingPanel extends JPanel {
 		setAllEnabled(true);
 		btnGenerateMap.setText("Resume...");
 		generating = false;
+		repaint();
 	}
 	private void setAllEnabled(boolean b) {
 		latTextField.setEnabled(b);
 		lonTextField.setEnabled(b);
 		btnSettings.setEnabled(b);
 		btnFindLatLon.setEnabled(b);
+		btnDeleteMap.setEnabled(b);
 		if (simplifiedGUI != null) {
 			simplifiedGUI.setActive(b);
 		}
 	}
 
 	public GeneratingPanel(File gameFolder, final SimplifiedGUI simplifiedGUI) {
-		
+
 		this.simplifiedGUI = simplifiedGUI;
 		this.gameFolder = gameFolder;
 
@@ -145,7 +148,8 @@ public class GeneratingPanel extends JPanel {
 		btnGenerateMap.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (!generating) {
-					startGeneration();
+					if (simplifiedGUI.numGames() < MySecurityManager.ALLOWED_GAMES + 1 || !MySecurityManager.mustPurchase(simplifiedGUI))
+						startGeneration();
 				} else {
 					cancelGeneration();
 				}
@@ -163,6 +167,13 @@ public class GeneratingPanel extends JPanel {
 				d.setVisible(true);
 			}
 		});
+
+		btnDeleteMap = new JButton("Delete Map");
+		btnDeleteMap.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				simplifiedGUI.deleteGame(GeneratingPanel.this.gameFolder);
+			}
+		});
 		GroupLayout groupLayout = new GroupLayout(this);
 		groupLayout.setHorizontalGroup(
 				groupLayout.createParallelGroup(Alignment.LEADING)
@@ -170,54 +181,61 @@ public class GeneratingPanel extends JPanel {
 						.addContainerGap()
 						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 								.addComponent(lblMapname)
-								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-										.addGroup(groupLayout.createSequentialGroup()
-												.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-														.addGroup(groupLayout.createSequentialGroup()
-																.addGap(14)
+								.addGroup(groupLayout.createSequentialGroup()
+										.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+												.addGroup(groupLayout.createSequentialGroup()
+														.addGap(25)
+														.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+																.addComponent(btnDeleteMap, GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE)
+																.addComponent(btnFindLatLon, GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE)
 																.addComponent(btnGenerateMap, GroupLayout.PREFERRED_SIZE, 158, GroupLayout.PREFERRED_SIZE))
+																.addGap(18))
 																.addGroup(groupLayout.createSequentialGroup()
-																		.addGap(25)
-																		.addComponent(btnFindLatLon))
+																		.addGap(49)
+																		.addComponent(btnSettings)
+																		.addGap(45)))
+																		.addGap(18)
+																		.addComponent(panel, GroupLayout.PREFERRED_SIZE, 240, GroupLayout.PREFERRED_SIZE)
+																		.addGap(136))
 																		.addGroup(groupLayout.createSequentialGroup()
-																				.addGap(39)
-																				.addComponent(btnSettings)))
-																				.addGap(18)
-																				.addComponent(panel, GroupLayout.PREFERRED_SIZE, 228, GroupLayout.PREFERRED_SIZE))
-																				.addGroup(groupLayout.createSequentialGroup()
-																						.addComponent(lblLatitude)
-																						.addPreferredGap(ComponentPlacement.UNRELATED)
-																						.addComponent(latTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-																						.addGap(12)
-																						.addComponent(lblLongitude)
-																						.addPreferredGap(ComponentPlacement.UNRELATED)
-																						.addComponent(lonTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-																						.addComponent(lblPlayerPosition))
-																						.addGap(26))
+																				.addComponent(lblLatitude)
+																				.addPreferredGap(ComponentPlacement.UNRELATED)
+																				.addComponent(latTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+																				.addGap(12)
+																				.addComponent(lblLongitude)
+																				.addPreferredGap(ComponentPlacement.UNRELATED)
+																				.addComponent(lonTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+																				.addComponent(lblPlayerPosition))
+																				.addGap(28))
 				);
 		groupLayout.setVerticalGroup(
 				groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-						.addContainerGap()
-						.addComponent(lblMapname)
-						.addGap(18)
-						.addComponent(lblPlayerPosition)
-						.addGap(18)
-						.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblLatitude)
-								.addComponent(latTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lonTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblLongitude))
-								.addGap(18)
-								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING, false)
-										.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
-												.addComponent(btnFindLatLon)
-												.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-												.addComponent(btnSettings)
+						.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addGroup(groupLayout.createSequentialGroup()
+										.addContainerGap()
+										.addComponent(lblMapname)
+										.addGap(18)
+										.addComponent(lblPlayerPosition)
+										.addGap(18)
+										.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+												.addComponent(lblLatitude)
+												.addComponent(latTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+												.addComponent(lonTextField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+												.addComponent(lblLongitude))
 												.addGap(18)
-												.addComponent(btnGenerateMap, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE))
-												.addComponent(panel, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 147, GroupLayout.PREFERRED_SIZE))
-												.addGap(35))
+												.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+														.addGroup(groupLayout.createSequentialGroup()
+																.addComponent(btnDeleteMap)
+																.addGap(12)
+																.addComponent(btnSettings)
+																.addGap(18)
+																.addComponent(btnGenerateMap, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE))
+																.addComponent(panel, GroupLayout.PREFERRED_SIZE, 175, GroupLayout.PREFERRED_SIZE)))
+																.addGroup(groupLayout.createSequentialGroup()
+																		.addGap(120)
+																		.addComponent(btnFindLatLon)))
+																		.addContainerGap(153, Short.MAX_VALUE))
 				);
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(

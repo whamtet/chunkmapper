@@ -12,10 +12,10 @@ import javax.swing.JPanel;
 
 import com.chunkmapper.Point;
 import com.chunkmapper.admin.MyLogger;
-import com.chunkmapper.gui.GlobalSettingsImpl;
 import com.chunkmapper.gui.PlayerIconManagerImpl;
 import com.chunkmapper.interfaces.MappedSquareManager;
 import com.chunkmapper.interfaces.PlayerIconManager;
+import com.chunkmapper.math.Matthewmatics;
 
 public class MapPanel extends JPanel implements PlayerIconManager, MappedSquareManager {
 	public MapPanel() {
@@ -58,16 +58,28 @@ public class MapPanel extends JPanel implements PlayerIconManager, MappedSquareM
 	@Override
 	public void setLocation(double lat, double lon) {
 		playerPosition = new Point(lon * 3600, - lat * 3600);
+		int regionx = Matthewmatics.div(playerPosition.x, 512);
+		int regionz = Matthewmatics.div(playerPosition.z, 512);
+		
+		if (regionx < regionx1) regionx1 = regionx;
+		if (regionx > regionx2) regionx2 = regionx;
+		if (regionz < regionz1) regionz1 = regionz;
+		if (regionz > regionz2) regionz2 = regionz;
 		repaint();
 	}
 	@Override
-	public void addPoint(Point p) {
+	public void addFinishedPoint(Point p) {
 		regionsMade.add(p);
 		if (p.x < regionx1) regionx1 = p.x;
 		if (p.z < regionz1) regionz1 = p.z;
 		if (p.x > regionx2) regionx2 = p.x;
 		if (p.z > regionz2) regionz2 = p.z;
 		repaint();
+	}
+	@Override
+	public void addUnfinishedPoint(Point p) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

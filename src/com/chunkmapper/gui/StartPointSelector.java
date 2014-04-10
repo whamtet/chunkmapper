@@ -12,8 +12,8 @@ import java.awt.event.MouseMotionListener;
 import java.io.File;
 
 import com.chunkmapper.Point;
+import com.chunkmapper.gui.layer.GeneratingLayerImpl;
 import com.chunkmapper.interfaces.MappedSquareManager;
-import com.chunkmapper.layer.GeneratingLayerImpl;
 @Deprecated
 public class StartPointSelector implements MouseListener, MouseMotionListener {
 	private final WorldWindow wwd;

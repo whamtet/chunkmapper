@@ -3,7 +3,7 @@
  * National Aeronautics and Space Administration.
  * All Rights Reserved.
  */
-package com.chunkmapper.layer;
+package com.chunkmapper.gui.layer;
 
 import gov.nasa.worldwind.View;
 import gov.nasa.worldwind.WorldWindow;
@@ -37,12 +37,11 @@ import javax.swing.JFrame;
 import com.chunkmapper.GameMetaInfo;
 import com.chunkmapper.ManagingThread;
 import com.chunkmapper.Point;
-import com.chunkmapper.admin.FeedbackManager;
+import com.chunkmapper.admin.GlobalSettings;
 import com.chunkmapper.gui.MappedSquareManagerImpl;
 import com.chunkmapper.gui.PlayerIconManagerImpl;
 import com.chunkmapper.gui.StartPointSelector;
 import com.chunkmapper.interfaces.GeneratingLayer;
-import com.chunkmapper.interfaces.GlobalSettings;
 import com.chunkmapper.writer.LevelDat;
 
 

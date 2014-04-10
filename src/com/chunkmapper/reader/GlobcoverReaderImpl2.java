@@ -12,6 +12,7 @@ import javax.imageio.ImageIO;
 
 import com.chunkmapper.FileValidator;
 import com.chunkmapper.admin.BucketInfo;
+import com.chunkmapper.admin.MyLogger;
 import com.chunkmapper.admin.Utila;
 import com.chunkmapper.enumeration.Globcover;
 import com.chunkmapper.math.Matthewmatics;
@@ -71,7 +72,7 @@ public class GlobcoverReaderImpl2 implements GlobcoverReader {
 				ImageIO.write(im, "png", cacheFile);
 				FileValidator.setValid(cacheFile);
 			} catch (Exception e) {
-				e.printStackTrace();
+				MyLogger.LOGGER.warning(String.format("No Globcover data at regionx: %s, regionz: %s", regionx, regionz));
 				//binaries need to be sorted.
 				for (int z = 0; z < dataz; z++) {
 					for (int x = 0; x < datax; x++) {

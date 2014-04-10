@@ -3,6 +3,7 @@ package com.chunkmapper.column;
 import java.io.IOException;
 
 import com.chunkmapper.chunk.Chunk;
+import com.chunkmapper.enumeration.Biome;
 import com.chunkmapper.enumeration.Block;
 import com.chunkmapper.enumeration.Blocka;
 import com.chunkmapper.enumeration.DataSource;
@@ -12,6 +13,7 @@ import com.chunkmapper.writer.TreeWriter;
 public class Orchard extends AbstractColumn {
 	private final int treeHeight = TreeWriter.getForestTreeHeight();
 	private final boolean hasTree;
+	public byte biome = Biome.Plains;
 	
 	public Orchard(int absx, int absz, HeightsReader heightsReader) {
 		super(absx, absz, heightsReader);

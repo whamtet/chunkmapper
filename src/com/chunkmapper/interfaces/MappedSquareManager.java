@@ -4,6 +4,7 @@ import com.chunkmapper.Point;
 
 public interface MappedSquareManager {
 
-	public void addPoint(Point p);
+	public void addFinishedPoint(Point p);
+	public void addUnfinishedPoint(Point p);
 
 }

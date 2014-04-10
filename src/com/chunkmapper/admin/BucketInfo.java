@@ -17,6 +17,7 @@ public class BucketInfo {
 
 	}
 	public static boolean allowLive() throws IOException {
+		if (map == null) return true;
 		return "yes".equals(map.get("allow-live"));
 	}
 	public static boolean mustUpgrade() {

@@ -52,7 +52,8 @@ public class TestArtifact {
 		int chunkx = 0, chunkz = 0;
 		Chunk chunk = new Chunk(chunkx, chunkz, heights, chunkx, chunkz);
 		GenericWriter.addGrass(chunk);
-		GenericWriter.addHeavenWaterFall(chunk);
+//		GenericWriter.addHeavenWaterFall(chunk);
+		GenericWriter.addWestGlassWall(chunk);
 		
 		
 //		ArtifactWriter.placePrison(chunk);

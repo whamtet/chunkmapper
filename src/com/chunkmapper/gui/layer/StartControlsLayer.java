@@ -1,4 +1,4 @@
-package com.chunkmapper.layer;
+package com.chunkmapper.gui.layer;
 
 import java.awt.Color;
 import java.awt.Dimension;

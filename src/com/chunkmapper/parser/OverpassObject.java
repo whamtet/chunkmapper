@@ -10,7 +10,8 @@ import com.chunkmapper.Point;
 public  class OverpassObject {
 	
 	public static class Relation {
-		public final ArrayList<Way> ways = new ArrayList<Way>();
+//		public final ArrayList<Way> ways = new ArrayList<Way>();
+		public final HashSet<Way> ways = new HashSet<Way>();
 		public final HashMap<String, String> map = new HashMap<String, String>();
 		public Rectangle bbox;
 		public final long id;

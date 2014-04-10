@@ -25,7 +25,7 @@ public class TextDisplay implements MappedSquareManager {
 		this.chunkmapperDir = chunkmapperDir;
 	}
 	@Override
-	public synchronized void addPoint(Point p) {
+	public synchronized void addFinishedPoint(Point p) {
 		points.add(p);
 		int minx = Integer.MAX_VALUE, minz = Integer.MAX_VALUE;
 		int maxx = Integer.MIN_VALUE, maxz = Integer.MIN_VALUE;
@@ -64,6 +64,11 @@ public class TextDisplay implements MappedSquareManager {
 	}
 	public void updatePlayer(String playerName, int regionx0, int regionz0) {
 		playerPositions.put(playerName, new Point(regionx0 + rootPoint.x, regionz0 + rootPoint.z));
+		
+	}
+	@Override
+	public void addUnfinishedPoint(Point p) {
+		// TODO Auto-generated method stub
 		
 	}
 	

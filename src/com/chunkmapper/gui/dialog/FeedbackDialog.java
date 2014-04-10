@@ -56,6 +56,7 @@ public class FeedbackDialog extends JDialog {
 		l.add(new BasicNameValuePair("too_slow", "" + chckbxChunkmapperMadeMy.isSelected()));
 		l.add(new BasicNameValuePair("difficult_to_click", "" + chckbxNewCheckBox.isSelected()));
 		l.add(new BasicNameValuePair("difficult_to_move", "" + chckbxItWasDifficult.isSelected()));
+		
 		l.add(new BasicNameValuePair("comments", textArea.getText()));
 		FeedbackManager.submitFeedback(l);
 	}

@@ -8,6 +8,7 @@ import java.util.concurrent.PriorityBlockingQueue;
 import com.chunkmapper.GameMetaInfo;
 import com.chunkmapper.Point;
 import com.chunkmapper.Tasker;
+import com.chunkmapper.admin.GlobalSettings;
 import com.chunkmapper.admin.MyLogger;
 import com.chunkmapper.binaryparser.OsmosisParser;
 import com.chunkmapper.chunk.Chunk;
@@ -15,7 +16,6 @@ import com.chunkmapper.downloader.OverpassDownloader;
 import com.chunkmapper.interfaces.MappedSquareManager;
 import com.chunkmapper.interfaces.PointManager;
 import com.chunkmapper.manager.GlobcoverManager;
-import com.chunkmapper.mapper.Mapper2;
 import com.chunkmapper.nbt.NbtIo;
 import com.chunkmapper.nbt.RegionFile;
 
@@ -27,7 +27,7 @@ public class RegionWriter extends Tasker {
 	private final GameMetaInfo gameMetaInfo;
 	private final MappedSquareManager mappedSquareManager;
 	private final PointManager pointManager;
-	private final int verticalExaggeration;
+	private final GlobalSettings globalSettings;
 	
 	private static int numThreads() {
 		int numThreads = Runtime.getRuntime().availableProcessors() / 2;
@@ -51,9 +51,9 @@ public class RegionWriter extends Tasker {
 	});
 
 	public RegionWriter(PointManager pointManager, Point rootPoint, File regionFolder, 
-			GameMetaInfo metaInfo, MappedSquareManager mappedSquareManager, int verticalExaggeration) {
+			GameMetaInfo metaInfo, MappedSquareManager mappedSquareManager, GlobalSettings globalSettings) {
 		super(NUM_WRITING_THREADS, "RegionWriter");
-		this.verticalExaggeration = verticalExaggeration;
+		this.globalSettings = globalSettings;
 		this.rootPoint = rootPoint;
 		this.regionFolder = regionFolder;
 		this.gameMetaInfo = metaInfo;
@@ -92,10 +92,10 @@ public class RegionWriter extends Tasker {
 		int regionx = task.x + rootPoint.x, regionz = task.z + rootPoint.z;
 
 		File f = new File(regionFolder, "r." + a + "." + b + ".mca");
-		GlobcoverManager coverManager = new GlobcoverManager(regionx, regionz, verticalExaggeration);
+		GlobcoverManager coverManager = new GlobcoverManager(regionx, regionz, globalSettings.getVerticalExaggeration(), globalSettings.gaiaMode);
 		if (coverManager.allWater) {
 			pointManager.updateStore(task);
-			mappedSquareManager.addPoint(new Point(task.x + rootPoint.x, task.z + rootPoint.z));
+			mappedSquareManager.addFinishedPoint(new Point(task.x + rootPoint.x, task.z + rootPoint.z));
 			return;
 		}
 
@@ -118,7 +118,7 @@ public class RegionWriter extends Tasker {
 		pointManager.updateStore(task);
 		gameMetaInfo.incrementChunksMade();
 		if (mappedSquareManager != null)
-			mappedSquareManager.addPoint(new Point(task.x + rootPoint.x, task.z + rootPoint.z));
+			mappedSquareManager.addFinishedPoint(new Point(task.x + rootPoint.x, task.z + rootPoint.z));
                 
 	}
 

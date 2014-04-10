@@ -18,8 +18,10 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
 
-import com.chunkmapper.layer.GameAvailableInterface;
-import com.chunkmapper.layer.MainLayer;
+import com.chunkmapper.gui.layer.GameAvailableInterface;
+import com.chunkmapper.gui.layer.MainLayer;
+
+import java.awt.Dialog.ModalityType;
 
 public class NewMapDialog extends JDialog {
 
@@ -56,7 +58,7 @@ public class NewMapDialog extends JDialog {
 	}
 	public NewMapDialog(final GameAvailableInterface mainLayer, final JFrame frame) {
 		super(frame);
-		setModalityType(ModalityType.DOCUMENT_MODAL);
+		setModalityType(ModalityType.APPLICATION_MODAL);
 		setModal(true);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setResizable(false);

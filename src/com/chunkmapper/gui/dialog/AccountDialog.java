@@ -38,7 +38,7 @@ public class AccountDialog extends JDialog {
 	JLabel lblToCreateA, lblChecking;
 	private JLabel lblNewLabel;
 	private JButton btnResetButton;
-	private JButton btnNewButton;
+	private JButton sslButton;
 
 	/**
 	 * Launch the application.
@@ -73,7 +73,7 @@ public class AccountDialog extends JDialog {
 			return;
 		}
 		btnResetButton.setVisible(false);
-		btnNewButton.setVisible(false);
+		sslButton.setVisible(false);
 		switch(s) {
 		case OK:
 			ok = true;
@@ -95,7 +95,7 @@ public class AccountDialog extends JDialog {
 		case SSL_EXCEPTION:
 			lblToCreateA.setText("SSL Exception");
 			lblToCreateA.setForeground(Color.RED);
-			btnNewButton.setVisible(true);
+			sslButton.setVisible(true);
 		}
 	}
 
@@ -148,16 +148,16 @@ public class AccountDialog extends JDialog {
 		});
 		btnResetButton.setVisible(false);
 		
-		btnNewButton = new JButton("<HTML><U>How to fix...</U></HTML>");
-		btnNewButton.setVisible(false);
-		btnNewButton.addActionListener(new ActionListener() {
+		sslButton = new JButton("<HTML><U>How to fix...</U></HTML>");
+		sslButton.setVisible(false);
+		sslButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				openWebpage("http://www.chunkmapper.com/troubleshooting.html",
 						"Please visit www.chunkmapper.com/troubleshooting.");
 			}
 		});
-		btnNewButton.setForeground(Color.BLUE);
-		btnNewButton.setBorderPainted(false);
+		sslButton.setForeground(Color.BLUE);
+		sslButton.setBorderPainted(false);
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
 		gl_contentPanel.setHorizontalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
@@ -179,7 +179,7 @@ public class AccountDialog extends JDialog {
 						.addGroup(gl_contentPanel.createSequentialGroup()
 							.addComponent(lblToCreateA)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnNewButton))
+							.addComponent(sslButton))
 						.addComponent(lblNewLabel))
 					.addContainerGap(114, Short.MAX_VALUE))
 		);
@@ -189,7 +189,7 @@ public class AccountDialog extends JDialog {
 					.addContainerGap()
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblToCreateA)
-						.addComponent(btnNewButton))
+						.addComponent(sslButton))
 					.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 					.addComponent(lblNewLabel)
 					.addPreferredGap(ComponentPlacement.UNRELATED)

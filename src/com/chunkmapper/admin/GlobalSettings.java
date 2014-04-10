@@ -1,11 +1,11 @@
-package com.chunkmapper.gui;
+package com.chunkmapper.admin;
 
-import com.chunkmapper.interfaces.GlobalSettings;
 
-public class GlobalSettingsImpl implements GlobalSettings {
+public class GlobalSettings {
 
 	private boolean isLive;
 	private int verticalExaggeration = 1;
+	public boolean gaiaMode;
 	
 	public boolean isLive() {
 		// TODO Auto-generated method stub
@@ -29,5 +29,6 @@ public class GlobalSettingsImpl implements GlobalSettings {
 	public String toString() {
 		return super.toString() + "\nisLive: " + isLive + " verticalExaggeration: " + verticalExaggeration;
 	}
+	
 
 }

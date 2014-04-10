@@ -1,4 +1,4 @@
-package com.chunkmapper.layer;
+package com.chunkmapper.gui.layer;
 
 public interface GameAvailableInterface {
 	

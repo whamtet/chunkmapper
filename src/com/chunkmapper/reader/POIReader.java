@@ -19,6 +19,7 @@ public class POIReader {
 		specialPlaces.add(new SpecialPlace(new String[] {"ma", "and", "pa"}, -39.0743, 174.0952));
 		specialPlaces.add(new SpecialPlace(new String[] {"pete's", "house"}, -43.518, 172.583));
 		specialPlaces.add(new SpecialPlace(new String[] {"dancing", "purple", "asteroids"}, -39.066, 174.046));
+		specialPlaces.add(new SpecialPlace(new String[] {"I love", "you", "Tiantian"}, 22.2855, 114.0375));
 	}
 	public POIReader(OverpassObject o, int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
 		pois = POIParser.getPois(o, regionx, regionz);

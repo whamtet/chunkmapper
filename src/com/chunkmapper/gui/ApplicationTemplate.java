@@ -10,7 +10,6 @@ import gov.nasa.worldwind.awt.WorldWindowGLCanvas;
 import gov.nasa.worldwind.event.RenderingExceptionListener;
 import gov.nasa.worldwind.event.SelectEvent;
 import gov.nasa.worldwind.event.SelectListener;
-import gov.nasa.worldwind.exception.WWAbsentRequirementException;
 import gov.nasa.worldwind.layers.CompassLayer;
 import gov.nasa.worldwind.layers.Layer;
 import gov.nasa.worldwind.layers.LayerList;
@@ -29,18 +28,16 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import com.chunkmapper.admin.FeedbackManager;
+import com.chunkmapper.admin.GlobalSettings;
 import com.chunkmapper.admin.MyLogger;
 import com.chunkmapper.admin.PreferenceManager;
 import com.chunkmapper.gui.dialog.FeedbackDialog;
 import com.chunkmapper.gui.dialog.NoPurchaseDialog;
-import com.chunkmapper.gui.simple.SimplifiedGUI;
-import com.chunkmapper.interfaces.GlobalSettings;
-import com.chunkmapper.layer.ViewControlsLayer;
-import com.chunkmapper.layer.ViewControlsSelectListener;
+import com.chunkmapper.gui.layer.ViewControlsLayer;
+import com.chunkmapper.gui.layer.ViewControlsSelectListener;
 import com.chunkmapper.security.MySecurityManager;
 
 /**
@@ -111,7 +108,7 @@ public class ApplicationTemplate
 
 	protected static class AppFrame extends JFrame
 	{
-		protected GlobalSettings globalSettings = new GlobalSettingsImpl();
+		protected GlobalSettings globalSettings = new GlobalSettings();
 		private Dimension canvasSize = new Dimension(800, 600);
 
 		protected AppPanel wwjPanel;
@@ -171,25 +168,12 @@ public class ApplicationTemplate
 			{
 				public void exceptionThrown(Throwable t)
 				{
-					if (t instanceof WWAbsentRequirementException)
-					{
-						//						String message = "Computer does not meet minimum graphics requirements.\n";
-						//						message += "Please install up-to-date graphics driver and try again.\n";
-						//						message += "Reason: " + t.getMessage() + "\n";
-						//						message += "This program will end when you press OK.";
-						//
-						//						JOptionPane.showMessageDialog(AppFrame.this, message, "Unable to Start Program",
-						//								JOptionPane.ERROR_MESSAGE);
-						//						System.exit(-1);
-					}
 					MyLogger.LOGGER.severe("Rendering Exception Thrown");
 					MyLogger.LOGGER.severe(MyLogger.printException(t));
 					if (!simpleGuiShown) {
 						simpleGuiShown = true;	
-
 						dispose();
-						SimplifiedGUI frame = new SimplifiedGUI();
-						frame.setVisible(true);
+						com.chunkmapper.gui.simple.SimplifiedGUI.open();
 					}
 				}
 			});

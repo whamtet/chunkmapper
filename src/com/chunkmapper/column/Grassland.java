@@ -6,6 +6,7 @@ import com.chunkmapper.reader.HeightsReader;
 
 public class Grassland extends AbstractColumn {
 	public static final Globcover TYPE = Globcover.Grassland;
+	public byte biome = Biome.Plains;
 
 	public Grassland(int absx, int absz, HeightsReader heightsReader) {
 		super(absx, absz, heightsReader);
