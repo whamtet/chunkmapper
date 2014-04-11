@@ -71,8 +71,7 @@ public class ManagingThread extends Thread {
 			PlayerIconManager playerIconManager, GlobalSettings globalSettings,
 			GeneratingLayer generatingLayer) {
 		clearNetworkProblems();
-		MyLogger.LOGGER.info("Vertical Exaggeration: " + globalSettings.getVerticalExaggeration());
-		MyLogger.LOGGER.info("Live Mode: " + globalSettings.isLive());
+
 		//		if (true) {
 		//			throw new RuntimeException();
 		//		}
@@ -112,7 +111,11 @@ public class ManagingThread extends Thread {
 		}
 		if (generatingLayer != null)
 			generatingLayer.zoomTo();
-		MyLogger.LOGGER.info("generating " + gameFolder.getName());
+		
+		MyLogger.LOGGER.info(String.format("Generating %s at %s, %s", gameFolder.getName(), lat, lon));
+		MyLogger.LOGGER.info("Vertical Exaggeration: " + globalSettings.getVerticalExaggeration());
+		MyLogger.LOGGER.info("Live Mode: " + globalSettings.isLive());
+
 		if (!gameFolder.exists()) {
 			gameFolder.mkdirs();
 		}
@@ -212,7 +215,8 @@ public class ManagingThread extends Thread {
 		if (!selfCalled) {
 			thread.interrupt();
 		}
-		thread.regionWriter.blockingShutdownNow();
+		if (thread.regionWriter != null)
+			thread.regionWriter.blockingShutdownNow();
 		if (!selfCalled) {
 			while(thread.isAlive()) {
 				try {

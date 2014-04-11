@@ -143,8 +143,19 @@ public class Main extends ApplicationTemplate
 			System.exit(0);
 		}
 	}
+	private static void printBuild() {
+		try {
+			URL url = Main.class.getResource("/build-no.txt");
+			BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
+			MyLogger.LOGGER.info("build-no: " + br.readLine());
+			br.close();
+		} catch (IOException e) {
+			MyLogger.LOGGER.severe(MyLogger.printException(e));
+		}
+	}
 
 	public static void main(String[] args) {
+		printBuild();
 		getBucket();
 		printUser();
 		if (BucketInfo.mustUpgrade()) {

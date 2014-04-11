@@ -191,9 +191,9 @@ def resume():
         click("1393384143090.png")
         
 
-os = 'ubuntu'
+os = 'osx'
 wait(1)
-go_to('New York')
+go_to('Hollywood')
 create_test_map()
 cancel_generation()
 for i in range(5):

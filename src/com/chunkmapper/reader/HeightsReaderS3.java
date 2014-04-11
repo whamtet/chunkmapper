@@ -143,6 +143,7 @@ public class HeightsReaderS3 implements HeightsReader {
 				//end temp
 				if (h > 250)
 					h = 250;
+				if (verticalExaggeration > 1 && h > 215) h = 215;
 				out[x][z] = h;
 			}
 		}
@@ -162,6 +163,7 @@ public class HeightsReaderS3 implements HeightsReader {
 		//end temp
 		if (h > 250)
 			h = 250;
+		if (verticalExaggeration > 1 && h > 215) h = 215;
 		return h;
 	}
 	/* (non-Javadoc)
@@ -179,6 +181,7 @@ public class HeightsReaderS3 implements HeightsReader {
 		//end temp
 		if (h > 250)
 			h = 250;
+		if (verticalExaggeration > 1 && h > 215) h = 215;
 		return h;
 	}
 

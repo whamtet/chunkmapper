@@ -35,6 +35,7 @@ public class NoPurchaseDialog extends JDialog {
 	private JCheckBox dontwanttopay;
 	public boolean submitted;
 	private JCheckBox chckbxTheMapsWere;
+	private JTextArea textArea;
 	
 
 	/**
@@ -57,6 +58,7 @@ public class NoPurchaseDialog extends JDialog {
 		l.add(new BasicNameValuePair("cant-pay", "" + cantpay.isSelected()));
 		l.add(new BasicNameValuePair("dont-want-to-pay", "" + dontwanttopay.isSelected()));
 		l.add(new BasicNameValuePair("not-interesting-enough", "" + chckbxTheMapsWere.isSelected()));
+		l.add(new BasicNameValuePair("comments", textArea.getText()));
 		l.add(new BasicNameValuePair("version", "2"));
 		FeedbackManager.submitFeedback(l);
 	}
@@ -72,7 +74,7 @@ public class NoPurchaseDialog extends JDialog {
 		});
 		setTitle("Feedback");
 		setResizable(false);
-		setBounds(100, 100, 524, 233);
+		setBounds(100, 100, 524, 376);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -86,6 +88,11 @@ public class NoPurchaseDialog extends JDialog {
 		dontwanttopay = new JCheckBox("Too expensive");
 		
 		chckbxTheMapsWere = new JCheckBox("The maps were not interesting enough");
+		
+		JLabel lblComments = new JLabel("Comments");
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
 		gl_contentPanel.setHorizontalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
@@ -96,8 +103,10 @@ public class NoPurchaseDialog extends JDialog {
 						.addComponent(tooSlow)
 						.addComponent(cantpay)
 						.addComponent(dontwanttopay)
-						.addComponent(chckbxTheMapsWere))
-					.addContainerGap(92, Short.MAX_VALUE))
+						.addComponent(chckbxTheMapsWere)
+						.addComponent(lblComments)
+						.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 500, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap(8, Short.MAX_VALUE))
 		);
 		gl_contentPanel.setVerticalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
@@ -112,8 +121,16 @@ public class NoPurchaseDialog extends JDialog {
 					.addComponent(dontwanttopay)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(chckbxTheMapsWere)
-					.addContainerGap(18, Short.MAX_VALUE))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addComponent(lblComments)
+					.addGap(12)
+					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE))
 		);
+		
+		textArea = new JTextArea();
+		textArea.setLineWrap(true);
+		textArea.setWrapStyleWord(true);
+		scrollPane.setViewportView(textArea);
 		contentPanel.setLayout(gl_contentPanel);
 		{
 			JPanel buttonPane = new JPanel();
