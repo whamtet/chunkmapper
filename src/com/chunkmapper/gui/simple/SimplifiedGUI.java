@@ -85,9 +85,6 @@ public class SimplifiedGUI extends JFrame implements GameAvailableInterface {
 			public void windowClosing(WindowEvent e) {
 				PreferenceManager.setNoPurchaseShown();
 			}
-			//			public void windowClosed(WindowEvent e) {
-			//				System.exit(0);
-			//			}
 		});
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 736, 500);

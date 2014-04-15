@@ -69,10 +69,10 @@ public class XapiRailReader {
 		this.railType[z][x] = railType;
 	}
 
-	public XapiRailReader(OverpassObject o, int regionx, int regionz, HeightsReader heightsReader, int verticalExaggeration) throws IllegalArgumentException, NoSuchElementException, IOException, InterruptedException, FileNotYetAvailableException, URISyntaxException, DataFormatException {
+	public XapiRailReader(DensityReader densityReader, OverpassObject o, int regionx, int regionz, HeightsReader heightsReader, int verticalExaggeration) throws IllegalArgumentException, NoSuchElementException, IOException, InterruptedException, FileNotYetAvailableException, URISyntaxException, DataFormatException {
 		x0 = regionx * 512; z0 = regionz * 512;
 
-		Collection<RailSection> allSections = RailParser.getRailSection(o, regionx, regionz); 
+		Collection<RailSection> allSections = RailParser.getRailSection(densityReader, o, regionx, regionz); 
 
 		hasRails = allSections.size() > 0;
 		if (!hasRails) {

@@ -27,7 +27,8 @@ public class RegionWriter extends Tasker {
 	private final GameMetaInfo gameMetaInfo;
 	private final MappedSquareManager mappedSquareManager;
 	private final PointManager pointManager;
-	private final GlobalSettings globalSettings;
+	private final boolean gaiaMode;
+	private final int verticalExaggeration;
 	
 	private static int numThreads() {
 		int numThreads = Runtime.getRuntime().availableProcessors() / 2;
@@ -51,9 +52,10 @@ public class RegionWriter extends Tasker {
 	});
 
 	public RegionWriter(PointManager pointManager, Point rootPoint, File regionFolder, 
-			GameMetaInfo metaInfo, MappedSquareManager mappedSquareManager, GlobalSettings globalSettings) {
+			GameMetaInfo metaInfo, MappedSquareManager mappedSquareManager, boolean gaiaMode, int verticalExaggeration) {
 		super(NUM_WRITING_THREADS, "RegionWriter");
-		this.globalSettings = globalSettings;
+		this.gaiaMode = gaiaMode;
+		this.verticalExaggeration = verticalExaggeration;
 		this.rootPoint = rootPoint;
 		this.regionFolder = regionFolder;
 		this.gameMetaInfo = metaInfo;
@@ -92,7 +94,7 @@ public class RegionWriter extends Tasker {
 		int regionx = task.x + rootPoint.x, regionz = task.z + rootPoint.z;
 
 		File f = new File(regionFolder, "r." + a + "." + b + ".mca");
-		GlobcoverManager coverManager = new GlobcoverManager(regionx, regionz, globalSettings.getVerticalExaggeration(), globalSettings.gaiaMode);
+		GlobcoverManager coverManager = new GlobcoverManager(regionx, regionz, verticalExaggeration, gaiaMode);
 		if (coverManager.allWater) {
 			pointManager.updateStore(task);
 			mappedSquareManager.addFinishedPoint(new Point(task.x + rootPoint.x, task.z + rootPoint.z));

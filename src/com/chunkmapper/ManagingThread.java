@@ -23,6 +23,7 @@ import com.chunkmapper.interfaces.PlayerIconManager;
 import com.chunkmapper.interfaces.PointManager;
 import com.chunkmapper.math.Matthewmatics;
 import com.chunkmapper.parser.Nominatim;
+import com.chunkmapper.parser.POIParser;
 import com.chunkmapper.rail.HeightsCache;
 import com.chunkmapper.reader.HeightsReader;
 import com.chunkmapper.reader.HeightsReaderS3;
@@ -142,7 +143,7 @@ public class ManagingThread extends Thread {
 				if (!MySecurityManager.offlineValid)
 					absz = Matthewmatics.div(absz, 128) * 128 + 64;
 				int regionx = Matthewmatics.div(absx, 512), regionz = Matthewmatics.div(absz, 512);
-				HeightsReader heightsReader = new HeightsReaderS3(regionx, regionz, globalSettings.getVerticalExaggeration());
+				HeightsReader heightsReader = new HeightsReaderS3(regionx, regionz, gameMetaInfo.verticalExaggeration);
 				altitude = heightsReader.getHeightxz(absx, absz) + 20;
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
@@ -167,7 +168,7 @@ public class ManagingThread extends Thread {
 		try {
 			PointManager pointManager = new PointManager(chunkmapperDir, mappedSquareManager, gameMetaInfo.rootPoint);
 			regionWriter = new RegionWriter(pointManager, gameMetaInfo.rootPoint, regionFolder, 
-					gameMetaInfo, mappedSquareManager, globalSettings);
+					gameMetaInfo, mappedSquareManager, globalSettings.gaiaMode, globalSettings.getVerticalExaggeration());
 
 			MyLogger.LOGGER.info("truly starting");
 			//now we loop for ETERNITY!!!
@@ -227,6 +228,7 @@ public class ManagingThread extends Thread {
 			}
 		}
 		OsmosisParser.flushCache();
+//		POIParser.flushCache();
 		MyLogger.LOGGER.info("shut down thread");
 
 	}

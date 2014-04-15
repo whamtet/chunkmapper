@@ -50,7 +50,7 @@ public class SettingsDialog extends JDialog {
 	 * @param globalSettings3 
 	 * @throws  
 	 */
-	public SettingsDialog(JFrame appFrame, final GlobalSettings globalSettings) {
+	public SettingsDialog(final JFrame appFrame, final GlobalSettings globalSettings) {
 		super(appFrame);
 		setResizable(false);
 		setTitle("Settings");
@@ -122,6 +122,13 @@ public class SettingsDialog extends JDialog {
 		final JCheckBox chckbxGaiaMode = new JCheckBox("Gaia Mode");
 		
 		JLabel lblGenerateNoMan = new JLabel("Generate no man made features.");
+		
+		JButton btnChangeOre = new JButton("Change Ore...");
+		btnChangeOre.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				(new OreFrequencyDialog(appFrame)).setVisible(true);
+			}
+		});
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
 		gl_contentPanel.setHorizontalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
@@ -133,7 +140,9 @@ public class SettingsDialog extends JDialog {
 								.addComponent(btnClearCache)
 								.addComponent(lblNewLabel_2))
 							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(btnSendReport))
+							.addComponent(btnSendReport)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(btnChangeOre))
 						.addGroup(gl_contentPanel.createSequentialGroup()
 							.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
 								.addGroup(gl_contentPanel.createSequentialGroup()
@@ -164,14 +173,15 @@ public class SettingsDialog extends JDialog {
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(chckbxGaiaMode)
 						.addComponent(lblGenerateNoMan))
-					.addPreferredGap(ComponentPlacement.RELATED, 75, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING)
 						.addComponent(spinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblNewLabel_1))
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnClearCache)
-						.addComponent(btnSendReport))
+						.addComponent(btnSendReport)
+						.addComponent(btnChangeOre))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(lblNewLabel_2))
 		);

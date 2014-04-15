@@ -3,13 +3,13 @@ package com.chunkmapper.gui.simple;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
-import java.io.File;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import com.chunkmapper.admin.BucketInfo;
 import com.chunkmapper.admin.MyLogger;
+import com.chunkmapper.gui.panel.OrePanel;
 
 public class TestFrame extends JFrame {
 
@@ -44,7 +44,8 @@ public class TestFrame extends JFrame {
 	public TestFrame() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
-		JPanel contentPane = new GeneratingPanel(new File("/Users/matthewmolloy/Library/Application Support/minecraft/saves/Hong Kong"), null);
+//		JPanel contentPane = new GeneratingPanel(new File("/Users/matthewmolloy/Library/Application Support/minecraft/saves/Hong Kong"), null);
+		JPanel contentPane = new OrePanel("Iron", 10);
 		JPanel contentPane2 = new JPanel();
 		setContentPane(contentPane2);
 		contentPane2.setLayout(new BorderLayout(0, 0));

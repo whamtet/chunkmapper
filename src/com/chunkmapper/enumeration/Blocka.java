@@ -1,6 +1,7 @@
 package com.chunkmapper.enumeration;
 
 public class Blocka {
+	public static final byte Stained_Clay = (byte) 159;
 	public static final byte Trapdoor = (byte) 96;
 	public static final byte Air = (byte) 0;
 	public static final byte Stone = (byte) 1;
@@ -108,5 +109,6 @@ public class Blocka {
 	public static final byte Lilly = (byte) 111;
 	public static final byte Rose = (byte) 38;
 	public static final byte Emerald = (byte) 129;
+	public static final byte Flower_Pot = (byte) 140;
 
 }

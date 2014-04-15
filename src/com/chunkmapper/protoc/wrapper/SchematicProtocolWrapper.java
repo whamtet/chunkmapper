@@ -44,6 +44,17 @@ public class SchematicProtocolWrapper {
 			}
 		}
 	}
+	public void stainBlock(byte targetBlock, byte targetData) {
+		for (int y = 0; y < ymax; y++) {
+			for (int z = 0; z < zmax; z++) {
+				for (int x = 0; x < xmax; x++) {
+					if (blocks[y][z][x] == targetBlock) {
+						data[y][z][x] = targetData;
+					}
+				}
+			}
+		}
+	}
 	public static void main(String[] args) throws Exception {
 		SchematicProtocolWrapper wrapper = new SchematicProtocolWrapper("/buildings/hut.myschematic");
 		System.out.println(wrapper.xmax + ", " + wrapper.zmax + ", " + wrapper.ymax);

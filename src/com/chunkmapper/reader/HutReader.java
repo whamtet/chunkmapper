@@ -5,12 +5,10 @@ import java.util.ArrayList;
 import java.util.zip.DataFormatException;
 
 import com.chunkmapper.Point;
-import com.chunkmapper.admin.OSMRouter;
 import com.chunkmapper.chunk.Chunk;
-import com.chunkmapper.parser.Nominatim;
 import com.chunkmapper.parser.OverpassObject;
 import com.chunkmapper.parser.OverpassObject.Node;
-import com.chunkmapper.writer.ArtifactWriter;
+import com.chunkmapper.writer.SchematicArtifactWriter;
 
 public class HutReader {
 	public final ArrayList<Hut> huts = new ArrayList<Hut>();
@@ -35,7 +33,7 @@ public class HutReader {
 		for (Hut hut : huts) {
 			Point p = hut.point;
 			if (chunk.x0 <= p.x && p.x < chunk.x0 + 16 && chunk.z0 <= p.z && p.z < chunk.z0 + 16) {
-				ArtifactWriter.addHut(chunk, hut.name);
+				SchematicArtifactWriter.addHut(chunk, hut.name);
 				return;
 			}
 		}

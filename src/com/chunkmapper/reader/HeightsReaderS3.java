@@ -12,7 +12,7 @@ import com.chunkmapper.protoc.admin.HeightsInfo;
 
 public class HeightsReaderS3 implements HeightsReader {
 	private static final int LEN = 512 + 2 * Utila.HEIGHTS_START;
-	protected short[][] cache = new short[LEN][LEN];
+	protected short[][] data = new short[LEN][LEN];
 //	public final int min, max;
 	private final int x0, z0, verticalExaggeration;
 	public final boolean allWater;
@@ -25,7 +25,7 @@ public class HeightsReaderS3 implements HeightsReader {
 		int sumHeight = 0;
 		for (int i = 0; i < LEN; i++) {
 			for (int j = 0; j < LEN; j++) {
-				sumHeight += cache[i][j];
+				sumHeight += data[i][j];
 			}
 		}
 		return sumHeight > 0;
@@ -92,7 +92,7 @@ public class HeightsReaderS3 implements HeightsReader {
 				
 				double h1 = tempCache[i1][j1] * (1-jfr) + tempCache[i1][j2] * jfr;
 				double h2 = tempCache[i2][j1] * (1-jfr) + tempCache[i2][j2] * jfr;
-				cache[i][j] = (short) (h1 * (1-ifr) + h2*ifr);
+				data[i][j] = (short) (h1 * (1-ifr) + h2*ifr);
 //				cache[i][j] = tempCache[i1][j1];
 			}
 		}
@@ -115,7 +115,7 @@ public class HeightsReaderS3 implements HeightsReader {
 		boolean isWater = true;
 		for (int i = Utila.HEIGHTS_START; i < 512 + Utila.HEIGHTS_START; i++) {
 			for (int j = Utila.HEIGHTS_START; j < 512 + Utila.HEIGHTS_START; j++) {
-				if (cache[i][j] >= 0) {
+				if (data[i][j] >= 0) {
 					isWater = false;
 				}
 			}
@@ -135,7 +135,7 @@ public class HeightsReaderS3 implements HeightsReader {
 		int offsetz = chunkz * 16 + Utila.HEIGHTS_START - Utila.CHUNK_START;
 		for (int x = 0; x < size; x++) {
 			for (int z = 0; z < size; z++) {
-				int h = cache[z + offsetz][x + offsetx];
+				int h = data[z + offsetz][x + offsetx];
 				h = h < 0 ? 4 : h * verticalExaggeration / Utila.Y_SCALE + 4;
 				//temp
 				//				h -= 128;
@@ -155,7 +155,7 @@ public class HeightsReaderS3 implements HeightsReader {
 	@Override
 	public short getHeightxz(int absx, int absz) {
 		absx -= x0; absz -= z0;
-		short h = cache[absz][absx];
+		short h = data[absz][absx];
 		h = h < 0 ? 4 : (short) (h * verticalExaggeration / Utila.Y_SCALE + 4);
 		//temp
 		//		h -= 128;
@@ -173,7 +173,7 @@ public class HeightsReaderS3 implements HeightsReader {
 	public short getHeightij(int i, int j) {
 
 		//note reversed order
-		short h = cache[i + Utila.HEIGHTS_START][j + Utila.HEIGHTS_START];
+		short h = data[i + Utila.HEIGHTS_START][j + Utila.HEIGHTS_START];
 		h = h < 0 ? 4 : (short) (h * verticalExaggeration / Utila.Y_SCALE + 4);
 		//temp
 		//		h -= 128;
@@ -193,7 +193,7 @@ public class HeightsReaderS3 implements HeightsReader {
 		int[][] out = new int [512][512];
 		for (int i = 0; i < 512; i++) {
 			for (int j = 0; j < 512; j++) {
-				out[i][j] = cache[i + Utila.HEIGHTS_START][j + Utila.HEIGHTS_START];
+				out[i][j] = data[i + Utila.HEIGHTS_START][j + Utila.HEIGHTS_START];
 			}
 		}
 		return out;
@@ -204,21 +204,21 @@ public class HeightsReaderS3 implements HeightsReader {
 	 */
 	@Override
 	public int getRealHeightij(int i, int j) {
-		return cache[i + Utila.HEIGHTS_START][j + Utila.HEIGHTS_START];
+		return data[i + Utila.HEIGHTS_START][j + Utila.HEIGHTS_START];
 	}
 	/* (non-Javadoc)
 	 * @see com.chunkmapper.reader.HeightsReader#isLandij(int, int)
 	 */
 	@Override
 	public boolean isLandij(int i, int j) {
-		return cache[i + Utila.HEIGHTS_START][j + Utila.HEIGHTS_START] >= 0;
+		return data[i + Utila.HEIGHTS_START][j + Utila.HEIGHTS_START] >= 0;
 	}
 	/* (non-Javadoc)
 	 * @see com.chunkmapper.reader.HeightsReader#isWaterij(int, int)
 	 */
 	@Override
 	public boolean isWaterij(int i, int j) {
-		return cache[i + Utila.HEIGHTS_START][j + Utila.HEIGHTS_START] < 1;
+		return data[i + Utila.HEIGHTS_START][j + Utila.HEIGHTS_START] < 1;
 	}
 
 }

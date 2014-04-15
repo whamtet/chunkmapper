@@ -11,8 +11,8 @@ import com.chunkmapper.sections.POI;
 
 public class RugbyReader {
 	private final Collection<POI> pois;
-	public RugbyReader(OverpassObject o, int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
-		pois = POIParser.getPois(o, regionx, regionz);
+	public RugbyReader(Collection<POI> pois, int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
+		this.pois = pois;
 	}
 	public static class RugbyField {
 		public final String name;

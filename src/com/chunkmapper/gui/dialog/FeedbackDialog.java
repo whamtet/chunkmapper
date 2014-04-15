@@ -68,9 +68,6 @@ public class FeedbackDialog extends JDialog {
 					PreferenceManager.setIgnoreFeedback();
 				}
 			}
-//			public void windowClosed(WindowEvent e) {
-//				System.exit(0);
-//			}
 		});
 		setTitle("Feedback");
 		setResizable(false);

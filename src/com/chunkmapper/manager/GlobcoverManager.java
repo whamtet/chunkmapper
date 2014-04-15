@@ -2,6 +2,7 @@ package com.chunkmapper.manager;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.Collection;
 import java.util.NoSuchElementException;
 import java.util.Random;
 import java.util.zip.DataFormatException;
@@ -38,12 +39,14 @@ import com.chunkmapper.column.SparseVegetation;
 import com.chunkmapper.column.Urban;
 import com.chunkmapper.column.VegetationWithCropland;
 import com.chunkmapper.column.Vineyard;
+import com.chunkmapper.column.WoolenCol;
 import com.chunkmapper.enumeration.Block;
 import com.chunkmapper.enumeration.FarmType;
 import com.chunkmapper.enumeration.Globcover;
 import com.chunkmapper.math.Matthewmatics;
 import com.chunkmapper.parser.Nominatim;
 import com.chunkmapper.parser.OverpassObject;
+import com.chunkmapper.parser.POIParser;
 import com.chunkmapper.reader.DensityReader;
 import com.chunkmapper.reader.FarmTypeReader;
 import com.chunkmapper.reader.FerryReader;
@@ -51,6 +54,7 @@ import com.chunkmapper.reader.FileNotYetAvailableException;
 import com.chunkmapper.reader.GlacierReader;
 import com.chunkmapper.reader.GlobcoverReader;
 import com.chunkmapper.reader.GlobcoverReaderImpl2;
+import com.chunkmapper.reader.HasHouseReader;
 import com.chunkmapper.reader.HeightsReader;
 import com.chunkmapper.reader.HeightsReaderS3;
 import com.chunkmapper.reader.HutReader;
@@ -67,38 +71,29 @@ import com.chunkmapper.reader.XapiHighwayReader;
 import com.chunkmapper.reader.XapiLakeReader;
 import com.chunkmapper.reader.XapiRailReader;
 import com.chunkmapper.reader.XapiRiverReader;
+import com.chunkmapper.sections.POI;
 import com.chunkmapper.security.MySecurityManager;
 import com.chunkmapper.writer.ArtifactWriter;
 import com.chunkmapper.writer.GenericWriter;
+import com.chunkmapper.writer.SchematicArtifactWriter;
 
 public class GlobcoverManager {
 	private final HeightsReader heightsReader;
 	private final XapiRailReader railReader;
 	private final POIReader poiReader;
-	private final DensityReader densityReader;
+	private final HasHouseReader hasHouseReader;
 	private final XapiBoundaryReader boundaryReader;
 	private final RugbyReader rugbyReader;
 	private final XapiHighwayReader highwayReader;
 	private final FerryReader ferryReader;
 	private final PathReader pathReader;
 	private final HutReader hutReader;
+	private final DensityReader densityReader;
 	public final boolean allWater;
 	private final ArtifactWriter artifactWriter = new ArtifactWriter();
 	public final int regionx, regionz;
 	public final Random RANDOM = new Random();
 	private final boolean gaiaMode;
-	//	private long lastTime;
-	//	private long profileCounter;
-
-	//	private void init() {
-	//		lastTime = System.currentTimeMillis();
-	//	}
-	//	private void printTimeElapsed() {
-	//		long currentTime = System.currentTimeMillis();
-	//		System.out.println(profileCounter + ": " + (currentTime - lastTime));
-	//		lastTime = currentTime;
-	//		profileCounter++;
-	//	}
 
 	public final AbstractColumn[][] columns = new AbstractColumn[512][512];
 
@@ -127,6 +122,8 @@ public class GlobcoverManager {
 
 		Thread.sleep(0);
 		OverpassObject o = OSMRouter.getObject(regionx, regionz);
+		Collection<POI> pois = POIParser.getPois(o, regionx, regionz);
+
 		Thread.sleep(0);
 		ferryReader = gaiaMode ? null : new FerryReader(o, regionx, regionz);
 		Thread.sleep(0);
@@ -135,15 +132,17 @@ public class GlobcoverManager {
 		if (allWater) {
 			railReader = null;
 			poiReader = null;
-			densityReader = null;
+			hasHouseReader = null;
 			boundaryReader = null;
 			rugbyReader = null;
 			highwayReader = null;
 			pathReader = null;
 			hutReader = null;
+			densityReader = null;
 			return;
 		}
 
+		densityReader = new DensityReader(pois, regionx, regionz);
 		OrchardReader orchardReader = new OrchardReader(o, regionx, regionz);
 		Thread.sleep(0);
 		VineyardReader vineyardReader = new VineyardReader(o, regionx, regionz);
@@ -156,9 +155,9 @@ public class GlobcoverManager {
 		Thread.sleep(0);
 		boundaryReader = gaiaMode ? null : new XapiBoundaryReader(o, regionx, regionz);
 		Thread.sleep(0);
-		rugbyReader = gaiaMode ? null : new RugbyReader(o, regionx, regionz);
+		rugbyReader = gaiaMode ? null : new RugbyReader(pois, regionx, regionz);
 		Thread.sleep(0);
-		densityReader = gaiaMode ? null : new DensityReader(o, regionx, regionz);
+		hasHouseReader = gaiaMode ? null : new HasHouseReader(pois, regionx, regionz);
 		Thread.sleep(0);
 		GlobcoverReader coverReader = new GlobcoverReaderImpl2(regionx, regionz);
 		Thread.sleep(0);
@@ -169,7 +168,7 @@ public class GlobcoverManager {
 		Thread.sleep(0);
 		XapiRiverReader riverReader = new XapiRiverReader(o, regionx, regionz, heightsReader);
 		Thread.sleep(0);
-		railReader = gaiaMode ? null : new XapiRailReader(o, regionx, regionz, heightsReader, verticalExaggeration);
+		railReader = gaiaMode ? null : new XapiRailReader(densityReader, o, regionx, regionz, heightsReader, verticalExaggeration);
 		Thread.sleep(0);
 
 		FarmTypeReader farmTypeReader = gaiaMode ? null : new FarmTypeReader();
@@ -183,6 +182,11 @@ public class GlobcoverManager {
 		for (int i = 0; i < 512; i++) {
 			for (int j = 0; j < 512; j++) {
 				int absx = j + regionx*512, absz = i + regionz*512;
+
+				//				if (densityReader.isUrbanxz(absx, absz)) {
+				//					columns[i][j] = new WoolenCol(absx, absz, heightsReader);
+				//					continue;
+				//				}
 
 				if (coastlineReader.hasWaterij(i, j)) {
 					columns[i][j] = new Ocean(absx, absz);
@@ -379,7 +383,7 @@ public class GlobcoverManager {
 		RugbyField rugbyField = rugbyReader == null ? null : rugbyReader.getRugbyField(chunk);
 		if (rugbyField != null && !chunkHasRail && !chunkHasWater && !chunkHasRoad) {
 			ArtifactWriter.addRugbyField(chunk, rugbyField);
-		} else if ((chunkHasUrban || densityReader != null && densityReader.hasHouse(chunkx, chunkz))
+		} else if ((chunkHasUrban || hasHouseReader != null && hasHouseReader.hasHouse(chunkx, chunkz))
 				&& !chunkHasRail && !chunkHasWater && !chunkHasRoad) {
 			int i = RANDOM.nextInt(100);
 			switch(i) {
@@ -393,7 +397,13 @@ public class GlobcoverManager {
 				ArtifactWriter.placePrison(chunk);
 				break;
 			default:
-				ArtifactWriter.addHouse(chunk);
+				int numFloors = (int) Math.floor(densityReader.getDensityxz(chunk.x0, chunk.z0) * 1000);
+				if (numFloors < 1) {
+					ArtifactWriter.addHouse(chunk);
+				} else {
+					SchematicArtifactWriter.addApartment(chunk, numFloors);
+				}
+				//				ArtifactWriter.addHouse(chunk);
 			}
 
 		} else if (chunkAllForest && !chunkHasRail && RANDOM.nextInt(100) == 0 && !gaiaMode) {
@@ -414,8 +424,7 @@ public class GlobcoverManager {
 		}
 		if (!MySecurityManager.offlineValid && abschunkz % 8 == 0)
 			GenericWriter.addNorthGlassWall(chunk);
-//		if (!MySecurityManager.offlineValid && abschunkx % 8 == 0)
-//			GenericWriter.addWestGlassWall(chunk);
+
 		return chunk;
 	}
 

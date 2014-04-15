@@ -2,21 +2,50 @@ package com.chunkmapper.parser;
 
 import java.awt.Rectangle;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.zip.DataFormatException;
 
 import com.chunkmapper.Point;
+import com.chunkmapper.admin.BucketInfo;
 import com.chunkmapper.admin.OSMRouter;
 import com.chunkmapper.parser.OverpassObject.Way;
+import com.chunkmapper.reader.DensityReader;
+import com.chunkmapper.sections.POI;
 import com.chunkmapper.sections.RailSection;
 
 public class RailParser extends Parser {
 	
-	public static ArrayList<RailSection> getRailSection(OverpassObject o, int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
-		ArrayList<RailSection> out = new ArrayList<RailSection>();
+	public static void main(String[] args) throws Exception {
+		BucketInfo.initMap();
+		double[] latlon = Nominatim.getPoint("New York");
+		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
+		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
+		OverpassObject o = OSMRouter.getObject(regionx, regionz);
+		HashSet<String> vals = new HashSet<String>();
 		for (Way way : o.ways) {
 			if (way.map.containsKey("railway")) {
+				vals.add(way.map.get("railway"));
+			}
+		}
+		System.out.println(vals);
+		System.out.println("done");
+	}
+	public static ArrayList<RailSection> getRailSection(DensityReader densityReader, OverpassObject o, int regionx, int regionz) throws IOException, InterruptedException, DataFormatException, URISyntaxException {
+		ArrayList<RailSection> out = new ArrayList<RailSection>();
+		for (Way way : o.ways) {
+			String railway = way.map.get("railway");
+			Point rootPoint = way.points.size() > 0 ? way.points.get(0) : null;
+			if (railway != null && (railway.contains("rail") ||
+					densityReader != null && rootPoint != null && !densityReader.isUrbanxz(rootPoint.x, rootPoint.z)
+					&& (railway.equals("abandoned") || railway.equals("disused")))) {
+//			if (railway != null && (railway.contains("rail") || railway.equals("abandoned") || railway.equals("disused"))
+//					&& rootPoint != null && densityReader.isUrbanxz(rootPoint.x, rootPoint.z)
+//					) {
+				
 				boolean isPreserved = "preserved".equals(way.map.get("railway"));
 				boolean hasBridge = "yes".equals(way.map.get("bridge"));
 				boolean hasCutting = "yes".equals(way.map.get("cutting"));

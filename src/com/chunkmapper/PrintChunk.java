@@ -20,7 +20,7 @@ public class PrintChunk {
 		in.close();
 		regionFile.close();
 		
-		PrintStream out = new PrintStream("horse.txt");
+		PrintStream out = new PrintStream("chunk.txt");
 		root.print(out);
 		out.close();
 		

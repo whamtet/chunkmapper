@@ -341,7 +341,18 @@ public class ViewControlsSelectListener implements SelectListener
             // Handle left press on controls
             this.pressedControl = selectedObject;
             this.pressedControlType = controlType;
-            if (controlType.equals("trash it")) {
+            
+
+            // Consume drag events, but do not consume left press events. It is not necessary to consume left press
+            // events here, and doing so prevents the WorldWindow from gaining focus.
+            if (event.getEventAction().equals(SelectEvent.DRAG))
+                event.consume();
+        }
+        else if (event.getEventAction().equals(SelectEvent.LEFT_CLICK)
+            || event.getEventAction().equals(SelectEvent.LEFT_DOUBLE_CLICK)
+            || event.getEventAction().equals(SelectEvent.DRAG_END))
+        {
+        	if (controlType.equals("trash it")) {
             	SettingsDialog d = new SettingsDialog(appFrame, globalSettings);
 //            	GoToDialog d = new GoToDialog(appFrame);
             	d.setVisible(true);
@@ -359,16 +370,7 @@ public class ViewControlsSelectListener implements SelectListener
         			ViewControlsLayer.singleton.hideAuxiliaryButton();
         		}
             }
-
-            // Consume drag events, but do not consume left press events. It is not necessary to consume left press
-            // events here, and doing so prevents the WorldWindow from gaining focus.
-            if (event.getEventAction().equals(SelectEvent.DRAG))
-                event.consume();
-        }
-        else if (event.getEventAction().equals(SelectEvent.LEFT_CLICK)
-            || event.getEventAction().equals(SelectEvent.LEFT_DOUBLE_CLICK)
-            || event.getEventAction().equals(SelectEvent.DRAG_END))
-        {
+            
             // Release pressed control
             this.pressedControl = null;
             resetOrbitView(view);

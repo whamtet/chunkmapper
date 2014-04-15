@@ -68,9 +68,6 @@ public class NoPurchaseDialog extends JDialog {
 			public void windowClosing(WindowEvent e) {
 				PreferenceManager.setNoPurchaseShown();
 			}
-//			public void windowClosed(WindowEvent e) {
-//				System.exit(0);
-//			}
 		});
 		setTitle("Feedback");
 		setResizable(false);

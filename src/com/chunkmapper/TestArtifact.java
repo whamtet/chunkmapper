@@ -20,6 +20,7 @@ import com.chunkmapper.writer.GenericWriter;
 import com.chunkmapper.writer.LenteTreeWriter;
 import com.chunkmapper.writer.LevelDat;
 import com.chunkmapper.writer.MobWriter;
+import com.chunkmapper.writer.SchematicArtifactWriter;
 
 public class TestArtifact {
 
@@ -52,8 +53,9 @@ public class TestArtifact {
 		int chunkx = 0, chunkz = 0;
 		Chunk chunk = new Chunk(chunkx, chunkz, heights, chunkx, chunkz);
 		GenericWriter.addGrass(chunk);
+		SchematicArtifactWriter.addApartment(chunk, 2);
 //		GenericWriter.addHeavenWaterFall(chunk);
-		GenericWriter.addWestGlassWall(chunk);
+//		GenericWriter.addWestGlassWall(chunk);
 		
 		
 //		ArtifactWriter.placePrison(chunk);

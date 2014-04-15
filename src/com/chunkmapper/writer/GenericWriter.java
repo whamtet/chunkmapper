@@ -2,6 +2,7 @@ package com.chunkmapper.writer;
 
 import java.util.Random;
 
+import com.chunkmapper.admin.PreferenceManager;
 import com.chunkmapper.chunk.Chunk;
 import com.chunkmapper.enumeration.Block;
 import com.chunkmapper.enumeration.Blocka;
@@ -9,10 +10,11 @@ import com.chunkmapper.enumeration.Blocka;
 public class GenericWriter {
 
 	private static final Random RANDOM = new Random();
-	//	
-	//	public static void addBedrock(byte[][][] blocks, int[][] heights) {
-	//		addBedrock(blocks, heights, 2);
-	//	}
+	public static int COAL_WIDTH = 10 * 4, IRON_WIDTH = 20 * 4, REDSTONE_WIDTH = 30 * 4, DIAMOND_WIDTH = 50 * 4, EMERALD_WIDTH = 60 * 4;
+	public static int GOLD_WIDTH = 40 * 4, LAPIS_LAZULI_WIDTH = 70 * 4;
+	static {
+		PreferenceManager.activateOrePrefs();
+	}
 
 	public static void addHeavenWaterFall(Chunk chunk) {
 		chunk.Blocks[255][8][8] = Blocka.Water;
@@ -58,15 +60,16 @@ public class GenericWriter {
 	}
 	public static void addBedrock(Chunk chunk, int soilThickness) {
 		int c = 0;
-		int coalWidth = 10 * 4, ironWidth = 20 * 4, redstoneWidth = 30 * 4, goldWidth = 40 * 4, diamondWidth = 50 * 4;
-		int emeraldWidth = 60 * 4;
+//		int COAL_WIDTH = 10 * 4, IRON_WIDTH = 20 * 4, REDSTONE_WIDTH = 30 * 4, GOLD_WIDTH = 40 * 4, DIAMOND_WIDTH = 50 * 4;
+//		int EMERALD_WIDTH = 60 * 4;
 
-		int nextCoal = RANDOM.nextInt(coalWidth);
-		int nextIron = RANDOM.nextInt(ironWidth);
-		int nextRedstone = RANDOM.nextInt(redstoneWidth);
-		int nextGold = RANDOM.nextInt(goldWidth);
-		int nextDiamond = RANDOM.nextInt(diamondWidth);
-		int nextEmerald = RANDOM.nextInt(emeraldWidth);
+		int nextCoal = RANDOM.nextInt(COAL_WIDTH);
+		int nextIron = RANDOM.nextInt(IRON_WIDTH);
+		int nextRedstone = RANDOM.nextInt(REDSTONE_WIDTH);
+		int nextGold = RANDOM.nextInt(GOLD_WIDTH);
+		int nextDiamond = RANDOM.nextInt(DIAMOND_WIDTH);
+		int nextEmerald = RANDOM.nextInt(EMERALD_WIDTH);
+		int nextLapisLazuli = RANDOM.nextInt(LAPIS_LAZULI_WIDTH);
 
 		for (int z = 0; z < 16; z++) {
 			for (int x = 0; x < 16; x++) {
@@ -77,27 +80,31 @@ public class GenericWriter {
 					byte fill = Block.Stone.val;
 					if (c == nextCoal) {
 						fill = Block.Coal_Ore.val;
-						nextCoal += RANDOM.nextInt(coalWidth);
+						nextCoal += RANDOM.nextInt(COAL_WIDTH);
 					}
 					if (c == nextIron) {
 						fill = Block.Iron_Ore.val;
-						nextIron += RANDOM.nextInt(ironWidth);
+						nextIron += RANDOM.nextInt(IRON_WIDTH);
 					}
 					if (c == nextRedstone) {
 						fill = Block.Redstone_Ore_Type_1.val;
-						nextRedstone += RANDOM.nextInt(redstoneWidth);
+						nextRedstone += RANDOM.nextInt(REDSTONE_WIDTH);
 					}
 					if (c == nextGold) {
 						fill = Block.Gold_Ore.val;
-						nextGold += RANDOM.nextInt(goldWidth);
+						nextGold += RANDOM.nextInt(GOLD_WIDTH);
 					}
 					if (c == nextDiamond) {
 						fill = Block.Diamond_Ore.val;
-						nextGold += RANDOM.nextInt(diamondWidth);
+						nextGold += RANDOM.nextInt(DIAMOND_WIDTH);
 					}
 					if (c == nextEmerald) {
 						fill = Blocka.Emerald;
-						nextEmerald += RANDOM.nextInt(emeraldWidth);
+						nextEmerald += RANDOM.nextInt(EMERALD_WIDTH);
+					}
+					if (c == nextLapisLazuli) {
+						fill = Blocka.Lapis_Lazuli_Ore;
+						nextLapisLazuli += RANDOM.nextInt(LAPIS_LAZULI_WIDTH);
 					}
 					chunk.Blocks[y][z][x] = fill;
 					c++;

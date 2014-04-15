@@ -2,11 +2,13 @@
 -if meta.txt only generates, will not appear in list, but will allow new creation, go to old spot and avoid cancellation.  This appears to be triggered by network problems.
 -rivers blocking just before the coast
 -dragging over blue squares
--south pole
 -priority in osx apps
 -after some time little man dissappears behind blue squares
-
+-switch between normal view and open streetmap?
 TODO
 ====
 
--switch between normal view and open streetmap?
+email free maps guy
+email rails guy
+email ore guy
+email nature guy

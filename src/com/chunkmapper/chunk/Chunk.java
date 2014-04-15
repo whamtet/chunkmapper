@@ -20,7 +20,6 @@ public class Chunk {
 	public byte TerrainPopulated = 1;
 	public byte[] Biomes = new byte[256];
 	public int[][] heights;
-	private static int spacesTillNextPoweredRail = 1;
 	public ListTag<CompoundTag> TileEntities = new ListTag<CompoundTag>(), Entities = new ListTag<CompoundTag>();
 
 	public int[] HeightMap = new int[256];

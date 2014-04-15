@@ -17,7 +17,7 @@ public class SchematicMaker {
 	 * @param args
 	 */
 	public static void main(String[] args) throws Exception {
-		int chunkx = 2, chunkz = 3;
+		int chunkx = 0, chunkz = 0;
 		File f = new File("/Users/matthewmolloy/Library/Application Support/minecraft/saves/house/region/r.0.0.mca");
 		RegionFile region = new RegionFile(f);
 		DataInputStream in = region.getChunkDataInputStream(chunkx, chunkz);
@@ -26,15 +26,16 @@ public class SchematicMaker {
 		region.close();
 		
 		NakedChunk chunk = new NakedChunk(root);
-		int x = 16, y = 6, z = 16;
+		int x = 12, y = 2, z = 14;
 		int size = x*y*z;
 		byte[] blocks = new byte[size], data = new byte[size];
 		int c = 0;
+		int yOffset = 9;
 		for (int yd = 0; yd < y; yd++) {
 			for (int zd = 0; zd < z; zd++) {
 				for (int xd = 0; xd < x; xd++) {
-					blocks[c] = chunk.Blocks[yd+4][zd][xd];
-					data[c] = chunk.Data[yd+4][zd][xd];
+					blocks[c] = chunk.Blocks[yd+yOffset][zd][xd];
+					data[c] = chunk.Data[yd+yOffset][zd][xd];
 					c++;
 				}
 			}
@@ -46,8 +47,10 @@ public class SchematicMaker {
 		builder.setBlockData(ByteString.copyFrom(blocks));
 		builder.setDataData(ByteString.copyFrom(data));
 		
-		File g = new File("resources/buildings/hut.myschematic");
+		File g = new File("chunkmapperResources/buildings/apartment-roof2.myschematic");
 		Zip.zipOver(builder.build().toByteArray(), g);
+		File h = new File("target/classes/buildings/apartment-roof2.myschematic");
+		Zip.zipOver(builder.build().toByteArray(), h);
 		System.out.println("done");
 	}
 

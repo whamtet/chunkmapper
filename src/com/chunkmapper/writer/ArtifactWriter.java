@@ -14,29 +14,18 @@ import com.chunkmapper.enumeration.LadderWallsignFurnaceChest;
 import com.chunkmapper.enumeration.Stairs;
 import com.chunkmapper.enumeration.StraightRail;
 import com.chunkmapper.enumeration.Villager;
-import com.chunkmapper.enumeration.WoolColor;
+import com.chunkmapper.enumeration.BlockColor;
 import com.chunkmapper.math.Matthewmatics;
 import com.chunkmapper.nbt.CompoundTag;
 import com.chunkmapper.protoc.wrapper.SchematicProtocolWrapper;
 import com.chunkmapper.reader.RugbyReader.RugbyField;
 
 public class ArtifactWriter {
-	private static final SchematicProtocolWrapper hut;
-	private static final Logger logger = Logger.getLogger(ArtifactWriter.class.toString());
-	static {
-		SchematicProtocolWrapper hut2 = null;
-		try {
-			//			hut2 = new SchematicProtocolWrapper(new File(FileUtils.getUserDirectory(), "hut.myschematic"));
-			hut2 = new SchematicProtocolWrapper("/buildings/hut.myschematic");
-		} catch (Exception e) {
-			MyLogger.LOGGER.severe(MyLogger.printException(e));
-		}
-		hut = hut2;
-	}
+	
 	private int spacesTillNextPoweredRail = 1;
 	private static void addWool(Chunk chunk, int h, int z, int x) {
 		chunk.Blocks[h][z][x] = Block.Wool.val;
-		chunk.Data[h][z][x] = WoolColor.Light_Gray.val;
+		chunk.Data[h][z][x] = BlockColor.Light_Gray.val;
 	}
 	private static void addH(Chunk chunk, int y0, int z0, int x0) {
 		//foundations
@@ -408,7 +397,7 @@ public class ArtifactWriter {
 			double x = 2 + 4 * chunk.RANDOM.nextDouble();
 			double z = 5 + 3 * chunk.RANDOM.nextDouble();
 			double y = h + 1;
-			MobWriter.addVillager(chunk, Villager.Farmer, x + chunk.xr, y, z + chunk.zr, i < 3);
+			MobWriter.addVillager(chunk, Villager.Farmer, x + chunk.xr, y, z + chunk.zr, false);
 		}
 	}
 
@@ -593,7 +582,7 @@ public class ArtifactWriter {
 					//do wall
 					for (int y = h + 1; y < h + wallHeight; y++) {
 						chunk.Blocks[y][z][x] = Block.Wool.val;
-						chunk.Data[y][z][x] = WoolColor.Brown.val;
+						chunk.Data[y][z][x] = BlockColor.Brown.val;
 					}
 					chunk.Blocks[h + wallHeight][z][x] = Block.Nether_Brick.val;
 				} else {
@@ -714,7 +703,7 @@ public class ArtifactWriter {
 			}
 		}
 	}
-	private static int getMeanHeight(Chunk chunk) {
+	static int getMeanHeight(Chunk chunk) {
 		int s = 0, n = 0;
 		for (int x = 0; x < 16; x++) {
 			for (int z = 0; z < 16; z++) {
@@ -724,28 +713,7 @@ public class ArtifactWriter {
 		}
 		return s / n;
 	}
-	public static void addHut(Chunk chunk, String name) {
-		int h = getMeanHeight(chunk);
-		for (int y = 0; y < hut.ymax; y++) {
-			for (int z = 0; z < 16; z++) {
-				for (int x = 0; x < 16; x++) {
-					chunk.Blocks[y+h][z][x] = hut.blocks[y][z][x];
-					chunk.Data[y+h][z][x] = hut.data[y][z][x];
-				}
-			}
-		}
-		for (int y = h + hut.ymax; y < 256; y++) {
-			for (int z = 0; z < 16; z++) {
-				for (int x = 0; x < 16; x++) {
-					chunk.Blocks[y][z][x] = 0;
-				}
-			}
-		}
-		//add hut name
-		if (name != null) {
-			addSign(chunk, h, 2, 2, name.split(" "), (byte) 0);
-		}
-	}
+	
 	private static int getMeanHeight(Chunk chunk, int x0, int z0, int width, int length) {
 		int s = 0, n = 0;
 		for (int x = x0; x < x0 + width; x++) {
@@ -835,7 +803,7 @@ public class ArtifactWriter {
 		for (int z = z0; z < z0 + length; z++) {
 			for (int x = x0; x < x0 + width; x++) {
 				chunk.Blocks[h+3][z][x] = Blocka.Wool;
-				chunk.Data[h+3][z][x] = WoolColor.Brown.val;
+				chunk.Data[h+3][z][x] = BlockColor.Brown.val;
 			}
 		}
 		//add a butcher

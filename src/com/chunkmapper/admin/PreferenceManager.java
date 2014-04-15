@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
 
+import com.chunkmapper.writer.GenericWriter;
+
 public class PreferenceManager {
 	private static final File Cache = new File(Utila.CACHE, "preferences.txt");
 	private static final HashMap<String, String> data = new HashMap<String, String>();
@@ -24,6 +26,30 @@ public class PreferenceManager {
 			} catch (IOException e) {
 				MyLogger.LOGGER.severe(MyLogger.printException(e));
 			}
+		}
+	}
+	public static void setOrePrefs() {
+		data.put("coal-width", GenericWriter.COAL_WIDTH + "");
+		data.put("diamond-width", GenericWriter.DIAMOND_WIDTH + "");
+		data.put("emerald-width", GenericWriter.EMERALD_WIDTH + "");
+		data.put("gold-width", GenericWriter.GOLD_WIDTH + "");
+		data.put("iron-width", GenericWriter.IRON_WIDTH + "");
+		data.put("lapis-lazuli-width", GenericWriter.LAPIS_LAZULI_WIDTH + "");
+		data.put("redstone-width", GenericWriter.REDSTONE_WIDTH + "");
+		spit();
+	}
+	private static int getInt(String k) {
+		return Integer.parseInt(data.get(k));
+	}
+	public static void activateOrePrefs() {
+		if (data.containsKey("coal-width")) {
+			GenericWriter.COAL_WIDTH = getInt("coal-width");
+			GenericWriter.DIAMOND_WIDTH = getInt("diamond-width");
+			GenericWriter.EMERALD_WIDTH = getInt("emerald-width");
+			GenericWriter.GOLD_WIDTH = getInt("gold-width");
+			GenericWriter.IRON_WIDTH = getInt("iron-width");
+			GenericWriter.LAPIS_LAZULI_WIDTH = getInt("lapis-lazuli-width");
+			GenericWriter.REDSTONE_WIDTH = getInt("redstone-width");
 		}
 	}
 	private static void spit() {
