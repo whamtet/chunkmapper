@@ -92,6 +92,9 @@ public class XapiRailReader {
 		//			return;
 
 		for (RailSection railSection : allSections) {
+			if (Thread.interrupted()) {
+				throw new InterruptedException();
+			}
 			boolean allowAscend = !railSection.hasTunnel && !railSection.hasCutting;
 			boolean allowDescend = !railSection.hasBridge && !railSection.hasEmbankment;
 
@@ -245,6 +248,9 @@ public class XapiRailReader {
 		}
 		//lets fix things up a little
 		for (int i = 0; i < 512; i++) {
+			if (Thread.interrupted()) {
+				throw new InterruptedException();
+			}
 			for (int j = 0; j < 512; j++) {
 				if (heightsManager.hasRailij(i, j)) {
 					byte railType = newRailType(i, j, heightsManager);

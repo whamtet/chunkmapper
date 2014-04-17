@@ -5,6 +5,8 @@ import java.io.File;
 import java.util.Comparator;
 import java.util.concurrent.PriorityBlockingQueue;
 
+import javax.swing.JOptionPane;
+
 import com.chunkmapper.GameMetaInfo;
 import com.chunkmapper.Point;
 import com.chunkmapper.Tasker;
@@ -95,6 +97,7 @@ public class RegionWriter extends Tasker {
 
 		File f = new File(regionFolder, "r." + a + "." + b + ".mca");
 		GlobcoverManager coverManager = new GlobcoverManager(regionx, regionz, verticalExaggeration, gaiaMode);
+//		JOptionPane.showMessageDialog(null, "Finished coverManager");
 		if (coverManager.allWater) {
 			pointManager.updateStore(task);
 			mappedSquareManager.addFinishedPoint(new Point(task.x + rootPoint.x, task.z + rootPoint.z));

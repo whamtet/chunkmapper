@@ -30,6 +30,8 @@ import com.chunkmapper.admin.BucketInfo;
 import com.chunkmapper.admin.MyLogger;
 import com.chunkmapper.admin.PreferenceManager;
 import com.chunkmapper.admin.Utila;
+import com.chunkmapper.gui.ApplicationTemplate;
+import com.chunkmapper.gui.dialog.AccountDialog;
 import com.chunkmapper.gui.dialog.NewMapDialog;
 import com.chunkmapper.gui.layer.GameAvailableInterface;
 import com.chunkmapper.security.MySecurityManager;
@@ -76,10 +78,13 @@ public class SimplifiedGUI extends JFrame implements GameAvailableInterface {
 		return defaultListModel.size();
 	}
 
-	/**
-	 * Create the frame.
-	 */
 	public SimplifiedGUI() {
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				System.out.println("closing");
+				ApplicationTemplate.manageFeedback();
+			}
+		});
 		setTitle("Chunkmapper - Simple Interface");
 		this.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
@@ -113,39 +118,56 @@ public class SimplifiedGUI extends JFrame implements GameAvailableInterface {
 		panel.setBorder(null);
 
 		scrollPane = new JScrollPane();
+		
+		final JButton btnAuthorizeAccount = new JButton("Authorize Account...");
+		btnAuthorizeAccount.setVisible(!MySecurityManager.isOfflineValid());
+		btnAuthorizeAccount.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				AccountDialog d = new AccountDialog(SimplifiedGUI.this);
+        		d.setVisible(true);
+        		if (d.ok) {
+        			btnAuthorizeAccount.setVisible(false);
+        		}
+			}
+		});
 
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
-				gl_contentPane.createParallelGroup(Alignment.LEADING)
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-						.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addContainerGap()
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addComponent(lblChunkmaps)
 								.addGroup(gl_contentPane.createSequentialGroup()
-										.addContainerGap()
-										.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-												.addGroup(gl_contentPane.createSequentialGroup()
-														.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 212, GroupLayout.PREFERRED_SIZE)
-														.addGap(9)
-														.addComponent(panel, GroupLayout.DEFAULT_SIZE, 493, Short.MAX_VALUE))
-														.addComponent(lblChunkmaps)))
-														.addGroup(gl_contentPane.createSequentialGroup()
-																.addGap(34)
-																.addComponent(btnNewChunkmap)))
-																.addContainerGap())
-				);
+									.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 212, GroupLayout.PREFERRED_SIZE)
+									.addGap(9)
+									.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+										.addComponent(btnAuthorizeAccount)
+										.addComponent(panel, GroupLayout.DEFAULT_SIZE, 493, Short.MAX_VALUE)))))
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addGap(34)
+							.addComponent(btnNewChunkmap)))
+					.addContainerGap())
+		);
 		gl_contentPane.setVerticalGroup(
-				gl_contentPane.createParallelGroup(Alignment.LEADING)
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-						.addGap(15)
-						.addComponent(lblChunkmaps)
-						.addPreferredGap(ComponentPlacement.RELATED)
-						.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-								.addComponent(panel, GroupLayout.PREFERRED_SIZE, 377, GroupLayout.PREFERRED_SIZE)
-								.addGroup(gl_contentPane.createSequentialGroup()
-										.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 377, GroupLayout.PREFERRED_SIZE)
-										.addGap(12)
-										.addComponent(btnNewChunkmap)))
-										.addContainerGap(13, Short.MAX_VALUE))
-				);
+					.addGap(15)
+					.addComponent(lblChunkmaps)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addComponent(panel, GroupLayout.PREFERRED_SIZE, 377, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(btnAuthorizeAccount))
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 377, GroupLayout.PREFERRED_SIZE)
+							.addGap(12)
+							.addComponent(btnNewChunkmap)))
+					.addContainerGap(13, Short.MAX_VALUE))
+		);
 
 		list = new JList<String>(defaultListModel);
 		list.addListSelectionListener(new ListSelectionListener() {

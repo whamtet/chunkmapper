@@ -99,27 +99,10 @@ public class GlobcoverManager {
 
 	public final AbstractColumn[][] columns = new AbstractColumn[512][512];
 
-	public static void main(String[] args) throws Exception {
-		double[] latlon = Nominatim.getPoint("new plymouth, nz");
-		//		double[] latlon = {-43.88, -176.15};
-		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
-		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
-		GlobcoverManager manager = new GlobcoverManager(regionx, regionz, 1, false);
-
-		for (int i = 0; i < 512; i++) {
-			for (int j = 0; j < 512; j++) {
-				if (manager.columns[i][j] instanceof RainfedCrops) {
-					System.out.println("crops");
-					System.exit(0);
-				}
-			}
-		}
-		System.out.println("no crops");
-	}
-
 	public GlobcoverManager(int regionx, int regionz, int verticalExaggeration, boolean gaiaMode) throws FileNotYetAvailableException, IOException, IllegalArgumentException, NoSuchElementException, InterruptedException, URISyntaxException, DataFormatException {
 		this.regionx = regionx; this.regionz = regionz;
 		this.gaiaMode = gaiaMode;
+		Thread.sleep(0);
 		heightsReader = new HeightsReaderS3(regionx, regionz, verticalExaggeration);
 
 		Thread.sleep(0);
@@ -182,7 +165,9 @@ public class GlobcoverManager {
 		Thread.sleep(0);
 
 		for (int i = 0; i < 512; i++) {
+			
 			for (int j = 0; j < 512; j++) {
+
 				int absx = j + regionx*512, absz = i + regionz*512;
 
 				//				if (densityReader.isUrbanxz(absx, absz)) {
@@ -319,7 +304,7 @@ public class GlobcoverManager {
 		//draw basic columns
 		boolean chunkHasUrban = false, chunkAllForest = true;
 		boolean chunkHasWater = false;
-		
+
 		for (int i = 0; i < 16; i++) {
 			for (int j = 0; j < 16; j++) {
 				AbstractColumn col = columns[i + chunkz*16][j + chunkx*16];

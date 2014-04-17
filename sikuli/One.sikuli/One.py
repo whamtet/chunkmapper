@@ -189,11 +189,20 @@ def resume():
         click("1393325711914.png")
     if os == 'fedora':
         click("1393384143090.png")
+
+def delete_cache():
+    click("1397718928064.png")
+    click("1397718944132.png")
+    click("1397718956656.png")
+    click("1397718963641.png")
+    
         
 
-os = 'osx'
+os = 'win8'
 wait(1)
-go_to('Hollywood')
+#delete_cache()
+#delete()
+go_to('Tokyo')
 create_test_map()
 cancel_generation()
 for i in range(5):

@@ -69,7 +69,7 @@ public class MySecurityManager {
 		StringBuilder sb = new StringBuilder();
 		if (mac != null)
 			sb.append(new String(mac) + "\n");
-		sb.append(System.getProperty("os.arch") + "\n");
+//		sb.append(System.getProperty("os.arch") + "\n");
 		sb.append(System.getProperty("user.home") + "\n");
 		sb.append(System.getProperty("user.name") + "\n");
 		return sb.toString();

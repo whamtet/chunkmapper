@@ -8,10 +8,8 @@
 TODO
 ====
 
-why aren't rails raising?
-instructions after purchase
-
 email free maps guy
 email rails guy
 email ore guy
 email nature guy
+email crash interface guy
