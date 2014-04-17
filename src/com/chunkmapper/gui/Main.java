@@ -148,6 +148,7 @@ public class Main extends ApplicationTemplate
 			URL url = Main.class.getResource("/build-no.txt");
 			BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
 			MyLogger.LOGGER.info("build-no: " + br.readLine());
+			MyLogger.LOGGER.info("verion: " + Utila.VERSION);
 			br.close();
 		} catch (IOException e) {
 			MyLogger.LOGGER.severe(MyLogger.printException(e));

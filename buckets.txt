@@ -8,6 +8,6 @@ allow-live yes
 chunkmapper-a http://chunkmapper-a.s3-website-us-east-1.amazonaws.com
 mu no
 supported-versions 0.1-MULTIPLAYER;0.1-SINGLEPLAYER;0.2-SINGLEPLAYER
-latest-sp 0.1-SINGLEPLAYER
+latest-sp 0.2-SINGLEPLAYER
 latest-mp 0.1-MULTIPLAYER
 log-user-url https://secure.chunkmapper.com/log-user
