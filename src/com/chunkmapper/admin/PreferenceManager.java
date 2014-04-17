@@ -99,7 +99,8 @@ public class PreferenceManager {
 		spit();
 	}
 	public static void main(String[] args) {
-		System.out.println(getInitLog());
+		BucketInfo.initMap();
+		System.out.println(getIgnoreUpgrade());
 	}
 
 }

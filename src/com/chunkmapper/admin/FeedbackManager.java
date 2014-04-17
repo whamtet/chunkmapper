@@ -39,7 +39,8 @@ public class FeedbackManager {
 			nameValuePairs = new ArrayList<NameValuePair>();
 		}
 		HttpClient httpClient = new DefaultHttpClient();
-		String addr = Utila.isMatt() ? "http://localhost:5000/feedback" : "https://secure.chunkmapper.com/feedback";
+//		String addr = Utila.isMatt() ? "http://localhost:5000/feedback" : "https://secure.chunkmapper.com/feedback";
+		String addr = "https://secure.chunkmapper.com/feedback";
 		HttpPost postRequest = new HttpPost(
 				//"http://localhost:5000/feedback"
 				//"https://secure.chunkmapper.com/feedback"
