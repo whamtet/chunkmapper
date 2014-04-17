@@ -63,6 +63,7 @@ import com.chunkmapper.reader.OrchardReader;
 import com.chunkmapper.reader.POIReader;
 import com.chunkmapper.reader.PathReader;
 import com.chunkmapper.reader.RugbyReader;
+import com.chunkmapper.reader.VolcanoReader;
 import com.chunkmapper.reader.RugbyReader.RugbyField;
 import com.chunkmapper.reader.VineyardReader;
 import com.chunkmapper.reader.XapiBoundaryReader;
@@ -89,6 +90,7 @@ public class GlobcoverManager {
 	private final PathReader pathReader;
 	private final HutReader hutReader;
 	private final DensityReader densityReader;
+	private final VolcanoReader volcanoReader;
 	public final boolean allWater;
 	private final ArtifactWriter artifactWriter = new ArtifactWriter();
 	public final int regionx, regionz;
@@ -139,9 +141,11 @@ public class GlobcoverManager {
 			pathReader = null;
 			hutReader = null;
 			densityReader = null;
+			volcanoReader = null;
 			return;
 		}
 
+		volcanoReader = new VolcanoReader(o);
 		densityReader = new DensityReader(pois, regionx, regionz);
 		OrchardReader orchardReader = new OrchardReader(o, regionx, regionz);
 		Thread.sleep(0);
@@ -168,11 +172,9 @@ public class GlobcoverManager {
 		Thread.sleep(0);
 		XapiRiverReader riverReader = new XapiRiverReader(o, regionx, regionz, heightsReader);
 		Thread.sleep(0);
-		railReader = gaiaMode ? null : new XapiRailReader(densityReader, o, regionx, regionz, heightsReader, verticalExaggeration);
-		Thread.sleep(0);
 
 		FarmTypeReader farmTypeReader = gaiaMode ? null : new FarmTypeReader();
-		poiReader = gaiaMode ? null : new POIReader(o, regionx, regionz);
+		poiReader = gaiaMode ? null : new POIReader(pois, regionx, regionz);
 		Thread.sleep(0);
 
 		//		XapiCoastlineReader coastlineReader = new XapiCoastlineReader(regionx, regionz, heightsReader);
@@ -303,6 +305,7 @@ public class GlobcoverManager {
 				}
 			}
 		}
+		railReader = gaiaMode ? null : new XapiRailReader(densityReader, o, regionx, regionz, heightsReader, verticalExaggeration, columns);
 
 	}
 
@@ -316,6 +319,7 @@ public class GlobcoverManager {
 		//draw basic columns
 		boolean chunkHasUrban = false, chunkAllForest = true;
 		boolean chunkHasWater = false;
+		
 		for (int i = 0; i < 16; i++) {
 			for (int j = 0; j < 16; j++) {
 				AbstractColumn col = columns[i + chunkz*16][j + chunkx*16];
@@ -324,8 +328,10 @@ public class GlobcoverManager {
 				chunkHasUrban |= col.IS_URBAN;
 				chunkAllForest &= col.IS_FOREST;
 				chunkHasWater |= col.HAS_WATER;
+
 			}
 		}
+
 		//now add trees
 		int i1 = chunkz*16 - 20, i2 = chunkz*16 + 36;
 		int j1 = chunkx*16 - 20, j2 = chunkx*16 + 36;
@@ -379,49 +385,49 @@ public class GlobcoverManager {
 
 
 
-		//add a house
-		RugbyField rugbyField = rugbyReader == null ? null : rugbyReader.getRugbyField(chunk);
-		if (rugbyField != null && !chunkHasRail && !chunkHasWater && !chunkHasRoad) {
-			ArtifactWriter.addRugbyField(chunk, rugbyField);
-		} else if ((chunkHasUrban || hasHouseReader != null && hasHouseReader.hasHouse(chunkx, chunkz))
-				&& !chunkHasRail && !chunkHasWater && !chunkHasRoad) {
-			int i = RANDOM.nextInt(100);
-			switch(i) {
-			case 0:
-				ArtifactWriter.placeLibrary(chunk);
-				break;
-			case 1:
-				ArtifactWriter.placeMarket(chunk);
-				break;
-			case 2:
-				ArtifactWriter.placePrison(chunk);
-				break;
-			default:
-				int numFloors = (int) Math.floor(densityReader.getDensityxz(chunk.x0, chunk.z0) * 1000);
-				if (numFloors < 1) {
-					ArtifactWriter.addHouse(chunk);
-				} else {
-					SchematicArtifactWriter.addApartment(chunk, numFloors);
-				}
-				//				ArtifactWriter.addHouse(chunk);
-			}
-
-		} else if (chunkAllForest && !chunkHasRail && RANDOM.nextInt(100) == 0 && !gaiaMode) {
-			if (RANDOM.nextInt(2) == 0) {
-				ArtifactWriter.placeLookout(chunk);
-			} else {
-				ArtifactWriter.addTunnelIntoTheUnknown(chunk);
-			}
-		}
-
-		//last but not least, add ferry
 		if (!gaiaMode) {
+			RugbyField rugbyField = rugbyReader.getRugbyField(chunk);
+			if (rugbyField != null && !chunkHasRail && !chunkHasWater && !chunkHasRoad) {
+				ArtifactWriter.addRugbyField(chunk, rugbyField);
+			} else if ((chunkHasUrban || hasHouseReader.hasHouse(chunkx, chunkz))
+					&& !chunkHasRail && !chunkHasWater && !chunkHasRoad) {
+				int i = RANDOM.nextInt(100);
+				switch(i) {
+				case 0:
+					ArtifactWriter.placeLibrary(chunk);
+					break;
+				case 1:
+					ArtifactWriter.placeMarket(chunk);
+					break;
+				case 2:
+					ArtifactWriter.placePrison(chunk);
+					break;
+				default:
+					int numFloors = (int) Math.floor(densityReader.getDensityxz(chunk.x0, chunk.z0) * 1000);
+					if (numFloors < 1) {
+						ArtifactWriter.addHouse(chunk);
+					} else {
+						SchematicArtifactWriter.addApartment(chunk, numFloors);
+					}
+				}
+
+			} else if (chunkAllForest && !chunkHasRail && RANDOM.nextInt(100) == 0) {
+				if (RANDOM.nextInt(2) == 0) {
+					ArtifactWriter.placeLookout(chunk);
+				} else {
+					ArtifactWriter.addTunnelIntoTheUnknown(chunk);
+				}
+			}
+
+			//last but not least, add ferry
 			ferryReader.addLillies(chunk, chunkx, chunkz, columns);
 			hutReader.addHut(chunk);
 			if (RANDOM.nextInt(100000) == 0) {
 				GenericWriter.addHeavenWaterFall(chunk);
 			}
 		}
+		//add volcano
+		volcanoReader.addHotRocks(chunk);
 		if (!MySecurityManager.offlineValid && abschunkz % 8 == 0)
 			GenericWriter.addNorthGlassWall(chunk);
 

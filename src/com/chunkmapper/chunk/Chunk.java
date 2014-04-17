@@ -1,11 +1,11 @@
 package com.chunkmapper.chunk;
 
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.Random;
 
 import com.chunkmapper.admin.Utila;
 import com.chunkmapper.enumeration.Block;
-import com.chunkmapper.enumeration.StraightRail;
 import com.chunkmapper.nbt.CompoundTag;
 import com.chunkmapper.nbt.ListTag;
 import com.chunkmapper.writer.BlockLighter;
@@ -16,6 +16,7 @@ public class Chunk {
 	public final int abschunkx, abschunkz;
 	public final int x0, z0, xr, zr;
 	public static final Random RANDOM = new Random();
+	public final Rectangle bbox;
 	public long LastUpdate = 0;
 	public byte TerrainPopulated = 1;
 	public byte[] Biomes = new byte[256];
@@ -145,6 +146,7 @@ public class Chunk {
 		z0 = abschunkz*16;
 		xr = relchunkx*16;
 		zr = relchunkz*16;
+		bbox = new Rectangle(x0, z0, 16, 16);
 	}
 
 

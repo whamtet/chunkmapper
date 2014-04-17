@@ -160,3 +160,9 @@
 <print />
 <recurse type="way-node" />
 <print />
+
+<!-- Volcanoes -->
+<query type="way">
+<has-kv k="natural" v="volcano" />
+</query>
+<print />

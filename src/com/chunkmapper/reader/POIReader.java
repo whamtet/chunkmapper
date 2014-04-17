@@ -21,8 +21,8 @@ public class POIReader {
 		specialPlaces.add(new SpecialPlace(new String[] {"dancing", "purple", "asteroids"}, -39.066, 174.046));
 		specialPlaces.add(new SpecialPlace(new String[] {"I love", "you", "Tiantian"}, 22.2855, 114.0375));
 	}
-	public POIReader(OverpassObject o, int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
-		pois = POIParser.getPois(o, regionx, regionz);
+	public POIReader(Collection<POI> pois2, int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
+		pois = pois2;
 	}
 	public void addSigns(Chunk chunk) {
 		for (POI poi : pois) {

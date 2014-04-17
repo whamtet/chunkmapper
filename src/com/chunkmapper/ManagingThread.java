@@ -227,8 +227,9 @@ public class ManagingThread extends Thread {
 				}
 			}
 		}
+		HeightsCache.deleteCache();
 		OsmosisParser.flushCache();
-//		POIParser.flushCache();
+		POIParser.flushCache();
 		MyLogger.LOGGER.info("shut down thread");
 
 	}

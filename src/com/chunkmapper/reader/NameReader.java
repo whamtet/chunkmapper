@@ -21,6 +21,13 @@ public class NameReader {
 			}
 			br.close();
 			
+			br = new BufferedReader(new InputStreamReader(NameReader.class.getResourceAsStream("/maori-names.txt")));
+			
+			while ((line = br.readLine()) != null) {
+				names.add(line);
+			}
+			br.close();
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			MyLogger.LOGGER.severe(MyLogger.printException(e));
@@ -28,6 +35,9 @@ public class NameReader {
 	}
 	public static String getName() {
 		return names.get(random.nextInt(names.size()));
+	}
+	public static void main(String[] args) throws Exception {
+		System.out.println(getName());
 	}
 }
 	

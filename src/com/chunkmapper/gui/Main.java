@@ -121,22 +121,22 @@ public class Main extends ApplicationTemplate
 		}
 		return false;
 	}
-	private static void printUser() {
-		String initLog = PreferenceManager.getInitLog();
-		if (initLog == null) {
-			try {
-				BufferedReader br = new BufferedReader(new InputStreamReader((new URL(BucketInfo.getLogUserUrl())).openStream()));
-				initLog = br.readLine();
-				PreferenceManager.setInitLog(initLog);
-				MyLogger.LOGGER.info(initLog);
-				br.close();
-			} catch (IOException e) {
-				MyLogger.LOGGER.warning(MyLogger.printException(e));
-			}
-		} else {
-			MyLogger.LOGGER.info(initLog);
-		}
-	}
+//	private static void printUser() {
+//		String initLog = PreferenceManager.getInitLog();
+//		if (initLog == null) {
+//			try {
+//				BufferedReader br = new BufferedReader(new InputStreamReader((new URL(BucketInfo.getLogUserUrl())).openStream()));
+//				initLog = br.readLine();
+//				PreferenceManager.setInitLog(initLog);
+//				MyLogger.LOGGER.info(initLog);
+//				br.close();
+//			} catch (IOException e) {
+//				MyLogger.LOGGER.warning(MyLogger.printException(e));
+//			}
+//		} else {
+//			MyLogger.LOGGER.info(initLog);
+//		}
+//	}
 	private static void getBucket() {
 		if (!BucketInfo.initMap()) {
 			JOptionPane.showMessageDialog(null, "Chunkmapper could not connect with the internet.  Please check your connection and try again.");
@@ -157,7 +157,7 @@ public class Main extends ApplicationTemplate
 	public static void main(String[] args) {
 		printBuild();
 		getBucket();
-		printUser();
+//		printUser();
 		if (BucketInfo.mustUpgrade()) {
 			JOptionPane.showMessageDialog(null, "This version of Chunkmapper is no longer supported.  Visit www.chunkmapper.com to upgrade.");
 			System.exit(0);

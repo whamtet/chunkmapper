@@ -21,7 +21,7 @@ import com.chunkmapper.protoc.wrapper.SchematicProtocolWrapper;
 import com.chunkmapper.reader.RugbyReader.RugbyField;
 
 public class ArtifactWriter {
-	
+
 	private int spacesTillNextPoweredRail = 1;
 	private static void addWool(Chunk chunk, int h, int z, int x) {
 		chunk.Blocks[h][z][x] = Block.Wool.val;
@@ -206,6 +206,9 @@ public class ArtifactWriter {
 	}
 	public static void addSign(Chunk chunk, int h, int z, int x, String[] lines) {
 		addSign(chunk, h, z, x, lines, (byte) 0);
+	}
+	public static void addSign(Chunk chunk, int z, int x, String[] lines) {
+		addSign(chunk, chunk.getHeights(x, z), z, x, lines, (byte) 0);
 	}
 	public static void addSign(Chunk chunk, int h, int z, int x, String[] lines, byte orientation) {
 		x += chunk.xr;
@@ -470,7 +473,7 @@ public class ArtifactWriter {
 					byte b = chunk.Blocks[h][zd][xd];
 					if (b != Block.Rail.val && b != Block.Powered_Rail.val 
 							&& b != Block.Redstone_Torch_Lit.val && b != Block.Cobblestone.val
-							&& b != Block.Planks.val) {
+							&& b != Block.Planks.val && b != Blocka.Stone_Stairs) {
 						chunk.Blocks[h][zd][xd] = 0;
 					}
 				}
@@ -505,10 +508,30 @@ public class ArtifactWriter {
 				chunk.Blocks[railHeight][z][x] = Block.Powered_Rail.val;
 				chunk.Data[railHeight][z][x] = (byte) (railType + 8);
 
-				int xPosition = x == 15 ? 14 : x + 1;
+				boolean leftSide = x > 6;
+				int incr = leftSide ? -1 : 1;
+				int xPosition = x + incr;
+
 				chunk.Blocks[railHeight-1][z][xPosition] = foundation;
+//				chunk.Blocks[railHeight-2][z][xPosition] = foundation;
 				chunk.Blocks[railHeight][z][xPosition] = Block.Redstone_Torch_Lit.val;
 				chunk.Data[railHeight][z][xPosition] = 0;
+
+				xPosition += incr;
+//				chunk.Blocks[railHeight-2][z][xPosition] = foundation;
+				chunk.Blocks[railHeight-1][z][xPosition] = Blocka.Stone_Stairs;
+				chunk.Data[railHeight-1][z][xPosition] = leftSide ? Stairs.Ascending_East.val : Stairs.Ascending_West.val;
+				
+				xPosition += incr;
+				chunk.Blocks[railHeight-2][z][xPosition] = Blocka.Stone_Stairs;
+				chunk.Data[railHeight-2][z][xPosition] = leftSide ? Stairs.Ascending_East.val : Stairs.Ascending_West.val;
+				
+//				xPosition += incr;
+//				chunk.Blocks[railHeight-1][z][xPosition] = Blocka.Ladder;
+//				chunk.Blocks[railHeight-2][z][xPosition] = Blocka.Ladder;
+//				chunk.Data[railHeight-1][z][xPosition] = leftSide ? LadderWallsignFurnaceChest.Facing_West.val : LadderWallsignFurnaceChest.Facing_East.val;
+//				chunk.Data[railHeight-2][z][xPosition] = leftSide ? LadderWallsignFurnaceChest.Facing_West.val : LadderWallsignFurnaceChest.Facing_East.val;
+				
 				spacesTillNextPoweredRail = 6;
 			}
 			if (railType == StraightRail.East.val) {
@@ -520,10 +543,30 @@ public class ArtifactWriter {
 				chunk.Blocks[railHeight][z][x] = Block.Powered_Rail.val;
 				chunk.Data[railHeight][z][x] = (byte) (railType + 8);
 
-				int zPosition = z == 15 ? 14 : z + 1;
+				boolean northSide = z > 6;
+				int incr = northSide ? -1 : 1;
+				int zPosition = z + incr;
+				
 				chunk.Blocks[railHeight-1][zPosition][x] = foundation;
+//				chunk.Blocks[railHeight-2][zPosition][x] = foundation;
 				chunk.Blocks[railHeight][zPosition][x] = Block.Redstone_Torch_Lit.val;
 				chunk.Data[railHeight][zPosition][x] = 0;
+				
+				zPosition += incr;
+//				chunk.Blocks[railHeight-2][zPosition][x] = foundation;
+				chunk.Blocks[railHeight-1][zPosition][x] = Blocka.Stone_Stairs;
+				chunk.Data[railHeight-1][zPosition][x] = northSide ? Stairs.Ascending_South.val : Stairs.Ascending_North.val;
+				
+				zPosition += incr;
+				chunk.Blocks[railHeight-2][zPosition][x] = Blocka.Stone_Stairs;
+				chunk.Data[railHeight-2][zPosition][x] = northSide ? Stairs.Ascending_South.val : Stairs.Ascending_North.val;
+				
+//				zPosition += incr;
+//				chunk.Blocks[railHeight-1][zPosition][x] = Blocka.Ladder;
+//				chunk.Blocks[railHeight-2][zPosition][x] = Blocka.Ladder;
+//				chunk.Data[railHeight-1][zPosition][x] = northSide ? LadderWallsignFurnaceChest.Facing_North.val : LadderWallsignFurnaceChest.Facing_South.val;
+//				chunk.Data[railHeight-2][zPosition][x] = northSide ? LadderWallsignFurnaceChest.Facing_North.val : LadderWallsignFurnaceChest.Facing_South.val;
+				
 				spacesTillNextPoweredRail = 6;
 			}
 
@@ -713,7 +756,7 @@ public class ArtifactWriter {
 		}
 		return s / n;
 	}
-	
+
 	private static int getMeanHeight(Chunk chunk, int x0, int z0, int width, int length) {
 		int s = 0, n = 0;
 		for (int x = x0; x < x0 + width; x++) {
@@ -810,5 +853,5 @@ public class ArtifactWriter {
 		double z = 5.5, x = 4.5 + 2 * chunk.RANDOM.nextInt(3);
 		MobWriter.addVillager(chunk, Villager.Butcher, x, h, z, false);
 	}
-	
+
 }

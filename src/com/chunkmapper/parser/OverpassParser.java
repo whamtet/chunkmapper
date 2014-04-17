@@ -17,34 +17,34 @@ import com.chunkmapper.parser.OverpassObject.Relation;
 import com.chunkmapper.parser.OverpassObject.Way;
 
 public class OverpassParser extends Parser {
-//	private static ConcurrentHashMap<Point, OverpassObject> cache = new ConcurrentHashMap<Point, OverpassObject>();
+	//	private static ConcurrentHashMap<Point, OverpassObject> cache = new ConcurrentHashMap<Point, OverpassObject>();
 
-//	private static ArrayList<String> getLines() throws IOException {
-//		
-//		BufferedReader reader = new BufferedReader(new FileReader("test.xml"));
-//		ArrayList<String> out = new ArrayList<String>();
-//		String line;
-//		while ((line = reader.readLine()) != null) {
-//			out.add(line);
-//		}
-//		reader.close();
-//		return out;
-//	}
-	
-//	public static void flushCache() {
-//		cache = new ConcurrentHashMap<Point, OverpassObject>();
-//	}
+	//	private static ArrayList<String> getLines() throws IOException {
+	//		
+	//		BufferedReader reader = new BufferedReader(new FileReader("test.xml"));
+	//		ArrayList<String> out = new ArrayList<String>();
+	//		String line;
+	//		while ((line = reader.readLine()) != null) {
+	//			out.add(line);
+	//		}
+	//		reader.close();
+	//		return out;
+	//	}
+
+	//	public static void flushCache() {
+	//		cache = new ConcurrentHashMap<Point, OverpassObject>();
+	//	}
 	public static OverpassObject getObject(int regionx, int regionz) throws IOException {
 		//		if (true)
 		//		throw new RuntimeException("Don't call me");
-//		Point p = new Point(regionx, regionz);
-//		if (cache.containsKey(p)) {
-//			return cache.get(p);
-//		} else {
-//			OverpassObject o = doGetObject(regionx, regionz, false);
-//			cache.put(p, o);
-//			return o;
-//		}
+		//		Point p = new Point(regionx, regionz);
+		//		if (cache.containsKey(p)) {
+		//			return cache.get(p);
+		//		} else {
+		//			OverpassObject o = doGetObject(regionx, regionz, false);
+		//			cache.put(p, o);
+		//			return o;
+		//		}
 		return doGetObject(regionx, regionz, false);
 	}
 	public static OverpassObject getTestObject(int regionx, int regionz) throws IOException {
@@ -62,7 +62,8 @@ public class OverpassParser extends Parser {
 
 	private static OverpassObject doGetObject(int regionx, int regionz, boolean test) throws IOException {
 		ArrayList<String> lines = OverpassDownloader.getLines(regionx, regionz, test);
-		//				spit(lines);
+
+//		spit(lines);
 		//		ArrayList<String> lines = getLines();
 		HashMap<Long, Point> locations = getLocations(lines);
 		OverpassObject out = new OverpassObject();
@@ -112,13 +113,13 @@ public class OverpassParser extends Parser {
 				if (currNode == null) {
 					throw new RuntimeException("Invalid Overpass xml");
 				}
-				boolean include = false;
-				for (String k : currNode.map.keySet()) {
-					String v = currNode.map.get(k);
-					include |= include(k, v, include);
-				}
-				if (include)
-					out.nodes.add(currNode);
+				//				boolean include = false;
+				//				for (String k : currNode.map.keySet()) {
+				//					String v = currNode.map.get(k);
+				//					include |= include(k, v, include);
+				//				}
+				//				if (include)
+				out.nodes.add(currNode);
 			}
 		}
 		Relation relation = null;

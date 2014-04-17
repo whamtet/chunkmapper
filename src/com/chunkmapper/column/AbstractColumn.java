@@ -17,6 +17,7 @@ public abstract class AbstractColumn {
 	public final int absx, absz, h;
 	public LenteTree lenteTree;
 	public boolean IS_URBAN = false, IS_FOREST = false, HAS_WATER = false;
+	public boolean HAS_ANIMALS = false;
 	public byte biome = Biome.Ocean;
 	protected AbstractColumn(int absx, int absz) {
 		this.absx = absx;

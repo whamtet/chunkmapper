@@ -8,6 +8,7 @@ import java.util.NoSuchElementException;
 import java.util.zip.DataFormatException;
 
 import com.chunkmapper.Point;
+import com.chunkmapper.column.AbstractColumn;
 import com.chunkmapper.enumeration.CircleRail;
 import com.chunkmapper.enumeration.StraightRail;
 import com.chunkmapper.parser.OverpassObject;
@@ -20,6 +21,7 @@ public class XapiRailReader {
 	private byte[][] railType = new byte[512][512];
 	public final boolean hasRails;
 	private final int x0, z0;
+	private AbstractColumn[][] cols;
 	private final static int MIN_SPACING = 20; //stops players getting dizzy
 	private static final int MIN_BUMP_SIZE = 3, MIN_RUT_SIZE = 5;
 	/**
@@ -69,28 +71,37 @@ public class XapiRailReader {
 		this.railType[z][x] = railType;
 	}
 
-	public XapiRailReader(DensityReader densityReader, OverpassObject o, int regionx, int regionz, HeightsReader heightsReader, int verticalExaggeration) throws IllegalArgumentException, NoSuchElementException, IOException, InterruptedException, FileNotYetAvailableException, URISyntaxException, DataFormatException {
-		x0 = regionx * 512; z0 = regionz * 512;
 
+	public XapiRailReader(DensityReader densityReader, OverpassObject o, 
+			int regionx, int regionz, HeightsReader heightsReader, int verticalExaggeration,
+			AbstractColumn[][] cols
+			) throws IllegalArgumentException, NoSuchElementException, IOException, InterruptedException, FileNotYetAvailableException, URISyntaxException, DataFormatException {
+		x0 = regionx * 512; z0 = regionz * 512;
+		this.cols = cols;
 		Collection<RailSection> allSections = RailParser.getRailSection(densityReader, o, regionx, regionz); 
 
 		hasRails = allSections.size() > 0;
 		if (!hasRails) {
 			return;
 		}
-		HeightsManager heightsManager = new HeightsManager(verticalExaggeration);
-//		if (true)
-//			return;
+
+		HeightsManager heightsManager = new HeightsManager(verticalExaggeration, regionx, regionz, cols);
+		//		if (true)
+		//			return;
 
 		for (RailSection railSection : allSections) {
 			boolean allowAscend = !railSection.hasTunnel && !railSection.hasCutting;
 			boolean allowDescend = !railSection.hasBridge && !railSection.hasEmbankment;
-			
+
 			if (railSection.points.size() < 2)
 				continue;
 
 			Point previousPoint = railSection.points.get(0);
 			Point lastPoint = railSection.points.get(railSection.points.size() - 1);
+
+			if (previousPoint.equals(lastPoint))
+				continue;
+
 			boolean hasInside = inside(previousPoint.x, previousPoint.y) || inside(lastPoint.x, lastPoint.y);
 			ArrayList<Point> goodPoints = new ArrayList<Point>(railSection.points.size());
 			goodPoints.add(previousPoint);
@@ -105,6 +116,7 @@ public class XapiRailReader {
 				continue;//because its all outside 512x512
 
 			goodPoints.add(lastPoint);
+
 
 			Point startPoint = goodPoints.get(0);
 			int h = heightsManager.getHeight(startPoint.x, startPoint.y);
@@ -141,45 +153,45 @@ public class XapiRailReader {
 
 				//now we do the diagonal sections
 				int x = startPoint.x, z = startPoint.z;
-
-
 				byte firstBlock = heightsManager.hasRail(x, z - zStep) ? curveA : StraightRail.East.val;
-				heightsManager.setBoth(x, z, h, firstBlock);
-				this.setBoth(x, z, h, firstBlock);
-				heightsManager.setBoth(x + xStep, z, h, curveB);
-				this.setBoth(x + xStep, z, h, curveB);
 
-				for (x += xStep, z += zStep; x != endPoint.x && z != endPoint.z; x += xStep, z += zStep) {
-					heightsManager.setBoth(x, z, h, curveA);
-					this.setBoth(x, z, h, curveA);
+				if (xStep != 0 && zStep != 0) {
+
+					heightsManager.setBoth(x, z, h, firstBlock);
+					this.setBoth(x, z, h, firstBlock);
 					heightsManager.setBoth(x + xStep, z, h, curveB);
 					this.setBoth(x + xStep, z, h, curveB);
+
+					for (x += xStep, z += zStep; x != endPoint.x && z != endPoint.z; x += xStep, z += zStep) {
+						heightsManager.setBoth(x, z, h, curveA);
+						this.setBoth(x, z, h, curveA);
+						heightsManager.setBoth(x + xStep, z, h, curveB);
+						this.setBoth(x + xStep, z, h, curveB);
+					}
 				}
 
-				if (x != endPoint.x){
+				if (x != endPoint.x) {
 					//we're going across;
 					boolean straightAtStart = zStep == 0;
 					firstBlock = straightAtStart ? StraightRail.East.val : curveA;
 
+					//special case for first block
 					heightsManager.setBoth(x, z, h, firstBlock);
 					this.setBoth(x, z, h, firstBlock);
 
 					//now we try setting heights
 					int straightLength = endPoint.x > x ? endPoint.x - x : x - endPoint.x;
 					int[] heights = new int[straightLength + 1];
+
 					heights[0] = h;
 					for (int j = 1; j < straightLength + 1; j++) {
 						int targetHeight = heightsManager.getHeight(x + j * xStep, z);
 						//need to check boundary conditions
 						boolean notRiseUpOnTurn = j > 1 || straightAtStart;
-						//						boolean noRutAtStart = j + x - startPoint.x >= MIN_RUT_SIZE;
-						//						boolean noBumpAtEnd = endPoint.x - x - j >= MIN_BUMP_SIZE;
-						//						if (notRiseUpOnTurn && noRutAtStart && noBumpAtEnd && targetHeight > h)
+
 						if (notRiseUpOnTurn && targetHeight > h && allowAscend)
 							h++;
-						//						boolean noBumpAtStart = j + x - startPoint.x >= MIN_BUMP_SIZE;
-						//						boolean noRutAtEnd = endPoint.x - x - j >= MIN_RUT_SIZE;
-						//						if (noBumpAtStart && noRutAtEnd && targetHeight < h)
+
 						if (targetHeight < h && allowDescend)
 							h--;
 						heights[j] = h;
@@ -199,18 +211,13 @@ public class XapiRailReader {
 					}
 				} else if (z != endPoint.z) {
 					//in this case, things will always be straight at the beginning
+					//no need for special case
 					int straightLength = endPoint.z > z ? endPoint.z - z : z - endPoint.z;
 					int[] heights = new int[straightLength];
 					for (int j = 0; j < straightLength; j++) {
 						int targetHeight = heightsManager.getHeight(x, z + j * zStep);
-						//						boolean noRutAtStart = j + z - startPoint.z >= MIN_RUT_SIZE;
-						//						boolean noBumpAtEnd = endPoint.z - z - j >= MIN_BUMP_SIZE;
-						//						if (noRutAtStart && noBumpAtEnd && targetHeight > h)
 						if (j > 0 && targetHeight > h && allowAscend)
 							h++;
-						//						boolean noBumpAtStart = j + z - startPoint.z >= MIN_BUMP_SIZE;
-						//						boolean noRutAtEnd = endPoint.z - z - j >= MIN_RUT_SIZE;
-						//						if (noBumpAtStart && noRutAtEnd && targetHeight < h)
 						if (j > 0 && targetHeight < h && allowDescend)
 							h--;
 						heights[j] = h;
@@ -225,27 +232,251 @@ public class XapiRailReader {
 						} else {
 							railType = StraightRail.North.val;
 						}
-						heightsManager.setBoth(x, z + j * zStep, heights[j], railType);
-						this.setBoth(x, z + j*zStep, heights[j], railType);
+						h = heights[j];
+						heightsManager.setBoth(x, z + j * zStep, h, railType);
+						this.setBoth(x, z + j*zStep, h, railType);
 					}
-				} else {
-
 				}
 
 			}
 
 		}
+		//lets fix things up a little
+		for (int i = 0; i < 512; i++) {
+			for (int j = 0; j < 512; j++) {
+				if (heightsManager.hasRailij(i, j)) {
+					simpleCleanUp(i, j, heightsManager);
+				}
+			}
+		}
+		//save caches!!!
+		heightsManager.save();
 
 	}
+	private void simpleCleanUp(int i, int j, HeightsManager hm) throws IOException {
+		byte railType = this.railType[i][j];
+		if (railType == StraightRail.North.val && j > 0 && j < 511
+				&& hm.hasRailij(i, j-1) && hm.hasRailij(i, j+1)) {
+			this.railType[i][j] = StraightRail.East.val;
+			hm.setRailTypeij(i, j, StraightRail.East.val);
+		}
+		if (railType == StraightRail.East.val && i > 0 && i < 511
+				&& hm.hasRail(i-1, j) && hm.hasRail(i+1, j)) {
+			this.railType[i][j] = StraightRail.North.val;
+			hm.setRailTypeij(i, j, StraightRail.North.val);
+		}
+	}
+	private static enum CP {North, East, South, West}
+	private static ArrayList<CP> emptyCP(int i, int j, byte railType, HeightsManager hm) throws IOException {
+		ArrayList<CP> endPoints = new ArrayList<CP>(2);
+		
+		if (railType == StraightRail.North.val) {
+			if (i > 0 && !hm.hasRailij(i-1, j))
+				endPoints.add(CP.North);
+			if (i < 511 && !hm.hasRailij(i+1, j))
+				endPoints.add(CP.South);
+		}
+		if (railType == StraightRail.East.val) {
+			if (j > 0 && !hm.hasRailij(i, j-1))
+				endPoints.add(CP.West);
+			if (j < 511 && !hm.hasRailij(i, j+1))
+				endPoints.add(CP.East);
+		}
+		if (railType == CircleRail.One.val) {
+			if (j > 0 && !hm.hasRailij(i, j-1))
+				endPoints.add(CP.West);
+			if (i < 511 && !hm.hasRailij(i+1, j))
+				endPoints.add(CP.South);
+		}
+		if (railType == CircleRail.Two.val) {
+			if (i < 511 && !hm.hasRailij(i+1, j))
+				endPoints.add(CP.South);
+			if (j < 511 && !hm.hasRailij(i, j+1))
+				endPoints.add(CP.East);
+		}
+		if (railType == CircleRail.Three.val) {
+			if (i > 0 && !hm.hasRailij(i-1, j))
+				endPoints.add(CP.North);
+			if (j < 511 && !hm.hasRailij(i, j+1))
+				endPoints.add(CP.East);
+		}
+		if (railType == CircleRail.Four.val) {
+			if (i > 0 && !hm.hasRailij(i-1, j))
+				endPoints.add(CP.North);
+			if (j > 0 && !hm.hasRailij(i, j-1))
+				endPoints.add(CP.West);
+		}
+		return endPoints;
+	}
+//	private static ArrayList<Point> emptyEndpoints(int i, int j, byte railType, HeightsManager hm) throws IOException {
+//		ArrayList<Point> endPoints = new ArrayList<Point>(2);
+//		
+//		if (railType == StraightRail.North.val) {
+//			if (i > 0 && !hm.hasRailij(i-1, j))
+//				endPoints.add(new Point(i-1, j));
+//			if (i < 511 && !hm.hasRailij(i+1, j))
+//				endPoints.add(new Point(i+1, j));
+//		}
+//		if (railType == StraightRail.East.val) {
+//			if (j > 0 && !hm.hasRailij(i, j-1))
+//				endPoints.add(new Point(i, j-1));
+//			if (j < 511 && !hm.hasRailij(i, j+1))
+//				endPoints.add(new Point(i, j+1));
+//		}
+//		if (railType == CircleRail.One.val) {
+//			if (j > 0 && !hm.hasRailij(i, j-1))
+//				endPoints.add(new Point(i, j-1));
+//			if (i < 511 && !hm.hasRailij(i+1, j))
+//				endPoints.add(new Point(i+1, j));
+//		}
+//		if (railType == CircleRail.Two.val) {
+//			if (j < 511 && !hm.hasRailij(i, j+1))
+//				endPoints.add(new Point(i, j+1));
+//			if (i < 511 && !hm.hasRailij(i+1, j))
+//				endPoints.add(new Point(i+1, j));
+//		}
+//		if (railType == CircleRail.Three.val) {
+//			if (i > 0 && !hm.hasRailij(i-1, j))
+//				endPoints.add(new Point(i-1, j));
+//			if (j < 511 && !hm.hasRailij(i, j+1))
+//				endPoints.add(new Point(i, j+1));
+//		}
+//		if (railType == CircleRail.Four.val) {
+//			if (i > 0 && !hm.hasRailij(i-1, j))
+//				endPoints.add(new Point(i-1, j));
+//			if (j > 0 && !hm.hasRailij(i, j-1))
+//				endPoints.add(new Point(i, j-1));
+//		}
+//		return endPoints;
+//	}
+	private static ArrayList<Point> fullEndpoints(int i, int j, byte railType, HeightsManager hm) throws IOException {
+		ArrayList<Point> endPoints = new ArrayList<Point>(4);
+		if (i > 0 && hm.hasRailij(i-1, j))
+			endPoints.add(new Point(i-1, j));
+		if (j > 0 && hm.hasRailij(i, j-1))
+			endPoints.add(new Point(i, j-1));
+		if (i < 511 && hm.hasRailij(i+1, j))
+			endPoints.add(new Point(i+1, j));
+		if (j < 511 && hm.hasRailij(i, j+1))
+			endPoints.add(new Point(i, j+1));
+		
+		return endPoints;
+	}
+	private static ArrayList<CP> fullCP(int i, int j, byte railType, HeightsManager hm) throws IOException {
+		ArrayList<CP> endPoints = new ArrayList<CP>(4);
+		
+		if (i > 0 && hm.hasRailij(i-1, j))
+			endPoints.add(CP.North);
+		if (j > 0 && hm.hasRailij(i, j-1))
+			endPoints.add(CP.West);
+		if (i < 511 && hm.hasRailij(i+1, j))
+			endPoints.add(CP.South);
+		if (j < 511 && hm.hasRailij(i, j+1))
+			endPoints.add(CP.East);
+		
+		return endPoints;
+	}
+	
+	//better cleanup
+	private byte newRailType(int i, int j, HeightsManager hm) throws IOException {
+		byte railType = this.railType[i][j];
 
-	public boolean hasRailij(int i, int j) {
-		return heights[i][j] != 0;
+		if (railType == StraightRail.EastUp.val || railType == StraightRail.EastDown.val || 
+				railType == StraightRail.NorthUp.val || railType == StraightRail.NorthDown.val) return railType;
+		
+//		ArrayList<Point> emptyEndPoints = emptyEndpoints(i, j, railType, hm),
+//				fullEndPoints = fullEndpoints(i, j, railType, hm);
+		ArrayList<CP> emptyEndPoints = emptyCP(i, j, railType, hm),
+				fullEndPoints = fullCP(i, j, railType, hm);
+		
+		if (railType == StraightRail.North.val) {
+			if (emptyEndPoints.size() == 2)
+				return StraightRail.East.val;
+			if (emptyEndPoints.size() == 0)
+				return railType;		
+			switch(emptyEndPoints.get(0)) {
+			case West:
+				return CircleRail.Four.val;
+			case East:
+				return CircleRail.Three.val;
+			default:
+				return railType;
+			}
+		}
+		if (railType == StraightRail.East.val) {
+			if (emptyEndPoints.size() == 2)
+				return StraightRail.North.val;
+			if (emptyEndPoints.size() == 0)
+				return railType;
+			switch(emptyEndPoints.get(0)) {
+			case North:
+				return CircleRail.Three.val;
+				
+			}
+		}
 	}
-	public short getHeightij(int i, int j) {
-		return heights[i][j];
-	}
-	public byte getRailTypeij(int i, int j) {
-		return railType[i][j];
-	}
+		//		private void cleanUp(int i, int j, HeightsManager hm) throws IOException {
+		//			byte railType = this.railType[i][j];
+		//			
+		//			if (railType == StraightRail.EastUp.val || railType == StraightRail.EastDown.val || 
+		//					railType == StraightRail.NorthUp.val || railType == StraightRail.NorthDown.val) return;
+		//		
+		//		boolean northAvailable;
+		//		if (i > 0) {
+		//			byte northType = this.railType[i-1][j];
+		//			northAvailable = hm.hasRailij(i-1, j) && (northType == StraightRail.North.val || northType == CircleRail.One.val 
+		//					|| northType == CircleRail.Two.val || northType == StraightRail.NorthUp.val
+		//					|| northType == StraightRail.NorthDown.val);
+		//		} else {
+		//			return;
+		//		}
+		//		boolean westAvailable;
+		//		if (j > 0) {
+		//			byte westType = this.railType[i][j-1];
+		//			westAvailable = hm.hasRail(i, j-1) && (westType == StraightRail.East.val || westType == CircleRail.Two.val 
+		//					|| westType == CircleRail.Three.val || westType == StraightRail.EastUp.val
+		//					|| westType == StraightRail.EastDown.val);
+		//		} else {
+		//			return;
+		//		}
+		//		boolean eastAvailable = j < 511 && hm.hasRailij(i, j+1);
+		//		boolean southAvailable = i < 511 && hm.hasRailij(i+1, j);
+		//		
+		//		
+		//		
+		//		if (northAvailable) {
+		//			if (westAvailable) {
+		//				railType = CircleRail.Four.val;
+		//			} else if (southAvailable) {
+		//				railType = StraightRail.North.val;
+		//			} else if (eastAvailable) {
+		//				railType = CircleRail.Three.val;
+		//			}
+		//		} else if (westAvailable) {
+		//			if (eastAvailable) {
+		//				railType = StraightRail.East.val;
+		//			} else if (southAvailable) {
+		//				railType = CircleRail.One.val;
+		//			}
+		//		} else if (southAvailable) {
+		//			if (eastAvailable) {
+		//				railType = CircleRail.Two.val;
+		//			}
+		//		}
+		//		
+		//		this.railType[i][j] = railType;
+		//		hm.setRailTypeij(i, j, railType);
+		//	}
 
-}
+
+		public boolean hasRailij(int i, int j) {
+			return heights[i][j] != 0;
+		}
+		public short getHeightij(int i, int j) {
+			return heights[i][j];
+		}
+		public byte getRailTypeij(int i, int j) {
+			return railType[i][j];
+		}
+
+	}

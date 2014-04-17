@@ -39,9 +39,11 @@ public class GenericWriter {
 				chunk.Blocks[y][7][i] = Blocka.Glass;
 			}
 		}
-		for (int x = 0; x < 16; x++) {
+		for (int x = 0; x < 16; x += 2) {
 			ArtifactWriter.addSign(chunk, chunk.getHeights(x, 8), 8, x, new String[] {"Get rid of", "the glass", "chunkmapper.com", "/account"});
 			ArtifactWriter.addSign(chunk, chunk.getHeights(x, 6), 6, x, new String[] {"Get rid of", "the glass", "chunkmapper.com", "/account"}, (byte) 8);
+			ArtifactWriter.addSign(chunk, chunk.getHeights(x+1, 8), 8, x+1, new String[] {"Paywall"});
+			ArtifactWriter.addSign(chunk, chunk.getHeights(x+1, 6), 6, x+1, new String[] {"Paywall"}, (byte) 8);
 		}
 	}
 	public static void addWestGlassWall(Chunk chunk) {

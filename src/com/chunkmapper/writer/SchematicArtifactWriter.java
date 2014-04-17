@@ -83,7 +83,7 @@ public class SchematicArtifactWriter {
 				if (chunk.Blocks[h][z][x] == Blocka.Block_Of_Quartz) {
 					if (RANDOM.nextInt(2) == 0) {
 						chunk.Blocks[h+1][z][x] = Blocka.Flower_Pot;
-						chunk.TileEntities.add(FlowerpotWriter.getRandomFlowerpot(x, h+1, z));
+						chunk.TileEntities.add(FlowerpotWriter.getRandomFlowerpot(x + chunk.xr, h+1, z + chunk.zr));
 					} else if (RANDOM.nextInt(40) == 0) {
 						chunk.Blocks[h+1][z][x] = Blocka.Juke_Box;
 					}

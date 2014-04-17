@@ -10,7 +10,6 @@ import com.chunkmapper.enumeration.Gate;
 import com.chunkmapper.enumeration.Globcover;
 import com.chunkmapper.reader.FarmTypeReader;
 import com.chunkmapper.reader.HeightsReader;
-import com.chunkmapper.reader.UniformHeightsReader;
 import com.chunkmapper.writer.HorseWriter;
 import com.chunkmapper.writer.MobWriter;
 
@@ -24,12 +23,67 @@ public class RainfedCrops extends AbstractColumn {
 		super(absx, absz, heightsReader);
 		this.farmType = farmType;
 		super.biome = Biome.Savanna;
+		super.HAS_ANIMALS = true;
 	}
 	
 	public static void main(String[] args) throws Exception {
-		HeightsReader r = new UniformHeightsReader();
-		AbstractColumn col = new RainfedCrops(0, 0, FarmType.Carrots, r);
-		System.out.println(col.biome);
+		HeightsReader r = new HeightsReader() {
+
+			@Override
+			public boolean isAllWater() {
+				// TODO Auto-generated method stub
+				return false;
+			}
+
+			@Override
+			public boolean mostlyLand() {
+				// TODO Auto-generated method stub
+				return false;
+			}
+
+			@Override
+			public int[][] getHeights(int chunkx, int chunkz) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			@Override
+			public short getHeightxz(int absx, int absz) {
+				// TODO Auto-generated method stub
+				return 4;
+			}
+
+			@Override
+			public short getHeightij(int i, int j) {
+				// TODO Auto-generated method stub
+				return 4;
+			}
+
+			@Override
+			public int[][] getAllHeights() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+
+			@Override
+			public int getRealHeightij(int i, int j) {
+				// TODO Auto-generated method stub
+				return 4;
+			}
+
+			@Override
+			public boolean isLandij(int i, int j) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+
+			@Override
+			public boolean isWaterij(int i, int j) {
+				// TODO Auto-generated method stub
+				return false;
+			}};
+			AbstractColumn col = new RainfedCrops(0, 0, FarmType.Cows, r);
+			System.out.println(col.HAS_ANIMALS);
 	}
 
 	public void addColumn(Chunk chunk) {
@@ -78,7 +132,7 @@ public class RainfedCrops extends AbstractColumn {
 			default:
 			}
 		} else {
-			throw new RuntimeException("should not be here");
+			throw new RuntimeException("Illegal Animal");
 //			chunk.Blocks[h-1][z][x] = Block.Farmland.val;
 //			chunk.Data[h-1][z][x] = 7;
 //			byte cropType = 0;
