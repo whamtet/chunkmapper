@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.NoSuchElementException;
 import java.util.zip.DataFormatException;
 
@@ -27,6 +28,7 @@ public class XapiRailReader {
 	/**
 	 * @param args
 	 */
+	
 	private static void smoothHeights(int[] heights2) {
 
 		for (int i = 1; i < heights2.length; i++) {
@@ -245,7 +247,9 @@ public class XapiRailReader {
 		for (int i = 0; i < 512; i++) {
 			for (int j = 0; j < 512; j++) {
 				if (heightsManager.hasRailij(i, j)) {
-					simpleCleanUp(i, j, heightsManager);
+					byte railType = newRailType(i, j, heightsManager);
+					this.railType[i][j] = railType;
+					heightsManager.setRailTypeij(i, j, railType);
 				}
 			}
 		}
@@ -253,19 +257,19 @@ public class XapiRailReader {
 		heightsManager.save();
 
 	}
-	private void simpleCleanUp(int i, int j, HeightsManager hm) throws IOException {
-		byte railType = this.railType[i][j];
-		if (railType == StraightRail.North.val && j > 0 && j < 511
-				&& hm.hasRailij(i, j-1) && hm.hasRailij(i, j+1)) {
-			this.railType[i][j] = StraightRail.East.val;
-			hm.setRailTypeij(i, j, StraightRail.East.val);
-		}
-		if (railType == StraightRail.East.val && i > 0 && i < 511
-				&& hm.hasRail(i-1, j) && hm.hasRail(i+1, j)) {
-			this.railType[i][j] = StraightRail.North.val;
-			hm.setRailTypeij(i, j, StraightRail.North.val);
-		}
-	}
+//	private void simpleCleanUp(int i, int j, HeightsManager hm) throws IOException {
+//		byte railType = this.railType[i][j];
+//		if (railType == StraightRail.North.val && j > 0 && j < 511
+//				&& hm.hasRailij(i, j-1) && hm.hasRailij(i, j+1)) {
+//			this.railType[i][j] = StraightRail.East.val;
+//			hm.setRailTypeij(i, j, StraightRail.East.val);
+//		}
+//		if (railType == StraightRail.East.val && i > 0 && i < 511
+//				&& hm.hasRail(i-1, j) && hm.hasRail(i+1, j)) {
+//			this.railType[i][j] = StraightRail.North.val;
+//			hm.setRailTypeij(i, j, StraightRail.North.val);
+//		}
+//	}
 	private static enum CP {North, East, South, West}
 	private static ArrayList<CP> emptyCP(int i, int j, byte railType, HeightsManager hm) throws IOException {
 		ArrayList<CP> endPoints = new ArrayList<CP>(2);
@@ -308,60 +312,7 @@ public class XapiRailReader {
 		}
 		return endPoints;
 	}
-//	private static ArrayList<Point> emptyEndpoints(int i, int j, byte railType, HeightsManager hm) throws IOException {
-//		ArrayList<Point> endPoints = new ArrayList<Point>(2);
-//		
-//		if (railType == StraightRail.North.val) {
-//			if (i > 0 && !hm.hasRailij(i-1, j))
-//				endPoints.add(new Point(i-1, j));
-//			if (i < 511 && !hm.hasRailij(i+1, j))
-//				endPoints.add(new Point(i+1, j));
-//		}
-//		if (railType == StraightRail.East.val) {
-//			if (j > 0 && !hm.hasRailij(i, j-1))
-//				endPoints.add(new Point(i, j-1));
-//			if (j < 511 && !hm.hasRailij(i, j+1))
-//				endPoints.add(new Point(i, j+1));
-//		}
-//		if (railType == CircleRail.One.val) {
-//			if (j > 0 && !hm.hasRailij(i, j-1))
-//				endPoints.add(new Point(i, j-1));
-//			if (i < 511 && !hm.hasRailij(i+1, j))
-//				endPoints.add(new Point(i+1, j));
-//		}
-//		if (railType == CircleRail.Two.val) {
-//			if (j < 511 && !hm.hasRailij(i, j+1))
-//				endPoints.add(new Point(i, j+1));
-//			if (i < 511 && !hm.hasRailij(i+1, j))
-//				endPoints.add(new Point(i+1, j));
-//		}
-//		if (railType == CircleRail.Three.val) {
-//			if (i > 0 && !hm.hasRailij(i-1, j))
-//				endPoints.add(new Point(i-1, j));
-//			if (j < 511 && !hm.hasRailij(i, j+1))
-//				endPoints.add(new Point(i, j+1));
-//		}
-//		if (railType == CircleRail.Four.val) {
-//			if (i > 0 && !hm.hasRailij(i-1, j))
-//				endPoints.add(new Point(i-1, j));
-//			if (j > 0 && !hm.hasRailij(i, j-1))
-//				endPoints.add(new Point(i, j-1));
-//		}
-//		return endPoints;
-//	}
-	private static ArrayList<Point> fullEndpoints(int i, int j, byte railType, HeightsManager hm) throws IOException {
-		ArrayList<Point> endPoints = new ArrayList<Point>(4);
-		if (i > 0 && hm.hasRailij(i-1, j))
-			endPoints.add(new Point(i-1, j));
-		if (j > 0 && hm.hasRailij(i, j-1))
-			endPoints.add(new Point(i, j-1));
-		if (i < 511 && hm.hasRailij(i+1, j))
-			endPoints.add(new Point(i+1, j));
-		if (j < 511 && hm.hasRailij(i, j+1))
-			endPoints.add(new Point(i, j+1));
-		
-		return endPoints;
-	}
+
 	private static ArrayList<CP> fullCP(int i, int j, byte railType, HeightsManager hm) throws IOException {
 		ArrayList<CP> endPoints = new ArrayList<CP>(4);
 		
@@ -384,8 +335,6 @@ public class XapiRailReader {
 		if (railType == StraightRail.EastUp.val || railType == StraightRail.EastDown.val || 
 				railType == StraightRail.NorthUp.val || railType == StraightRail.NorthDown.val) return railType;
 		
-//		ArrayList<Point> emptyEndPoints = emptyEndpoints(i, j, railType, hm),
-//				fullEndPoints = fullEndpoints(i, j, railType, hm);
 		ArrayList<CP> emptyEndPoints = emptyCP(i, j, railType, hm),
 				fullEndPoints = fullCP(i, j, railType, hm);
 		
@@ -393,14 +342,21 @@ public class XapiRailReader {
 			if (emptyEndPoints.size() == 2)
 				return StraightRail.East.val;
 			if (emptyEndPoints.size() == 0)
-				return railType;		
-			switch(emptyEndPoints.get(0)) {
-			case West:
-				return CircleRail.Four.val;
-			case East:
-				return CircleRail.Three.val;
-			default:
 				return railType;
+			
+			CP ta = emptyEndPoints.get(0);
+			boolean he = fullEndPoints.contains(CP.East), hw = fullEndPoints.contains(CP.West);
+			if (ta == CP.North) {
+				if (he)
+					return CircleRail.Two.val;
+				if (hw)
+					return CircleRail.One.val;
+			}
+			if (ta == CP.South){ 
+				if (he)
+					return CircleRail.Three.val;
+				if (hw)
+					return CircleRail.Four.val;
 			}
 		}
 		if (railType == StraightRail.East.val) {
@@ -408,12 +364,107 @@ public class XapiRailReader {
 				return StraightRail.North.val;
 			if (emptyEndPoints.size() == 0)
 				return railType;
-			switch(emptyEndPoints.get(0)) {
-			case North:
-				return CircleRail.Three.val;
-				
+			
+			CP ta = emptyEndPoints.get(0);
+			boolean hn = fullEndPoints.contains(CP.North), hs = fullEndPoints.contains(CP.South);
+			if (ta == CP.West) {
+				if (hn)
+					return CircleRail.Three.val;
+				if (hs)
+					return CircleRail.Two.val;
+			}
+			if (ta == CP.East){
+				if (hn)
+					return CircleRail.Four.val;
+				if (hs)
+					return CircleRail.One.val;
 			}
 		}
+		if (railType == CircleRail.One.val) {
+			if (emptyEndPoints.size() == 2)
+				return CircleRail.Three.val;
+			if (emptyEndPoints.size() == 0)
+				return railType;
+			
+			CP ta = emptyEndPoints.get(0);
+			boolean hn = fullEndPoints.contains(CP.North), he = fullEndPoints.contains(CP.East);
+			if (ta == CP.West) {
+				if (hn)
+					return StraightRail.North.val;
+				if (he)
+					return CircleRail.Two.val;
+			}
+			if (ta == CP.South){
+				if (hn)
+					return CircleRail.Four.val;
+				if (he)
+					return StraightRail.East.val;
+			}
+		}
+		if (railType == CircleRail.Two.val) {
+			if (emptyEndPoints.size() == 2)
+				return CircleRail.Four.val;
+			if (emptyEndPoints.size() == 0)
+				return railType;
+			
+			CP ta = emptyEndPoints.get(0);
+			boolean hw = fullEndPoints.contains(CP.West), hn = fullEndPoints.contains(CP.North);
+			if (ta == CP.East) {
+				if (hn)
+					return StraightRail.North.val;
+				if (hw)
+					return CircleRail.One.val;
+			}
+			if (ta == CP.South) {
+				if (hn)
+					return CircleRail.Three.val;
+				if (hw)
+					return StraightRail.East.val;
+			}
+		}
+		if (railType == CircleRail.Three.val) {
+			if (emptyEndPoints.size() == 2)
+				return CircleRail.One.val;
+			if (emptyEndPoints.size() == 0)
+				return railType;
+			
+			CP ta = emptyEndPoints.get(0);
+			boolean hw = fullEndPoints.contains(CP.West), hs = fullEndPoints.contains(CP.South);
+			if (ta == CP.East) {
+				if (hw)
+					return CircleRail.Four.val;
+				if (hs)
+					return StraightRail.North.val;
+			}
+			if (ta == CP.North){
+				if (hw)
+					return StraightRail.East.val;
+				if (hs)
+					return CircleRail.Two.val;
+			}
+		}
+		if (railType == CircleRail.Four.val) {
+			if (emptyEndPoints.size() == 2)
+				return CircleRail.Two.val;
+			if (emptyEndPoints.size() == 0)
+				return railType;
+			
+			CP ta = emptyEndPoints.get(0);
+			boolean hs = fullEndPoints.contains(CP.South), he = fullEndPoints.contains(CP.East);
+			if (ta == CP.West){
+				if (hs)
+					return StraightRail.North.val;
+				if (he)
+					return CircleRail.Three.val;
+			}
+			if (ta == CP.North) {
+				if (hs)
+					return CircleRail.One.val;
+				if (he)
+					return StraightRail.East.val;
+			}
+		}
+		return railType;
 	}
 		//		private void cleanUp(int i, int j, HeightsManager hm) throws IOException {
 		//			byte railType = this.railType[i][j];

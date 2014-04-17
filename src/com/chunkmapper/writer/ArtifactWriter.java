@@ -496,10 +496,17 @@ public class ArtifactWriter {
 		}
 		if (spacesTillNextPoweredRail > 0)
 			spacesTillNextPoweredRail--;
+
+
 		boolean canBePlaced = railType == StraightRail.North.val || railType == StraightRail.East.val;
 
 		if (spacesTillNextPoweredRail == 0 && canBePlaced) {
-			if (railType == StraightRail.North.val) {
+			boolean leftSide = x > 6;
+			int incr = leftSide ? -1 : 1;
+			int xPosition = x + incr;
+			byte b = chunk.Blocks[railHeight][z][xPosition];
+
+			if (railType == StraightRail.North.val && b != Blocka.Rail && b != Blocka.Powered_Rail) {
 				chunk.Blocks[railHeight-1][z][x] = foundation;
 				if (!usePlanks) {
 					chunk.Blocks[railHeight-2][z][x] = foundation;
@@ -508,33 +515,36 @@ public class ArtifactWriter {
 				chunk.Blocks[railHeight][z][x] = Block.Powered_Rail.val;
 				chunk.Data[railHeight][z][x] = (byte) (railType + 8);
 
-				boolean leftSide = x > 6;
-				int incr = leftSide ? -1 : 1;
-				int xPosition = x + incr;
+
 
 				chunk.Blocks[railHeight-1][z][xPosition] = foundation;
-//				chunk.Blocks[railHeight-2][z][xPosition] = foundation;
+				//				chunk.Blocks[railHeight-2][z][xPosition] = foundation;
 				chunk.Blocks[railHeight][z][xPosition] = Block.Redstone_Torch_Lit.val;
 				chunk.Data[railHeight][z][xPosition] = 0;
 
 				xPosition += incr;
-//				chunk.Blocks[railHeight-2][z][xPosition] = foundation;
+				//				chunk.Blocks[railHeight-2][z][xPosition] = foundation;
 				chunk.Blocks[railHeight-1][z][xPosition] = Blocka.Stone_Stairs;
 				chunk.Data[railHeight-1][z][xPosition] = leftSide ? Stairs.Ascending_East.val : Stairs.Ascending_West.val;
-				
+
 				xPosition += incr;
 				chunk.Blocks[railHeight-2][z][xPosition] = Blocka.Stone_Stairs;
 				chunk.Data[railHeight-2][z][xPosition] = leftSide ? Stairs.Ascending_East.val : Stairs.Ascending_West.val;
-				
-//				xPosition += incr;
-//				chunk.Blocks[railHeight-1][z][xPosition] = Blocka.Ladder;
-//				chunk.Blocks[railHeight-2][z][xPosition] = Blocka.Ladder;
-//				chunk.Data[railHeight-1][z][xPosition] = leftSide ? LadderWallsignFurnaceChest.Facing_West.val : LadderWallsignFurnaceChest.Facing_East.val;
-//				chunk.Data[railHeight-2][z][xPosition] = leftSide ? LadderWallsignFurnaceChest.Facing_West.val : LadderWallsignFurnaceChest.Facing_East.val;
-				
+
+				//				xPosition += incr;
+				//				chunk.Blocks[railHeight-1][z][xPosition] = Blocka.Ladder;
+				//				chunk.Blocks[railHeight-2][z][xPosition] = Blocka.Ladder;
+				//				chunk.Data[railHeight-1][z][xPosition] = leftSide ? LadderWallsignFurnaceChest.Facing_West.val : LadderWallsignFurnaceChest.Facing_East.val;
+				//				chunk.Data[railHeight-2][z][xPosition] = leftSide ? LadderWallsignFurnaceChest.Facing_West.val : LadderWallsignFurnaceChest.Facing_East.val;
+
 				spacesTillNextPoweredRail = 6;
 			}
-			if (railType == StraightRail.East.val) {
+			boolean northSide = z > 6;
+			incr = northSide ? -1 : 1;
+			int zPosition = z + incr;
+			b = chunk.Blocks[railHeight][zPosition][x];
+			
+			if (railType == StraightRail.East.val && b != Blocka.Rail && b != Blocka.Powered_Rail) {
 				chunk.Blocks[railHeight-1][z][x] = foundation;
 				if (!usePlanks) {
 					chunk.Blocks[railHeight-2][z][x] = foundation;
@@ -543,30 +553,28 @@ public class ArtifactWriter {
 				chunk.Blocks[railHeight][z][x] = Block.Powered_Rail.val;
 				chunk.Data[railHeight][z][x] = (byte) (railType + 8);
 
-				boolean northSide = z > 6;
-				int incr = northSide ? -1 : 1;
-				int zPosition = z + incr;
-				
+
+
 				chunk.Blocks[railHeight-1][zPosition][x] = foundation;
-//				chunk.Blocks[railHeight-2][zPosition][x] = foundation;
+				//				chunk.Blocks[railHeight-2][zPosition][x] = foundation;
 				chunk.Blocks[railHeight][zPosition][x] = Block.Redstone_Torch_Lit.val;
 				chunk.Data[railHeight][zPosition][x] = 0;
-				
+
 				zPosition += incr;
-//				chunk.Blocks[railHeight-2][zPosition][x] = foundation;
+				//				chunk.Blocks[railHeight-2][zPosition][x] = foundation;
 				chunk.Blocks[railHeight-1][zPosition][x] = Blocka.Stone_Stairs;
 				chunk.Data[railHeight-1][zPosition][x] = northSide ? Stairs.Ascending_South.val : Stairs.Ascending_North.val;
-				
+
 				zPosition += incr;
 				chunk.Blocks[railHeight-2][zPosition][x] = Blocka.Stone_Stairs;
 				chunk.Data[railHeight-2][zPosition][x] = northSide ? Stairs.Ascending_South.val : Stairs.Ascending_North.val;
-				
-//				zPosition += incr;
-//				chunk.Blocks[railHeight-1][zPosition][x] = Blocka.Ladder;
-//				chunk.Blocks[railHeight-2][zPosition][x] = Blocka.Ladder;
-//				chunk.Data[railHeight-1][zPosition][x] = northSide ? LadderWallsignFurnaceChest.Facing_North.val : LadderWallsignFurnaceChest.Facing_South.val;
-//				chunk.Data[railHeight-2][zPosition][x] = northSide ? LadderWallsignFurnaceChest.Facing_North.val : LadderWallsignFurnaceChest.Facing_South.val;
-				
+
+				//				zPosition += incr;
+				//				chunk.Blocks[railHeight-1][zPosition][x] = Blocka.Ladder;
+				//				chunk.Blocks[railHeight-2][zPosition][x] = Blocka.Ladder;
+				//				chunk.Data[railHeight-1][zPosition][x] = northSide ? LadderWallsignFurnaceChest.Facing_North.val : LadderWallsignFurnaceChest.Facing_South.val;
+				//				chunk.Data[railHeight-2][zPosition][x] = northSide ? LadderWallsignFurnaceChest.Facing_North.val : LadderWallsignFurnaceChest.Facing_South.val;
+
 				spacesTillNextPoweredRail = 6;
 			}
 
