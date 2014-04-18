@@ -25,6 +25,9 @@ public class Nominatim extends Parser {
 	}
 	public static double[] getPoint(String q) throws MalformedURLException, URISyntaxException, IOException {
 		MyLogger.LOGGER.info("Find coordinates for " + q);
+		if (q.toLowerCase().equals("ma and pa")) {
+			return new double[] {-39.0743, 174.0952};
+		}
 		try {
 			String response = getString(q);
 			String latStr = getValue(response, "lat"), lonStr = getValue(response, "lon");

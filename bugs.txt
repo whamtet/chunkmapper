@@ -7,9 +7,3 @@
 -switch between normal view and open streetmap?
 TODO
 ====
-
-email free maps guy
-email rails guy
-email ore guy
-email nature guy
-email crash interface guy
