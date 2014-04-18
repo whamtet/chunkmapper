@@ -8,6 +8,8 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import com.chunkmapper.admin.MyLogger;
+import com.chunkmapper.reader.POIReader;
+import com.chunkmapper.reader.POIReader.SpecialPlace;
 
 public class Nominatim extends Parser {
 
@@ -25,8 +27,10 @@ public class Nominatim extends Parser {
 	}
 	public static double[] getPoint(String q) throws MalformedURLException, URISyntaxException, IOException {
 		MyLogger.LOGGER.info("Find coordinates for " + q);
-		if (q.toLowerCase().equals("ma and pa")) {
-			return new double[] {-39.0743, 174.0952};
+		for (SpecialPlace specialPlace : POIReader.specialPlaces) {
+			if (q.toLowerCase().trim().equals(specialPlace.toString().toLowerCase().trim())) {
+				return specialPlace.latlon;
+			}
 		}
 		try {
 			String response = getString(q);
@@ -41,6 +45,11 @@ public class Nominatim extends Parser {
 	}
 	public static double[] getPointSafe(String q) {
 		MyLogger.LOGGER.info("Find coordinates for " + q);
+		for (SpecialPlace specialPlace : POIReader.specialPlaces) {
+			if (q.toLowerCase().trim().equals(specialPlace.toString().toLowerCase().trim())) {
+				return specialPlace.latlon;
+			}
+		}
 		try {
 			String response = getString(q);
 			String latStr = getValue(response, "lat"), lonStr = getValue(response, "lon");
