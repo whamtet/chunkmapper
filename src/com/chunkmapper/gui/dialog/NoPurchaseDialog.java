@@ -59,7 +59,7 @@ public class NoPurchaseDialog extends JDialog {
 		l.add(new BasicNameValuePair("dont-want-to-pay", "" + dontwanttopay.isSelected()));
 		l.add(new BasicNameValuePair("not-interesting-enough", "" + chckbxTheMapsWere.isSelected()));
 		l.add(new BasicNameValuePair("comments", textArea.getText()));
-		l.add(new BasicNameValuePair("version", "2"));
+		
 		FeedbackManager.submitFeedback(l);
 	}
 	public NoPurchaseDialog() {

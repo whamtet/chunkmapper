@@ -46,7 +46,8 @@ public class FeedbackManager {
 				//"https://secure.chunkmapper.com/feedback"
 				addr
 				);
-
+		
+		nameValuePairs.add(new BasicNameValuePair("version", "2"));
 		nameValuePairs.add(new BasicNameValuePair("logs", getLogs()));
 		//system properties
 		nameValuePairs.add(new BasicNameValuePair("system_properties", getProperties()));
