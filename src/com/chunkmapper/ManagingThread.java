@@ -131,29 +131,30 @@ public class ManagingThread extends Thread {
 		}
 
 		File loadedLevelDatFile = new File(gameFolder, "level.dat");
+		LevelDat loadedLevelDat = null;
 		try {
-			LevelDat loadedLevelDat = new LevelDat(loadedLevelDatFile);
+			loadedLevelDat = new LevelDat(loadedLevelDatFile);
 			String gameName = gameFolder.getName();
 			loadedLevelDat.setName(gameName);
 			//need to set altitude correctly.
-			int absx = 0, absz = 0, altitude;
-			try {
-				absx = (int) (lon * 3600);
-				absz = (int) (-lat * 3600);
-				if (!MySecurityManager.offlineValid)
-					absz = Matthewmatics.div(absz, 128) * 128 + 64;
-				int regionx = Matthewmatics.div(absx, 512), regionz = Matthewmatics.div(absz, 512);
-				HeightsReader heightsReader = new HeightsReaderS3(regionx, regionz, gameMetaInfo.verticalExaggeration);
-				altitude = heightsReader.getHeightxz(absx, absz) + 20;
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				MyLogger.LOGGER.info(MyLogger.printException(e));
-				return;
-			} catch (DataFormatException e) {
-				// TODO Auto-generated catch block
-				MyLogger.LOGGER.warning(MyLogger.printException(e));
-				altitude = 250;
-			}
+			int altitude = 128;
+			int absx = (int) (lon * 3600);
+			int absz = (int) (-lat * 3600);
+			if (!MySecurityManager.offlineValid)
+				absz = Matthewmatics.div(absz, 128) * 128 + 64;
+//			try {
+//				int regionx = Matthewmatics.div(absx, 512), regionz = Matthewmatics.div(absz, 512);
+//				HeightsReader heightsReader = new HeightsReaderS3(regionx, regionz, gameMetaInfo.verticalExaggeration);
+//				altitude = heightsReader.getHeightxz(absx, absz) + 20;
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				MyLogger.LOGGER.info(MyLogger.printException(e));
+//				return;
+//			} catch (DataFormatException e) {
+//				// TODO Auto-generated catch block
+//				MyLogger.LOGGER.warning(MyLogger.printException(e));
+//				altitude = 250;
+//			}
 			loadedLevelDat.setPlayerPosition(absx - gameMetaInfo.rootPoint.x * 512, altitude, absz - gameMetaInfo.rootPoint.z * 512);
 			loadedLevelDat.save();
 		} catch (IOException e) {
@@ -168,7 +169,9 @@ public class ManagingThread extends Thread {
 		try {
 			PointManager pointManager = new PointManager(chunkmapperDir, mappedSquareManager, gameMetaInfo.rootPoint);
 			regionWriter = new RegionWriter(pointManager, gameMetaInfo.rootPoint, regionFolder, 
-					gameMetaInfo, mappedSquareManager, globalSettings.gaiaMode, globalSettings.getVerticalExaggeration());
+					gameMetaInfo, mappedSquareManager, globalSettings.gaiaMode, globalSettings.getVerticalExaggeration(),
+					loadedLevelDat
+					);
 
 			MyLogger.LOGGER.info("truly starting");
 			//now we loop for ETERNITY!!!

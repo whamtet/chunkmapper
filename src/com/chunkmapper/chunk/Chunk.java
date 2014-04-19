@@ -310,4 +310,13 @@ public class Chunk {
 		Biomes[z*16+x] = biome;
 	}
 
+	public int getMaxBlock(int x, int z) {
+		for (int y = 255; y >= 0; y--) {
+			if (Blocks[y][z][x] != 0) {
+				return y;
+			}
+		}
+		return 0;
+	}
+
 }

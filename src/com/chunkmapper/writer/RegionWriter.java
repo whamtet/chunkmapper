@@ -18,6 +18,7 @@ import com.chunkmapper.downloader.OverpassDownloader;
 import com.chunkmapper.interfaces.MappedSquareManager;
 import com.chunkmapper.interfaces.PointManager;
 import com.chunkmapper.manager.GlobcoverManager;
+import com.chunkmapper.math.Matthewmatics;
 import com.chunkmapper.nbt.NbtIo;
 import com.chunkmapper.nbt.RegionFile;
 
@@ -31,6 +32,7 @@ public class RegionWriter extends Tasker {
 	private final PointManager pointManager;
 	private final boolean gaiaMode;
 	private final int verticalExaggeration;
+	private final LevelDat levelDat;
 	
 	private static int numThreads() {
 		int numThreads = Runtime.getRuntime().availableProcessors() / 2;
@@ -52,9 +54,10 @@ public class RegionWriter extends Tasker {
 			return a.distance(playerPosition) < b.distance(playerPosition) ? -1 : 1;
 		}
 	});
+	
 
 	public RegionWriter(PointManager pointManager, Point rootPoint, File regionFolder, 
-			GameMetaInfo metaInfo, MappedSquareManager mappedSquareManager, boolean gaiaMode, int verticalExaggeration) {
+			GameMetaInfo metaInfo, MappedSquareManager mappedSquareManager, boolean gaiaMode, int verticalExaggeration, LevelDat loadedLevelDat) {
 		super(NUM_WRITING_THREADS, "RegionWriter");
 		this.gaiaMode = gaiaMode;
 		this.verticalExaggeration = verticalExaggeration;
@@ -63,6 +66,7 @@ public class RegionWriter extends Tasker {
 		this.gameMetaInfo = metaInfo;
 		this.mappedSquareManager = mappedSquareManager;
 		this.pointManager = pointManager;
+		this.levelDat = loadedLevelDat;
 	}
 
 	protected Point getTask() throws InterruptedException {
@@ -108,18 +112,35 @@ public class RegionWriter extends Tasker {
 		}
 
 		RegionFile regionFile = new RegionFile(f);
+		
+		int playerChunkx = 0, playerChunkz = 0;
+		Point playerPosition = null;
+		boolean isRootPoint = a == 0 && b == 0;
+		if (isRootPoint) {
+			playerPosition = levelDat.getPlayerPosition();
+			playerChunkx = Matthewmatics.mod(Matthewmatics.div(playerPosition.x, 16), 32);
+			playerChunkz = Matthewmatics.mod(Matthewmatics.div(playerPosition.z, 16), 32);
+		}
 
-		for (int x = 0; x < 32; x++) {
-			for (int z = 0; z < 32; z++) {
+		for (int chunkx = 0; chunkx < 32; chunkx++) {
+			for (int chunkz = 0; chunkz < 32; chunkz++) {
 				if (Thread.interrupted()) {
 					regionFile.close();
 					f.delete();
 					throw new InterruptedException();
 				}
-				Chunk chunk = coverManager.getChunk(x + regionx*32, z + regionz*32, x + a*32, z + b*32);
-				DataOutputStream stream = regionFile.getChunkDataOutputStream(x, z);
+				int abschunkx = chunkx + regionx * 32, abschunkz = chunkz + regionz * 32;
+				Chunk chunk = coverManager.getChunk(abschunkx, abschunkz, chunkx + a*32, chunkz + b*32);
+				DataOutputStream stream = regionFile.getChunkDataOutputStream(chunkx, chunkz);
 				NbtIo.write(chunk.getTag(), stream);
 				stream.close();
+				
+				if (isRootPoint && chunkx == playerChunkx && chunkz == playerChunkz) {
+					int x = playerPosition.x - playerChunkx * 16, z = playerPosition.z - playerChunkz * 16;
+					int h = chunk.getMaxBlock(x, z) + 2;
+					levelDat.setPlayerPosition(playerPosition.x, h, playerPosition.z);
+					levelDat.save();
+				}
 			}
 		}
 		regionFile.close();
