@@ -97,10 +97,12 @@ public class RegionWriter extends Tasker {
 
 		File f = new File(regionFolder, "r." + a + "." + b + ".mca");
 		GlobcoverManager coverManager = new GlobcoverManager(regionx, regionz, verticalExaggeration, gaiaMode);
-//		JOptionPane.showMessageDialog(null, "Finished coverManager");
+
 		if (coverManager.allWater) {
 			pointManager.updateStore(task);
-			mappedSquareManager.addFinishedPoint(new Point(task.x + rootPoint.x, task.z + rootPoint.z));
+			Point p = new Point(regionx, regionz);
+			mappedSquareManager.addFinishedPoint(p);
+			MyLogger.LOGGER.info("Wrote ocean point at " + p.toString()); 
 			return;
 		}
 
@@ -122,8 +124,10 @@ public class RegionWriter extends Tasker {
 		regionFile.close();
 		pointManager.updateStore(task);
 		gameMetaInfo.incrementChunksMade();
+		Point p = new Point(regionx, regionz);
+		MyLogger.LOGGER.info("Wrote point at " + p.toString());
 		if (mappedSquareManager != null)
-			mappedSquareManager.addFinishedPoint(new Point(task.x + rootPoint.x, task.z + rootPoint.z));
+			mappedSquareManager.addFinishedPoint(p);
                 
 	}
 
