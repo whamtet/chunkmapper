@@ -91,16 +91,17 @@ public class RegionWriter extends Tasker {
 	}
 	@Override
 	protected void doTask(Point task) throws Exception {
-		MyLogger.LOGGER.info("Writing point at " + task.toString());
+		
 		int a = task.x, b = task.z;
 		int regionx = task.x + rootPoint.x, regionz = task.z + rootPoint.z;
-
+		Point p = new Point(regionx, regionz);
+		MyLogger.LOGGER.info("Writing point at " + p.toString());
+		
 		File f = new File(regionFolder, "r." + a + "." + b + ".mca");
 		GlobcoverManager coverManager = new GlobcoverManager(regionx, regionz, verticalExaggeration, gaiaMode);
 
 		if (coverManager.allWater) {
 			pointManager.updateStore(task);
-			Point p = new Point(regionx, regionz);
 			mappedSquareManager.addFinishedPoint(p);
 			MyLogger.LOGGER.info("Wrote ocean point at " + p.toString()); 
 			return;
@@ -124,7 +125,6 @@ public class RegionWriter extends Tasker {
 		regionFile.close();
 		pointManager.updateStore(task);
 		gameMetaInfo.incrementChunksMade();
-		Point p = new Point(regionx, regionz);
 		MyLogger.LOGGER.info("Wrote point at " + p.toString());
 		if (mappedSquareManager != null)
 			mappedSquareManager.addFinishedPoint(p);

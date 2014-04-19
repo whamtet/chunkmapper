@@ -10,10 +10,10 @@ unzip ../chunkmapper-0.0.1-SNAPSHOT.jar
 cd ../../dist
 ant all -Dclasses=inspect
 
+cd ..
 git add proguard_maps
 git add src
 git add chunkmapperResources
 git commit -am w
 git push
-ssh dad.chunkmapper.com
-./deploy.sh
+ssh dad.chunkmapper.com 'bash -s' < deploy.sh
