@@ -91,7 +91,7 @@ public class RegionWriter extends Tasker {
 	}
 	@Override
 	protected void doTask(Point task) throws Exception {
-		MyLogger.LOGGER.config("Writing point at " + task.toString());
+		MyLogger.LOGGER.info("Writing point at " + task.toString());
 		int a = task.x, b = task.z;
 		int regionx = task.x + rootPoint.x, regionz = task.z + rootPoint.z;
 
