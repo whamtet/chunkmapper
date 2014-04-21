@@ -1,4 +1,4 @@
-package com.chunkmapper.mapper;
+package com.chunkmapper.mapper2;
 
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
@@ -21,7 +21,7 @@ import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import com.chunkmapper.Point;
-import com.chunkmapper.mapper.Mapper.RegionContents;
+import com.chunkmapper.mapper2.Mapper.RegionContents;
 import com.chunkmapper.parser.Nominatim;
 
 public class Mapper2 {

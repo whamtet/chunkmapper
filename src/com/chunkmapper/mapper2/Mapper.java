@@ -1,4 +1,4 @@
-package com.chunkmapper.mapper;
+package com.chunkmapper.mapper2;
 
 import java.awt.image.BufferedImage;
 import java.io.DataInputStream;

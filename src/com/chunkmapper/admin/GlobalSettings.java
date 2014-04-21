@@ -6,6 +6,8 @@ public class GlobalSettings {
 	private boolean isLive;
 	private int verticalExaggeration = 1;
 	public boolean gaiaMode;
+	public boolean refreshNext;
+	public boolean nz;
 	
 	public boolean isLive() {
 		// TODO Auto-generated method stub

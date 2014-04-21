@@ -24,12 +24,14 @@ import com.chunkmapper.admin.BucketInfo;
 import com.chunkmapper.admin.FeedbackManager;
 import com.chunkmapper.admin.GlobalSettings;
 import com.chunkmapper.admin.Utila;
+import javax.swing.JTextField;
 
 public class SettingsDialog extends JDialog {
 	
 
 	private final JPanel contentPanel = new JPanel();
 	private final JButton btnSendReport;
+	private JTextField textField;
 
 	/**
 	 * Launch the application.
@@ -56,7 +58,7 @@ public class SettingsDialog extends JDialog {
 		setTitle("Settings");
 		setModal(true);
 		setModalityType(ModalityType.APPLICATION_MODAL);
-		setBounds(100, 100, 492, 303);
+		setBounds(100, 100, 492, 305);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -129,37 +131,47 @@ public class SettingsDialog extends JDialog {
 				(new OreFrequencyDialog(appFrame)).setVisible(true);
 			}
 		});
+		
+		JLabel lblCommand = new JLabel("Command");
+		
+		textField = new JTextField();
+		textField.setColumns(10);
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
 		gl_contentPanel.setHorizontalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPanel.createSequentialGroup()
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_contentPanel.createSequentialGroup()
+							.addGap(20)
+							.addComponent(lblNewLabel_2)
+							.addGap(18)
+							.addComponent(lblCommand)
+							.addGap(18)
+							.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_contentPanel.createSequentialGroup()
 							.addContainerGap()
-							.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING)
-								.addComponent(btnClearCache)
-								.addComponent(lblNewLabel_2))
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(btnSendReport)
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(btnChangeOre))
+							.addComponent(checkBox)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 325, GroupLayout.PREFERRED_SIZE))
 						.addGroup(gl_contentPanel.createSequentialGroup()
 							.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
 								.addGroup(gl_contentPanel.createSequentialGroup()
 									.addContainerGap()
-									.addComponent(checkBox))
+									.addComponent(chckbxGaiaMode))
 								.addGroup(gl_contentPanel.createSequentialGroup()
-									.addGap(15)
+									.addGap(14)
 									.addComponent(spinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
 								.addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 144, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 325, GroupLayout.PREFERRED_SIZE)))
+								.addComponent(lblGenerateNoMan)))
 						.addGroup(gl_contentPanel.createSequentialGroup()
 							.addContainerGap()
-							.addComponent(chckbxGaiaMode)
+							.addComponent(btnClearCache)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(btnSendReport)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(lblGenerateNoMan)))
+							.addComponent(btnChangeOre)))
 					.addContainerGap(50, Short.MAX_VALUE))
 		);
 		gl_contentPanel.setVerticalGroup(
@@ -173,17 +185,21 @@ public class SettingsDialog extends JDialog {
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(chckbxGaiaMode)
 						.addComponent(lblGenerateNoMan))
-					.addPreferredGap(ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
-					.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING)
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
 						.addComponent(spinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblNewLabel_1))
-					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGap(18)
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnClearCache)
 						.addComponent(btnSendReport)
 						.addComponent(btnChangeOre))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(lblNewLabel_2))
+					.addPreferredGap(ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblNewLabel_2)
+						.addComponent(lblCommand)
+						.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap())
 		);
 		contentPanel.setLayout(gl_contentPanel);
 		{
@@ -197,6 +213,13 @@ public class SettingsDialog extends JDialog {
 						globalSettings.setIsLive(checkBox.isSelected());
 						globalSettings.setVerticalExaggeration((Integer) spinner.getValue());
 						globalSettings.gaiaMode = chckbxGaiaMode.isSelected();
+						String command = textField.getText().trim().toLowerCase();
+						if (command.equals("refresh")) {
+							globalSettings.refreshNext = true;
+						}
+						if (command.equals("nz")) {
+							globalSettings.nz = true;
+						}
 						dispose();
 					}
 				});

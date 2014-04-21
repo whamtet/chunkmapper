@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.util.HashSet;
-import java.util.zip.DataFormatException;
 
 import org.apache.commons.io.FileUtils;
 
@@ -25,8 +24,6 @@ import com.chunkmapper.math.Matthewmatics;
 import com.chunkmapper.parser.Nominatim;
 import com.chunkmapper.parser.POIParser;
 import com.chunkmapper.rail.HeightsCache;
-import com.chunkmapper.reader.HeightsReader;
-import com.chunkmapper.reader.HeightsReaderS3;
 import com.chunkmapper.security.MySecurityManager;
 import com.chunkmapper.writer.LevelDat;
 import com.chunkmapper.writer.RegionWriter;
@@ -112,7 +109,7 @@ public class ManagingThread extends Thread {
 		}
 		if (generatingLayer != null)
 			generatingLayer.zoomTo();
-		
+
 		MyLogger.LOGGER.info(String.format("Generating %s at %s, %s", gameFolder.getName(), lat, lon));
 		MyLogger.LOGGER.info("Vertical Exaggeration: " + globalSettings.getVerticalExaggeration());
 		MyLogger.LOGGER.info("Live Mode: " + globalSettings.isLive());
@@ -142,19 +139,19 @@ public class ManagingThread extends Thread {
 			int absz = (int) (-lat * 3600);
 			if (!MySecurityManager.offlineValid)
 				absz = Matthewmatics.div(absz, 128) * 128 + 64;
-//			try {
-//				int regionx = Matthewmatics.div(absx, 512), regionz = Matthewmatics.div(absz, 512);
-//				HeightsReader heightsReader = new HeightsReaderS3(regionx, regionz, gameMetaInfo.verticalExaggeration);
-//				altitude = heightsReader.getHeightxz(absx, absz) + 20;
-//			} catch (InterruptedException e) {
-//				// TODO Auto-generated catch block
-//				MyLogger.LOGGER.info(MyLogger.printException(e));
-//				return;
-//			} catch (DataFormatException e) {
-//				// TODO Auto-generated catch block
-//				MyLogger.LOGGER.warning(MyLogger.printException(e));
-//				altitude = 250;
-//			}
+			//			try {
+			//				int regionx = Matthewmatics.div(absx, 512), regionz = Matthewmatics.div(absz, 512);
+			//				HeightsReader heightsReader = new HeightsReaderS3(regionx, regionz, gameMetaInfo.verticalExaggeration);
+			//				altitude = heightsReader.getHeightxz(absx, absz) + 20;
+			//			} catch (InterruptedException e) {
+			//				// TODO Auto-generated catch block
+			//				MyLogger.LOGGER.info(MyLogger.printException(e));
+			//				return;
+			//			} catch (DataFormatException e) {
+			//				// TODO Auto-generated catch block
+			//				MyLogger.LOGGER.warning(MyLogger.printException(e));
+			//				altitude = 250;
+			//			}
 			loadedLevelDat.setPlayerPosition(absx - gameMetaInfo.rootPoint.x * 512, altitude, absz - gameMetaInfo.rootPoint.z * 512);
 			loadedLevelDat.save();
 		} catch (IOException e) {
@@ -167,7 +164,14 @@ public class ManagingThread extends Thread {
 		//now we need to create all our downloaders;
 		regionWriter = null;
 		try {
-			PointManager pointManager = new PointManager(chunkmapperDir, mappedSquareManager, gameMetaInfo.rootPoint);
+			PointManager pointManager;
+			if (globalSettings.nz) {
+				globalSettings.nz = false;
+				pointManager = new BoundedPointManager(chunkmapperDir, mappedSquareManager, gameMetaInfo.rootPoint);
+			} else {
+				pointManager = new PointManagerImpl(chunkmapperDir, mappedSquareManager, gameMetaInfo.rootPoint,
+						globalSettings);
+			}
 			regionWriter = new RegionWriter(pointManager, gameMetaInfo.rootPoint, regionFolder, 
 					gameMetaInfo, mappedSquareManager, globalSettings.gaiaMode, globalSettings.getVerticalExaggeration(),
 					loadedLevelDat

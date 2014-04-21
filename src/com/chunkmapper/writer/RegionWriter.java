@@ -7,8 +7,10 @@ import java.util.concurrent.PriorityBlockingQueue;
 
 import javax.swing.JOptionPane;
 
+import com.chunkmapper.FileValidator;
 import com.chunkmapper.GameMetaInfo;
 import com.chunkmapper.Point;
+import com.chunkmapper.PointManagerImpl;
 import com.chunkmapper.Tasker;
 import com.chunkmapper.admin.GlobalSettings;
 import com.chunkmapper.admin.MyLogger;
@@ -44,7 +46,9 @@ public class RegionWriter extends Tasker {
 			new Comparator<Point>() {
 		public int compare(Point a, Point b) {
 			// TODO Auto-generated method stub
-			Point playerPosition = PointManager.getCurrentPlayerPosition();
+			Point playerPosition = null;
+			if (pointManager != null)
+				playerPosition = pointManager.getCurrentPlayerPosition();
 			if (playerPosition == null) {
 				return 0;
 			}
@@ -144,6 +148,7 @@ public class RegionWriter extends Tasker {
 			}
 		}
 		regionFile.close();
+		FileValidator.setSupervalid(f);
 		pointManager.updateStore(task);
 		gameMetaInfo.incrementChunksMade();
 		MyLogger.LOGGER.info("Wrote point at " + p.toString());

@@ -1,170 +1,23 @@
 package com.chunkmapper.interfaces;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.HashSet;
 
 import com.chunkmapper.Point;
-import com.chunkmapper.admin.MyLogger;
-import com.chunkmapper.math.Matthewmatics;
-import com.chunkmapper.nbt.CompoundTag;
-import com.chunkmapper.nbt.DoubleTag;
-import com.chunkmapper.nbt.ListTag;
-import com.chunkmapper.nbt.NbtIo;
 
-public class PointManager {
-	//this class a) gives points to the point manager once only
-	// b) allows the store to be updated once points have been finished.
+public interface PointManager {
 
-	//this is the only field that needs to be synchronized
-	private final ArrayList<Point> pointsFinished = new ArrayList<Point>();
-	//	private final ArrayList<Point> pointsAssigned = new ArrayList<Point>();
-	private final HashSet<Point> pointsAssigned = new HashSet<Point>();
-	private final File store;
-	public final static int RAD = 3, LON_RAD = 180 * 3600 / 512;
-	private static volatile Point currentPlayerPosition;
+	public final static int LON_RAD = 180 * 3600 / 512;
+	public final static int RAD = 3;
 	public static final String REGIONS_MADE = "regionsMade.txt";
-	private final MappedSquareManager mappedSquareManager;
-	
-	public static void main(String[] args) throws Exception {
-		File f = new File("/Users/matthewmolloy/Library/Application Support/minecraft/saves/Alps/chunkmapper");
-		Point rootPoint = new Point(0, 0);
-		PointManager m = new PointManager(f, null, rootPoint);
-		File gameFolder = new File("/Users/matthewmolloy/Library/Application Support/minecraft/saves/Alps");
-		System.out.println(m.getNewPoints(gameFolder, rootPoint, f, null).size());
-	}
 
-	public static Point getCurrentPlayerPosition() {
-		return currentPlayerPosition;
-	}
+	public double getDistanceToEdge(File gameFolder);
 
-	public PointManager(File chunkmapperFolder, MappedSquareManager mappedSquareManager, Point rootPoint) {
-		this.mappedSquareManager = mappedSquareManager;
-		store = new File(chunkmapperFolder, "regionsMade.txt");
-		if (store.exists()) {
-			try {
-				BufferedReader reader = new BufferedReader(new FileReader(store));
-				String line;
-				while ((line = reader.readLine()) != null) {
-					String[] s = line.split(" ");
-					Point p = new Point(Integer.parseInt(s[0]), Integer.parseInt(s[1]));
-					pointsFinished.add(p);
-					pointsAssigned.add(p);
-					if (mappedSquareManager != null)
-						mappedSquareManager.addFinishedPoint(new Point(p.x + rootPoint.x, p.z + rootPoint.z));
-//						mappedSquareManager.addPoint(p);
-				}
-				reader.close();
-			} catch (IOException e) {
-				MyLogger.LOGGER.warning(MyLogger.printException(e));
-			} catch (NumberFormatException e) {
-				MyLogger.LOGGER.warning(MyLogger.printException(e));
-			}
-		}
-	}
-	private static Point readPosition(File parentFolder) {
-		CompoundTag data = null;
-		try {
-			InputStream in = new BufferedInputStream(new FileInputStream(new File(parentFolder, "level.dat")));
-			data = NbtIo.readCompressed(in);
-			in.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	public HashSet<Point> getNewPoints(File gameFolder, Point rootPoint,
+			File chunkmapperDir, PlayerIconManager playerIconManager);
 
-		CompoundTag Player = data.getCompound("Data").getCompound("Player");
-		ListTag<DoubleTag> l = (ListTag<DoubleTag>) Player.getList("Pos");
-		int x = (int) l.get(0).data, z = (int) l.get(2).data;
-		return new Point(x, z);
-	}
-	private static double getMinDistance(int a, int b, double d) {
-		double d2 = Math.sqrt(a*a + b*b);
-		return d2 < d ? d2 : d;
-	}
-	public double getDistanceToEdge(File gameFolder) {
-		Point playerPosition = readPosition(gameFolder);
-		double minDistance = Double.MAX_VALUE;
+	public void updateStore(Point p);
 
-		//need to get list of waiting-to-write tiles
-		HashSet<Point> waitingToWrite = new HashSet<Point>();
-		for (Point p : this.pointsAssigned) {
-			waitingToWrite.add(p);
-		}
-		synchronized(this) {
-			for (Point p : this.pointsFinished) {
-				waitingToWrite.remove(p);
-			}
-		}
-		for (Point p : waitingToWrite) {
-			minDistance = getMinDistance(p.x - playerPosition.x, p.z - playerPosition.z, minDistance);
-			minDistance = getMinDistance(p.x - playerPosition.x - 512, p.z - playerPosition.z, minDistance);
-			minDistance = getMinDistance(p.x - playerPosition.x, p.z - playerPosition.z - 512, minDistance);
-			minDistance = getMinDistance(p.x - playerPosition.x - 512, p.z - playerPosition.z - 512, minDistance);
-		}
-		return minDistance;
-	}
-	private static void updateIconManager(Point playerPosition, Point rootPoint, PlayerIconManager playerIconManager) {
-		double lon = (playerPosition.x + rootPoint.x*512) / 3600.;
-		double lat = -(playerPosition.z + rootPoint.z * 512) / 3600.;
-		if (playerIconManager != null) 
-			playerIconManager.setLocation(lat, lon);
-	}
-	public HashSet<Point> getNewPoints(File gameFolder, Point rootPoint, File chunkmapperDir, PlayerIconManager playerIconManager) {
-		Point playerPosition = readPosition(gameFolder);
-		//need to update playerPosition
-		currentPlayerPosition = playerPosition;
-		updateIconManager(playerPosition, rootPoint, playerIconManager);
-		int regionx0 = Matthewmatics.div(playerPosition.x, 512);
-		int regionz0 = Matthewmatics.div(playerPosition.z, 512);
-
-		return getSurroundingPoints(regionx0, regionz0, rootPoint);
-	}
-
-	private HashSet<Point> getSurroundingPoints(int regionx0, int regionz0, Point rootPoint) {
-
-		HashSet<Point> newPoints = new HashSet<Point>();
-		int regionx1 = regionx0 - RAD, regionx2 = regionx0 + RAD;
-		int regionz1 = regionz0 - RAD, regionz2 = regionz0 + RAD;
-		if (regionx1 <= -LON_RAD) regionx1 = -LON_RAD + 1;
-		if (regionz1 <= -LON_RAD / 2) regionz1 = -LON_RAD / 2 + 1;
-		if (regionx2 >= LON_RAD) regionx2 = LON_RAD - 1;
-		if (regionz2 >= LON_RAD / 2) regionz2 = LON_RAD / 2 - 1;
-
-		for (int regionx = regionx1; regionx <= regionx2; regionx++) {
-			for (int regionz = regionz1; regionz <= regionz2; regionz++) {
-				newPoints.add(new Point(regionx, regionz));
-			}
-		}
-
-		for (Point p : pointsAssigned) {
-			newPoints.remove(p);
-		}
-		for (Point p : newPoints) {
-			pointsAssigned.add(p);
-			mappedSquareManager.addUnfinishedPoint(new Point(p.x + rootPoint.x, p.z + rootPoint.z));
-		}
-		return newPoints;
-	}
-
-	public synchronized void updateStore(Point p) {
-		pointsFinished.add(p);
-		try {
-			BufferedWriter writer = new BufferedWriter(new FileWriter(store));
-			for (Point p2 : pointsFinished) {
-				writer.write(p2.x + " " + p2.z + "\n");
-			}
-			writer.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+	public Point getCurrentPlayerPosition();
 
 }

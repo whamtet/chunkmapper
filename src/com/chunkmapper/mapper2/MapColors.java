@@ -1,5 +1,5 @@
 
-package com.chunkmapper.mapper;
+package com.chunkmapper.mapper2;
 public class MapColors {
 	public static final int[][] colors = new int[256][4];
 	public static final double[] brightness = new double[256];
