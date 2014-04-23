@@ -198,7 +198,7 @@ def delete_cache():
     
         
 
-os = 'win8'
+os = 'osx'
 wait(1)
 #delete_cache()
 #delete()

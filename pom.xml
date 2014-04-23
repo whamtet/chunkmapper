@@ -56,7 +56,6 @@
 					</libs>
 				</configuration>
 			</plugin>
-<!--
 			<plugin>
 				<groupId>com.licel</groupId>
 				<artifactId>stringer-maven-plugin</artifactId>
@@ -76,7 +75,7 @@
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>-->
+			</plugin>
 		</plugins>
 
 	</build>
