@@ -23,6 +23,7 @@ import com.chunkmapper.manager.GlobcoverManager;
 import com.chunkmapper.math.Matthewmatics;
 import com.chunkmapper.nbt.NbtIo;
 import com.chunkmapper.nbt.RegionFile;
+import com.chunkmapper.security.MySecurityManager;
 
 public class RegionWriter extends Tasker {
 //	public static final int NUM_WRITING_THREADS = Runtime.getRuntime().availableProcessors() + 1;
@@ -106,7 +107,8 @@ public class RegionWriter extends Tasker {
 		MyLogger.LOGGER.info("Writing point at " + p.toString());
 		
 		File f = new File(regionFolder, "r." + a + "." + b + ".mca");
-		GlobcoverManager coverManager = new GlobcoverManager(regionx, regionz, verticalExaggeration, gaiaMode);
+		boolean writeRails = true;
+		GlobcoverManager coverManager = new GlobcoverManager(regionx, regionz, verticalExaggeration, gaiaMode, writeRails);
 
 		if (coverManager.allWater) {
 			pointManager.updateStore(task);
@@ -148,7 +150,8 @@ public class RegionWriter extends Tasker {
 			}
 		}
 		regionFile.close();
-		FileValidator.setSupervalid(f);
+		if (MySecurityManager.offlineValid)
+			FileValidator.setSupervalid(f);
 		pointManager.updateStore(task);
 		gameMetaInfo.incrementChunksMade();
 		MyLogger.LOGGER.info("Wrote point at " + p.toString());

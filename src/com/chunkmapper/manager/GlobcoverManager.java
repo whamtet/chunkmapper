@@ -99,7 +99,10 @@ public class GlobcoverManager {
 
 	public final AbstractColumn[][] columns = new AbstractColumn[512][512];
 
-	public GlobcoverManager(int regionx, int regionz, int verticalExaggeration, boolean gaiaMode) throws FileNotYetAvailableException, IOException, IllegalArgumentException, NoSuchElementException, InterruptedException, URISyntaxException, DataFormatException {
+	public GlobcoverManager(int regionx, int regionz) throws IllegalArgumentException, NoSuchElementException, FileNotYetAvailableException, IOException, InterruptedException, URISyntaxException, DataFormatException {
+		this(regionx, regionz, 1, false, false);
+	}
+	public GlobcoverManager(int regionx, int regionz, int verticalExaggeration, boolean gaiaMode, boolean writeRails) throws FileNotYetAvailableException, IOException, IllegalArgumentException, NoSuchElementException, InterruptedException, URISyntaxException, DataFormatException {
 		this.regionx = regionx; this.regionz = regionz;
 		this.gaiaMode = gaiaMode;
 		Thread.sleep(0);
@@ -290,7 +293,7 @@ public class GlobcoverManager {
 				}
 			}
 		}
-		railReader = gaiaMode ? null : new XapiRailReader(densityReader, o, regionx, regionz, heightsReader, verticalExaggeration, columns);
+		railReader = gaiaMode || !writeRails ? null : new XapiRailReader(densityReader, o, regionx, regionz, heightsReader, verticalExaggeration, columns);
 
 	}
 

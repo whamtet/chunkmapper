@@ -6,6 +6,7 @@ import java.util.Random;
 
 import com.chunkmapper.admin.Utila;
 import com.chunkmapper.enumeration.Block;
+import com.chunkmapper.enumeration.Blocka;
 import com.chunkmapper.nbt.CompoundTag;
 import com.chunkmapper.nbt.ListTag;
 import com.chunkmapper.writer.BlockLighter;
@@ -136,6 +137,15 @@ public class Chunk {
 	}
 	public Chunk() {
 		this(0, 0, defaultHeights(), 0, 0);
+		//create an ocean Chunk
+		for (int z = 0; z < 16; z++) {
+			for (int x = 0; x < 16; x++) {
+				Blocks[0][z][x] = Blocka.Bedrock;
+				Blocks[1][z][x] = Blocka.Sand;
+				Blocks[2][z][x] = Blocka.Water;
+				Blocks[3][z][x] = Blocka.Water;
+			}
+		}
 	}
 	public Chunk(int abschunkx, int abschunkz, int[][] heights, int relchunkx, int relchunkz) {
 		this.abschunkx = abschunkx; this.abschunkz = abschunkz;

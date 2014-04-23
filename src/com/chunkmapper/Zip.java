@@ -95,6 +95,9 @@ public class Zip {
 			bytesRead = in.read(data);
 		}
 	}
+	public static byte[] readFully(File f) throws IOException {
+		return readFully(new FileInputStream(f));
+	}
 	public static byte[] readFully(InputStream in) throws IOException {
 		ArrayList<InputBuffer> buffers = new ArrayList<InputBuffer>();
 		while (true) {

@@ -13,8 +13,8 @@ public class BucketInfo {
 	private static Object key = new Object();
 
 	public static void main(String[] args) {
-		System.out.println(versionSupported());
-
+		initMap();
+		System.out.println(imageEndpoint());
 	}
 	public static boolean allowLive() throws IOException {
 		if (map == null) return true;
@@ -32,24 +32,29 @@ public class BucketInfo {
 	public static boolean mpUpgradeAvailable() {
 		return !Utila.VERSION.equals(map.get("latest-mp"));
 	}
+	public static String imageEndpoint() {
+		return map.get("image-endpoint");
+	}
 
 	public static boolean initMap() {
-		HashMap<String, String> localMap = null;
-		try {
-			URL url = new URL(URLs.BUCKET_INFO);
-			BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
-			localMap = new HashMap<String, String>();
-			String line;
-			while ((line = br.readLine()) != null) {
-				String[] split = line.split(" ");
-				localMap.put(split[0], split[1]);
+		if (map == null) {
+			HashMap<String, String> localMap = null;
+			try {
+				URL url = new URL(URLs.BUCKET_INFO);
+				BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
+				localMap = new HashMap<String, String>();
+				String line;
+				while ((line = br.readLine()) != null) {
+					String[] split = line.split(" ");
+					localMap.put(split[0], split[1]);
+				}
+				br.close();
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-			br.close();
-		} catch (IOException e) {
-			e.printStackTrace();
+			map = localMap;
 		}
-		map = localMap;
-		return localMap != null;
+		return map != null;
 	}
 	public static String getLogUserUrl() {
 		return map.get("log-user-url");

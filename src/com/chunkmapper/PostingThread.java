@@ -1,22 +1,42 @@
 package com.chunkmapper;
 
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.ByteArrayBody;
+import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+
+import com.chunkmapper.admin.BucketInfo;
 import com.chunkmapper.admin.MyLogger;
 
 public class PostingThread extends Thread {
 	private HashSet<Point> posted = new HashSet<Point>();
 	private final File regionDir, store;
 	private final Point rootPoint;
-	public PostingThread(File gameDir, Point rootPoint) throws NumberFormatException, IOException {
+	
+	{
+		setName("PostingThread");
+	}
+	public PostingThread(File gameDir, Point rootPoint) throws IOException {
 		regionDir = new File(gameDir, "region");
 		this.rootPoint = rootPoint;
 		store = new File(gameDir, "chunkmapper/posted.txt");
@@ -32,15 +52,21 @@ public class PostingThread extends Thread {
 			br.close();
 		}
 	}
+	private PostingThread(Point rootPoint) {
+		this.rootPoint = rootPoint;
+		regionDir = null;
+		store = null;
+	}
 	private class FilePoint {
 		public final File f;
-		public final Point p;
+		public final Point p, relp;
 		public FilePoint(File f) {
 			this.f = f;
 			String[] split = f.getName().split("\\.");
 			int relx = Integer.parseInt(split[1]);
-			int relz = Integer.parseInt(split[1]);
+			int relz = Integer.parseInt(split[2]);
 			p = new Point(rootPoint.x + relx, rootPoint.z + relz);
+			relp = new Point(relx, relz);
 		}
 	}
 	private ArrayList<FilePoint> getTodo() {
@@ -51,7 +77,6 @@ public class PostingThread extends Thread {
 				FilePoint fp = new FilePoint(f);
 				if (!posted.contains(fp.p)) {
 					out.add(fp);
-					posted.add(fp.p);
 				}
 			}
 		}
@@ -61,6 +86,10 @@ public class PostingThread extends Thread {
 	@Override
 	public void run() {
 		while (true) {
+			if (Thread.interrupted()) {
+				MyLogger.LOGGER.info("Interrupted PostingThread");
+				return;
+			}
 			ArrayList<FilePoint> todo;
 			while(true) {
 				todo = getTodo();
@@ -76,13 +105,19 @@ public class PostingThread extends Thread {
 				}
 			}
 			for (FilePoint fp : todo) {
-				if (FileValidator.checkSupervalid(fp.f)) {
-					post(fp);
+				if (Thread.interrupted()) {
+					MyLogger.LOGGER.info("Interrupted PostingThread");
+					return;
 				}
-				try {
-					spit();
-				} catch (IOException e) {
-					MyLogger.LOGGER.info(MyLogger.printException(e));
+				if (FileValidator.checkSupervalid(fp.f)) {
+					try {
+						post(fp);
+						posted.add(fp.p);
+						spit();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						MyLogger.LOGGER.warning(MyLogger.printException(e));
+					}
 				}
 			}
 		}
@@ -94,8 +129,50 @@ public class PostingThread extends Thread {
 		}
 		pw.close();
 	}
-	private void post(FilePoint fp) {
+	private void post(FilePoint fp) throws IOException {
+		String host = BucketInfo.imageEndpoint();
+//		String host = "http://localhost:5000";
+		//first we need to see if it's actually available
+		URL url = new URL(String.format("%s/available?regionx=%s&regionz=%s", host, fp.p.x, fp.p.z));
+		BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
+		String line = br.readLine();
+		br.close();
+		if ("true".equals(line)) {
 		
+			//we're in business!
+			HttpClient httpClient = new DefaultHttpClient();
+			HttpPost postRequest = new HttpPost(host + "/paint");
+
+			MultipartEntity reqEntity = new MultipartEntity();
+			reqEntity.addPart("mca", new ByteArrayBody(Zip.readFully(fp.f), "mca"));
+			reqEntity.addPart("regionx", new StringBody(fp.p.x + ""));
+			reqEntity.addPart("regionz", new StringBody(fp.p.z + ""));
+			reqEntity.addPart("relx", new StringBody(fp.relp.x + ""));
+			reqEntity.addPart("relz", new StringBody(fp.relp.z + ""));
+			
+			postRequest.setEntity(reqEntity);
+			HttpResponse response = httpClient.execute(postRequest);
+//			BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+//			while ((line = rd.readLine()) != null) {
+//				System.out.println(line);
+//			}
+		}
+	}
+	public static void main(String[] args) throws Exception {
+		System.out.println("starting");
+		File gameDir = new File("/Users/matthewmolloy/Library/Application Support/minecraft/saves/Hong Kong/");
+//		File region = new File(gameDir, "region");
+//		for (File f : region.listFiles()) {
+//			if (f.getName().endsWith(".mca")) {
+//				System.out.println(FileValidator.checkSupervalid(f));
+//			}
+//		}
+		GameMetaInfo info = new GameMetaInfo(gameDir, 0, 0, 0);
+		
+		PostingThread t = new PostingThread(gameDir, info.rootPoint);
+		System.out.println(t.getTodo());
+//		t.run();
+		System.out.println("done");
 	}
 }
 

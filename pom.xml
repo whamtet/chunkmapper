@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.chunkmapper</groupId>
 	<artifactId>chunkmapper</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.2-SINGLEPLAYER</version>
 	<pluginRepositories>
 		<pluginRepository>
 			<id>licel</id>
@@ -48,7 +48,7 @@
 				</executions>
 				<configuration>
 					<options>
-						<option>@proguard2.txt</option>
+						<option>@proguard.txt</option>
 					</options>
 					<libs>
 						<lib>${java.home}/lib/rt.jar</lib>

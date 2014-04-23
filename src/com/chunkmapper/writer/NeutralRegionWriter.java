@@ -44,7 +44,7 @@ public class NeutralRegionWriter extends Tasker {
 		int regionx = task.x + rootPoint.x, regionz = task.z + rootPoint.z;
 
 		File f = new File(regionFolder, "r." + a + "." + b + ".mca");
-		GlobcoverManager coverManager = new GlobcoverManager(regionx, regionz, verticalExaggeration, false);
+		GlobcoverManager coverManager = new GlobcoverManager(regionx, regionz, verticalExaggeration, false, true);
 
 		if (coverManager.allWater) {
 			pointManager.updateStore(task);

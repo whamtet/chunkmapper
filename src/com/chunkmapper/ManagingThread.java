@@ -36,8 +36,13 @@ public class ManagingThread extends Thread {
 	private final GlobalSettings globalSettings;
 	private final GeneratingLayer generatingLayer;
 	public RegionWriter regionWriter;
+	public PostingThread postingThread;
 	private static boolean networkProblems;
 	private static Object networkProblemsGuard = new Object();
+	
+	{
+		setName("Managing Thread");
+	}
 
 	public static void main(String[] args) throws MalformedURLException, URISyntaxException, IOException {
 		double[] latlon = Nominatim.getPoint("Hollywood");
@@ -176,6 +181,14 @@ public class ManagingThread extends Thread {
 					gameMetaInfo, mappedSquareManager, globalSettings.gaiaMode, globalSettings.getVerticalExaggeration(),
 					loadedLevelDat
 					);
+			try {
+				if (MySecurityManager.isOfflineValid()) {
+					postingThread = new PostingThread(gameFolder, gameMetaInfo.rootPoint);
+					postingThread.start();
+				}
+			} catch (IOException e) {
+				MyLogger.LOGGER.warning(MyLogger.printException(e));
+			}
 
 			MyLogger.LOGGER.info("truly starting");
 			//now we loop for ETERNITY!!!
@@ -225,6 +238,8 @@ public class ManagingThread extends Thread {
 		}
 		if (thread.regionWriter != null)
 			thread.regionWriter.blockingShutdownNow();
+		if (thread.postingThread != null)
+			thread.postingThread.interrupt();
 		if (!selfCalled) {
 			while(thread.isAlive()) {
 				try {

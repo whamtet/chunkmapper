@@ -11,3 +11,4 @@ supported-versions 0.1-MULTIPLAYER;0.1-SINGLEPLAYER;0.2-SINGLEPLAYER
 latest-sp 0.2-SINGLEPLAYER
 latest-mp 0.1-MULTIPLAYER
 log-user-url https://secure.chunkmapper.com/log-user
+image-endpoint https://downloads.chunkmapper.com
