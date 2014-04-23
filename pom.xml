@@ -3,8 +3,8 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.chunkmapper</groupId>
-	<artifactId>chunkmapper</artifactId>
-	<version>0.2-SINGLEPLAYER</version>
+	<artifactId>chunkmapper-unobfuscated</artifactId>
+	<version>0.2</version>
 	<pluginRepositories>
 		<pluginRepository>
 			<id>licel</id>
@@ -55,7 +55,7 @@
 					</libs>
 				</configuration>
 			</plugin>
-<!--
+
 			<plugin>
 				<groupId>com.licel</groupId>
 				<artifactId>stringer-maven-plugin</artifactId>
@@ -75,7 +75,7 @@
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>-->
+			</plugin>
 		</plugins>
 
 	</build>
