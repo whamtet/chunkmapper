@@ -6,7 +6,7 @@ python build_py/copy_proguard_map.py
 cd target
 mkdir inspect
 cd inspect
-unzip ../chunkmapper-0.0.1-SNAPSHOT.jar
+unzip ../chunkmapper-unobfuscated-0.2.jar
 cd ../../dist
 ant all -Dclasses=inspect
 

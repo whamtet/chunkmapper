@@ -26,6 +26,7 @@
 					<target>1.6</target>
 				</configuration>
 			</plugin>
+
 			<plugin>
 				<groupId>com.github.wvengen</groupId>
 				<artifactId>proguard-maven-plugin</artifactId>
@@ -55,7 +56,7 @@
 					</libs>
 				</configuration>
 			</plugin>
-
+<!--
 			<plugin>
 				<groupId>com.licel</groupId>
 				<artifactId>stringer-maven-plugin</artifactId>
@@ -75,7 +76,7 @@
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>
+			</plugin>-->
 		</plugins>
 
 	</build>
