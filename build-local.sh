@@ -1,2 +1,3 @@
 mvn install
-cp -r /Users/matthewmolloy/.m2/repository/com/chunkmapper/chunkmapper /Users/matthewmolloy/python/eclipse-repo/repo/com/chunkmapper/chunkmapper
+mkdir -p ~/clojure/chunkbackend/repo/com/chunkmapper/chunkmapper-unobfuscated
+cp -r ~/.m2/repository/com/chunkmapper/chunkmapper-unobfuscated/ ~/clojure/chunkbackend/repo/com/chunkmapper/chunkmapper-unobfuscated

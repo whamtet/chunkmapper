@@ -5,6 +5,7 @@
 	<groupId>com.chunkmapper</groupId>
 	<artifactId>chunkmapper-unobfuscated</artifactId>
 	<version>0.2</version>
+	
 	<pluginRepositories>
 		<pluginRepository>
 			<id>licel</id>
@@ -26,7 +27,6 @@
 					<target>1.6</target>
 				</configuration>
 			</plugin>
-
 			<plugin>
 				<groupId>com.github.wvengen</groupId>
 				<artifactId>proguard-maven-plugin</artifactId>
@@ -114,7 +114,6 @@
 
 
 		<!-- wwj deps -->
-
 		<dependency>
 			<groupId>gov.nasa</groupId>
 			<artifactId>gdal</artifactId>

@@ -31,6 +31,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
 
 import javax.swing.JFrame;
 
@@ -225,14 +226,28 @@ public class GeneratingLayerImpl extends RenderableLayer implements SelectListen
 							}
 						}
 						if (s.equals("gm") || s.equals("osm")) {
+							
 							LatLon ll = playerIconManager.getLatLon();
-							String s2 = s.equals("gm") ? "https://maps.google.com.au/?q=loc:%s+%s" :
-								"http://www.openstreetmap.org/index.html?lat=%s&lon=%s&zoom=15";
-							try {
-								openWebpage(new URI(String.format(s2, ll.latitude.degrees, ll.longitude.degrees)));
-							} catch (URISyntaxException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
+							if (s.equals("gm")) {
+//								https://www.google.com/maps/place/36¡33'47.0"S+174¡31'59.0"E
+								double lat = ll.latitude.degrees, lon = ll.longitude.degrees;
+								String latStr = lat < 0 ? "S" : "N";
+								String lonStr = lon < 0 ? "W" : "E";
+								String s2 = URLEncoder.encode(String.format("/maps/place/%s%s+%s%s", decimalToString(lat), latStr, decimalToString(lon), lonStr));
+								try {
+									openWebpage(new URI("https://www.google.com" + s2));
+								} catch (URISyntaxException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+							} else {
+								try {
+									openWebpage(new URI(String.format("http://www.openstreetmap.org/index.html?lat=%s&lon=%s&zoom=15"
+											, ll.latitude.degrees, ll.longitude.degrees)));
+								} catch (URISyntaxException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
 							}
 						}
 					}
@@ -262,7 +277,25 @@ public class GeneratingLayerImpl extends RenderableLayer implements SelectListen
 			this.update();
 		}
 	}
+	//https://www.google.com/maps/place/36¡33'47.0"S+174¡31'59.0"E
+	private static String decimalToString(double d) {
+		if (d < 0)
+			d = -d;
+		int deg = (int) d;
+		d = 60 * (d - deg);
+		int min = (int) d;
+		d = 60 * (d - min);
+		double sec = d;
+		StringBuilder sb = new StringBuilder();
+		sb.append(deg);
+		sb.append("¡");
+		sb.append(min);
+		sb.append("'");
+		sb.append(String.format("%.1f\"", sec));
+		return sb.toString();
+	}
 	private static void openWebpage(URI uri) {
+		
 		Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
 		if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
 			try {
