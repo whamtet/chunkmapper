@@ -135,8 +135,8 @@ public class Chunk {
 		}
 		return out;
 	}
-	public Chunk() {
-		this(0, 0, defaultHeights(), 0, 0);
+	public Chunk(int abschunkx, int abschunkz, int relchunkx, int relchunkz) {
+		this(abschunkx, abschunkz, defaultHeights(), relchunkx, relchunkz);
 		//create an ocean Chunk
 		for (int z = 0; z < 16; z++) {
 			for (int x = 0; x < 16; x++) {

@@ -5,7 +5,7 @@
 	<groupId>com.chunkmapper</groupId>
 	<artifactId>chunkmapper-unobfuscated</artifactId>
 	<version>0.2</version>
-	
+
 	<pluginRepositories>
 		<pluginRepository>
 			<id>licel</id>
@@ -17,8 +17,18 @@
 	</pluginRepositories>
 
 	<build>
+
+    <resources>
+      <resource>
+        <directory>chunkmapperResources</directory>
+        <includes>
+          <include>**/*</include>
+        </includes>
+      </resource>
+    </resources>
 		<sourceDirectory>src</sourceDirectory>
 		<plugins>
+
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.0</version>
@@ -76,8 +86,8 @@
 					</execution>
 				</executions>
 			</plugin>
-		</plugins>
 
+		</plugins>
 	</build>
 
 	<dependencies>

@@ -26,16 +26,17 @@ public class QuickGen {
 		double[] latlon = Nominatim.getPoint("Hollywood");
 		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
 		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
-		gen(regionx, regionz);
+//		gen(regionx, regionz);
+		System.out.println((new Point(regionx, regionz)).toString());
 		System.out.println("done");
 	}
 
 
 	public static File gen(int regionx, int regionz) throws IOException, IllegalArgumentException, NoSuchElementException, FileNotYetAvailableException, InterruptedException, URISyntaxException, DataFormatException {
-
-		MyLogger.LOGGER.info(String.format("Quick generating at %s, %s", regionx, regionz));
-		MySecurityManager.offlineValid = true;
 		BucketInfo.initMap();
+		//MyLogger.LOGGER.info(String.format("Quick generating at %s, %s", regionx, regionz));
+		MySecurityManager.offlineValid = true;
+		
 		File t = new File("temp");
 		t.mkdir();
 		File tempDir = File.createTempFile("temp", "", t);
@@ -51,14 +52,15 @@ public class QuickGen {
 
 		int a = 0, b = 0;
 		Point p = new Point(regionx, regionz);
-		MyLogger.LOGGER.info("Writing point at " + p.toString());
+		//MyLogger.LOGGER.info("Writing point at " + p.toString());
 		
 		GlobcoverManager coverManager = new GlobcoverManager(regionx, regionz);
 
 		for (int chunkx = 0; chunkx < 32; chunkx++) {
 			for (int chunkz = 0; chunkz < 32; chunkz++) {
 				int abschunkx = chunkx + regionx * 32, abschunkz = chunkz + regionz * 32;
-				Chunk chunk = coverManager.allWater ? new Chunk() : coverManager.getChunk(abschunkx, abschunkz, chunkx + a*32, chunkz + b*32);
+				int relchunkx = chunkx + a*32, relchunkz = chunkz + b * 32;
+				Chunk chunk = coverManager.allWater ? new Chunk(abschunkx, abschunkz, relchunkx, relchunkz) : coverManager.getChunk(abschunkx, abschunkz, chunkx + a*32, chunkz + b*32);
 				DataOutputStream stream = regionFile.getChunkDataOutputStream(chunkx, chunkz);
 				NbtIo.write(chunk.getTag(), stream);
 				stream.close();
