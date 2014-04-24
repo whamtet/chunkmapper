@@ -39,12 +39,12 @@ import com.chunkmapper.security.MySecurityManager;
 public class SimplifiedGUI extends JFrame implements GameAvailableInterface {
 
 	private JPanel contentPane;
-	private DefaultListModel<String> defaultListModel = getListModel();
+	private DefaultListModel defaultListModel = getListModel();
 	private JButton btnNewChunkmap;
 	private JPanel currentPanel, panel;
 	private static final File saveFolder = new File(Utila.MINECRAFT_DIR, "saves");
 	private JScrollPane scrollPane;
-	private JList<String> list;
+	private JList list;
 
 	/**
 	 * Launch the application.
@@ -62,8 +62,8 @@ public class SimplifiedGUI extends JFrame implements GameAvailableInterface {
 			}
 		});
 	}
-	private static DefaultListModel<String> getListModel() {
-		DefaultListModel<String> out = new DefaultListModel<String>();
+	private static DefaultListModel getListModel() {
+		DefaultListModel out = new DefaultListModel();
 		File[] files = saveFolder.listFiles();
 		if (files != null) {
 			for (File f : files) {
@@ -169,14 +169,14 @@ public class SimplifiedGUI extends JFrame implements GameAvailableInterface {
 					.addContainerGap(13, Short.MAX_VALUE))
 		);
 
-		list = new JList<String>(defaultListModel);
+		list = new JList(defaultListModel);
 		list.addListSelectionListener(new ListSelectionListener() {
 			public void valueChanged(ListSelectionEvent e) {
 				if (!e.getValueIsAdjusting() && list.getSelectedValue() != null) {
 					if (currentPanel != null) {
 						panel.remove(currentPanel);
 					}
-					File f = new File(saveFolder, list.getSelectedValue());
+					File f = new File(saveFolder, (String) list.getSelectedValue());
 					GeneratingPanel p = new GeneratingPanel(f, SimplifiedGUI.this);
 					currentPanel = p;
 					panel.add(currentPanel);

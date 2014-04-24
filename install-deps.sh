@@ -1,4 +1,5 @@
 #repo=~/clojure/chunkbackend/repo
+#-DlocalRepositoryPath=$repo
 
 mvn install:install-file -Dfile=lib/simple-5.1.5.jar -DgroupId=self -DartifactId=simple -Dversion=5.1.5 -Dpackaging=jar
 
