@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import com.chunkmapper.admin.MyLogger;
+import com.chunkmapper.admin.Utila;
 
 public class GameMetaInfo {
 	public final File store;
@@ -65,6 +66,11 @@ public class GameMetaInfo {
 	public synchronized void incrementChunksMade() {
 		numChunksMade++;
 		save();
+	}
+
+	public static GameMetaInfo getFromName(String name) throws IOException {
+		File gameFolder = new File(Utila.MINECRAFT_DIR, name);
+		return new GameMetaInfo(gameFolder, 0, 0, 1);
 	}
 
 }

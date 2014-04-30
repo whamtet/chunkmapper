@@ -9,7 +9,6 @@ import java.io.IOException;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -29,7 +28,7 @@ import com.chunkmapper.admin.GlobalSettings;
 import com.chunkmapper.admin.MyLogger;
 import com.chunkmapper.gui.dialog.SettingsDialog;
 import com.chunkmapper.security.MySecurityManager;
-import com.chunkmapper.writer.LoadedLevelDat;
+import com.chunkmapper.writer.LevelDat;
 
 public class GeneratingPanel extends JPanel {
 	private JTextField latTextField;
@@ -42,6 +41,7 @@ public class GeneratingPanel extends JPanel {
 	private final File gameFolder;
 	private final SimplifiedGUI simplifiedGUI;
 	private ManagingThread t;
+	private final LevelDat levelDat;
 	/**
 	 * Create the panel.
 	 */
@@ -63,7 +63,7 @@ public class GeneratingPanel extends JPanel {
 			return;
 		}
 
-		t = new ManagingThread(lat, lon, gameFolder, panel, panel, globalSettings, null);
+		t = new ManagingThread(lat, lon, gameFolder, panel, panel, globalSettings, null, levelDat);
 		t.start();
 		btnGenerateMap.setText("Cancel...");
 		setAllEnabled(false);
@@ -118,17 +118,25 @@ public class GeneratingPanel extends JPanel {
 		} catch (IOException e1) {
 			MyLogger.LOGGER.warning(MyLogger.printException(e1));
 		}
+		LevelDat lLevelDat = null;
+		try {
+			lLevelDat = LevelDat.getFromGameFolder(gameFolder);
+			Point relativePlayerPoint = lLevelDat.getPlayerPosition();
+			double lat = - (relativePlayerPoint.z + info.rootPoint.z * 512) / 3600.;
+			double lon = (relativePlayerPoint.x + info.rootPoint.x * 512) / 3600.;
+			latTextField.setText(String.format("%.4f", lat));
+			lonTextField.setText(String.format("%.4f", lon));
+		} catch (IOException e) {
+			MyLogger.LOGGER.severe(MyLogger.printException(e));
+			lLevelDat = null;
+		}
+		levelDat = lLevelDat;
 		if (info != null && !info.isNew) {
-			try {
-				LoadedLevelDat l = LoadedLevelDat.getFromGameFolder(gameFolder);
-				Point relativePlayerPoint = l.getPlayerPosition();
+				Point relativePlayerPoint = levelDat.getPlayerPosition();
 				double lat = - (relativePlayerPoint.z + info.rootPoint.z * 512) / 3600.;
 				double lon = (relativePlayerPoint.x + info.rootPoint.x * 512) / 3600.;
 				latTextField.setText(String.format("%.4f", lat));
 				lonTextField.setText(String.format("%.4f", lon));
-			} catch (IOException e) {
-				MyLogger.LOGGER.warning(MyLogger.printException(e));
-			}
 		}
 
 

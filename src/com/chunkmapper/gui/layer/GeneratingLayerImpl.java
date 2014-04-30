@@ -42,6 +42,7 @@ import com.chunkmapper.admin.GlobalSettings;
 import com.chunkmapper.gui.MappedSquareManagerImpl;
 import com.chunkmapper.gui.PlayerIconManagerImpl;
 import com.chunkmapper.gui.StartPointSelector;
+import com.chunkmapper.gui.dialog.TeleportDialog;
 import com.chunkmapper.interfaces.GeneratingLayer;
 import com.chunkmapper.writer.LevelDat;
 
@@ -70,6 +71,8 @@ public class GeneratingLayerImpl extends RenderableLayer implements SelectListen
 	private final JFrame appFrame;
 	private final GlobalSettings globalSettings;
 	private boolean isCancelling;
+	private final LevelDat levelDat;
+	private final GameMetaInfo gameMetaInfo;
 
 
 	public GeneratingLayerImpl(WorldWindow wwd, JFrame appFrame, File savesDir, String gameName, MainLayer mainLayer, GlobalSettings globalSettings) throws IOException
@@ -105,7 +108,8 @@ public class GeneratingLayerImpl extends RenderableLayer implements SelectListen
 
 		// Listen to world window for select event
 		this.wwd.addSelectListener(this);
-
+		levelDat = new LevelDat(new File(gameFolder, "level.dat"));
+		gameMetaInfo = new GameMetaInfo(gameFolder, 0, 0, 0);
 		if (awaitingSelectPoint) {
 			startCenteredThread();
 			//skip selection of point, just choose middle point in view.
@@ -115,13 +119,11 @@ public class GeneratingLayerImpl extends RenderableLayer implements SelectListen
 		} else {
 			//need to read in player position
 			try {
-					LevelDat loadedLevelDat;
-					loadedLevelDat = new LevelDat(new File(gameFolder, "level.dat"));
-					Point relativePlayerPoint = loadedLevelDat.getPlayerPosition();
-					GameMetaInfo info = new GameMetaInfo(gameFolder, 0, 0, 0);
-					double lat = - (relativePlayerPoint.z + info.rootPoint.z * 512) / 3600.;
-					double lon = (relativePlayerPoint.x + info.rootPoint.x * 512) / 3600.;
-					wwd.getSceneController().setVerticalExaggeration(info.verticalExaggeration);
+					Point relativePlayerPoint = levelDat.getPlayerPosition();
+					
+					double lat = - (relativePlayerPoint.z + gameMetaInfo.rootPoint.z * 512) / 3600.;
+					double lon = (relativePlayerPoint.x + gameMetaInfo.rootPoint.x * 512) / 3600.;
+					wwd.getSceneController().setVerticalExaggeration(gameMetaInfo.verticalExaggeration);
 					startThread(lat, lon);
 			} catch (NumberFormatException e) {
 				//also make sure that the file is deleted.
@@ -167,7 +169,7 @@ public class GeneratingLayerImpl extends RenderableLayer implements SelectListen
 		mappedSquareManager = new MappedSquareManagerImpl(wwd);
 		playerIconManager = new PlayerIconManagerImpl(lat, lon, wwd);
 		managingThread = new ManagingThread(lat, lon, gameFolder, mappedSquareManager, playerIconManager,
-				globalSettings, this);
+				globalSettings, this, levelDat);
 		managingThread.start();
 	}
 	public void cancel() {
@@ -202,6 +204,9 @@ public class GeneratingLayerImpl extends RenderableLayer implements SelectListen
 		};
 		t.start();
 	}
+	private void teleport() {
+		(new TeleportDialog(appFrame, gameName, levelDat, gameMetaInfo.rootPoint)).setVisible(true);
+	}
 
 	public void selected(SelectEvent event) {
 
@@ -215,6 +220,9 @@ public class GeneratingLayerImpl extends RenderableLayer implements SelectListen
 				if (s != null) {
 					((Component) wwd).setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 					if (event.getEventAction().equals(SelectEvent.LEFT_CLICK)) {
+//						if (s.equals("tp")) {
+//							teleport();
+//						}
 						if (s.equals("cancel")) {
 							cancel();
 						}
@@ -397,6 +405,7 @@ public class GeneratingLayerImpl extends RenderableLayer implements SelectListen
 				+ divWidth(5) + "<a href=\"zoom\"><font color=\"#b0b0b0\">Center Current Position</a><br />"
 				+ divWidth(8) + "<a href=\"gm\"><font color=\"#b0b0b0\">Show in Google Maps</a><br />"
 				+ divWidth(5) + "<a href=\"osm\"><font color=\"#b0b0b0\">Show in OpenStreetMap</a><br />"
+//				+ divWidth(12) + "<a href=\"tp\"><font color=\"#b0b0b0\">Teleport Player</a><br />"
 				+ divWidth(21) + "<font color=\"#b0b0b0\">***<br />"
 				+ divWidth(18) + "<a href=\"cancel\"><font color=\"#b0b0b0\">Cancel</a>";
 	}

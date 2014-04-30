@@ -39,9 +39,14 @@ public class MySecurityManager {
 		OK, HACKED, UNPAID, INVALID_PW, SSL_EXCEPTION;
 	}
 	public static boolean offlineValid;
+	
+	public static void main(String[] args) throws Exception {
+		System.out.println(MySecurityManager.class.getResourceAsStream("hi"));
+	}
 
 	private static String getRawKey() {
 		InetAddress ip = null;
+		
 		try {
 			ip = InetAddress.getLocalHost();
 		} catch (UnknownHostException e) {

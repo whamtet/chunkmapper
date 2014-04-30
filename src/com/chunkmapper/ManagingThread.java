@@ -37,6 +37,7 @@ public class ManagingThread extends Thread {
 	private final GeneratingLayer generatingLayer;
 	public RegionWriter regionWriter;
 	public PostingThread postingThread;
+	private final LevelDat levelDat;
 	private static boolean networkProblems;
 	private static Object networkProblemsGuard = new Object();
 	
@@ -48,8 +49,8 @@ public class ManagingThread extends Thread {
 		double[] latlon = Nominatim.getPoint("Hollywood");
 		File gameFolder = new File("/Users/matthewmolloy/Library/Application Support/minecraft/saves/Hollywood");
 		GlobalSettings globalSettings = new GlobalSettings();
-		ManagingThread t = new ManagingThread(latlon[0], latlon[1], gameFolder, null, null, globalSettings, null);
-		t.run();
+//		ManagingThread t = new ManagingThread(latlon[0], latlon[1], gameFolder, null, null, globalSettings, null);
+//		t.run();
 	}
 
 	public static void setNetworkProblems() {
@@ -72,7 +73,7 @@ public class ManagingThread extends Thread {
 
 	public ManagingThread(double lat, double lon, File gameFolder, MappedSquareManager mappedSquareManager,
 			PlayerIconManager playerIconManager, GlobalSettings globalSettings,
-			GeneratingLayer generatingLayer) {
+			GeneratingLayer generatingLayer, LevelDat levelDat) {
 		clearNetworkProblems();
 
 		//		if (true) {
@@ -85,6 +86,7 @@ public class ManagingThread extends Thread {
 		this.lat = lat;
 		this.lon = lon;
 		this.gameFolder = gameFolder;
+		this.levelDat = levelDat;
 	}
 	private static boolean continueWithoutNetwork() {
 		NoNetworkDialog d = new NoNetworkDialog();
@@ -132,37 +134,17 @@ public class ManagingThread extends Thread {
 			MyLogger.LOGGER.severe(MyLogger.printException(e1));
 		}
 
-		File loadedLevelDatFile = new File(gameFolder, "level.dat");
-		LevelDat loadedLevelDat = null;
-		try {
-			loadedLevelDat = new LevelDat(loadedLevelDatFile);
+		File levelDatFile = new File(gameFolder, "level.dat");
 			String gameName = gameFolder.getName();
-			loadedLevelDat.setName(gameName);
+			levelDat.setName(gameName);
 			//need to set altitude correctly.
 			int altitude = 128;
 			int absx = (int) (lon * 3600);
 			int absz = (int) (-lat * 3600);
 			if (!MySecurityManager.offlineValid)
 				absz = Matthewmatics.div(absz, 128) * 128 + 64;
-			//			try {
-			//				int regionx = Matthewmatics.div(absx, 512), regionz = Matthewmatics.div(absz, 512);
-			//				HeightsReader heightsReader = new HeightsReaderS3(regionx, regionz, gameMetaInfo.verticalExaggeration);
-			//				altitude = heightsReader.getHeightxz(absx, absz) + 20;
-			//			} catch (InterruptedException e) {
-			//				// TODO Auto-generated catch block
-			//				MyLogger.LOGGER.info(MyLogger.printException(e));
-			//				return;
-			//			} catch (DataFormatException e) {
-			//				// TODO Auto-generated catch block
-			//				MyLogger.LOGGER.warning(MyLogger.printException(e));
-			//				altitude = 250;
-			//			}
-			loadedLevelDat.setPlayerPosition(absx - gameMetaInfo.rootPoint.x * 512, altitude, absz - gameMetaInfo.rootPoint.z * 512);
-			loadedLevelDat.save();
-		} catch (IOException e) {
-			MyLogger.LOGGER.warning((MyLogger.printException(e)));
-			return;
-		}
+			levelDat.setPlayerPosition(absx - gameMetaInfo.rootPoint.x * 512, altitude, absz - gameMetaInfo.rootPoint.z * 512);
+			levelDat.save();
 
 		HeightsCache.deleteCache();
 
@@ -179,16 +161,16 @@ public class ManagingThread extends Thread {
 			}
 			regionWriter = new RegionWriter(pointManager, gameMetaInfo.rootPoint, regionFolder, 
 					gameMetaInfo, mappedSquareManager, globalSettings.gaiaMode, globalSettings.getVerticalExaggeration(),
-					loadedLevelDat
+					levelDat
 					);
-			try {
-				if (MySecurityManager.isOfflineValid()) {
-					postingThread = new PostingThread(gameFolder, gameMetaInfo.rootPoint);
-					postingThread.start();
-				}
-			} catch (IOException e) {
-				MyLogger.LOGGER.warning(MyLogger.printException(e));
-			}
+//			try {
+//				if (MySecurityManager.isOfflineValid()) {
+//					postingThread = new PostingThread(gameFolder, gameMetaInfo.rootPoint);
+//					postingThread.start();
+//				}
+//			} catch (IOException e) {
+//				MyLogger.LOGGER.warning(MyLogger.printException(e));
+//			}
 
 			MyLogger.LOGGER.info("truly starting");
 			//now we loop for ETERNITY!!!

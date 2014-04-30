@@ -202,7 +202,7 @@ os = 'osx'
 wait(1)
 #delete_cache()
 #delete()
-go_to('Tokyo')
+go_to('Beijing')
 create_test_map()
 cancel_generation()
 for i in range(5):

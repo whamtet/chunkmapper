@@ -45,6 +45,7 @@ import com.chunkmapper.gui.bounds.MyPolygonEditor;
 import com.chunkmapper.gui.dialog.UpgradeAvailableDialog;
 import com.chunkmapper.gui.layer.MCNotAvailableLayer;
 import com.chunkmapper.gui.layer.MainLayer;
+import com.chunkmapper.gui.simple.SimplifiedGUI;
 import com.chunkmapper.security.MySecurityManager;
 
 /**
@@ -174,6 +175,8 @@ public class Main extends ApplicationTemplate
 			System.err.println("Warning: Xmx set too low: " + availableMemory);
 		String title = MySecurityManager.isOfflineValid() ? "Chunkmapper" : "Chunkmapper - Free Version";
 		ApplicationTemplate.start(title, AppFrame.class);
+//		SimplifiedGUI gui = new SimplifiedGUI();
+//		gui.setVisible(true);
 	}
 	
 	protected static class ExtrudedPolygonFactory

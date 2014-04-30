@@ -18,14 +18,14 @@
 
 	<build>
 
-    <resources>
-      <resource>
-        <directory>chunkmapperResources</directory>
-        <includes>
-          <include>**/*</include>
-        </includes>
-      </resource>
-    </resources>
+		<resources>
+			<resource>
+				<directory>chunkmapperResources</directory>
+				<includes>
+					<include>**/*</include>
+				</includes>
+			</resource>
+		</resources>
 		<sourceDirectory>src</sourceDirectory>
 		<plugins>
 
@@ -37,57 +37,18 @@
 					<target>1.6</target>
 				</configuration>
 			</plugin>
-      <!--
-			<plugin>
-				<groupId>com.github.wvengen</groupId>
-				<artifactId>proguard-maven-plugin</artifactId>
-				<version>2.0.6</version>
-				<dependencies>
-					<dependency>
-						<groupId>net.sf.proguard</groupId>
-						<artifactId>proguard-base</artifactId>
-						<version>4.11</version>
-						<scope>runtime</scope>
-					</dependency>
-				</dependencies>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>proguard</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<options>
-						<option>@proguard.txt</option>
-					</options>
-					<libs>
-						<lib>${java.home}/lib/rt.jar</lib>
-					</libs>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>com.licel</groupId>
-				<artifactId>stringer-maven-plugin</artifactId>
-				<version>1.6.7</version>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>stringer</goal>
-						</goals>
-						<configuration>
-							<checkCaller>false</checkCaller>
-							<integrityProtection>false</integrityProtection>
-							<resourceEncryption>false</resourceEncryption>
-							<optimize>true</optimize>
-							<verbose>true</verbose>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
--->
+			<!-- <plugin> <groupId>com.github.wvengen</groupId> <artifactId>proguard-maven-plugin</artifactId>
+				<version>2.0.6</version> <dependencies> <dependency> <groupId>net.sf.proguard</groupId>
+				<artifactId>proguard-base</artifactId> <version>4.11</version> <scope>runtime</scope>
+				</dependency> </dependencies> <executions> <execution> <phase>package</phase>
+				<goals> <goal>proguard</goal> </goals> </execution> </executions> <configuration>
+				<options> <option>@proguard.txt</option> </options> <libs> <lib>${java.home}/lib/rt.jar</lib>
+				</libs> </configuration> </plugin> <plugin> <groupId>com.licel</groupId>
+				<artifactId>stringer-maven-plugin</artifactId> <version>1.6.7</version> <executions>
+				<execution> <phase>package</phase> <goals> <goal>stringer</goal> </goals>
+				<configuration> <checkCaller>false</checkCaller> <integrityProtection>false</integrityProtection>
+				<resourceEncryption>false</resourceEncryption> <optimize>true</optimize>
+				<verbose>true</verbose> </configuration> </execution> </executions> </plugin> -->
 		</plugins>
 	</build>
 

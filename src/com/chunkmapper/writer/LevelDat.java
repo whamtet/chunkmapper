@@ -11,6 +11,7 @@ import java.io.OutputStream;
 
 import com.chunkmapper.Point;
 import com.chunkmapper.admin.MyLogger;
+import com.chunkmapper.admin.Utila;
 import com.chunkmapper.nbt.ByteTag;
 import com.chunkmapper.nbt.CompoundTag;
 import com.chunkmapper.nbt.DoubleTag;
@@ -29,15 +30,19 @@ public class LevelDat {
 			data = NbtIo.readCompressed(in);
 			in.close();
 		} else {
-			this.data = getRoot();
+			this.data = getRootTag();
 		}
 	}
-	public void save() throws IOException {
+	public void save() {
 		File parent = store.getParentFile();
 		parent.mkdirs();
-		OutputStream out = new BufferedOutputStream(new FileOutputStream(store));
-		NbtIo.writeCompressed(data, out);
-		out.close();
+		try {
+			OutputStream out = new BufferedOutputStream(new FileOutputStream(store));
+			NbtIo.writeCompressed(data, out);
+			out.close();
+		} catch (IOException e) {
+			MyLogger.LOGGER.severe(MyLogger.printException(e));
+		}
 	}
 	public void setPlayerPosition(double x, double y, double z) {
 		MyLogger.LOGGER.info("setting player position to " + x + ", " + y + ", " + z);
@@ -79,7 +84,7 @@ public class LevelDat {
 		CompoundTag Data = data.getCompound("Data");
 		return Data.getString("LevelName");
 	}
-	private static CompoundTag getRoot() {
+	private static CompoundTag getRootTag() {
 		CompoundTag root1 = new CompoundTag();
 
 		CompoundTag Data1 = new CompoundTag();
@@ -224,6 +229,18 @@ public class LevelDat {
 		root1.put("Data", Data1);
 		return root1;
 
+	}
+	public static LevelDat getFromGameFolder(File gameFolder) throws IOException {
+		return new LevelDat(new File(gameFolder, "level.dat"));
+	}
+	public static LevelDat getFromName(String name) throws IOException {
+		return new LevelDat(new File(Utila.MINECRAFT_DIR, name + "/level.dat"));
+	}
+	public void setPlayerPosition(double lat, double lon, Point rootPoint) {
+		double x = lon * 3600 - rootPoint.x * 512;
+		double y = 250;
+		double z = lat * 3600 - rootPoint.z * 512;
+		this.setPlayerPosition(x, y, z);
 	}
 
 }
