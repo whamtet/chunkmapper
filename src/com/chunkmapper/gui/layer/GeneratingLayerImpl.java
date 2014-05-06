@@ -72,7 +72,6 @@ public class GeneratingLayerImpl extends RenderableLayer implements SelectListen
 	private final GlobalSettings globalSettings;
 	private boolean isCancelling;
 	private final LevelDat levelDat;
-	private final GameMetaInfo gameMetaInfo;
 
 
 	public GeneratingLayerImpl(WorldWindow wwd, JFrame appFrame, File savesDir, String gameName, MainLayer mainLayer, GlobalSettings globalSettings) throws IOException
@@ -106,21 +105,17 @@ public class GeneratingLayerImpl extends RenderableLayer implements SelectListen
 
 		this.addRenderable(this.parentAnnotation);
 
+		levelDat = new LevelDat(new File(gameFolder, "level.dat"));
 		// Listen to world window for select event
 		this.wwd.addSelectListener(this);
-		levelDat = new LevelDat(new File(gameFolder, "level.dat"));
-		gameMetaInfo = new GameMetaInfo(gameFolder, 0, 0, 0);
 		if (awaitingSelectPoint) {
 			startCenteredThread();
 			//skip selection of point, just choose middle point in view.
-//			selector = new StartPointSelector(wwd, this, gameFolder);
-//			wwd.getInputHandler().addMouseListener(selector);
-//			wwd.getInputHandler().addMouseMotionListener(selector);
 		} else {
 			//need to read in player position
 			try {
 					Point relativePlayerPoint = levelDat.getPlayerPosition();
-					
+					GameMetaInfo gameMetaInfo = new GameMetaInfo(gameFolder, 0, 0, 0);
 					double lat = - (relativePlayerPoint.z + gameMetaInfo.rootPoint.z * 512) / 3600.;
 					double lon = (relativePlayerPoint.x + gameMetaInfo.rootPoint.x * 512) / 3600.;
 					wwd.getSceneController().setVerticalExaggeration(gameMetaInfo.verticalExaggeration);
@@ -169,7 +164,7 @@ public class GeneratingLayerImpl extends RenderableLayer implements SelectListen
 		mappedSquareManager = new MappedSquareManagerImpl(wwd);
 		playerIconManager = new PlayerIconManagerImpl(lat, lon, wwd);
 		managingThread = new ManagingThread(lat, lon, gameFolder, mappedSquareManager, playerIconManager,
-				globalSettings, this, levelDat);
+				globalSettings, this);
 		managingThread.start();
 	}
 	public void cancel() {
@@ -204,9 +199,9 @@ public class GeneratingLayerImpl extends RenderableLayer implements SelectListen
 		};
 		t.start();
 	}
-	private void teleport() {
-		(new TeleportDialog(appFrame, gameName, levelDat, gameMetaInfo.rootPoint)).setVisible(true);
-	}
+//	private void teleport() {
+//		(new TeleportDialog(appFrame, gameName, levelDat, gameMetaInfo.rootPoint)).setVisible(true);
+//	}
 
 	public void selected(SelectEvent event) {
 

@@ -63,7 +63,7 @@ public class GeneratingPanel extends JPanel {
 			return;
 		}
 
-		t = new ManagingThread(lat, lon, gameFolder, panel, panel, globalSettings, null, levelDat);
+		t = new ManagingThread(lat, lon, gameFolder, panel, panel, globalSettings, null);
 		t.start();
 		btnGenerateMap.setText("Cancel...");
 		setAllEnabled(false);

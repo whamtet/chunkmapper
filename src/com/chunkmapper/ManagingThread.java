@@ -37,7 +37,6 @@ public class ManagingThread extends Thread {
 	private final GeneratingLayer generatingLayer;
 	public RegionWriter regionWriter;
 	public PostingThread postingThread;
-	private final LevelDat levelDat;
 	private static boolean networkProblems;
 	private static Object networkProblemsGuard = new Object();
 	
@@ -73,7 +72,7 @@ public class ManagingThread extends Thread {
 
 	public ManagingThread(double lat, double lon, File gameFolder, MappedSquareManager mappedSquareManager,
 			PlayerIconManager playerIconManager, GlobalSettings globalSettings,
-			GeneratingLayer generatingLayer, LevelDat levelDat) {
+			GeneratingLayer generatingLayer) {
 		clearNetworkProblems();
 
 		//		if (true) {
@@ -86,7 +85,6 @@ public class ManagingThread extends Thread {
 		this.lat = lat;
 		this.lon = lon;
 		this.gameFolder = gameFolder;
-		this.levelDat = levelDat;
 	}
 	private static boolean continueWithoutNetwork() {
 		NoNetworkDialog d = new NoNetworkDialog();
@@ -133,8 +131,15 @@ public class ManagingThread extends Thread {
 		} catch (IOException e1) {
 			MyLogger.LOGGER.severe(MyLogger.printException(e1));
 		}
-
 		File levelDatFile = new File(gameFolder, "level.dat");
+		LevelDat levelDat = null;
+		try {
+			levelDat = new LevelDat(levelDatFile);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			MyLogger.LOGGER.severe(MyLogger.printException(e1));
+			return;
+		}
 			String gameName = gameFolder.getName();
 			levelDat.setName(gameName);
 			//need to set altitude correctly.
