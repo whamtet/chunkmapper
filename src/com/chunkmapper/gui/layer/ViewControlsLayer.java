@@ -52,7 +52,7 @@ public class ViewControlsLayer extends RenderableLayer
     protected final static String IMAGE_VE_UP = "images/view-elevation-up-32x32.png";
     protected final static String IMAGE_VE_DOWN = "images/view-elevation-down-32x32.png";
     protected final static String IMAGE_SETTINGS = "images/tool.png";
-    protected final static String IMAGE_SIMPLE_GUI = "login.png";
+//    protected final static String IMAGE_SIMPLE_GUI = "login.png";
 
     // The annotations used to display the controls.
     protected ScreenAnnotation controlPan;
@@ -69,7 +69,7 @@ public class ViewControlsLayer extends RenderableLayer
     protected ScreenAnnotation controlVeDown;
     protected ScreenAnnotation currentControl;
     protected ScreenAnnotation trashControl;
-    protected ScreenAnnotation menuControl;
+//    protected ScreenAnnotation menuControl;
 
     protected String position = AVKey.SOUTHWEST;
     protected String layout = AVKey.HORIZONTAL;
@@ -596,13 +596,13 @@ public class ViewControlsLayer extends RenderableLayer
         	trashControl.setValue(AVKey.VIEW_OPERATION, "trash it");
         	this.addRenderable(trashControl);
         }
-        if (this.showMenu) {
-        	menuControl = new ScreenAnnotation(NOTEXT, ORIGIN, ca);
-        	menuControl.getAttributes().setImageSource(IMAGE_SIMPLE_GUI);
-        	menuControl.getAttributes().setSize(new Dimension(50, 50));
-        	menuControl.setValue(AVKey.VIEW_OPERATION, "auxiliary");
-        	this.addRenderable(menuControl);
-        } 
+//        if (this.showMenu) {
+//        	menuControl = new ScreenAnnotation(NOTEXT, ORIGIN, ca);
+//        	menuControl.getAttributes().setImageSource(IMAGE_SIMPLE_GUI);
+//        	menuControl.getAttributes().setSize(new Dimension(50, 50));
+//        	menuControl.setValue(AVKey.VIEW_OPERATION, "auxiliary");
+//        	this.addRenderable(menuControl);
+//        } 
 
         // Place controls according to layout and viewport dimension
         updatePositions(dc);
@@ -756,11 +756,11 @@ public class ViewControlsLayer extends RenderableLayer
         		y -= (int) (buttonSize * scale);
         	this.trashControl.setScreenPoint(new Point(x + halfButtonSize + 5, y));
         }
-        if (this.showMenu) {
-        	if (!horizontalLayout)
-        		y -= (int) (buttonSize * scale);
-        	this.menuControl.setScreenPoint(new Point(x + halfButtonSize + 15 + this.myButtonWidth, y));
-        }
+//        if (this.showMenu) {
+//        	if (!horizontalLayout)
+//        		y -= (int) (buttonSize * scale);
+//        	this.menuControl.setScreenPoint(new Point(x + halfButtonSize + 15 + this.myButtonWidth, y));
+//        }
 
         this.referenceViewport = dc.getView().getViewport();
     }
@@ -846,8 +846,8 @@ public class ViewControlsLayer extends RenderableLayer
         return Logging.getMessage("layers.ViewControlsLayer.Name");
     }
 
-	public void hideAuxiliaryButton() {
-		this.showMenu = false;
-		this.removeRenderable(this.menuControl);
-	}
+//	public void hideAuxiliaryButton() {
+//		this.showMenu = false;
+//		this.removeRenderable(this.menuControl);
+//	}
 }

@@ -220,7 +220,7 @@ public class MainLayer extends RenderableLayer implements SelectListener, GameAv
 									update = true;
 								}
 							}
-							if (s.endsWith("Resume") && (takenGames.size() < MySecurityManager.ALLOWED_GAMES + 1 || !MySecurityManager.mustPurchase(appFrame))) {
+							if (s.endsWith("Resume") && (takenGames.size() <= MySecurityManager.ALLOWED_GAMES || !MySecurityManager.mustPurchase(appFrame))) {
 								wwd.getModel().getLayers().remove(this);
 								String gameName = s.substring(0, s.length() - 6);
 								MyLogger.LOGGER.info("Resuming " + gameName);

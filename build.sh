@@ -1,4 +1,4 @@
-python build_py/setVersion.py 0.2-SINGLEPLAYER
+python build_py/setVersion.py 0.3-SINGLEPLAYER
 python build_py/update_build_no.py
 mvn clean package
 python build_py/copy_proguard_map.py
@@ -17,3 +17,4 @@ git add chunkmapperResources
 git commit -am w
 git push
 ssh dad.chunkmapper.com 'bash -s' < deploy.sh
+tput bel

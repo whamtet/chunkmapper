@@ -356,12 +356,12 @@ public class ApplicationTemplate
 		boolean purchased = MySecurityManager.isOfflineValid();
 		if (purchased && !PreferenceManager.getIgnoreFeedback()) {
 			(new FeedbackDialog()).setVisible(true);
-		} else if (!purchased && !PreferenceManager.getNoPurchaseShown()) {
-			NoPurchaseDialog d = new NoPurchaseDialog();
-			d.setVisible(true);
-			if (!d.submitted && PreferenceManager.getAllowUsageReports()) {
-				FeedbackManager.submitFeedback(null);
-			}
+//		} else if (!purchased && !PreferenceManager.getNoPurchaseShown()) {
+//			NoPurchaseDialog d = new NoPurchaseDialog();
+//			d.setVisible(true);
+//			if (!d.submitted && PreferenceManager.getAllowUsageReports()) {
+//				FeedbackManager.submitFeedback(null);
+//			}
 		} else if (PreferenceManager.getAllowUsageReports()) {
 			FeedbackManager.submitFeedback(null);
 		}

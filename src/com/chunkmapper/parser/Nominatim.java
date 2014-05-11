@@ -6,7 +6,9 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.concurrent.ExecutorService;
 
+import com.chunkmapper.Point;
 import com.chunkmapper.admin.MyLogger;
 import com.chunkmapper.reader.POIReader;
 import com.chunkmapper.reader.POIReader.SpecialPlace;
@@ -59,5 +61,12 @@ public class Nominatim extends Parser {
 			MyLogger.LOGGER.warning(MyLogger.printException(e));
 			return null;
 		}
+	}
+	public static Point getRegionPoint(String q) {
+		
+		double[] latlon = getPointSafe(q);
+		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
+		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
+		return new Point(regionx, regionz);
 	}
 }

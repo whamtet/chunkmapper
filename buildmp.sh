@@ -13,3 +13,4 @@ ant multiplayer_zip -Dclasses=inspect
 #cd ~/Desktop
 #rm -r Chunkmapper-Multiplayer
 #open Chunkmapper-Multiplayer.zip
+tput bel

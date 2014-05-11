@@ -358,18 +358,15 @@ public class ViewControlsSelectListener implements SelectListener
             	d.setVisible(true);
 //            	event.consume();
             }
-            if (controlType.equals("auxiliary")) {
-//            	Main.AppFrame.addTestPath(wwd);
-//            	this.appFrame.dispose();
-//            	SimplifiedGUI.open();
-            	
-            	AccountDialog d = new AccountDialog(appFrame);
-        		d.setVisible(true);
-        		if (d.ok) {
-        			appFrame.setTitle("Chunkmapper");
-        			ViewControlsLayer.singleton.hideAuxiliaryButton();
-        		}
-            }
+//            if (controlType.equals("auxiliary")) {
+//            	
+//            	AccountDialog d = new AccountDialog(appFrame);
+//        		d.setVisible(true);
+//        		if (d.ok) {
+//        			appFrame.setTitle("Chunkmapper");
+//        			ViewControlsLayer.singleton.hideAuxiliaryButton();
+//        		}
+//            }
             
             // Release pressed control
             this.pressedControl = null;

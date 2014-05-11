@@ -416,8 +416,8 @@ public class GlobcoverManager {
 		}
 		//add volcano
 		volcanoReader.addHotRocks(chunk);
-		if (!MySecurityManager.offlineValid && abschunkz % 8 == 0)
-			GenericWriter.addNorthGlassWall(chunk);
+//		if (!MySecurityManager.offlineValid && abschunkz % 8 == 0)
+//			GenericWriter.addNorthGlassWall(chunk);
 
 		return chunk;
 	}

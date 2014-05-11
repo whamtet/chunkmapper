@@ -168,14 +168,6 @@ public class ManagingThread extends Thread {
 					gameMetaInfo, mappedSquareManager, globalSettings.gaiaMode, globalSettings.getVerticalExaggeration(),
 					levelDat
 					);
-//			try {
-//				if (MySecurityManager.isOfflineValid()) {
-//					postingThread = new PostingThread(gameFolder, gameMetaInfo.rootPoint);
-//					postingThread.start();
-//				}
-//			} catch (IOException e) {
-//				MyLogger.LOGGER.warning(MyLogger.printException(e));
-//			}
 
 			MyLogger.LOGGER.info("truly starting");
 			//now we loop for ETERNITY!!!

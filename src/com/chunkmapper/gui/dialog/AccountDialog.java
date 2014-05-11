@@ -111,13 +111,15 @@ public class AccountDialog extends JDialog {
 
 		setResizable(false);
 		setTitle("Verify Account");
-		setBounds(100, 100, 450, 245);
+		setBounds(100, 100, 450, 256);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 
 		lblToCreateA = new JLabel("Chunkmapper account required");
-
+//		lblToCreateA.setText("<html>Your account has not been activated.  Please complete payment or email support@chunkmapper.com</html>");
+//		lblToCreateA.setForeground(Color.RED);
+		
 		JLabel lblEmail = new JLabel("Email");
 
 		textField = new JTextField();
@@ -181,14 +183,14 @@ public class AccountDialog extends JDialog {
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(sslButton))
 						.addComponent(lblNewLabel))
-					.addContainerGap(114, Short.MAX_VALUE))
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		gl_contentPanel.setVerticalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPanel.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblToCreateA)
+						.addComponent(lblToCreateA, GroupLayout.PREFERRED_SIZE, 49, GroupLayout.PREFERRED_SIZE)
 						.addComponent(sslButton))
 					.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 					.addComponent(lblNewLabel)

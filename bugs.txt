@@ -5,5 +5,10 @@
 -priority in osx apps
 -after some time little man dissappears behind blue squares
 -switch between normal view and open streetmap?
+
+
+-clicking search bar at beginning
+-possibly search bar highlight issue
 TODO
 ====
+GO ANYWHERE ON EARTH in search bar

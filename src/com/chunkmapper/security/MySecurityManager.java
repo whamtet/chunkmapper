@@ -34,7 +34,8 @@ import com.chunkmapper.gui.dialog.AccountDialog;
 public class MySecurityManager {
 
 	private static final File keyFile = new File(Utila.CACHE, "key");
-	public static final int ALLOWED_GAMES = Integer.MAX_VALUE / 2;
+//	public static final int ALLOWED_GAMES = Integer.MAX_VALUE / 2;
+	public static final int ALLOWED_GAMES = 0;
 	public static enum Status {
 		OK, HACKED, UNPAID, INVALID_PW, SSL_EXCEPTION;
 	}
