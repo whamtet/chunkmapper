@@ -8,7 +8,7 @@ public class GlobalSettings {
 	public boolean gaiaMode;
 	public boolean refreshNext;
 	public boolean nz;
-	public int generationRadius;
+	public int generationRadius = 3;
 	
 	public boolean isLive() {
 		// TODO Auto-generated method stub

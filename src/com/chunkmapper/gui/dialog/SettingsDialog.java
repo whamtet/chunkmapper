@@ -122,7 +122,7 @@ public class SettingsDialog extends JDialog {
 		textField.setColumns(10);
 		
 		final JSpinner spinner_1 = new JSpinner();
-		spinner_1.setModel(new SpinnerNumberModel(new Integer(3), new Integer(1), null, new Integer(1)));
+		spinner_1.setModel(new SpinnerNumberModel(globalSettings.generationRadius, new Integer(1), null, new Integer(1)));
 		
 		JLabel lblGenerationRadius = new JLabel("Generation Radius");
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
