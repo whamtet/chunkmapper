@@ -51,7 +51,7 @@ public class ViewControlsLayer extends RenderableLayer
     protected final static String IMAGE_FOV_WIDE = "images/view-fov-wide-32x32.png";
     protected final static String IMAGE_VE_UP = "images/view-elevation-up-32x32.png";
     protected final static String IMAGE_VE_DOWN = "images/view-elevation-down-32x32.png";
-    protected final static String IMAGE_SETTINGS = "images/tool.png";
+    protected final static String IMAGE_SETTINGS = "/tool.png";
 //    protected final static String IMAGE_SIMPLE_GUI = "login.png";
 
     // The annotations used to display the controls.

@@ -228,10 +228,20 @@ public class GeneratingLayerImpl extends RenderableLayer implements SelectListen
 								v.goTo(Position.fromDegrees(ll.latitude.degrees, ll.longitude.degrees), 512*30*10);
 							}
 						}
-						if (s.equals("gm") || s.equals("osm")) {
+						if (s.equals("gm") || s.equals("osm") || s.equals("browser")) {
 							
 							LatLon ll = playerIconManager.getLatLon();
-							if (s.equals("gm")) {
+							if (s.equals("browser")) {
+								int regionx = (int) Math.floor(ll.longitude.degrees * 3600 / 512);
+								int regionz = (int) Math.floor(-ll.latitude.degrees * 3600 / 512);
+								//String t = String.format("http://www.chunkmapper.com/leaflet2.html?regionx=%s&regionz=%s", regionx, regionz);
+								String t = String.format("http://localhost:5000/leaflet2.html?regionx=%s&regionz=%s", regionx, regionz);
+								try {
+									openWebpage(new URI(t));
+								} catch (URISyntaxException e) {
+									e.printStackTrace();
+								}
+							} else if (s.equals("gm")) {
 //								https://www.google.com/maps/place/36¡33'47.0"S+174¡31'59.0"E
 								double lat = ll.latitude.degrees, lon = ll.longitude.degrees;
 								String latStr = lat < 0 ? "S" : "N";
@@ -398,7 +408,7 @@ public class GeneratingLayerImpl extends RenderableLayer implements SelectListen
 		return String.format("<b>Generating %s...</b><br /><br />\n", gameName)
 				+ "Blue Boxes Show Map Extent<br /><br />\n"
 				+ divWidth(5) + "<a href=\"zoom\"><font color=\"#b0b0b0\">Center Current Position</a><br />"
-				+ divWidth(8) + "<a href=\"gm\"><font color=\"#b0b0b0\">Show in Google Maps</a><br />"
+				+ divWidth(11) + "<a href=\"browser\"><font color=\"#b0b0b0\">Show in Browser</a><br />"
 				+ divWidth(5) + "<a href=\"osm\"><font color=\"#b0b0b0\">Show in OpenStreetMap</a><br />"
 //				+ divWidth(12) + "<a href=\"tp\"><font color=\"#b0b0b0\">Teleport Player</a><br />"
 				+ divWidth(21) + "<font color=\"#b0b0b0\">***<br />"

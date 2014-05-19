@@ -2,6 +2,7 @@ package com.chunkmapper.gui;
 
 import gov.nasa.worldwind.Configuration;
 import gov.nasa.worldwind.Model;
+import gov.nasa.worldwind.StereoOptionSceneController;
 import gov.nasa.worldwind.WorldWind;
 import gov.nasa.worldwind.WorldWindow;
 import gov.nasa.worldwind.avlist.AVKey;
@@ -35,7 +36,6 @@ import com.chunkmapper.admin.GlobalSettings;
 import com.chunkmapper.admin.MyLogger;
 import com.chunkmapper.admin.PreferenceManager;
 import com.chunkmapper.gui.dialog.FeedbackDialog;
-import com.chunkmapper.gui.dialog.NoPurchaseDialog;
 import com.chunkmapper.gui.layer.ViewControlsLayer;
 import com.chunkmapper.gui.layer.ViewControlsSelectListener;
 import com.chunkmapper.security.MySecurityManager;
@@ -48,9 +48,6 @@ import com.chunkmapper.security.MySecurityManager;
  */
 public class ApplicationTemplate
 {
-	public static void main(String[] args) {
-		System.out.println("compiled");
-	}
 	public static class AppPanel extends JPanel
 	{
 		protected WorldWindow wwd;
@@ -157,12 +154,8 @@ public class ApplicationTemplate
 			ViewControlsLayer viewControlsLayer = new ViewControlsLayer();
 			insertBeforeCompass(getWwd(), viewControlsLayer);
 			this.getWwd().addSelectListener(new ViewControlsSelectListener(this.getWwd(), viewControlsLayer, this, globalSettings));
-
-
-
 			//now add a CursorCorrector
-
-
+			
 			// Register a rendering exception listener that's notified when exceptions occur during rendering.
 			this.wwjPanel.getWwd().addRenderingExceptionListener(new RenderingExceptionListener()
 			{

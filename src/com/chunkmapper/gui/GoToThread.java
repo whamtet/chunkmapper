@@ -28,7 +28,12 @@ public class GoToThread extends Thread {
 	public void run() {
 		double[] p;
 		try {
-			p = Nominatim.getPoint(q);
+			try {
+				String[] split = q.split(",");
+				p = new double[] {Integer.parseInt(split[0].trim()), Integer.parseInt(split[1].trim())};
+			} catch (NumberFormatException e) {
+				p = Nominatim.getPoint(q);
+			}
 			if (p == null) {
 				JOptionPane.showMessageDialog(appFrame, "Location Not Found.", "", JOptionPane.ERROR_MESSAGE);
 			} else {

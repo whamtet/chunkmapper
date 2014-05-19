@@ -11,6 +11,7 @@ import gov.nasa.worldwind.render.Material;
 import gov.nasa.worldwind.render.Path;
 import gov.nasa.worldwind.render.ShapeAttributes;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -43,21 +44,25 @@ public class MappedSquareManagerImpl implements MappedSquareManager {
 		attrs.setDrawOutline(false);
 		return attrs;
 	}
+	private static Double lat, lon;
 	private static Box makeBox(Point p, Material m) {
-		double lat = -(p.z + .5) * 512 / 3600, lon = (p.x + 0.5)*512/3600;
+		lat = -(p.z + .5) * 512 / 3600; 
+		lon = (p.x + 0.5)*512/3600;
+		
 		double altRad = 256 * Utila.Y_SCALE;
 		int latRad = 256 * Utila.Y_SCALE;
 		double lonRad = latRad * Math.cos(lat * Math.PI / 180);
 		Box box3 = new Box(Position.fromDegrees(lat, lon, 0), latRad, altRad, lonRad);
+		
 		box3.setAltitudeMode(WorldWind.ABSOLUTE);
 		box3.setAttributes(makeAttrs(m));
 		box3.setVisible(true);
+		
 		return box3;
 	}
 	public MappedSquareManagerImpl(WorldWindow wwd) {
 		this.wwd = wwd;
 		ApplicationTemplate.insertBeforeCompass(wwd, layer);
-		
 	}
 
 	public void addFinishedPoint(Point p) {
@@ -69,9 +74,6 @@ public class MappedSquareManagerImpl implements MappedSquareManager {
 			layer.addRenderable(makeBox(p, Material.BLUE));
 			wwd.redraw();
 		}
-	}
-	public void addPoint(int regionx, int regionz) {
-		addFinishedPoint(new Point(regionx, regionz));
 	}
 	
 	public void remove() {

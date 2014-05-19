@@ -416,11 +416,6 @@ public class MainLayer extends RenderableLayer implements SelectListener, GameAv
 		return new Point(x, y);
 	}
 
-	@Override
-	public String toString()
-	{
-		return Logging.getMessage("layers.LayerManagerLayer.Name");
-	}
 
 	@Override
 	public boolean gameAvailable(String game) {

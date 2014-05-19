@@ -39,12 +39,14 @@ public class POIParser extends Parser {
 				type = type2;
 			String text = node.map.get("name");
 			Integer population = null;
+			String pop = null;
 			if (node.map.containsKey("population")) {
 				try {
-				population = Integer.parseInt(node.map.get("population"));
+			    pop = node.map.get("population").replace(",", "");
+				population = Integer.parseInt(pop);
 				} catch (NumberFormatException e) {
 					try {
-						String s = node.map.get("population").split(" ")[0];
+						String s = pop.split(" ")[0];
 						population = Integer.parseInt(s);
 					} catch (NumberFormatException e2) {
 						MyLogger.LOGGER.warning(MyLogger.printException(e2));

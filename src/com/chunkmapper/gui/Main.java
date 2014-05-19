@@ -15,6 +15,7 @@ import gov.nasa.worldwind.geom.Position;
 import gov.nasa.worldwind.layers.RenderableLayer;
 import gov.nasa.worldwind.layers.Earth.MSVirtualEarthLayer;
 import gov.nasa.worldwind.render.BasicShapeAttributes;
+import gov.nasa.worldwind.render.Box;
 import gov.nasa.worldwind.render.ExtrudedPolygon;
 import gov.nasa.worldwind.render.Material;
 import gov.nasa.worldwind.render.ShapeAttributes;
@@ -32,6 +33,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -65,10 +67,9 @@ public class Main extends ApplicationTemplate
 		public AppFrame() throws IOException
 		{
 			super(true, false, false); // Don't include the layer panel; we're using the on-screen layer tree.
-
 			//add our own layer
 			getWwd().getModel().getLayers().add(new MSVirtualEarthLayer());
-
+			
 			//listener to notify that globe has been moved
 			final View v = getWwd().getView();
 			v.addPropertyChangeListener(new PropertyChangeListener() {
@@ -91,7 +92,7 @@ public class Main extends ApplicationTemplate
 			} else {
 				addMainLayer(this.getWwd(), minecraftDir, this, globalSettings);
 			}
-			this.getWwd().addSelectListener(new BasicDragger(this.getWwd()));
+//			this.getWwd().addSelectListener(new BasicDragger(this.getWwd()));
 			this.setIconImage(new javax.swing.ImageIcon(getClass().getResource("/Globe.png")).getImage());
 
 		}
@@ -159,7 +160,6 @@ public class Main extends ApplicationTemplate
 	public static void main(String[] args) {
 		printBuild();
 		getBucket();
-//		printUser();
 		if (BucketInfo.mustUpgrade()) {
 			JOptionPane.showMessageDialog(null, "This version of Chunkmapper is no longer supported.  Visit www.chunkmapper.com to upgrade.");
 			System.exit(0);
@@ -173,10 +173,9 @@ public class Main extends ApplicationTemplate
 		long availableMemory = Runtime.getRuntime().maxMemory();
 		if (availableMemory < 1000000000)
 			System.err.println("Warning: Xmx set too low: " + availableMemory);
-		String title = MySecurityManager.isOfflineValid() ? "Chunkmapper" : "Chunkmapper - Free Version";
+//		String title = MySecurityManager.isOfflineValid() ? "Chunkmapper" : "Chunkmapper - Free Version";
+		String title = "Chunkmapper";
 		ApplicationTemplate.start(title, AppFrame.class);
-//		SimplifiedGUI gui = new SimplifiedGUI();
-//		gui.setVisible(true);
 	}
 	
 	protected static class ExtrudedPolygonFactory

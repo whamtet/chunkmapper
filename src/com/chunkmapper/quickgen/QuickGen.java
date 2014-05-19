@@ -12,6 +12,7 @@ import com.chunkmapper.Point;
 import com.chunkmapper.admin.BucketInfo;
 import com.chunkmapper.admin.GlobalSettings;
 import com.chunkmapper.admin.MyLogger;
+import com.chunkmapper.binaryparser.OsmosisParser;
 import com.chunkmapper.chunk.Chunk;
 import com.chunkmapper.manager.GlobcoverManager;
 import com.chunkmapper.nbt.NbtIo;
@@ -26,7 +27,7 @@ public class QuickGen {
 		double[] latlon = Nominatim.getPoint("Hollywood");
 		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
 		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
-//		gen(regionx, regionz);
+		gen(regionx, regionz);
 		System.out.println((new Point(regionx, regionz)).toString());
 		System.out.println("done");
 	}
@@ -34,6 +35,7 @@ public class QuickGen {
 
 	public static File gen(int regionx, int regionz) throws IOException, IllegalArgumentException, NoSuchElementException, FileNotYetAvailableException, InterruptedException, URISyntaxException, DataFormatException {
 		BucketInfo.initMap();
+		OsmosisParser.disableCache();
 		//MyLogger.LOGGER.info(String.format("Quick generating at %s, %s", regionx, regionz));
 		MySecurityManager.offlineValid = true;
 		

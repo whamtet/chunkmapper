@@ -37,7 +37,7 @@
 		    <target>1.6</target>
 		</configuration>
 	    </plugin>
-
+<!--obfuscate-->
 	    <plugin> <groupId>com.github.wvengen</groupId> <artifactId>proguard-maven-plugin</artifactId>
 	    <version>2.0.6</version> <dependencies> <dependency> <groupId>net.sf.proguard</groupId>
 	    <artifactId>proguard-base</artifactId> <version>4.11</version> <scope>runtime</scope>
@@ -50,6 +50,7 @@
 	    <configuration> <checkCaller>false</checkCaller> <integrityProtection>false</integrityProtection>
 	    <resourceEncryption>false</resourceEncryption> <optimize>true</optimize>
 	    <verbose>true</verbose> </configuration> </execution> </executions> </plugin>
+<!--end obfuscate-->
 	</plugins>
     </build>
 

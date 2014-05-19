@@ -52,6 +52,9 @@ public class OsmosisParser {
 //		cache = new ConcurrentHashMap<Point, OverpassObject>();
 		cache2 = new ConcurrentHashMap<URL, FileContents>();
 	}
+	public static void disableCache() {
+		cache2 = null;
+	}
 	
 	static {
 		CACHE.mkdirs();
@@ -190,7 +193,7 @@ public class OsmosisParser {
 	private static FileContents readFile(URL url) throws IOException, DataFormatException {
 		synchronized(getLock(url)) {
 			
-			if (cache2.containsKey(url)) {
+			if (cache2 != null && cache2.containsKey(url)) {
 				return cache2.get(url);
 			}
 			
@@ -236,7 +239,7 @@ public class OsmosisParser {
 
 			}
 			in.close();
-			cache2.put(url, out);
+			if (cache2 != null) cache2.put(url, out);
 			return out;
 		}
 	}

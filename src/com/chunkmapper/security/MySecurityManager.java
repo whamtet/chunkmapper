@@ -123,6 +123,7 @@ public class MySecurityManager {
 			out.write(s);
 			out.close();
 		} catch (IOException e) {
+			
 			MyLogger.LOGGER.severe(MyLogger.printException(e));
 		}
 	}
@@ -158,10 +159,7 @@ public class MySecurityManager {
 			return null;
 		}
 	}
-//	public static boolean setOfflineValid() {
-//		offlineValid = isOfflineValid();
-//		return offlineValid;
-//	}
+
 	public static boolean isOfflineValid() {
 		try {
 			String key = readEntireFile().trim();
