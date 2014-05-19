@@ -26,9 +26,9 @@
 		</includes>
 	    </resource>
     <resource>
-      <directory>src/config</directory>
+      <directory>src</directory>
 		<includes>
-		    <include>**/*</include>
+		    <include>**/*.xml</include>
 		</includes>
 	    </resource>
 	</resources>

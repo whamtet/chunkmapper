@@ -7,5 +7,7 @@
 -keep public class com.chunkmapper.Test {
       public static void main(java.lang.String[]);
 }
-
+-keep public class com.chunkmapper.worldwind.OrbitViewInputHandler {
+      public protected *;
+}
 -dontusemixedcaseclassnames
