@@ -25,6 +25,12 @@
 		    <include>**/*</include>
 		</includes>
 	    </resource>
+    <resource>
+      <directory>src/config</directory>
+		<includes>
+		    <include>**/*</include>
+		</includes>
+	    </resource>
 	</resources>
 	<sourceDirectory>src</sourceDirectory>
 	<plugins>
