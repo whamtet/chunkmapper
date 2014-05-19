@@ -8,7 +8,6 @@ import com.chunkmapper.Point;
 public interface PointManager {
 
 	public final static int LON_RAD = 180 * 3600 / 512;
-	public final static int RAD = 3;
 	public static final String REGIONS_MADE = "regionsMade.txt";
 
 	public double getDistanceToEdge(File gameFolder);

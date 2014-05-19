@@ -30,7 +30,6 @@ public class SettingsDialog extends JDialog {
 	
 
 	private final JPanel contentPanel = new JPanel();
-	private final JButton btnSendReport;
 	private JTextField textField;
 
 	/**
@@ -58,7 +57,7 @@ public class SettingsDialog extends JDialog {
 		setTitle("Settings");
 		setModal(true);
 		setModalityType(ModalityType.APPLICATION_MODAL);
-		setBounds(100, 100, 492, 305);
+		setBounds(100, 100, 492, 355);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -106,21 +105,6 @@ public class SettingsDialog extends JDialog {
 		long availableMemory = Runtime.getRuntime().maxMemory();
 		JLabel lblNewLabel_2 = new JLabel("xmx " + availableMemory);
 		
-		btnSendReport = new JButton("Send Error Report");
-		btnSendReport.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				btnSendReport.setEnabled(false);
-				btnSendReport.setText("Sending...");
-				Thread t = new Thread(new Runnable() {
-					public void run() {
-						FeedbackManager.submitFeedback(null);
-						btnSendReport.setText("Report Sent");
-					}
-				});
-				t.start();
-			}
-		});
-		
 		final JCheckBox chckbxGaiaMode = new JCheckBox("Gaia Mode");
 		
 		JLabel lblGenerateNoMan = new JLabel("Generate no man made features.");
@@ -136,6 +120,11 @@ public class SettingsDialog extends JDialog {
 		
 		textField = new JTextField();
 		textField.setColumns(10);
+		
+		final JSpinner spinner_1 = new JSpinner();
+		spinner_1.setModel(new SpinnerNumberModel(new Integer(3), new Integer(1), null, new Integer(1)));
+		
+		JLabel lblGenerationRadius = new JLabel("Generation Radius");
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
 		gl_contentPanel.setHorizontalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
@@ -160,16 +149,17 @@ public class SettingsDialog extends JDialog {
 									.addComponent(chckbxGaiaMode))
 								.addGroup(gl_contentPanel.createSequentialGroup()
 									.addGap(14)
-									.addComponent(spinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+									.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING, false)
+										.addComponent(spinner_1, Alignment.LEADING)
+										.addComponent(spinner, Alignment.LEADING))))
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
+								.addComponent(lblGenerationRadius)
 								.addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 144, GroupLayout.PREFERRED_SIZE)
 								.addComponent(lblGenerateNoMan)))
 						.addGroup(gl_contentPanel.createSequentialGroup()
 							.addContainerGap()
 							.addComponent(btnClearCache)
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(btnSendReport)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(btnChangeOre)))
 					.addContainerGap(50, Short.MAX_VALUE))
@@ -190,11 +180,14 @@ public class SettingsDialog extends JDialog {
 						.addComponent(spinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblNewLabel_1))
 					.addGap(18)
+					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
+						.addComponent(spinner_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblGenerationRadius))
+					.addPreferredGap(ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnClearCache)
-						.addComponent(btnSendReport)
 						.addComponent(btnChangeOre))
-					.addPreferredGap(ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblNewLabel_2)
 						.addComponent(lblCommand)
@@ -213,6 +206,7 @@ public class SettingsDialog extends JDialog {
 						globalSettings.setIsLive(checkBox.isSelected());
 						globalSettings.setVerticalExaggeration((Integer) spinner.getValue());
 						globalSettings.gaiaMode = chckbxGaiaMode.isSelected();
+						globalSettings.generationRadius = (Integer) spinner_1.getValue();
 						String command = textField.getText().trim().toLowerCase();
 						if (command.equals("refresh")) {
 							globalSettings.refreshNext = true;

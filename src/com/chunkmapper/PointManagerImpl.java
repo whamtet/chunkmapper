@@ -147,8 +147,8 @@ public class PointManagerImpl implements PointManager {
 	private HashSet<Point> getSurroundingPoints(int regionx0, int regionz0, Point rootPoint) {
 
 		HashSet<Point> newPoints = new HashSet<Point>();
-		int regionx1 = regionx0 - RAD, regionx2 = regionx0 + RAD;
-		int regionz1 = regionz0 - RAD, regionz2 = regionz0 + RAD;
+		int regionx1 = regionx0 - globalSettings.generationRadius, regionx2 = regionx0 + globalSettings.generationRadius;
+		int regionz1 = regionz0 - globalSettings.generationRadius, regionz2 = regionz0 + globalSettings.generationRadius;
 		if (regionx1 <= -LON_RAD) regionx1 = -LON_RAD + 1;
 		if (regionz1 <= -LON_RAD / 2) regionz1 = -LON_RAD / 2 + 1;
 		if (regionx2 >= LON_RAD) regionx2 = LON_RAD - 1;

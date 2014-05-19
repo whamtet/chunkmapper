@@ -1,10 +1,8 @@
 -grid on mcmap
 -if meta.txt only generates, will not appear in list, but will allow new creation, go to old spot and avoid cancellation.  This appears to be triggered by network problems.
 -rivers blocking just before the coast
--dragging over blue squares
 -priority in osx apps
 -after some time little man dissappears behind blue squares
 -switch between normal view and open streetmap?
-
 
 -clicking search bar at beginning
