@@ -57,7 +57,7 @@ public class SettingsDialog extends JDialog {
 		setTitle("Settings");
 		setModal(true);
 		setModalityType(ModalityType.APPLICATION_MODAL);
-		setBounds(100, 100, 492, 355);
+		setBounds(100, 100, 492, 315);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -105,10 +105,6 @@ public class SettingsDialog extends JDialog {
 		long availableMemory = Runtime.getRuntime().maxMemory();
 		JLabel lblNewLabel_2 = new JLabel("xmx " + availableMemory);
 		
-		final JCheckBox chckbxGaiaMode = new JCheckBox("Gaia Mode");
-		
-		JLabel lblGenerateNoMan = new JLabel("Generate no man made features.");
-		
 		JButton btnChangeOre = new JButton("Change Ore...");
 		btnChangeOre.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -145,18 +141,17 @@ public class SettingsDialog extends JDialog {
 						.addGroup(gl_contentPanel.createSequentialGroup()
 							.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
 								.addGroup(gl_contentPanel.createSequentialGroup()
-									.addContainerGap()
-									.addComponent(chckbxGaiaMode))
-								.addGroup(gl_contentPanel.createSequentialGroup()
 									.addGap(14)
-									.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING, false)
-										.addComponent(spinner_1, Alignment.LEADING)
-										.addComponent(spinner, Alignment.LEADING))))
+									.addComponent(spinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+								.addGroup(Alignment.TRAILING, gl_contentPanel.createSequentialGroup()
+									.addGap(14)
+									.addComponent(spinner_1, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE)))
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
 								.addComponent(lblGenerationRadius)
-								.addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 144, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblGenerateNoMan)))
+								.addGroup(gl_contentPanel.createSequentialGroup()
+									.addPreferredGap(ComponentPlacement.UNRELATED)
+									.addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 144, GroupLayout.PREFERRED_SIZE))))
 						.addGroup(gl_contentPanel.createSequentialGroup()
 							.addContainerGap()
 							.addComponent(btnClearCache)
@@ -171,19 +166,15 @@ public class SettingsDialog extends JDialog {
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(checkBox)
 						.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(chckbxGaiaMode)
-						.addComponent(lblGenerateNoMan))
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(spinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblNewLabel_1))
 					.addGap(18)
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(spinner_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblGenerationRadius))
-					.addPreferredGap(ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+						.addComponent(spinner, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE))
+					.addGap(16)
+					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblGenerationRadius)
+						.addComponent(spinner_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnClearCache)
 						.addComponent(btnChangeOre))
@@ -205,7 +196,6 @@ public class SettingsDialog extends JDialog {
 					public void actionPerformed(ActionEvent e) {
 						globalSettings.setIsLive(checkBox.isSelected());
 						globalSettings.setVerticalExaggeration((Integer) spinner.getValue());
-						globalSettings.gaiaMode = chckbxGaiaMode.isSelected();
 						globalSettings.generationRadius = (Integer) spinner_1.getValue();
 						String command = textField.getText().trim().toLowerCase();
 						if (command.equals("refresh")) {

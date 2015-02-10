@@ -1,7 +1,8 @@
 package com.chunkmapper.enumeration;
 
 public class Blocka {
-	public static final byte Stained_Clay = (byte) 159;
+	public static final byte Stained_Clay = (byte) 172;
+	public static final byte Stained_Glass = (byte) 95;
 	public static final byte Trapdoor = (byte) 96;
 	public static final byte Air = (byte) 0;
 	public static final byte Stone = (byte) 1;
@@ -110,5 +111,8 @@ public class Blocka {
 	public static final byte Rose = (byte) 38;
 	public static final byte Emerald = (byte) 129;
 	public static final byte Flower_Pot = (byte) 140;
+	public static final byte Nether_Quartz_Ore = (byte) 159;
+	public static final byte Coal_Block = (byte) 173;
+	public static final byte Hardened_Clay = (byte) 172; //colored clay with data = 0;
 
 }

@@ -73,13 +73,11 @@ public class Main extends ApplicationTemplate
 			//listener to notify that globe has been moved
 			final View v = getWwd().getView();
 			v.addPropertyChangeListener(new PropertyChangeListener() {
-
 				@Override
 				public void propertyChange(PropertyChangeEvent evt) {
 					MyLogger.LOGGER.info("Globe Moved");
 					v.removePropertyChangeListener(this);
 				}});
-
 
 			Dimension size = new Dimension(1000, 600);
 			this.setPreferredSize(size);

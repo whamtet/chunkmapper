@@ -24,26 +24,32 @@ import com.chunkmapper.security.MySecurityManager;
 public class QuickGen {
 
 	public static void main(String[] args) throws MalformedURLException, URISyntaxException, IOException, IllegalArgumentException, NoSuchElementException, FileNotYetAvailableException, InterruptedException, DataFormatException {
-		double[] latlon = Nominatim.getPoint("Hollywood");
+		double[] latlon = Nominatim.getPoint("Hong Kong");
 		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
 		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
-		gen(regionx, regionz);
-		System.out.println((new Point(regionx, regionz)).toString());
+		File tempDir = new File("/Users/matthewmolloy/Downloads/mcmap/game");
+		tempDir.mkdir();
+		gen(regionx, regionz, tempDir);
+		
 		System.out.println("done");
 	}
 
 
 	public static File gen(int regionx, int regionz) throws IOException, IllegalArgumentException, NoSuchElementException, FileNotYetAvailableException, InterruptedException, URISyntaxException, DataFormatException {
-		BucketInfo.initMap();
-		OsmosisParser.disableCache();
-		//MyLogger.LOGGER.info(String.format("Quick generating at %s, %s", regionx, regionz));
-		MySecurityManager.offlineValid = true;
-		
 		File t = new File("temp");
 		t.mkdir();
 		File tempDir = File.createTempFile("temp", "", t);
 		tempDir.delete();
 		tempDir.mkdirs();
+		
+		return gen(regionx, regionz, tempDir);
+	}
+	private static File gen(int regionx, int regionz, File tempDir) throws IOException, IllegalArgumentException, NoSuchElementException, FileNotYetAvailableException, InterruptedException, URISyntaxException, DataFormatException {
+		BucketInfo.initMap();
+		OsmosisParser.disableCache();
+		//MyLogger.LOGGER.info(String.format("Quick generating at %s, %s", regionx, regionz));
+		MySecurityManager.offlineValid = true;
+		
 		
 		(new File(tempDir, "level.dat")).createNewFile();
 		File regionDir = new File(tempDir, "region");

@@ -1,0 +1,13 @@
+syntax = "proto2";
+
+option java_package = "com.chunkmapper.protoc";
+
+message MineInfo {
+	required int32 absx = 1;
+	required int32 absz = 2;
+	repeated string commodities = 3;
+}
+
+message MineList {
+	repeated MineInfo mines = 1;
+}

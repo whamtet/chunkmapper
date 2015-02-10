@@ -6,3 +6,19 @@
 -switch between normal view and open streetmap?
 
 -clicking search bar at beginning
+
+TODO
+
+mcmap
+gaia for mp
+offset 15
+default glass mineral is
+
+magnesite grey/white/black
+perlite yellow glass
+dolomite white only
+halite white/grey
+garnet random
+olivine green
+
+for stained clay choose single color for entire mine

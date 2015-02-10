@@ -39,73 +39,35 @@ public class TestArtifact {
 		regionFolder.mkdirs();
 		File loadedLevelDatFile = new File(gameFolder, "level.dat");
 		LevelDat loadedLevelDat = new LevelDat(loadedLevelDatFile);
-//		ParallelWriter writer = new ParallelWriter(0, 0, 0, 0, "house", true);
-		loadedLevelDat.setPlayerPosition(0, 25, 0);
+		//		ParallelWriter writer = new ParallelWriter(0, 0, 0, 0, "house", true);
+		loadedLevelDat.setPlayerPosition(0, 105, 0);
 		loadedLevelDat.setName("house");
 		loadedLevelDat.save();	
 		RegionFile regionFile = new RegionFile(new File(regionFolder, "r.0.0.mca"));
 		int[][] heights = new int[24][24];
 		for (int i = 0; i < 24; i++) {
 			for (int j = 0; j < 24; j++) {
-				heights[i][j] = 4;
+				heights[i][j] = 100;
 			}
 		}
-		int chunkx = 0, chunkz = 0;
-		Chunk chunk = new Chunk(chunkx, chunkz, heights, chunkx, chunkz);
-		GenericWriter.addGrass(chunk);
-		SchematicArtifactWriter.addApartment(chunk, 2);
-//		GenericWriter.addHeavenWaterFall(chunk);
-//		GenericWriter.addWestGlassWall(chunk);
-		
-		
-//		ArtifactWriter.placePrison(chunk);
-//		ArtifactWriter.placeMarket(chunk);
-//		ArtifactWriter.placeLibrary(chunk);
-//		ArtifactWriter.addHouse(chunk);
-//		HeightsReader heightsReader = new UniformHeightsReader();
-//		for (int i = 0; i < 16; i++) {
-//			for (int j = 0; j < 16; j++) {
-//				Vineyard col = new Vineyard(j, i, heightsReader);
-//				col.addColumn(chunk);
-//			}
-//		}
-//		for (int i = -5; i < 21; i++) {
-//			for (int j = -5; j < 21; j++) {
-//				Orchard col = new Orchard(j, i, heightsReader);
-//				if (0 <= i && i < 16 && 0 <= j && j < 16) {
-//					col.addColumn(chunk);
-//				}
-//				col.addTree(chunk, heightsReader);
-//			}
-//		}
-		
-		DataOutputStream out = regionFile.getChunkDataOutputStream(chunkx, chunkz);
-		NbtIo.write(chunk.getTag(), out);
-		out.close();
+		for (int chunkx = 0; chunkx < 32; chunkx++) {
+			for (int chunkz = 0; chunkz < 32; chunkz++) {
+				Chunk chunk = new Chunk(chunkx, chunkz, heights, chunkx, chunkz);
+				GenericWriter.addGrass(chunk);
+
+				DataOutputStream out = regionFile.getChunkDataOutputStream(chunkx, chunkz);
+				NbtIo.write(chunk.getTag(), out);
+				out.close();
+			}
+		}
 		regionFile.close();
-		
-//		PrintStream out2 = new PrintStream("cow.txt");
-//		chunk.Entities.print(out2);
-//		out2.close();
-//		Runtime.getRuntime().exec("open cow.txt");
+
+		//		PrintStream out2 = new PrintStream("cow.txt");
+		//		chunk.Entities.print(out2);
+		//		out2.close();
+		//		Runtime.getRuntime().exec("open cow.txt");
 
 		System.out.println("done");
 	}
-	//write all the Lente trees
-	private static void writeTree(int chunkx, int chunkz, LenteTree tree, int[][] heights, RegionFile regionFile) throws IOException {
-		Chunk chunk = new Chunk(chunkx, chunkz, heights, chunkx, chunkz);
-		GenericWriter.addBedrock(chunk, 0);
-		HeightsReader heightsReader  = new UniformHeightsReader();
-		int absx = chunkx*16 + 8, absz = chunkz * 16 + 8;
-		LenteTreeWriter.placeLenteTree(absx, absz, chunk, heightsReader, tree);
-		ArtifactWriter.addSign(chunk, 4, 0, 0, tree.toString().split("_"));
-		
-		DataOutputStream out = regionFile.getChunkDataOutputStream(chunkx, chunkz);
-		NbtIo.write(chunk.getTag(), out);
-		out.close();
-		
-		
-	}
-
 
 }
