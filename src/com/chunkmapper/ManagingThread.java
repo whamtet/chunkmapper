@@ -15,6 +15,7 @@ import com.chunkmapper.admin.GlobalSettings;
 import com.chunkmapper.admin.MyLogger;
 import com.chunkmapper.admin.OSMRouter;
 import com.chunkmapper.binaryparser.OsmosisParser;
+import com.chunkmapper.gui.dialog.NewMapDialog.NewGameInfo;
 import com.chunkmapper.gui.dialog.NoNetworkDialog;
 import com.chunkmapper.interfaces.GeneratingLayer;
 import com.chunkmapper.interfaces.MappedSquareManager;
@@ -37,9 +38,10 @@ public class ManagingThread extends Thread {
 	private final GeneratingLayer generatingLayer;
 	public RegionWriter regionWriter;
 	public PostingThread postingThread;
+	private final NewGameInfo newGameInfo;
 	private static boolean networkProblems;
 	private static Object networkProblemsGuard = new Object();
-	
+
 	{
 		setName("Managing Thread");
 	}
@@ -48,8 +50,8 @@ public class ManagingThread extends Thread {
 		double[] latlon = Nominatim.getPoint("Hollywood");
 		File gameFolder = new File("/Users/matthewmolloy/Library/Application Support/minecraft/saves/Hollywood");
 		GlobalSettings globalSettings = new GlobalSettings();
-//		ManagingThread t = new ManagingThread(latlon[0], latlon[1], gameFolder, null, null, globalSettings, null);
-//		t.run();
+		//		ManagingThread t = new ManagingThread(latlon[0], latlon[1], gameFolder, null, null, globalSettings, null);
+		//		t.run();
 	}
 
 	public static void setNetworkProblems() {
@@ -72,12 +74,10 @@ public class ManagingThread extends Thread {
 
 	public ManagingThread(double lat, double lon, File gameFolder, MappedSquareManager mappedSquareManager,
 			PlayerIconManager playerIconManager, GlobalSettings globalSettings,
-			GeneratingLayer generatingLayer) {
+			GeneratingLayer generatingLayer, NewGameInfo newGameInfo) {
 		clearNetworkProblems();
 
-		//		if (true) {
-		//			throw new RuntimeException();
-		//		}
+		this.newGameInfo = newGameInfo;
 		this.generatingLayer = generatingLayer;
 		this.globalSettings = globalSettings;
 		this.mappedSquareManager = mappedSquareManager;
@@ -112,6 +112,7 @@ public class ManagingThread extends Thread {
 		if (globalSettings.isLive()) {
 			OSMRouter.setLive();
 		}
+
 		if (generatingLayer != null)
 			generatingLayer.zoomTo();
 
@@ -122,34 +123,37 @@ public class ManagingThread extends Thread {
 		if (!gameFolder.exists()) {
 			gameFolder.mkdirs();
 		}
+
 		File chunkmapperDir = prepareDir(new File(gameFolder, "chunkmapper"), false);
 		File regionFolder = prepareDir(new File(gameFolder, "region"), false);
 
 		GameMetaInfo gameMetaInfo = null;
 		try {
-			gameMetaInfo = new GameMetaInfo(gameFolder, lat, lon, globalSettings.getVerticalExaggeration());
+			boolean isGaia = newGameInfo == null ? false : newGameInfo.isGaia;
+			gameMetaInfo = new GameMetaInfo(gameFolder, lat, lon, globalSettings.getVerticalExaggeration(), isGaia);
+			gameMetaInfo.save();
 		} catch (IOException e1) {
 			MyLogger.LOGGER.severe(MyLogger.printException(e1));
 		}
 		File levelDatFile = new File(gameFolder, "level.dat");
 		LevelDat levelDat = null;
 		try {
-			levelDat = new LevelDat(levelDatFile);
+			levelDat = new LevelDat(levelDatFile, newGameInfo);
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			MyLogger.LOGGER.severe(MyLogger.printException(e1));
 			return;
 		}
-			String gameName = gameFolder.getName();
-			levelDat.setName(gameName);
-			//need to set altitude correctly.
-			int altitude = 128;
-			int absx = (int) (lon * 3600);
-			int absz = (int) (-lat * 3600);
-			if (!MySecurityManager.offlineValid)
-				absz = Matthewmatics.div(absz, 128) * 128 + 64;
-			levelDat.setPlayerPosition(absx - gameMetaInfo.rootPoint.x * 512, altitude, absz - gameMetaInfo.rootPoint.z * 512);
-			levelDat.save();
+		String gameName = gameFolder.getName();
+		levelDat.setName(gameName);
+		//need to set altitude correctly.
+		int altitude = 128;
+		int absx = (int) (lon * 3600);
+		int absz = (int) (-lat * 3600);
+		if (!MySecurityManager.offlineValid)
+			absz = Matthewmatics.div(absz, 128) * 128 + 64;
+		levelDat.setPlayerPosition(absx - gameMetaInfo.rootPoint.x * 512, altitude, absz - gameMetaInfo.rootPoint.z * 512);
+		levelDat.save();
 
 		HeightsCache.deleteCache();
 
@@ -164,8 +168,9 @@ public class ManagingThread extends Thread {
 				pointManager = new PointManagerImpl(chunkmapperDir, mappedSquareManager, gameMetaInfo.rootPoint,
 						globalSettings);
 			}
+
 			regionWriter = new RegionWriter(pointManager, gameMetaInfo.rootPoint, regionFolder, 
-					gameMetaInfo, mappedSquareManager, globalSettings.gaiaMode, globalSettings.getVerticalExaggeration(),
+					gameMetaInfo, mappedSquareManager, gameMetaInfo.isGaia, globalSettings.getVerticalExaggeration(),
 					levelDat
 					);
 

@@ -26,6 +26,7 @@ import com.chunkmapper.ManagingThread;
 import com.chunkmapper.Point;
 import com.chunkmapper.admin.GlobalSettings;
 import com.chunkmapper.admin.MyLogger;
+import com.chunkmapper.gui.dialog.NewMapDialog.NewGameInfo;
 import com.chunkmapper.gui.dialog.SettingsDialog;
 import com.chunkmapper.security.MySecurityManager;
 import com.chunkmapper.writer.LevelDat;
@@ -42,6 +43,7 @@ public class GeneratingPanel extends JPanel {
 	private final SimplifiedGUI simplifiedGUI;
 	private ManagingThread t;
 	private final LevelDat levelDat;
+	private final NewGameInfo newGameInfo;
 	/**
 	 * Create the panel.
 	 */
@@ -63,7 +65,7 @@ public class GeneratingPanel extends JPanel {
 			return;
 		}
 
-		t = new ManagingThread(lat, lon, gameFolder, panel, panel, globalSettings, null);
+		t = new ManagingThread(lat, lon, gameFolder, panel, panel, globalSettings, null, newGameInfo);
 		t.start();
 		btnGenerateMap.setText("Cancel...");
 		setAllEnabled(false);
@@ -88,10 +90,11 @@ public class GeneratingPanel extends JPanel {
 		}
 	}
 
-	public GeneratingPanel(File gameFolder, final SimplifiedGUI simplifiedGUI) {
+	public GeneratingPanel(File gameFolder, final SimplifiedGUI simplifiedGUI, NewGameInfo newGameInfo) {
 
 		this.simplifiedGUI = simplifiedGUI;
 		this.gameFolder = gameFolder;
+		this.newGameInfo = newGameInfo;
 
 		JLabel lblMapname = new JLabel(gameFolder.getName());
 
@@ -114,7 +117,7 @@ public class GeneratingPanel extends JPanel {
 
 		GameMetaInfo info = null;
 		try {
-			info = new GameMetaInfo(gameFolder, 0, 0, 0);
+			info = new GameMetaInfo(gameFolder, 0, 0, 0, false);
 		} catch (IOException e1) {
 			MyLogger.LOGGER.warning(MyLogger.printException(e1));
 		}

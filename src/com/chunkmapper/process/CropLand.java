@@ -26,7 +26,7 @@ public class CropLand {
 		FileUtils.copyDirectory(src, dest);
 		//need to update name
 		File loadedLevelDatFile = new File(dest, "level.dat");
-		LevelDat loadedLevelDat = new LevelDat(loadedLevelDatFile);
+		LevelDat loadedLevelDat = new LevelDat(loadedLevelDatFile, null);
 		loadedLevelDat.setName("everest2");
 		loadedLevelDat.save();
 

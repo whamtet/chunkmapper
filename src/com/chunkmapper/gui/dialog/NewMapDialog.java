@@ -13,6 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -23,7 +24,46 @@ import com.chunkmapper.gui.layer.MainLayer;
 
 import java.awt.Dialog.ModalityType;
 
+import javax.swing.JCheckBox;
+import javax.swing.border.LineBorder;
+
+import java.awt.Color;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
+import com.chunkmapper.gui.dialog.NewMapDialog.Difficulty;
+import com.chunkmapper.gui.dialog.NewMapDialog.GameMode;
+
 public class NewMapDialog extends JDialog {
+	
+	public static enum Difficulty {Peaceful, Easy, Normal, Hard}
+	public static enum GameMode {Survival_Mode, Creative_Mode, Hardcore_Mode;
+	
+		public String toString() {
+			return super.toString().replace("_", " ");
+		};
+	}
+	
+	public static class NewGameInfo {
+		public final String gameName;
+		public final boolean hasCheats, isGaia;
+		public final Difficulty difficulty;
+		public final GameMode gameMode;
+		
+		public NewGameInfo(String gameName, boolean hasCheats, boolean isGaia, Difficulty difficulty, GameMode gameMode) {
+			this.gameName = gameName;
+			this.hasCheats = hasCheats;
+			this.isGaia = isGaia;
+			this.difficulty = difficulty;
+			this.gameMode = gameMode;
+		}
+		public NewGameInfo(String gameName) {
+			this.gameName = gameName;
+			hasCheats = false;
+			isGaia = false;
+			difficulty = Difficulty.Peaceful;
+			gameMode = GameMode.Creative_Mode;
+		}
+	}
 
 	private final JPanel contentPanel = new JPanel();
 	private JTextField textField;
@@ -31,9 +71,22 @@ public class NewMapDialog extends JDialog {
 	private JButton okButton;
 	private JButton cancelButton;
 	private String gameName;
+	private JCheckBox chckbxGaiaMode, chckbxMinecraftCheats;
+	private JLabel lblGameDifficulty;
+	private JLabel lblGameMode;
+	private JComboBox comboBox_1;
+	private JComboBox comboBox;
 	
-	public String getGameName() {
-		return gameName;
+//	public String getGameInfo() {
+//		return gameName;
+//	}
+	
+	public NewGameInfo getGameInfo() {
+		Difficulty difficulty = (Difficulty) comboBox.getSelectedObjects()[0];
+		GameMode gameMode = (GameMode) comboBox_1.getSelectedObjects()[0];
+		return new NewGameInfo(gameName, chckbxMinecraftCheats.isSelected(),
+				chckbxGaiaMode.isSelected(),
+				difficulty, gameMode);
 	}
 
 	/**
@@ -56,15 +109,40 @@ public class NewMapDialog extends JDialog {
 			this.lblNewLabel.setVisible(false);
 		}
 	}
+	public static void main(String[] args) throws Exception {
+		try {
+			GameAvailableInterface i = new GameAvailableInterface() {
+
+				@Override
+				public boolean gameAvailable(String game) {
+					// TODO Auto-generated method stub
+					return true;
+				}
+				
+			};
+			NewMapDialog dialog = new NewMapDialog(i, null);
+			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+			dialog.setVisible(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	public NewMapDialog(final GameAvailableInterface mainLayer, final JFrame frame) {
+		
 		super(frame);
 		setModalityType(ModalityType.APPLICATION_MODAL);
 		setModal(true);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setResizable(false);
 		setTitle("Create New Map");
-		Rectangle parentBounds = frame.getBounds();
-		setBounds(parentBounds.x + 100, parentBounds.y + 100, 450, 111);
+		
+		if (frame != null) {
+			Rectangle parentBounds = frame.getBounds();
+			setBounds(parentBounds.x + 100, parentBounds.y + 100, 500, 240);
+		} else {
+			setBounds(100, 100, 500, 240);
+		}
+		
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -85,20 +163,82 @@ public class NewMapDialog extends JDialog {
 			});
 			textField.setColumns(10);
 		}
+		
+		JLabel lblGameName = new JLabel("Map Name");
+		
+		chckbxGaiaMode = new JCheckBox("Gaia Mode");
+		
+		JButton button = new JButton("?");
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(NewMapDialog.this, "Map excludes all man made features");
+			}
+		});
+		
+		chckbxMinecraftCheats = new JCheckBox("Minecraft Cheats");
+		
+		JLabel label = new JLabel("");
+		
+		comboBox = new JComboBox();
+		comboBox.setModel(new DefaultComboBoxModel(Difficulty.values()));
+		
+		lblGameDifficulty = new JLabel("Game Difficulty");
+		
+		lblGameMode = new JLabel("Game Mode");
+		
+		comboBox_1 = new JComboBox();
+		comboBox_1.setModel(new DefaultComboBoxModel(GameMode.values()));
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
 		gl_contentPanel.setHorizontalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPanel.createSequentialGroup()
-					.addGap(18)
-					.addComponent(textField, GroupLayout.PREFERRED_SIZE, 404, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(18, Short.MAX_VALUE))
+					.addContainerGap(62, Short.MAX_VALUE)
+					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblGameName)
+						.addComponent(label)
+						.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING, false)
+							.addComponent(textField, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 404, GroupLayout.PREFERRED_SIZE)
+							.addGroup(gl_contentPanel.createSequentialGroup()
+								.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
+									.addGroup(gl_contentPanel.createSequentialGroup()
+										.addComponent(chckbxGaiaMode)
+										.addPreferredGap(ComponentPlacement.RELATED)
+										.addComponent(button, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE)
+										.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+									.addGroup(Alignment.TRAILING, gl_contentPanel.createSequentialGroup()
+										.addComponent(chckbxMinecraftCheats)
+										.addGap(27)))
+								.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
+									.addComponent(lblGameDifficulty)
+									.addComponent(lblGameMode))
+								.addPreferredGap(ComponentPlacement.UNRELATED)
+								.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
+									.addComponent(comboBox_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+									.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 129, GroupLayout.PREFERRED_SIZE)))))
+					.addGap(16))
 		);
 		gl_contentPanel.setVerticalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, gl_contentPanel.createSequentialGroup()
-					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+				.addGroup(gl_contentPanel.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(lblGameName)
+					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap())
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(chckbxGaiaMode)
+						.addComponent(button, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE)
+						.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblGameDifficulty))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
+						.addComponent(chckbxMinecraftCheats)
+						.addComponent(lblGameMode)
+						.addComponent(comboBox_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGap(40)
+					.addComponent(label)
+					.addContainerGap(303, Short.MAX_VALUE))
 		);
 		contentPanel.setLayout(gl_contentPanel);
 		{
@@ -153,5 +293,4 @@ public class NewMapDialog extends JDialog {
 			buttonPane.setLayout(gl_buttonPane);
 		}
 	}
-
 }

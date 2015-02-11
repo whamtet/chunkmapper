@@ -38,7 +38,7 @@ public class TestArtifact {
 		File regionFolder = new File(gameFolder, "region");
 		regionFolder.mkdirs();
 		File loadedLevelDatFile = new File(gameFolder, "level.dat");
-		LevelDat loadedLevelDat = new LevelDat(loadedLevelDatFile);
+		LevelDat loadedLevelDat = new LevelDat(loadedLevelDatFile, null);
 		//		ParallelWriter writer = new ParallelWriter(0, 0, 0, 0, "house", true);
 		loadedLevelDat.setPlayerPosition(0, 105, 0);
 		loadedLevelDat.setName("house");

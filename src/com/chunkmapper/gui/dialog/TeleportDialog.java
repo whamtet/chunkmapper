@@ -37,18 +37,6 @@ public class TeleportDialog extends JDialog {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		try {
-			File f = new File("/Users/matthewmolloy/Library/Application Support/minecraft/saves/Auckland");
-			LevelDat levelDat = LevelDat.getFromGameFolder(f);
-			GameMetaInfo info = GameMetaInfo.getFromName(f.getName());
-			TeleportDialog dialog = new TeleportDialog(null, "Chicago", levelDat, info.rootPoint);
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 
 	/**
 	 * Create the dialog.

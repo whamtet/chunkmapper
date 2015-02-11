@@ -42,6 +42,7 @@ import com.chunkmapper.admin.GlobalSettings;
 import com.chunkmapper.gui.MappedSquareManagerImpl;
 import com.chunkmapper.gui.PlayerIconManagerImpl;
 import com.chunkmapper.gui.StartPointSelector;
+import com.chunkmapper.gui.dialog.NewMapDialog.NewGameInfo;
 import com.chunkmapper.gui.dialog.TeleportDialog;
 import com.chunkmapper.interfaces.GeneratingLayer;
 import com.chunkmapper.writer.LevelDat;
@@ -61,7 +62,7 @@ public class GeneratingLayerImpl extends RenderableLayer implements SelectListen
 	private Font font = new Font("SansSerif", Font.PLAIN, 14);
 
 	private final File gameFolder;
-	private final String gameName;
+	private final NewGameInfo gameInfo;
 	private final MainLayer mainLayer;
 	private StartPointSelector selector;
 //	private boolean awaitingSelectPoint;
@@ -74,15 +75,15 @@ public class GeneratingLayerImpl extends RenderableLayer implements SelectListen
 	private final LevelDat levelDat;
 
 
-	public GeneratingLayerImpl(WorldWindow wwd, JFrame appFrame, File savesDir, String gameName, MainLayer mainLayer, GlobalSettings globalSettings) throws IOException
+	public GeneratingLayerImpl(WorldWindow wwd, JFrame appFrame, File savesDir, NewGameInfo info, MainLayer mainLayer, GlobalSettings globalSettings) throws IOException
 	{
 		this.globalSettings = globalSettings;
 		this.appFrame = appFrame;
-		gameFolder = new File(savesDir, gameName);
+		gameFolder = new File(savesDir, info.gameName);
 		boolean awaitingSelectPoint = !gameFolder.exists();
 
 		this.mainLayer = mainLayer;
-		this.gameName = gameName;
+		this.gameInfo = info;
 
 		this.wwd = wwd;
 
@@ -105,7 +106,7 @@ public class GeneratingLayerImpl extends RenderableLayer implements SelectListen
 
 		this.addRenderable(this.parentAnnotation);
 
-		levelDat = new LevelDat(new File(gameFolder, "level.dat"));
+		levelDat = new LevelDat(new File(gameFolder, "level.dat"), null);
 		// Listen to world window for select event
 		this.wwd.addSelectListener(this);
 		if (awaitingSelectPoint) {
@@ -115,7 +116,7 @@ public class GeneratingLayerImpl extends RenderableLayer implements SelectListen
 			//need to read in player position
 			try {
 					Point relativePlayerPoint = levelDat.getPlayerPosition();
-					GameMetaInfo gameMetaInfo = new GameMetaInfo(gameFolder, 0, 0, 0);
+					GameMetaInfo gameMetaInfo = new GameMetaInfo(gameFolder, 0, 0, 0, false);
 					double lat = - (relativePlayerPoint.z + gameMetaInfo.rootPoint.z * 512) / 3600.;
 					double lon = (relativePlayerPoint.x + gameMetaInfo.rootPoint.x * 512) / 3600.;
 					wwd.getSceneController().setVerticalExaggeration(gameMetaInfo.verticalExaggeration);
@@ -164,7 +165,7 @@ public class GeneratingLayerImpl extends RenderableLayer implements SelectListen
 		mappedSquareManager = new MappedSquareManagerImpl(wwd);
 		playerIconManager = new PlayerIconManagerImpl(lat, lon, wwd);
 		managingThread = new ManagingThread(lat, lon, gameFolder, mappedSquareManager, playerIconManager,
-				globalSettings, this);
+				globalSettings, this, gameInfo);
 		managingThread.start();
 	}
 	public void cancel() {
@@ -242,7 +243,7 @@ public class GeneratingLayerImpl extends RenderableLayer implements SelectListen
 									e.printStackTrace();
 								}
 							} else if (s.equals("gm")) {
-//								https://www.google.com/maps/place/36¡33'47.0"S+174¡31'59.0"E
+//								
 								double lat = ll.latitude.degrees, lon = ll.longitude.degrees;
 								String latStr = lat < 0 ? "S" : "N";
 								String lonStr = lon < 0 ? "W" : "E";
@@ -290,7 +291,7 @@ public class GeneratingLayerImpl extends RenderableLayer implements SelectListen
 			this.update();
 		}
 	}
-	//https://www.google.com/maps/place/36¡33'47.0"S+174¡31'59.0"E
+	//
 	private static String decimalToString(double d) {
 		if (d < 0)
 			d = -d;
@@ -301,7 +302,7 @@ public class GeneratingLayerImpl extends RenderableLayer implements SelectListen
 		double sec = d;
 		StringBuilder sb = new StringBuilder();
 		sb.append(deg);
-		sb.append("¡");
+		sb.append("ï¿½");
 		sb.append(min);
 		sb.append("'");
 		sb.append(String.format("%.1f\"", sec));
@@ -405,7 +406,7 @@ public class GeneratingLayerImpl extends RenderableLayer implements SelectListen
 //					+ divWidth(14) + "<font color=\"#b0b0b0\">*** <br />\n"
 //					+ divWidth(11) + "<a href=\"cancel\"><font color=\"#b0b0b0\">Cancel</a>";
 //		}
-		return String.format("<b>Generating %s...</b><br /><br />\n", gameName)
+		return String.format("<b>Generating %s...</b><br /><br />\n", gameInfo.gameName)
 				+ "Blue Boxes Show Map Extent<br /><br />\n"
 				+ divWidth(5) + "<a href=\"zoom\"><font color=\"#b0b0b0\">Center Current Position</a><br />"
 				+ divWidth(11) + "<a href=\"browser\"><font color=\"#b0b0b0\">Show in Browser</a><br />"

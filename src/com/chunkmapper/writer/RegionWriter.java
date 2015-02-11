@@ -59,10 +59,10 @@ public class RegionWriter extends Tasker {
 			return a.distance(playerPosition) < b.distance(playerPosition) ? -1 : 1;
 		}
 	});
-	
 
 	public RegionWriter(PointManager pointManager, Point rootPoint, File regionFolder, 
-			GameMetaInfo metaInfo, MappedSquareManager mappedSquareManager, boolean gaiaMode, int verticalExaggeration, LevelDat loadedLevelDat) {
+			GameMetaInfo metaInfo, MappedSquareManager mappedSquareManager, boolean gaiaMode, 
+			int verticalExaggeration, LevelDat loadedLevelDat) {
 		super(NUM_WRITING_THREADS, "RegionWriter");
 		this.gaiaMode = gaiaMode;
 		this.verticalExaggeration = verticalExaggeration;

@@ -161,17 +161,6 @@ public class PostingThread extends Thread {
 	public static void main(String[] args) throws Exception {
 		System.out.println("starting");
 		File gameDir = new File("/Users/matthewmolloy/Library/Application Support/minecraft/saves/Hong Kong/");
-//		File region = new File(gameDir, "region");
-//		for (File f : region.listFiles()) {
-//			if (f.getName().endsWith(".mca")) {
-//				System.out.println(FileValidator.checkSupervalid(f));
-//			}
-//		}
-		GameMetaInfo info = new GameMetaInfo(gameDir, 0, 0, 0);
-		
-		PostingThread t = new PostingThread(gameDir, info.rootPoint);
-		System.out.println(t.getTodo());
-//		t.run();
 		System.out.println("done");
 	}
 }

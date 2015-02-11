@@ -2,6 +2,10 @@
 2)mkdir -p target/inspect
 3)cd target/inspect
 4)unzip ../chunkmapper2-0.0.1-SNAPSHOT.jar
+NB: The name may accidently be unobfuscated if this version is necessary
+
+
+NB!!! Looks like this is outdated.  Just use the existing build.xml and DO NOT OVERWRITE IT!!!
 5)Open project in Eclipse and try running com.chunkmapper.gui.Main.  Java will complain about missing classpath entry.  You may need to convert to maven project.
 6)Run Configurations -> Classpath -> Add gluegen-rt.jar, jogl-all.jar, gluegen & jogl natives.
 Order seems to be important: chunkmapper, jogl-all.jar, gluegen-rt.jar, maven-deps, runtime natives.
@@ -16,5 +20,8 @@ Order seems to be important: chunkmapper, jogl-all.jar, gluegen-rt.jar, maven-de
 	<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="launch4j.jar:xstream.jar" />
 	<launch4j configFile="launch4j.xml" />
 </target>
+
+END NB!!!
+
 12)cd <directory containing build.xml>
 13)ant

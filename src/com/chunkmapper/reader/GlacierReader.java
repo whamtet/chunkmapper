@@ -24,16 +24,7 @@ import com.chunkmapper.sections.RenderingSection;
 public class GlacierReader {
 	private boolean[][] hasGlacier = new boolean[512][512];
 
-	public static void main(String[] args) throws Exception {
-		System.out.println("starting");
-		BucketInfo.initMap();
-		File f = new File(Utila.MINECRAFT_DIR, "saves/Scott Base");
-		GameMetaInfo info = new GameMetaInfo(f, 0, 0, 0);
-		int regionx = info.rootPoint.x, regionz = info.rootPoint.z - 1;
-		OverpassObject o = OSMRouter.getObject(regionx, regionz);
-		GlacierReader r = new GlacierReader(o, regionx, regionz);
-		System.out.println("done");
-	}
+	
 
 	public GlacierReader(OverpassObject o, int regionx, int regionz) throws IOException, FileNotYetAvailableException, URISyntaxException, DataFormatException, InterruptedException {
 

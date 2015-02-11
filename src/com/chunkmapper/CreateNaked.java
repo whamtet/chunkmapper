@@ -25,7 +25,7 @@ public class CreateNaked {
 		regionFolder.mkdirs();
 		File loadedLevelDatFile = new File("/Users/matthewmolloy/Library/Application Suppport/minecraft/saves/naked/level.dat");
 		FileUtils.copyFile(src, loadedLevelDatFile);
-		LevelDat loadedLevelDat = new LevelDat(loadedLevelDatFile);
+		LevelDat loadedLevelDat = new LevelDat(loadedLevelDatFile, null);
 		loadedLevelDat.setName("naked");
 		loadedLevelDat.setPlayerPosition(12, 6, 12);
 		loadedLevelDat.save();

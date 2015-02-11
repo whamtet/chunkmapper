@@ -3,7 +3,7 @@
 
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.chunkmapper</groupId>
-	<artifactId>chunkmapper-unobfuscated</artifactId>
+	<artifactId>chunkmapper2</artifactId>
 	<version>0.2</version>
 
 	<pluginRepositories>

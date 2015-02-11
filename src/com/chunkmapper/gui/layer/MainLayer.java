@@ -17,7 +17,6 @@ import gov.nasa.worldwind.layers.RenderableLayer;
 import gov.nasa.worldwind.pick.PickedObject;
 import gov.nasa.worldwind.render.DrawContext;
 import gov.nasa.worldwind.render.ScreenAnnotation;
-import gov.nasa.worldwind.util.Logging;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -43,6 +42,7 @@ import com.chunkmapper.admin.MyLogger;
 import com.chunkmapper.gui.GoToSwingWorker;
 import com.chunkmapper.gui.dialog.GoToDialog;
 import com.chunkmapper.gui.dialog.NewMapDialog;
+import com.chunkmapper.gui.dialog.NewMapDialog.NewGameInfo;
 import com.chunkmapper.security.MySecurityManager;
 
 public class MainLayer extends RenderableLayer implements SelectListener, GameAvailableInterface
@@ -183,7 +183,8 @@ public class MainLayer extends RenderableLayer implements SelectListener, GameAv
 							if (s.equals("create") && (takenGames.size() < MySecurityManager.ALLOWED_GAMES || !MySecurityManager.mustPurchase(appFrame))) {
 								NewMapDialog dialog = new NewMapDialog(this, this.appFrame);
 								dialog.setVisible(true);
-								String gameName = dialog.getGameName();
+								NewGameInfo info = dialog.getGameInfo();
+								String gameName = info.gameName;
 								if (gameName != null) {
 									takenGames.add(gameName);
 //									this.newlyCreatedGames.add(gameName);
@@ -191,7 +192,7 @@ public class MainLayer extends RenderableLayer implements SelectListener, GameAv
 
 									wwd.getModel().getLayers().remove(this);
 									try {
-										wwd.getModel().getLayers().add(new GeneratingLayerImpl(wwd, appFrame, savesDir, gameName, this, globalSettings));
+										wwd.getModel().getLayers().add(new GeneratingLayerImpl(wwd, appFrame, savesDir, info, this, globalSettings));
 									} catch (IOException e) {
 										// TODO Auto-generated catch block
 										e.printStackTrace();
@@ -225,7 +226,7 @@ public class MainLayer extends RenderableLayer implements SelectListener, GameAv
 								String gameName = s.substring(0, s.length() - 6);
 								MyLogger.LOGGER.info("Resuming " + gameName);
 								try {
-									wwd.getModel().getLayers().add(new GeneratingLayerImpl(wwd, appFrame, savesDir, gameName, this, globalSettings));
+									wwd.getModel().getLayers().add(new GeneratingLayerImpl(wwd, appFrame, savesDir, new NewGameInfo(gameName), this, globalSettings));
 								} catch (IOException e) {
 									// TODO Auto-generated catch block
 									e.printStackTrace();

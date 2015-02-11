@@ -23,7 +23,7 @@ import com.chunkmapper.gui.layer.MainLayer;
 
 import java.awt.Dialog.ModalityType;
 
-public class NewMapDialog2 extends JDialog {
+public class NewMapDialogOld extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 	private JTextField textField;
@@ -56,7 +56,7 @@ public class NewMapDialog2 extends JDialog {
 			this.lblNewLabel.setVisible(false);
 		}
 	}
-	public NewMapDialog2(final GameAvailableInterface mainLayer, final JFrame frame) {
+	public NewMapDialogOld(final GameAvailableInterface mainLayer, final JFrame frame) {
 		super(frame);
 		setModalityType(ModalityType.APPLICATION_MODAL);
 		setModal(true);
@@ -109,7 +109,7 @@ public class NewMapDialog2 extends JDialog {
 				okButton.setEnabled(false);
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						NewMapDialog2.this.gameName = textField.getText();
+						NewMapDialogOld.this.gameName = textField.getText();
 						dispose();
 					}
 				});

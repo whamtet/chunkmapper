@@ -8,6 +8,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 
 import javax.swing.DefaultListModel;
 import javax.swing.GroupLayout;
@@ -33,6 +34,7 @@ import com.chunkmapper.admin.Utila;
 import com.chunkmapper.gui.ApplicationTemplate;
 import com.chunkmapper.gui.dialog.AccountDialog;
 import com.chunkmapper.gui.dialog.NewMapDialog;
+import com.chunkmapper.gui.dialog.NewMapDialog.NewGameInfo;
 import com.chunkmapper.gui.layer.GameAvailableInterface;
 import com.chunkmapper.security.MySecurityManager;
 
@@ -100,6 +102,7 @@ public class SimplifiedGUI extends JFrame implements GameAvailableInterface {
 		JLabel lblChunkmaps = new JLabel("Chunkmaps");
 
 		btnNewChunkmap = new JButton("New Chunkmap");
+		final HashMap<String, NewGameInfo> gameInfoStore = new HashMap<String, NewGameInfo>();
 		btnNewChunkmap.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (defaultListModel.size() >= MySecurityManager.ALLOWED_GAMES && MySecurityManager.mustPurchase(SimplifiedGUI.this)) {
@@ -107,8 +110,10 @@ public class SimplifiedGUI extends JFrame implements GameAvailableInterface {
 				}
 				NewMapDialog d = new NewMapDialog(SimplifiedGUI.this, SimplifiedGUI.this);
 				d.setVisible(true);
-				if (d.getGameName() != null) {
-					defaultListModel.addElement(d.getGameName());
+				NewGameInfo i = d.getGameInfo();
+				if (i.gameName != null) {
+					defaultListModel.addElement(i.gameName);
+					gameInfoStore.put(i.gameName, i);
 				}
 			}
 		});
@@ -176,8 +181,10 @@ public class SimplifiedGUI extends JFrame implements GameAvailableInterface {
 					if (currentPanel != null) {
 						panel.remove(currentPanel);
 					}
-					File f = new File(saveFolder, (String) list.getSelectedValue());
-					GeneratingPanel p = new GeneratingPanel(f, SimplifiedGUI.this);
+					String gameName = (String) list.getSelectedValue();
+					NewGameInfo info = gameInfoStore.get(gameName);
+					File f = new File(saveFolder, gameName);
+					GeneratingPanel p = new GeneratingPanel(f, SimplifiedGUI.this, info);
 					currentPanel = p;
 					panel.add(currentPanel);
 					SimplifiedGUI.this.validate();
