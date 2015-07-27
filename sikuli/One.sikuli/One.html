@@ -83,14 +83,15 @@
     <span class="skw">type</span>(<span class="str">"z"</span>)
 
     <span class="kw">if</span> os == <span class="str">'osx'</span>:
-        <span class="skw">wait</span>(<img src="1391569149349.png" />, <span class="dig">10</span>)
+<span class="cmt">#        wait("1391569149349.png", 10)</span>
+        <span class="skw">wait</span>(<img src="1423648914622.png" />, <span class="dig">10</span>)
     <span class="kw">if</span> os == <span class="str">'win8'</span>:
         <span class="skw">wait</span>(<img src="1393290452737.png" />, <span class="dig">10</span>)
     <span class="kw">if</span> os == <span class="str">'win7'</span>:
         <span class="skw">wait</span>(<img src="1393307972388.png" />, <span class="dig">10</span>)
     <span class="kw">if</span> os == <span class="str">'winxp'</span>:
-        <span class="cmt">#wait("1393310561703.png", 10)
-</span>        <span class="skw">wait</span>(<img src="1396950310084.png" />, <span class="dig">10</span>)
+        <span class="cmt">#wait("1393310561703.png", 10)</span>
+        <span class="skw">wait</span>(<img src="1396950310084.png" />, <span class="dig">10</span>)
 
     <span class="kw">if</span> os == <span class="str">'ubuntu'</span>:
         <span class="skw">wait</span>(<img src="1393325264417.png" />, <span class="dig">10</span>)
@@ -272,9 +273,9 @@
 
 os = <span class="str">'osx'</span>
 <span class="skw">wait</span>(<span class="dig">1</span>)
-<span class="cmt">#delete_cache()
-</span><span class="cmt">#delete()
-</span>go_to(<span class="str">'Mumbai'</span>)
+<span class="cmt">#delete_cache()</span>
+<span class="cmt">#delete()</span>
+go_to(<span class="str">'Mumbai'</span>)
 create_test_map()
 cancel_generation()
 <span class="kw">for</span> i <span class="kw">in</span> range(<span class="dig">5</span>):

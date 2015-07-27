@@ -138,9 +138,9 @@ public class NewMapDialog extends JDialog {
 		
 		if (frame != null) {
 			Rectangle parentBounds = frame.getBounds();
-			setBounds(parentBounds.x + 100, parentBounds.y + 100, 500, 240);
+			setBounds(parentBounds.x + 100, parentBounds.y + 100, 520, 240);
 		} else {
-			setBounds(100, 100, 500, 240);
+			setBounds(100, 100, 520, 240);
 		}
 		
 		getContentPane().setLayout(new BorderLayout());
@@ -192,30 +192,34 @@ public class NewMapDialog extends JDialog {
 		gl_contentPanel.setHorizontalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPanel.createSequentialGroup()
-					.addContainerGap(62, Short.MAX_VALUE)
+					.addContainerGap()
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblGameName)
-						.addComponent(label)
-						.addGroup(gl_contentPanel.createParallelGroup(Alignment.TRAILING, false)
-							.addComponent(textField, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 404, GroupLayout.PREFERRED_SIZE)
-							.addGroup(gl_contentPanel.createSequentialGroup()
-								.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
-									.addGroup(gl_contentPanel.createSequentialGroup()
-										.addComponent(chckbxGaiaMode)
-										.addPreferredGap(ComponentPlacement.RELATED)
-										.addComponent(button, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-									.addGroup(Alignment.TRAILING, gl_contentPanel.createSequentialGroup()
-										.addComponent(chckbxMinecraftCheats)
-										.addGap(27)))
-								.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
-									.addComponent(lblGameDifficulty)
-									.addComponent(lblGameMode))
-								.addPreferredGap(ComponentPlacement.UNRELATED)
-								.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
-									.addComponent(comboBox_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-									.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 129, GroupLayout.PREFERRED_SIZE)))))
-					.addGap(16))
+						.addGroup(gl_contentPanel.createSequentialGroup()
+							.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_contentPanel.createSequentialGroup()
+									.addComponent(chckbxGaiaMode)
+									.addPreferredGap(ComponentPlacement.UNRELATED)
+									.addComponent(button, GroupLayout.PREFERRED_SIZE, 41, GroupLayout.PREFERRED_SIZE))
+								.addComponent(chckbxMinecraftCheats))
+							.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+							.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
+								.addComponent(label)
+								.addGroup(gl_contentPanel.createSequentialGroup()
+									.addGap(59)
+									.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
+										.addComponent(lblGameMode)
+										.addComponent(lblGameDifficulty))
+									.addPreferredGap(ComponentPlacement.UNRELATED)
+									.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
+										.addComponent(comboBox_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+										.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 129, GroupLayout.PREFERRED_SIZE))))
+							.addContainerGap())
+						.addGroup(gl_contentPanel.createSequentialGroup()
+							.addComponent(textField, GroupLayout.DEFAULT_SIZE, 538, Short.MAX_VALUE)
+							.addGap(17))
+						.addGroup(gl_contentPanel.createSequentialGroup()
+							.addComponent(lblGameName)
+							.addContainerGap(410, Short.MAX_VALUE))))
 		);
 		gl_contentPanel.setVerticalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
@@ -227,18 +231,17 @@ public class NewMapDialog extends JDialog {
 					.addPreferredGap(ComponentPlacement.UNRELATED)
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(chckbxGaiaMode)
-						.addComponent(button, GroupLayout.PREFERRED_SIZE, 16, GroupLayout.PREFERRED_SIZE)
-						.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblGameDifficulty))
+						.addComponent(button, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblGameDifficulty)
+						.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(chckbxMinecraftCheats)
 						.addComponent(lblGameMode)
 						.addComponent(comboBox_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGap(40)
 					.addComponent(label)
-					.addContainerGap(303, Short.MAX_VALUE))
+					.addContainerGap(362, Short.MAX_VALUE))
 		);
 		contentPanel.setLayout(gl_contentPanel);
 		{

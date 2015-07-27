@@ -11,7 +11,8 @@ def zoom_out():
     type("z")
 
     if os == 'osx':
-        wait("1391569149349.png", 10)
+#        wait("1391569149349.png", 10)
+        wait("1423648914622.png", 10)
     if os == 'win8':
         wait("1393290452737.png", 10)
     if os == 'win7':

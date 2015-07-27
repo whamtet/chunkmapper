@@ -20,7 +20,6 @@ Order seems to be important: chunkmapper, jogl-all.jar, gluegen-rt.jar, maven-de
 	<taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="launch4j.jar:xstream.jar" />
 	<launch4j configFile="launch4j.xml" />
 </target>
-
 END NB!!!
 
 12)cd <directory containing build.xml>

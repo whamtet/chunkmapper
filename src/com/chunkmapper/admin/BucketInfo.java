@@ -6,8 +6,6 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.HashMap;
 
-import com.chunkmapper.gui.dialog.NoNetworkDialog;
-
 public class BucketInfo {
 	public static HashMap<String, String> map;
 	private static Object key = new Object();

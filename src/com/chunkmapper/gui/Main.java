@@ -47,8 +47,6 @@ import com.chunkmapper.gui.bounds.MyPolygonEditor;
 import com.chunkmapper.gui.dialog.UpgradeAvailableDialog;
 import com.chunkmapper.gui.layer.MCNotAvailableLayer;
 import com.chunkmapper.gui.layer.MainLayer;
-import com.chunkmapper.gui.simple.SimplifiedGUI;
-import com.chunkmapper.security.MySecurityManager;
 
 /**
  * Example of using {@link gov.nasa.worldwind.util.tree.BasicTree} to display a list of layers.

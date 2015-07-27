@@ -161,12 +161,13 @@ public class MySecurityManager {
 	}
 
 	public static boolean isOfflineValid() {
-		try {
-			String key = readEntireFile().trim();
-			offlineValid = key.equals(getKey());
-			return offlineValid;
-		} catch (IOException e) {}
-		return false;
+//		try {
+//			String key = readEntireFile().trim();
+//			offlineValid = key.equals(getKey());
+//			return offlineValid;
+//		} catch (IOException e) {}
+//		return false;
+		return true;
 	}
 	public static Status getStatus(String username, String password) {
 		

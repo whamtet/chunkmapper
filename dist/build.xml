@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project default="create_run_jar" name="Create Runnable Jar for Project chunkmapper with Jar-in-Jar Loader">
+<project default="all" name="Create Runnable Jar for Project chunkmapper with Jar-in-Jar Loader">
     <taskdef name="jarbundler"
              classname="net.sourceforge.jarbundler.JarBundler"
              classpath="../lib/jarbundler-2.2.0.jar">
     </taskdef>
 
 	<property name="chunkmapper" value="Chunkmapper" />
+	<property name="classes" value="classes" />
 
     <target name="multiplayer_jar">
         <jar destfile="Chunkmapper-Multiplayer.jar">
@@ -28,6 +29,7 @@
             <zipfileset dir="${user.home}/.m2/repository/org/apache/httpcomponents/httpmime/4.2.3" includes="httpmime-4.2.3.jar"/>
         </jar>
     </target>
+	
     <target name="test_jar">
         <jar destfile="Chunkmapper-Test.jar">
             <manifest>

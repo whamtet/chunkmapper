@@ -1,6 +1,7 @@
 package com.chunkmapper.heights;
 
 import java.awt.Point;
+import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.File;
@@ -8,10 +9,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.zip.DataFormatException;
-import java.util.zip.ZipInputStream;
 
 import com.chunkmapper.FileValidator;
 import com.chunkmapper.Zip;
@@ -100,6 +99,19 @@ public class HGTFile2 {
 		in.close();
 		return out;
 	}
-
+	public static void main(String[] args) throws Exception {
+		FileInputStream fin = new FileInputStream("/Users/matthewmolloy/Downloads/H58/S29E167.hgt");
+		DataInputStream in = new DataInputStream(new BufferedInputStream(fin));
+		short min = Short.MAX_VALUE, max = Short.MIN_VALUE;
+		try {
+			while (true) {
+				short s = in.readShort();
+				if (s < min) min = s;
+				if (s > max) max = s;
+			}
+		} catch (Exception e) {
+			System.out.println(min + ", " + max);
+		}
+	}
 
 }

@@ -1,7 +1,9 @@
 package com.chunkmapper.gui.simple;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
@@ -42,11 +44,17 @@ public class MapPanel extends JPanel implements PlayerIconManager, MappedSquareM
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.setColor(Color.BLUE);
+		//((Graphics2D)g).setStroke(new BasicStroke(1));
 		int w = this.getWidth() / (regionx2 - regionx1 + 1);
 		int h = this.getHeight() / (regionz2 - regionz1 + 1);
 		for (Point p : regionsMade) {
 			int x = (p.x - regionx1) * w, y = (p.z - regionz1) * h;
 			g.fillRect(x, y, w, h);
+		}
+		g.setColor(Color.BLACK);
+		for (Point p : regionsMade) {
+			int x = (p.x - regionx1) * w, y = (p.z - regionz1) * h;
+			g.drawRect(x, y, w, h);
 		}
 		if (playerPosition != null) {
 			int x = (playerPosition.x - regionx1*512) * this.getWidth() / 512 / (regionx2 - regionx1 + 1);
