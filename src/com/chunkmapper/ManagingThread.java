@@ -161,13 +161,13 @@ public class ManagingThread extends Thread {
 		regionWriter = null;
 		try {
 			PointManager pointManager;
-			if (globalSettings.nz) {
-				globalSettings.nz = false;
-				pointManager = new BoundedPointManager(chunkmapperDir, mappedSquareManager, gameMetaInfo.rootPoint);
-			} else {
+//			if (globalSettings.nz) {
+//				globalSettings.nz = false;
+//				pointManager = new BoundedPointManager(chunkmapperDir, mappedSquareManager, gameMetaInfo.rootPoint);
+//			} else {
 				pointManager = new PointManagerImpl(chunkmapperDir, mappedSquareManager, gameMetaInfo.rootPoint,
 						globalSettings);
-			}
+//			}
 
 			regionWriter = new RegionWriter(pointManager, gameMetaInfo.rootPoint, regionFolder, 
 					gameMetaInfo, mappedSquareManager, gameMetaInfo.isGaia, globalSettings.getVerticalExaggeration(),

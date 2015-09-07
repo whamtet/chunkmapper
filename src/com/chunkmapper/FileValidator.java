@@ -14,6 +14,14 @@ import java.security.NoSuchAlgorithmException;
 import com.chunkmapper.admin.MyLogger;
 
 public class FileValidator {
+	
+	/*The FileValidator class is a utility class that enables us to mark input files as 'Valid', whatever that means.
+	 * In practice it usually means that the file has finished downloading.
+	 * Because some of the source data is quite big, we mark a file as 'Valid' once it has finished downloading.
+	 * setValid checks on file length only
+	 * setSuperValid checks on md5.
+	 */
+	
 	public static void setValid(File f) throws IOException {
 		if (f.getName().endsWith("~"))
 			return;
