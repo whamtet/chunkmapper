@@ -14,11 +14,14 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</pluginRepository>
-		<pluginRepository>
-		<id>gae</id>
-		<url>http://eclipse-repo.appspot.com/repo</url>
-		</pluginRepository>
 	</pluginRepositories>
+	
+	<repositories>
+	<repository>
+	<id>eclipse-repo</id>
+	<url>http://eclipse-repo.appspot.com/repo</url>
+	</repository>
+	</repositories>
 
 	<build>
 		<resources>
