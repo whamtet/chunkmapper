@@ -24,9 +24,12 @@ import com.chunkmapper.nbt.ListTag;
 import com.chunkmapper.nbt.NbtIo;
 
 public class PointManagerImpl implements PointManager {
-	//this class a) gives points to the point manager once only
-	// b) allows the store to be updated once points have been finished.
-
+	
+	/*
+	 * Records which (chunkX, chunkZ) points need to be generated.
+	 * Doco in PointMapper
+	 */
+	
 	//this is the only field that needs to be synchronized
 	private final ArrayList<Point> pointsFinished = new ArrayList<Point>();
 	//	private final ArrayList<Point> pointsAssigned = new ArrayList<Point>();
@@ -36,18 +39,6 @@ public class PointManagerImpl implements PointManager {
 	private volatile Point currentPlayerPosition;
 	private final MappedSquareManager mappedSquareManager;
 	private final GlobalSettings globalSettings;
-	
-	public static void main(String[] args) throws Exception {
-		File f = new File("/Users/matthewmolloy/Library/Application Support/minecraft/saves/Alps/chunkmapper");
-		Point rootPoint = new Point(0, 0);
-		PointManager m = new PointManagerImpl(f, null, rootPoint, null);
-		File gameFolder = new File("/Users/matthewmolloy/Library/Application Support/minecraft/saves/Alps");
-		System.out.println(m.getNewPoints(gameFolder, rootPoint, f, null).size());
-	}
-
-	public Point getCurrentPlayerPosition() {
-		return currentPlayerPosition;
-	}
 
 	public PointManagerImpl(File chunkmapperFolder, MappedSquareManager mappedSquareManager, Point rootPoint, GlobalSettings globalSettings) {
 		this.mappedSquareManager = mappedSquareManager;
@@ -78,6 +69,19 @@ public class PointManagerImpl implements PointManager {
 			}
 		}
 	}
+	
+	public static void main(String[] args) throws Exception {
+		File f = new File("/Users/matthewmolloy/Library/Application Support/minecraft/saves/Alps/chunkmapper");
+		Point rootPoint = new Point(0, 0);
+		PointManager m = new PointManagerImpl(f, null, rootPoint, null);
+		File gameFolder = new File("/Users/matthewmolloy/Library/Application Support/minecraft/saves/Alps");
+		System.out.println(m.getNewPoints(gameFolder, rootPoint, f, null).size());
+	}
+
+	public Point getCurrentPlayerPosition() {
+		return currentPlayerPosition;
+	}
+	
 	private static Point readPosition(File parentFolder) {
 		CompoundTag data = null;
 		try {
@@ -181,7 +185,7 @@ public class PointManagerImpl implements PointManager {
 	 * @see com.chunkmapper.interfaces.PointManager#updateStore(com.chunkmapper.Point)
 	 */
 	@Override
-	public synchronized void updateStore(Point p) {
+	public synchronized void flagPointCompletion(Point p) {
 		pointsFinished.add(p);
 		try {
 			BufferedWriter writer = new BufferedWriter(new FileWriter(store));

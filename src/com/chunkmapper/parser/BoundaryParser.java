@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.zip.DataFormatException;
 
 import com.chunkmapper.Point;
-import com.chunkmapper.admin.OSMRouter;
+import com.chunkmapper.binaryparser.OSMRouter;
 import com.chunkmapper.parser.OverpassObject.Way;
 import com.chunkmapper.sections.Boundary;
 

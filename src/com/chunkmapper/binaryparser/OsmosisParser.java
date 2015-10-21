@@ -36,7 +36,14 @@ import com.chunkmapper.parser.OverpassObject.Relation;
 import com.chunkmapper.parser.OverpassObject.Way;
 import com.chunkmapper.protoc.OSMContainer;
 
-public class OsmosisParser {
+public class OsmosisParser implements OverpassObjectSource {
+	
+	/*
+	 * OverpassObjectSource for live Open Street Map Maps.
+	 * Queries Open Street Map using the Osmosis Web Service.
+	 * Turned off by default in order to respect Open Street Map servers.
+	 */
+	
 	public static final int NODE = 0, WAY = 1, RELATION = 2;
 	private static final HashMap<URL, URL> lockMap = new HashMap<URL, URL>();
 	private static Object masterLock = new Object();
@@ -75,7 +82,11 @@ public class OsmosisParser {
 			}
 		}
 	}
-	public static OverpassObject getObject(int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
+	/* (non-Javadoc)
+	 * @see com.chunkmapper.binaryparser.OverpassObjectSource#getObject(int, int)
+	 */
+	@Override
+	public OverpassObject getObject(int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
 //		Point p = new Point(regionx, regionz);
 //		if (cache.containsKey(p)) {
 //			return cache.get(p);

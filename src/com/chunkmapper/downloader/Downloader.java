@@ -31,6 +31,8 @@ import com.chunkmapper.admin.MyLogger;
 
 
 public abstract class Downloader extends Tasker {
+	
+	
 	private static final int NUM_DOWNLOADING_THREADS = 6;
 	protected final DefaultHttpClient httpclient = getHttpClient();
 

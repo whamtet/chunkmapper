@@ -1,22 +1,17 @@
 package com.chunkmapper.parser;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.concurrent.ConcurrentHashMap;
 
 import com.chunkmapper.Point;
+import com.chunkmapper.binaryparser.OverpassObjectSource;
 import com.chunkmapper.downloader.OverpassDownloader;
 import com.chunkmapper.parser.OverpassObject.Node;
 import com.chunkmapper.parser.OverpassObject.Relation;
 import com.chunkmapper.parser.OverpassObject.Way;
 
-public class OverpassParser extends Parser {
+public class OverpassParser extends Parser implements OverpassObjectSource {
 	//	private static ConcurrentHashMap<Point, OverpassObject> cache = new ConcurrentHashMap<Point, OverpassObject>();
 
 	//	private static ArrayList<String> getLines() throws IOException {
@@ -34,7 +29,7 @@ public class OverpassParser extends Parser {
 	//	public static void flushCache() {
 	//		cache = new ConcurrentHashMap<Point, OverpassObject>();
 	//	}
-	public static OverpassObject getObject(int regionx, int regionz) throws IOException {
+	public OverpassObject getObject(int regionx, int regionz) throws IOException {
 		//		if (true)
 		//		throw new RuntimeException("Don't call me");
 		//		Point p = new Point(regionx, regionz);

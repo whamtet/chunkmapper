@@ -17,6 +17,11 @@ import com.chunkmapper.admin.MyLogger;
 
 
 public abstract class Tasker {
+	/*
+	 * A wrapper around ExecutorService where each task is mapped to a (regionX, regionZ) point.
+	 * The caller adds tasks by simply adding points.
+	 */
+	
 	private final ExecutorService executorService;
 	private LinkedBlockingQueue<Point> taskQueue = new LinkedBlockingQueue<Point>();
 	protected final HashSet<Point> pointsAdded = new HashSet<Point>();

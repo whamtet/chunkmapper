@@ -2,6 +2,10 @@ package com.chunkmapper.admin;
 
 
 public class GlobalSettings {
+	
+	/*
+	 * Global Map Generation Settings.
+	 */
 
 	private boolean isLive;
 	private int verticalExaggeration = 1;

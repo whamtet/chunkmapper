@@ -5,6 +5,11 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 public class OpenURL {
+	
+	/*
+	 * Simple utility class.
+	 */
+	
 	public static void main(String[] args) throws URISyntaxException {
 		String s = "http://api.openstreetmap.fr/" + "xapi?way[railway=rail%spreserved][bbox=%s,%s,%s,%s]";
 		s = String.format(s, "%7C", 2, 48.6, 3, 49.6);

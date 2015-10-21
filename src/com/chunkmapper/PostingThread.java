@@ -1,6 +1,5 @@
 package com.chunkmapper;
 
-import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -12,23 +11,26 @@ import java.io.PrintWriter;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ByteArrayBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
 
 import com.chunkmapper.admin.BucketInfo;
 import com.chunkmapper.admin.MyLogger;
 
+@Deprecated
 public class PostingThread extends Thread {
+	
+	/*
+	 * Thread to post generated minecraft saved files to a remote server.
+	 * No longer used, for reference only.
+	 */
+	
 	private HashSet<Point> posted = new HashSet<Point>();
 	private final File regionDir, store;
 	private final Point rootPoint;

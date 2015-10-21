@@ -12,6 +12,7 @@ import com.chunkmapper.admin.MyLogger;
 import com.chunkmapper.admin.Utila;
 
 public class GameMetaInfo {
+	
 	public final File store;
 	public final Point rootPoint;
 	private int numChunksMade;
@@ -70,7 +71,7 @@ public class GameMetaInfo {
 			MyLogger.LOGGER.severe(MyLogger.printException(e));
 		}
 	}
-	//numChunksmade is the only mutable field, so its okay to lock on the whole object
+
 	public synchronized void incrementChunksMade() {
 		numChunksMade++;
 		save();

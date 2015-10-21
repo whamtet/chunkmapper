@@ -15,13 +15,13 @@ import com.chunkmapper.admin.MyLogger;
 
 public class FileValidator {
 	
-	/*The FileValidator class is a utility class that enables us to mark input files as 'Valid', whatever that means.
-	 * In practice it usually means that the file has finished downloading.
-	 * Because some of the source data is quite big, we mark a file as 'Valid' once it has finished downloading.
-	 * setValid checks on file length only
-	 * setSuperValid checks on md5.
+	/*
+	 * A utility class that enables us to mark files as 'valid'.  Used when caching files.  
 	 */
 	
+	/*
+	 * Sets a file as valid by checking file length.
+	 */
 	public static void setValid(File f) throws IOException {
 		if (f.getName().endsWith("~"))
 			return;
@@ -31,6 +31,10 @@ public class FileValidator {
 		writer.write(f.length() + "");
 		writer.close();
 	}
+	
+	/*
+	 * Checks whether a file is valid via its length.
+	 */
 	public static boolean checkValid(File f) throws IOException {
 
 		File metaFile = new File(f.getAbsolutePath() + "~");
@@ -42,6 +46,9 @@ public class FileValidator {
 		reader.close();
 		return isValid;
 	}
+	/*
+	 * Sets a file as valid by checking its MD5 checksum.
+	 */
 	public static void setSupervalid(File f) throws IOException {
 		//first read in bytes
 		byte[] data = new byte[(int) f.length()];
@@ -63,6 +70,10 @@ public class FileValidator {
 		out.write(digest);
 		out.close();
 	}
+	
+	/*
+	 * Checks whether a file is valid by checking its MD5 checksum.
+	 */
 	public static boolean checkSupervalid(File f) {
 		try {
 			File metaFile = new File(f.getAbsolutePath() + "~~");

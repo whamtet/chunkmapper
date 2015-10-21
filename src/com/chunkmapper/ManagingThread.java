@@ -13,7 +13,7 @@ import org.apache.commons.io.FileUtils;
 
 import com.chunkmapper.admin.GlobalSettings;
 import com.chunkmapper.admin.MyLogger;
-import com.chunkmapper.admin.OSMRouter;
+import com.chunkmapper.binaryparser.OSMRouter;
 import com.chunkmapper.binaryparser.OsmosisParser;
 import com.chunkmapper.gui.dialog.NewMapDialog.NewGameInfo;
 import com.chunkmapper.gui.dialog.NoNetworkDialog;

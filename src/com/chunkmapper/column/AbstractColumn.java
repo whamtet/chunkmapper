@@ -13,6 +13,11 @@ import com.chunkmapper.enumeration.LenteTree;
 import com.chunkmapper.reader.HeightsReader;
 
 public abstract class AbstractColumn {
+	/*
+	 * A column is a 1x1x256 high column of Minecraft blocks belonging to a certain geographic biome.
+	 * The main biome data source is Globcover, which has 300m resolution (10x10 blocks in map).
+	 */
+	
 	public static final Random RANDOM = new Random();
 	public final int absx, absz, h;
 	public LenteTree lenteTree;

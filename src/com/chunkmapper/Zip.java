@@ -20,8 +20,20 @@ import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
 public class Zip {
+	
+	/*
+	 * A bunch of utility methods for zipping and unzipping files.
+	 */
+	
 	//storage needs full length and then zipped lengths
 
+	/*
+	 * Unzips File src to File dest.  dest is stored as 
+	 * 
+	 * - an int containing zipped length.
+	 * - an int containing unzipped length.
+	 * - unzipped data.
+	 */
 	public static void zipOver(File src, File dest) throws IOException, DataFormatException {
 		byte[] data = new byte[(int) src.length()], data2 = new byte[(int) src.length()];
 		FileInputStream in = new FileInputStream(src);
@@ -41,6 +53,13 @@ public class Zip {
 		out.close();
 
 	}
+	/*
+	 * Unzips byte[] data to File dest.  dest is stored as 
+	 * 
+	 * - an int containing zipped length.
+	 * - an int containing unzipped length.
+	 * - unzipped data.
+	 */
 	public static void zipOver(byte[] data, File dest) throws IOException {
 		byte[] data2 = new byte[data.length];
 		Deflater compresser = new Deflater(Deflater.BEST_COMPRESSION);
@@ -55,6 +74,13 @@ public class Zip {
 		out.write(data2, 0, cl);
 		out.close();
 	}
+	/*
+	 * Unzips byte[] data to byte[] out.  out is stored as 
+	 * 
+	 * - an int containing zipped length.
+	 * - an int containing unzipped length.
+	 * - unzipped data.
+	 */
 	public static byte[] zipToArray(byte[] data) throws IOException {
 		byte[] data2 = new byte[data.length];
 		Deflater compresser = new Deflater(Deflater.BEST_COMPRESSION);
@@ -72,22 +98,10 @@ public class Zip {
 		out.close();
 		return out2.toByteArray();
 	}
-	public static InputStream zipToStream(byte[] data) throws IOException {
-		byte[] data2 = new byte[data.length];
-		Deflater compresser = new Deflater(Deflater.BEST_COMPRESSION);
-		compresser.setInput(data);
-		compresser.finish();
 
-		int cl = compresser.deflate(data2);
-		
-		PipedInputStream in = new PipedInputStream();
-		DataOutputStream out = new DataOutputStream(new PipedOutputStream(in));
-		out.writeInt(data.length);
-		out.writeInt(cl);
-		out.write(data2, 0, cl);
-		
-		return in;
-	}
+	/*
+	 * Helper Class
+	 */
 	private static class InputBuffer {
 		public final int bytesRead;
 		public final byte[] data = new byte[8192];
@@ -95,9 +109,11 @@ public class Zip {
 			bytesRead = in.read(data);
 		}
 	}
+
 	public static byte[] readFully(File f) throws IOException {
 		return readFully(new FileInputStream(f));
 	}
+	
 	public static byte[] readFully(InputStream in) throws IOException {
 		ArrayList<InputBuffer> buffers = new ArrayList<InputBuffer>();
 		while (true) {
@@ -122,6 +138,7 @@ public class Zip {
 		}
 		return data;
 	}
+	
 	public static byte[] inflate(InputStream in) throws IOException, DataFormatException {
 		DataInputStream in2 = new DataInputStream(new BufferedInputStream(in));
 		int fullLength = in2.readInt();
@@ -172,8 +189,8 @@ public class Zip {
 		
 	}
 	public static void writeFully(File f, byte[] data) throws IOException {
-		//FileOutputStream and DataOutputStream do not support integer return of sucessful bytes written
-		//Presumably complete write is guranteed
+		//FileOutputStream and DataOutputStream do not support integer return of successful bytes written
+		//Presumably complete write is guaranteed
 		FileOutputStream out = new FileOutputStream(f);
 		out.write(data);
 		out.close();

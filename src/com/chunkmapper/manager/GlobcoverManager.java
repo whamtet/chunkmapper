@@ -7,7 +7,7 @@ import java.util.NoSuchElementException;
 import java.util.Random;
 import java.util.zip.DataFormatException;
 
-import com.chunkmapper.admin.OSMRouter;
+import com.chunkmapper.binaryparser.OSMRouter;
 import com.chunkmapper.chunk.Chunk;
 import com.chunkmapper.column.AbstractColumn;
 import com.chunkmapper.column.Bare;
@@ -79,6 +79,11 @@ import com.chunkmapper.writer.GenericWriter;
 import com.chunkmapper.writer.SchematicArtifactWriter;
 
 public class GlobcoverManager {
+	
+	/*
+	 * A
+	 */
+	
 	private final HeightsReader heightsReader;
 	private final XapiRailReader railReader;
 	private final POIReader poiReader;

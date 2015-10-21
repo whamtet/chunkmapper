@@ -23,6 +23,10 @@ import com.chunkmapper.writer.MobWriter;
 import com.chunkmapper.writer.SchematicArtifactWriter;
 
 public class TestArtifact {
+	
+	/*
+	 * Quickly produce a single chunk for testing purposes.
+	 */
 
 	public TestArtifact() {
 		// TODO Auto-generated constructor stub

@@ -8,7 +8,7 @@ import java.util.zip.DataFormatException;
 
 import com.chunkmapper.Point;
 import com.chunkmapper.admin.MyLogger;
-import com.chunkmapper.admin.OSMRouter;
+import com.chunkmapper.binaryparser.OSMRouter;
 import com.chunkmapper.parser.OverpassObject.Node;
 import com.chunkmapper.sections.POI;
 

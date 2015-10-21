@@ -7,6 +7,10 @@ import java.net.URL;
 import java.util.HashMap;
 
 public class BucketInfo {
+	
+	/*
+	 * Class that queries Amazon S3 to get version info about Chunkmapper.
+	 */
 	public static HashMap<String, String> map;
 	private static Object key = new Object();
 

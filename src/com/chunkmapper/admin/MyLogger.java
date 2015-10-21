@@ -14,6 +14,10 @@ import java.util.logging.SimpleFormatter;
 import com.chunkmapper.admin.Utila.OSType;
 
 public class MyLogger {
+	
+	/*
+	 * Logging Utility Class
+	 */
 	public static final Logger LOGGER = Logger.getLogger("gov");
 	private static final boolean[] specialFlags = new boolean[SpecialLog.values().length];
 	

@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.zip.DataFormatException;
 
 import com.chunkmapper.Point;
-import com.chunkmapper.admin.OSMRouter;
+import com.chunkmapper.binaryparser.OSMRouter;
 import com.chunkmapper.chunk.Chunk;
 import com.chunkmapper.column.AbstractColumn;
 import com.chunkmapper.enumeration.Blocka;

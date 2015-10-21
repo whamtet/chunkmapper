@@ -130,13 +130,14 @@
 			<type>jar</type>
 		</dependency>
 
-
 		<!-- wwj deps -->
+		
 		<dependency>
 			<groupId>gov.nasa</groupId>
 			<artifactId>gdal</artifactId>
 			<version>912.1822</version>
 		</dependency>
+		
 		<dependency>
 			<groupId>gov.nasa</groupId>
 			<artifactId>gluegen-rt</artifactId>

@@ -111,7 +111,7 @@ public class RegionWriter extends Tasker {
 		GlobcoverManager coverManager = new GlobcoverManager(regionx, regionz, verticalExaggeration, gaiaMode, writeRails);
 
 		if (coverManager.allWater) {
-			pointManager.updateStore(task);
+			pointManager.flagPointCompletion(task);
 			mappedSquareManager.addFinishedPoint(p);
 			MyLogger.LOGGER.info("Wrote ocean point at " + p.toString()); 
 			return;
@@ -152,7 +152,7 @@ public class RegionWriter extends Tasker {
 		regionFile.close();
 		if (MySecurityManager.offlineValid)
 			FileValidator.setSupervalid(f);
-		pointManager.updateStore(task);
+		pointManager.flagPointCompletion(task);
 		gameMetaInfo.incrementChunksMade();
 		MyLogger.LOGGER.info("Wrote point at " + p.toString());
 		if (mappedSquareManager != null)

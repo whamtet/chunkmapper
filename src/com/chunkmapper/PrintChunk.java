@@ -10,6 +10,10 @@ import com.chunkmapper.nbt.NbtIo;
 import com.chunkmapper.nbt.RegionFile;
 
 public class PrintChunk {
+	
+	/*
+	 * Print Chunk contents for dev reference.
+	 */
 
 	public static void main(String[] args) throws Exception {
 		File gameFolder = new File("/Users/matthewmolloy/Library/Application Support/minecraft/saves/house");

@@ -131,7 +131,7 @@ public class ApplicationTemplate
 
 		protected void initialize(boolean includeStatusBar, boolean includeLayerPanel, boolean includeStatsPanel)
 		{
-
+			System.out.println("hi");
 			// Create the WorldWindow.
 			this.wwjPanel = this.createAppPanel(this.canvasSize, includeStatusBar);
 			this.wwjPanel.setPreferredSize(canvasSize);
@@ -333,6 +333,7 @@ public class ApplicationTemplate
 			{
 				public void run()
 				{
+					System.out.println("running");
 					frame.setVisible(true);
 				}
 			});

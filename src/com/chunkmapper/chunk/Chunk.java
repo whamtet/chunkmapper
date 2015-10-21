@@ -12,6 +12,11 @@ import com.chunkmapper.nbt.ListTag;
 import com.chunkmapper.writer.BlockLighter;
 
 public class Chunk {
+	/*
+	 * Low level class that contains Minecraft Chunks ready to be written to disc.
+	 * Each chunk is a grid 16 x 16 x 256 blocks high.
+	 */
+	
 	public final int xPos;
 	public final int zPos;
 	public final int abschunkx, abschunkz;
@@ -28,12 +33,6 @@ public class Chunk {
 
 	public byte[][][] Blocks = new byte[256][16][16];
 	public byte[][][] Data = new byte[256][16][16];
-//	public byte[][][] Add = new byte[256][16][16];
-
-//	public Chunk(DataInputStream in) throws IOException {
-//		this(NbtIo.read(in).getCompound("Level"));
-//		in.close();
-//	}
 
 	public void writeOceanColumn(int x, int z) {
 		Blocks[0][z][x] = Block.Bedrock.val;
@@ -83,48 +82,11 @@ public class Chunk {
 			return Blocks[y][z][x];
 		return -1;
 	}
-
-//	public Chunk(CompoundTag Level) throws IOException {
-//		xPos = Level.getInt("xPos");
-//		zPos = Level.getInt("zPos");
-//		LastUpdate = Level.getLong("LastUpdate");
-//		TerrainPopulated = Level.getByte("TerrainPopulated");
-//		Biomes = Level.getByteArray("Biomes");
-//		HeightMap = Level.getIntArray("HeightMap");
-//
-//		ListTag<CompoundTag> Sections = (ListTag<CompoundTag>) Level.getList("Sections");
-//		for (int i = 0; i < Sections.size(); i++) {
-//			CompoundTag thisSection = Sections.get(i);
-//			Byte Y = thisSection.getByte("Y");
-//			byte[] Blocks = thisSection.getByteArray("Blocks");
-//			byte[] Data = thisSection.getByteArray("Data");
-//			for (int j = 0; j < 4096; j += 2) {
-//				int y = j >> 8;
-//			int z = j/16%16;
-//			int x = j%16;
-//
-//			this.Data[y + Y*16][z][x] = (byte) (Data[j>>1] & 0x0f);
-//			this.Data[y + Y*16][z][x + 1] = (byte) (Data[j>>1]>>4 & 0x0f);
-//			this.Blocks[y + Y*16][z][x] = Blocks[j];
-//			this.Blocks[y + Y*16][z][x + 1]  = Blocks[j+1];
-//			}
-//
-//		}
-//	}
+	
 	public void setBiome(byte biome) {
 		for (int i = 0; i < 256; i++) Biomes[i] = biome;
 	}
 
-//	public Chunk(int x, int z, byte biome) {
-//		this(x, z);
-//		for (int i = 0; i < 256; i++) {
-//			Biomes[i] = biome;
-//		}
-//	}
-//
-//	public Chunk(Point p) {
-//		this(p.x, p.y);
-//	}
 	private static int[][] defaultHeights() {
 		int len = Utila.CHUNK_START + Utila.CHUNK_END;
 		int[][] out = new int[len][len];
@@ -158,11 +120,6 @@ public class Chunk {
 		zr = relchunkz*16;
 		bbox = new Rectangle(x0, z0, 16, 16);
 	}
-
-
-//	public Chunk(int[][] heights2) {
-//		this.heights = heights2;
-//	}
 
 	public Point getPoint() {
 		return new Point(xPos, zPos);
@@ -250,71 +207,6 @@ public class Chunk {
 		Blocks[h-1][z][x] = Block.Water.val;
 		return true;
 	}
-
-//	public void placeRail(int x, int z, short railHeight, byte railType, boolean overOcean,
-//			boolean placeSpecial) {
-//		byte foundation = overOcean ? Block.Planks.val : Block.Cobblestone.val;
-//		
-//		//now need to clear out some space
-//		int x1 = x - 1, x2 = x + 1;
-//		int z1 = z - 1, z2 = z + 1;
-//		if (x1 < 0) x1 = 0;
-//		if (z1 < 0) z1 = 0;
-//		if (x2 > 15) x2 = 15;
-//		if (z2 > 15) z2 = 15;
-//		
-//		for (int h = railHeight; h < railHeight + 3; h++) {
-//			for (int xd = x1; xd <= x2; xd++) {
-//				for (int zd = z1; zd <= z2; zd++) {
-//					byte b = Blocks[h][zd][xd];
-//					if (b != Block.Rail.val && b != Block.Powered_Rail.val 
-//							&& b != Block.Redstone_Torch_Lit.val && b != Block.Cobblestone.val
-//							&& b != Block.Planks.val) {
-//						Blocks[h][zd][xd] = 0;
-//					}
-//				}
-//			}
-//		}
-//		if (placeSpecial) {
-//			for (int h = railHeight + 5; h < railHeight + 10; h++) {
-//				Blocks[h][z][x] = Block.Gold_Block.val;
-//			}
-//		}
-//		if (railType == StraightRail.North.val || railType == StraightRail.East.val)
-//			spacesTillNextPoweredRail--;
-//		
-//		if (spacesTillNextPoweredRail == 0) {
-//			spacesTillNextPoweredRail = 6;
-//			
-//			Blocks[railHeight-1][z][x] = foundation;
-//			if (!overOcean) {
-//				Blocks[railHeight-2][z][x] = foundation;
-//				Blocks[railHeight-3][z][x] = foundation;
-//			}
-//			Blocks[railHeight][z][x] = Block.Powered_Rail.val;
-//			Data[railHeight][z][x] = (byte) (railType + 8);
-//			
-//			if (railType == StraightRail.North.val){
-//				int xPosition = x == 15 ? 14 : x + 1;
-//				Blocks[railHeight-1][z][xPosition] = foundation;
-//				Blocks[railHeight][z][xPosition] = Block.Redstone_Torch_Lit.val;
-//				Data[railHeight][z][xPosition] = 0;
-//			} else {
-//				int zPosition = z == 15 ? 14 : z + 1;
-//				Blocks[railHeight-1][zPosition][x] = foundation;
-//				Blocks[railHeight][zPosition][x] = Block.Redstone_Torch_Lit.val;
-//				Data[railHeight][zPosition][x] = 0;
-//			}
-//		} else {
-//			Blocks[railHeight-1][z][x] = foundation;
-//			if (!overOcean) {
-//				Blocks[railHeight-2][z][x] = foundation;
-//				Blocks[railHeight-3][z][x] = foundation;
-//			}
-//			Blocks[railHeight][z][x] = Block.Rail.val;
-//			Data[railHeight][z][x] = railType;
-//		}
-//	}
 
 	public void setBiome(int x, int z, byte biome) {
 		Biomes[z*16+x] = biome;
