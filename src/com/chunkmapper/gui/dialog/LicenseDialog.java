@@ -115,7 +115,7 @@ public class LicenseDialog extends JDialog {
 	}
 	private static String getLicense() {
 		try {
-			InputStream in = LicenseDialog.class.getResource("/LICENSE.txt").openStream();
+			InputStream in = LicenseDialog.class.getResource("/license.txt").openStream();
 			BufferedReader br = new BufferedReader(new InputStreamReader(in));
 			String line;
 			StringBuilder sb = new StringBuilder();

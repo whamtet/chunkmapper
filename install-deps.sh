@@ -12,3 +12,5 @@ mvn install:install-file -Dfile=lib/plugin.jar -DgroupId=gov.nasa -DartifactId=p
 mvn install:install-file -Dfile=lib/worldwind.jar -DgroupId=gov.nasa -DartifactId=worldwind -Dversion=912.1822 -Dpackaging=jar -DlocalRepositoryPath=$repo
 
 mvn install:install-file -Dfile=lib/worldwindx.jar -DgroupId=gov.nasa -DartifactId=worldwindx -Dversion=912.1822 -Dpackaging=jar -DlocalRepositoryPath=$repo
+
+mvn install:install-file -Dfile=lib/gdal.jar -DgroupId=gov.nasa -DartifactId=gdal -Dversion=912.1822 -Dpackaging=jar -DlocalRepositoryPath=$repo
