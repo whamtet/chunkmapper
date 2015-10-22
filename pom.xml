@@ -6,6 +6,7 @@
 	<artifactId>chunkmapper</artifactId>
 	<version>0.2</version>
 
+<!-- 
 	<pluginRepositories>
 		<pluginRepository>
 			<id>licel</id>
@@ -16,11 +17,13 @@
 		</pluginRepository>
 	</pluginRepositories>
 	
+-->
+
 	<repositories>
-	<repository>
-	<id>eclipse-repo</id>
-	<url>http://eclipse-repo.appspot.com/repo</url>
-	</repository>
+		<repository>
+			<id>eclipse-repo</id>
+			<url>http://eclipse-repo.appspot.com/repo</url>
+		</repository>
 	</repositories>
 
 	<build>
@@ -49,58 +52,66 @@
 					<target>1.6</target>
 				</configuration>
 			</plugin>
-			<!--obfuscate -->
-			<!-- 
+<!-- 
 			<plugin>
-				<groupId>com.github.wvengen</groupId>
-				<artifactId>proguard-maven-plugin</artifactId>
-				<version>2.0.6</version>
-				<dependencies>
-					<dependency>
-						<groupId>net.sf.proguard</groupId>
-						<artifactId>proguard-base</artifactId>
-						<version>4.11</version>
-						<scope>runtime</scope>
-					</dependency>
-				</dependencies>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>2.4.1</version>
 				<executions>
 					<execution>
 						<phase>package</phase>
 						<goals>
-							<goal>proguard</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<options>
-						<option>@proguard.txt</option>
-					</options>
-					<libs>
-						<lib>${java.home}/lib/rt.jar</lib>
-					</libs>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>com.licel</groupId>
-				<artifactId>stringer-maven-plugin</artifactId>
-				<version>1.6.7</version>
-				<executions>
-					<execution>
-						<phase>package</phase>
-						<goals>
-							<goal>stringer</goal>
+							<goal>shade</goal>
 						</goals>
 						<configuration>
-							<checkCaller>false</checkCaller>
-							<integrityProtection>false</integrityProtection>
-							<resourceEncryption>false</resourceEncryption>
-							<optimize>true</optimize>
-							<verbose>true</verbose>
+							<transformers>
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+									<mainClass>com.chunkmapper.gui.Main</mainClass>
+								</transformer>
+							</transformers>
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
 			-->
+			<plugin>
+       <artifactId>maven-assembly-plugin</artifactId>
+       <version>2.4.1</version>
+       <configuration>
+         <descriptorRefs>
+           <descriptorRef>jar-with-dependencies</descriptorRef>
+         </descriptorRefs>
+         <archive>
+            <manifest>
+              <mainClass>com.chunkmapper.gui.Main</mainClass>
+            </manifest>
+         </archive>
+       </configuration>
+    <executions>
+      <execution>
+        <id>make-assembly</id>
+        <phase>package</phase> 
+        <goals>
+          <goal>single</goal>
+        </goals>
+      </execution>
+    </executions>
+  </plugin>
+			
+			<!--obfuscate -->
+			<!-- <plugin> <groupId>com.github.wvengen</groupId> <artifactId>proguard-maven-plugin</artifactId> 
+				<version>2.0.6</version> <dependencies> <dependency> <groupId>net.sf.proguard</groupId> 
+				<artifactId>proguard-base</artifactId> <version>4.11</version> <scope>runtime</scope> 
+				</dependency> </dependencies> <executions> <execution> <phase>package</phase> 
+				<goals> <goal>proguard</goal> </goals> </execution> </executions> <configuration> 
+				<options> <option>@proguard.txt</option> </options> <libs> <lib>${java.home}/lib/rt.jar</lib> 
+				</libs> </configuration> </plugin> <plugin> <groupId>com.licel</groupId> 
+				<artifactId>stringer-maven-plugin</artifactId> <version>1.6.7</version> <executions> 
+				<execution> <phase>package</phase> <goals> <goal>stringer</goal> </goals> 
+				<configuration> <checkCaller>false</checkCaller> <integrityProtection>false</integrityProtection> 
+				<resourceEncryption>false</resourceEncryption> <optimize>true</optimize> 
+				<verbose>true</verbose> </configuration> </execution> </executions> </plugin> -->
 			<!--end obfuscate -->
 		</plugins>
 	</build>
@@ -138,13 +149,13 @@
 		</dependency>
 
 		<!-- wwj deps -->
-		
+
 		<dependency>
 			<groupId>gov.nasa</groupId>
 			<artifactId>gdal</artifactId>
 			<version>912.1822</version>
 		</dependency>
-		
+ 
 		<dependency>
 			<groupId>gov.nasa</groupId>
 			<artifactId>gluegen-rt</artifactId>
@@ -155,6 +166,7 @@
 			<artifactId>jogl-all</artifactId>
 			<version>912.1822</version>
 		</dependency>
+
 		<dependency>
 			<groupId>gov.nasa</groupId>
 			<artifactId>plugin</artifactId>
@@ -178,6 +190,17 @@
 			<artifactId>opencsv</artifactId>
 			<version>2.3</version>
 		</dependency>
-
+		
+		<dependency>
+     <groupId>org.jogamp.gluegen</groupId>
+     <artifactId>gluegen-rt-main</artifactId>
+     <version>2.3.1</version>
+   </dependency>
+   <dependency>
+     <groupId>org.jogamp.jogl</groupId>
+     <artifactId>jogl-all-main</artifactId>
+     <version>2.3.1</version>
+   </dependency>
+		
 	</dependencies>
 </project>

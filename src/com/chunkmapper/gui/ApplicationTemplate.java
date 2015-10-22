@@ -324,7 +324,7 @@ public class ApplicationTemplate
 			//			final AppFrame frame = (AppFrame) appFrameClass.newInstance();
 			frame.addWindowListener(new WindowAdapter() {
 				public void windowClosing(WindowEvent e) {
-					manageFeedback();
+					//manageFeedback();
 				}
 			});
 			frame.setTitle(appName);
