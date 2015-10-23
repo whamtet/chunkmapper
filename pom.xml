@@ -6,18 +6,8 @@
 	<artifactId>chunkmapper</artifactId>
 	<version>0.2</version>
 
-<!-- 
-	<pluginRepositories>
-		<pluginRepository>
-			<id>licel</id>
-			<url>https://licel.ru/m2</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</pluginRepository>
-	</pluginRepositories>
-	
--->
+	<!-- <pluginRepositories> <pluginRepository> <id>licel</id> <url>https://licel.ru/m2</url> 
+		<snapshots> <enabled>false</enabled> </snapshots> </pluginRepository> </pluginRepositories> -->
 
 	<repositories>
 		<repository>
@@ -52,7 +42,7 @@
 					<target>1.6</target>
 				</configuration>
 			</plugin>
-<!-- 
+			
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
@@ -74,31 +64,14 @@
 					</execution>
 				</executions>
 			</plugin>
-			-->
-			<plugin>
-       <artifactId>maven-assembly-plugin</artifactId>
-       <version>2.4.1</version>
-       <configuration>
-         <descriptorRefs>
-           <descriptorRef>jar-with-dependencies</descriptorRef>
-         </descriptorRefs>
-         <archive>
-            <manifest>
-              <mainClass>com.chunkmapper.gui.Main</mainClass>
-            </manifest>
-         </archive>
-       </configuration>
-    <executions>
-      <execution>
-        <id>make-assembly</id>
-        <phase>package</phase> 
-        <goals>
-          <goal>single</goal>
-        </goals>
-      </execution>
-    </executions>
-  </plugin>
-			
+
+			<!-- <plugin> <artifactId>maven-assembly-plugin</artifactId> <version>2.4.1</version> 
+				<configuration> <descriptorRefs> <descriptorRef>jar-with-dependencies</descriptorRef> 
+				</descriptorRefs> <archive> <manifest> <mainClass>com.chunkmapper.gui.Main</mainClass> 
+				</manifest> </archive> </configuration> <executions> <execution> <id>make-assembly</id> 
+				<phase>package</phase> <goals> <goal>single</goal> </goals> </execution> 
+				</executions> </plugin> -->
+
 			<!--obfuscate -->
 			<!-- <plugin> <groupId>com.github.wvengen</groupId> <artifactId>proguard-maven-plugin</artifactId> 
 				<version>2.0.6</version> <dependencies> <dependency> <groupId>net.sf.proguard</groupId> 
@@ -155,7 +128,7 @@
 			<artifactId>gdal</artifactId>
 			<version>912.1822</version>
 		</dependency>
- 
+
 		<dependency>
 			<groupId>gov.nasa</groupId>
 			<artifactId>gluegen-rt</artifactId>
@@ -190,17 +163,6 @@
 			<artifactId>opencsv</artifactId>
 			<version>2.3</version>
 		</dependency>
-		
-		<dependency>
-     <groupId>org.jogamp.gluegen</groupId>
-     <artifactId>gluegen-rt-main</artifactId>
-     <version>2.3.1</version>
-   </dependency>
-   <dependency>
-     <groupId>org.jogamp.jogl</groupId>
-     <artifactId>jogl-all-main</artifactId>
-     <version>2.3.1</version>
-   </dependency>
-		
+
 	</dependencies>
 </project>
