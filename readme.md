@@ -1,4 +1,22 @@
-Chunkmapper
+# Chunkmapper
+
+![Swiss Alps](Swiss Alps.png)
+
+## Compile
+
+```
+mvn clean package
+```
+
+## Run
+
+```
+./run-chunkmapper.sh
+./run-chunkmapper.bat
+```
+depending on your operating System
+
+## Architecture
 
 Chunkmapper generates the real world in Minecraft.  Minecraft is a popular independent game made by Swedish Developer Markus Persson and now bought out by Microsoft.  It is essentially a gigantic virtual lego set made up of elementary building blocks such as dirt, grass, wood, rock, etc.  The world is divided into 'chunks' 256 blocks high and 512 by 512 blocks wide.  Chunkmapper generates the real world in Minecraft by converting satellite and mapping data into these chunks.
 
