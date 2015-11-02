@@ -20,9 +20,9 @@ depending on your operating system
 
 ## Architecture
 
-Chunkmapper generates the real world in [Minecraft](https://minecraft.net).  Minecraft is a popular independent game made by Swedish Developer Markus Persson and now bought out by Microsoft.  It is essentially a gigantic virtual lego set made up of elementary building blocks such as dirt, grass, wood, rock, etc.  The world is divided into 'chunks' 256 blocks high and 512 by 512 blocks wide.  Chunkmapper generates the real world in Minecraft by converting satellite and mapping data into these chunks.
+Chunkmapper generates the real world in [Minecraft](https://minecraft.net).  Minecraft is a popular independent game made by swedish developer Markus Persson and now bought out by Microsoft.  It is essentially a gigantic virtual lego set made up of elementary building blocks such as dirt, grass, wood, rock, etc.  The world is divided into 'chunks' 256 blocks high and 512 by 512 blocks wide.  Chunkmapper generates the real world in Minecraft by converting satellite and mapping data into these chunks.
 
-Our scale of generation is that one Minecraft block is a degree arc second (30m at the equator).  This is the highest scale that can fit nearly all mountain peaks into 256 vertical blocks.  Because the spherical Earth must be projected onto a rectangular Minecraft grid we choose a cylindrical projection.  At the equator the scale matches Earth perfectly, however the east west direction is stretched by `1 / cosine(latitude)` as we move towards the poles.
+Our scale of generation is that one Minecraft block is a degree arc second (30m at the equator).  This is the highest scale that can fit nearly all mountain peaks into 256 vertical blocks.  Because the spherical Earth must be projected onto a rectangular Minecraft grid we choose a [cylindrical projection](https://en.wikipedia.org/wiki/Map_projection#Cylindrical).  At the equator the scale matches Earth perfectly, however the east west direction is stretched by `1 / cosine(latitude)` as we move towards the poles.
 
 To start our map we use NASA's [SRTM global heightmap](http://www2.jpl.nasa.gov/srtm/).  The SRTM is a radar that was carried on the Space Shuttle in February 2000 to map the world's elevation at 90m resolution.  With this we can build a giant grass plain that includes all the world's hills and valleys.  Ocean floor is currently created as flat, however there are plans to introduce bathymetry in the near future.
 
@@ -52,3 +52,7 @@ which polls the Minecraft saved files to inspect the player location.  Every loo
 The chunk generation is handled by [com.chunkmapper.writer.RegionWriter.doTask(Point task)](https://github.com/whamtet/chunkmapper/blob/master/src/com/chunkmapper/writer/RegionWriter.java#L102).  `doTask` creates an instance of GlobcoverManager to represent the Chunk in memory before it is written to disk.  GlobcoverManager in turn contains three main types of class.  Readers pull in the source geospatial data from the internet or disk cache.  There is a different reader for each map feature, such as `OrchardReader`, `HutReader` or `GlacierReader`.  Readers are contained within the `com.chunkmapper.reader` package.  The second important set of Classes derive from [com.chunkmapper.column.AbstractColumn](https://github.com/whamtet/chunkmapper/blob/master/src/com/chunkmapper/column/AbstractColumn.java).  There are 22 subclasses of AbstractColumn which correspond to the 22 Globcover terrain types.  In addition to the columns we also have a series of `com.chunkmapper.writer.*` classes that build features more complex than simple columns.
 
 Once our columns and writers are initialized we then write all the data into a three dimensional array representing the Minecraft blocks.  This is saved to disc for Minecraft to load it.
+
+### What to do next?
+
+Do something cool like riding the Trans-Siberian express or building a boat to cross the Pacific.
