@@ -24,7 +24,7 @@ Clone this repository into your Eclipse workspace and then go File -> New Java P
 
 ## Architecture
 
-Chunkmapper generates the real world in [Minecraft](https://minecraft.net).  Minecraft is a popular independent game made by swedish developer Markus Persson and now bought out by Microsoft.  It is essentially a gigantic virtual lego set made up of elementary building blocks such as dirt, grass, wood, rock, etc.  The world is divided into 'chunks' 256 blocks high and 512 by 512 blocks wide.  Chunkmapper generates the real world in Minecraft by converting satellite and mapping data into these chunks.
+Chunkmapper generates the real world in [Minecraft](https://minecraft.net).  Minecraft is a popular independent game made by Swedish developer Markus Persson and now bought out by Microsoft.  It is essentially a gigantic virtual lego set made up of elementary building blocks such as dirt, grass, wood, rock, etc.  The world is divided into 'chunks' 256 blocks high and 512 by 512 blocks wide.  Chunkmapper generates the real world in Minecraft by converting satellite and mapping data into these chunks.
 
 Our scale of generation is that one Minecraft block is a degree arc second (30m at the equator).  This is the highest scale that can fit nearly all mountain peaks into 256 vertical blocks.  Because the spherical Earth must be projected onto a rectangular Minecraft grid we choose a [cylindrical projection](https://en.wikipedia.org/wiki/Map_projection#Cylindrical).  At the equator the scale matches Earth perfectly, however the east west direction is stretched by `1 / cosine(latitude)` as we move towards the poles.
 
