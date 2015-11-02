@@ -18,6 +18,10 @@ mvn clean package
 ```
 depending on your operating system
 
+### Play
+
+Clone this repository into your Eclipse workspace and then go File -> New Java Project.  Call the project chunkmapper.
+
 ## Architecture
 
 Chunkmapper generates the real world in [Minecraft](https://minecraft.net).  Minecraft is a popular independent game made by swedish developer Markus Persson and now bought out by Microsoft.  It is essentially a gigantic virtual lego set made up of elementary building blocks such as dirt, grass, wood, rock, etc.  The world is divided into 'chunks' 256 blocks high and 512 by 512 blocks wide.  Chunkmapper generates the real world in Minecraft by converting satellite and mapping data into these chunks.
