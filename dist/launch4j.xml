@@ -1,18 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <launch4jConfig>
+  <dontWrapJar>true</dontWrapJar>
   <headerType>gui</headerType>
-  <jar>Chunkmapper.jar</jar>
-  <outfile>Chunkmapper.exe</outfile>
-  <errTitle>Chunkmapper</errTitle>
+  <jar>f00.jar</jar>
+  <outfile>/Users/matthew/git/chunkmapper/target/dependency/Chunkmapper.exe</outfile>
+  <errTitle></errTitle>
+  <cmdLine></cmdLine>
   <chdir>.</chdir>
+  <priority>normal</priority>
+  <downloadUrl>http://java.com/download</downloadUrl>
+  <supportUrl></supportUrl>
+  <stayAlive>false</stayAlive>
+  <restartOnCrash>false</restartOnCrash>
+  <manifest></manifest>
   <icon>Globe.ico</icon>
+  <singleInstance>
+    <mutexName>Chunkmapper</mutexName>
+    <windowTitle></windowTitle>
+  </singleInstance>
+  <classPath>
+    <mainClass>com.chunkmapper.gui.Main</mainClass>
+    <cp>./f07.jar;./f14.jar;./f04.jar;./f13.jar;./f12.jar;./f06.jar;./jogl-all.jar;./f08.jar;./f00.jar;./f01.jar;./f11.jar;./f03.jar;./gluegen-rt.jar;./f10.jar;./f02.jar</cp>
+  </classPath>
   <jre>
+    <path></path>
+    <bundledJre64Bit>false</bundledJre64Bit>
+    <bundledJreAsFallback>false</bundledJreAsFallback>
     <minVersion>1.6.0</minVersion>
+    <maxVersion></maxVersion>
+    <jdkPreference>preferJre</jdkPreference>
+    <runtimeBits>64/32</runtimeBits>
+    <initialHeapSize>512</initialHeapSize>
     <maxHeapSize>1024</maxHeapSize>
   </jre>
-  <splash>
-    <file>Globe_Splash.bmp</file>
-    <waitForWindow>true</waitForWindow>
-    <timeout>60</timeout>
-    <timeoutErr>true</timeoutErr>
-  </splash>
 </launch4jConfig>

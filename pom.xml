@@ -43,7 +43,8 @@
 				</configuration>
 			</plugin>
 
-			<plugin>
+			<!-- this plugin groups the deps into a single jar -->
+<!-- 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
 				<version>2.4.1</version>
@@ -62,7 +63,7 @@
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>
+			</plugin> -->
 
 			<!-- <plugin> <artifactId>maven-assembly-plugin</artifactId> <version>2.4.1</version>
 				<configuration> <descriptorRefs> <descriptorRef>jar-with-dependencies</descriptorRef>
@@ -125,35 +126,35 @@
 		<dependency>
 			<groupId>gov.nasa</groupId>
 			<artifactId>gdal</artifactId>
-			<version>912.1822</version>
+			<version>latest</version>
 		</dependency>
 
 		<dependency>
 			<groupId>gov.nasa</groupId>
 			<artifactId>gluegen-rt</artifactId>
-			<version>912.1822</version>
+			<version>latest</version>
 		</dependency>
 		<dependency>
 			<groupId>gov.nasa</groupId>
 			<artifactId>jogl-all</artifactId>
-			<version>912.1822</version>
+			<version>latest</version>
 		</dependency>
 
-		<dependency>
+		<!-- <dependency>
 			<groupId>gov.nasa</groupId>
 			<artifactId>plugin</artifactId>
 			<version>912.1822</version>
-		</dependency>
+		</dependency> -->
 
 		<dependency>
 			<groupId>gov.nasa</groupId>
 			<artifactId>worldwind</artifactId>
-			<version>912.1822</version>
+			<version>latest</version>
 		</dependency>
 		<dependency>
 			<groupId>gov.nasa</groupId>
 			<artifactId>worldwindx</artifactId>
-			<version>912.1822</version>
+			<version>latest</version>
 		</dependency>
 
 		<!-- Geological processing -->

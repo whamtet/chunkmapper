@@ -1,6 +1,13 @@
-Greetings to all,
-to run Chunkmapper from the command line type
+Windows
 
-java -Xmx1G -jar Chunkmapper.jar
 
-Ubuntu users must use at least Oracle Java 7 update 51 to avoid bugs.
+
+Run Chunkmapper.exe
+
+
+
+OSX and Linux
+
+
+
+Open Bash in this folder and run ./Chunkmapper.sh
