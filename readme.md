@@ -1,6 +1,6 @@
 # Chunkmapper
 
-![Swiss Alps](Swiss Alps.png)
+![Swiss Alps](./SwissAlps.png)
 
 The Swiss Alps in Chunkmapper.
 
