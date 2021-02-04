@@ -20,7 +20,6 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
 
 import com.chunkmapper.gui.layer.GameAvailableInterface;
-import com.chunkmapper.gui.layer.MainLayer;
 
 import java.awt.Dialog.ModalityType;
 

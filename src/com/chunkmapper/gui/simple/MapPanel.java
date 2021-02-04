@@ -14,7 +14,6 @@ import javax.swing.JPanel;
 
 import com.chunkmapper.Point;
 import com.chunkmapper.admin.MyLogger;
-import com.chunkmapper.gui.PlayerIconManagerImpl;
 import com.chunkmapper.interfaces.MappedSquareManager;
 import com.chunkmapper.interfaces.PlayerIconManager;
 import com.chunkmapper.math.Matthewmatics;
@@ -31,7 +30,7 @@ public class MapPanel extends JPanel implements PlayerIconManager, MappedSquareM
 	
 	{
 		try {
-			URL iconSource = PlayerIconManagerImpl.class.getResource("/steve2.jpeg");
+			URL iconSource = MapPanel.class.getResource("/steve2.jpeg");
 			icon = ImageIO.read(iconSource);
 
 			URL compassSource = MapPanel.class.getResource("/compass_rose.png");

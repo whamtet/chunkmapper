@@ -31,7 +31,6 @@ import com.chunkmapper.admin.BucketInfo;
 import com.chunkmapper.admin.MyLogger;
 import com.chunkmapper.admin.PreferenceManager;
 import com.chunkmapper.admin.Utila;
-import com.chunkmapper.gui.ApplicationTemplate;
 import com.chunkmapper.gui.dialog.AccountDialog;
 import com.chunkmapper.gui.dialog.NewMapDialog;
 import com.chunkmapper.gui.dialog.NewMapDialog.NewGameInfo;
@@ -84,7 +83,6 @@ public class SimplifiedGUI extends JFrame implements GameAvailableInterface {
 		addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
 				System.out.println("closing");
-				ApplicationTemplate.manageFeedback();
 			}
 		});
 		setTitle("Chunkmapper - Simple Interface");

@@ -9,13 +9,6 @@
 	<!-- <pluginRepositories> <pluginRepository> <id>licel</id> <url>https://licel.ru/m2</url>
 		<snapshots> <enabled>false</enabled> </snapshots> </pluginRepository> </pluginRepositories> -->
 
-	<repositories>
-		<repository>
-			<id>eclipse-repo</id>
-			<url>http://eclipse-repo.appspot.com/repo</url>
-		</repository>
-	</repositories>
-
 	<build>
 		<resources>
 			<resource>
@@ -122,40 +115,6 @@
 		</dependency>
 
 		<!-- wwj deps -->
-
-		<dependency>
-			<groupId>gov.nasa</groupId>
-			<artifactId>gdal</artifactId>
-			<version>latest</version>
-		</dependency>
-
-		<dependency>
-			<groupId>gov.nasa</groupId>
-			<artifactId>gluegen-rt</artifactId>
-			<version>latest</version>
-		</dependency>
-		<dependency>
-			<groupId>gov.nasa</groupId>
-			<artifactId>jogl-all</artifactId>
-			<version>latest</version>
-		</dependency>
-
-		<!-- <dependency>
-			<groupId>gov.nasa</groupId>
-			<artifactId>plugin</artifactId>
-			<version>912.1822</version>
-		</dependency> -->
-
-		<dependency>
-			<groupId>gov.nasa</groupId>
-			<artifactId>worldwind</artifactId>
-			<version>latest</version>
-		</dependency>
-		<dependency>
-			<groupId>gov.nasa</groupId>
-			<artifactId>worldwindx</artifactId>
-			<version>latest</version>
-		</dependency>
 
 		<!-- Geological processing -->
 		<dependency>
