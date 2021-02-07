@@ -7,6 +7,10 @@ import java.io.IOException;
 public class ByteTag extends Tag {
     public byte data;
 
+    public Object getData() {
+        return data;
+    }
+
     public ByteTag(String name) {
         super(name);
     }

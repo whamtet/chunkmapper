@@ -11,6 +11,10 @@ import java.util.List;
 public class ListTag<T extends Tag> extends Tag {
     private List<T> list = new ArrayList<T>();
     private byte type;
+
+    public Object getData() {
+        return list;
+    }
     
     public List<T> getList() {
     	return list;

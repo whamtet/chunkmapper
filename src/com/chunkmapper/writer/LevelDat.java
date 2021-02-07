@@ -1,18 +1,9 @@
 package com.chunkmapper.writer;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 
 import com.chunkmapper.Point;
 import com.chunkmapper.admin.MyLogger;
-import com.chunkmapper.admin.Utila;
-import com.chunkmapper.gui.dialog.NewMapDialog.Difficulty;
 import com.chunkmapper.gui.dialog.NewMapDialog.GameMode;
 import com.chunkmapper.gui.dialog.NewMapDialog.NewGameInfo;
 import com.chunkmapper.nbt.ByteTag;
@@ -283,9 +274,6 @@ public class LevelDat {
 	}
 	public static LevelDat getFromGameFolder(File gameFolder) throws IOException {
 		return new LevelDat(new File(gameFolder, "level.dat"), null);
-	}
-	public static LevelDat getFromName(String name) throws IOException {
-		return new LevelDat(new File(Utila.MINECRAFT_DIR, name + "/level.dat"), null);
 	}
 	public void setPlayerPosition(double lat, double lon, Point rootPoint) {
 		double x = lon * 3600 - rootPoint.x * 512;

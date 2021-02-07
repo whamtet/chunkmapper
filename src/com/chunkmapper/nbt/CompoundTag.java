@@ -10,11 +10,13 @@ import java.util.Map;
 
 public class CompoundTag extends Tag {
     private Map<String, Tag> tags = new HashMap<String, Tag>();
-    
+
+    public Object getData() {
+        return tags;
+    }
 
     public CompoundTag() {
         super("");
-        
     }
 
     public CompoundTag(String name) {
@@ -26,6 +28,10 @@ public class CompoundTag extends Tag {
             Tag.writeNamedTag(tag, dos);
         }
         dos.writeByte(Tag.TAG_End);
+    }
+
+    Map<String, Tag> getTags() {
+        return tags;
     }
 
     void load(DataInput dis) throws IOException {

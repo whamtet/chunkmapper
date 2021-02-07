@@ -8,6 +8,10 @@ import java.io.IOException;
 public class FloatTag extends Tag {
     public float data;
 
+    public Object getData() {
+        return new Float(data);
+    }
+
     public FloatTag(String name) {
         super(name);
     }

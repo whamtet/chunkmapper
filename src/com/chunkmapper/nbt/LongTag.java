@@ -8,6 +8,10 @@ import java.io.IOException;
 public class LongTag extends Tag {
     public long data;
 
+    public Object getData() {
+        return new Long(data);
+    }
+
     public LongTag(String name) {
         super(name);
     }

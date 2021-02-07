@@ -7,6 +7,10 @@ import java.io.IOException;
 public class ByteArrayTag extends Tag {
     public byte[] data;
 
+    public Object getData() {
+        return data;
+    }
+
     public ByteArrayTag(String name) {
         super(name);
     }

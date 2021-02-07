@@ -6,6 +6,10 @@ import java.io.IOException;
 
 public class EndTag extends Tag {
 
+    public Object getData() {
+        return null;
+    }
+
     public EndTag() {
         super(null);
     }

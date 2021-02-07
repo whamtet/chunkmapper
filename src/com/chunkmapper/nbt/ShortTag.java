@@ -8,6 +8,10 @@ import java.io.IOException;
 public class ShortTag extends Tag {
     public short data;
 
+    public Object getData() {
+        return data;
+    }
+
     public ShortTag(String name) {
         super(name);
     }

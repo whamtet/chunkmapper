@@ -70,6 +70,13 @@
 
 	<dependencies>
 
+		<!-- https://mvnrepository.com/artifact/org.clojure/clojure -->
+		<dependency>
+			<groupId>org.clojure</groupId>
+			<artifactId>clojure</artifactId>
+			<version>1.10.2</version>
+		</dependency>
+
 		<dependency>
 			<groupId>com.googlecode.json-simple</groupId>
 			<artifactId>json-simple</artifactId>

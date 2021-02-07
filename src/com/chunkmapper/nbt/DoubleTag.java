@@ -8,6 +8,10 @@ import java.io.IOException;
 public class DoubleTag extends Tag {
     public double data;
 
+    public Object getData() {
+        return new Double(data);
+    }
+
     public DoubleTag(String name) {
         super(name);
     }

@@ -7,6 +7,10 @@ import java.io.IOException;
 public class LongArrayTag extends Tag {
     public long[] data;
 
+    public Object getData() {
+        return data;
+    }
+
     public LongArrayTag(String name) {
         super(name);
     }
