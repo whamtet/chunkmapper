@@ -6,9 +6,6 @@
 	<artifactId>chunkmapper</artifactId>
 	<version>0.2</version>
 
-	<!-- <pluginRepositories> <pluginRepository> <id>licel</id> <url>https://licel.ru/m2</url>
-		<snapshots> <enabled>false</enabled> </snapshots> </pluginRepository> </pluginRepositories> -->
-
 	<build>
 		<resources>
 			<resource>
@@ -57,32 +54,28 @@
 					</execution>
 				</executions>
 			</plugin>
-
-			<!-- <plugin> <artifactId>maven-assembly-plugin</artifactId> <version>2.4.1</version>
-				<configuration> <descriptorRefs> <descriptorRef>jar-with-dependencies</descriptorRef>
-				</descriptorRefs> <archive> <manifest> <mainClass>com.chunkmapper.gui.Main</mainClass>
-				</manifest> </archive> </configuration> <executions> <execution> <id>make-assembly</id>
-				<phase>package</phase> <goals> <goal>single</goal> </goals> </execution>
-				</executions> </plugin> -->
-
-			<!--obfuscate -->
-			<!-- <plugin> <groupId>com.github.wvengen</groupId> <artifactId>proguard-maven-plugin</artifactId>
-				<version>2.0.6</version> <dependencies> <dependency> <groupId>net.sf.proguard</groupId>
-				<artifactId>proguard-base</artifactId> <version>4.11</version> <scope>runtime</scope>
-				</dependency> </dependencies> <executions> <execution> <phase>package</phase>
-				<goals> <goal>proguard</goal> </goals> </execution> </executions> <configuration>
-				<options> <option>@proguard.txt</option> </options> <libs> <lib>${java.home}/lib/rt.jar</lib>
-				</libs> </configuration> </plugin> <plugin> <groupId>com.licel</groupId>
-				<artifactId>stringer-maven-plugin</artifactId> <version>1.6.7</version> <executions>
-				<execution> <phase>package</phase> <goals> <goal>stringer</goal> </goals>
-				<configuration> <checkCaller>false</checkCaller> <integrityProtection>false</integrityProtection>
-				<resourceEncryption>false</resourceEncryption> <optimize>true</optimize>
-				<verbose>true</verbose> </configuration> </execution> </executions> </plugin> -->
-			<!--end obfuscate -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>com.chunkmapper.ui.Main</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
 	<dependencies>
+
+		<dependency>
+			<groupId>com.googlecode.json-simple</groupId>
+			<artifactId>json-simple</artifactId>
+			<version>1.1.1</version>
+		</dependency>
+
 		<dependency>
 			<groupId>com.google.protobuf</groupId>
 			<artifactId>protobuf-java</artifactId>
