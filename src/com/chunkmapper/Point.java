@@ -26,7 +26,18 @@ public class Point extends java.awt.Point implements Comparable<Point> {
 		int z = (int) Math.floor(-lat * 3600 / 512);
 		return new Point(x, z);
 	}
-	
+
+	public double getRegionLat() {
+		return -z * 512 / 3600.;
+	}
+	public double getRegionLng() {
+		return x * 512 / 3600.;
+	}
+
+	public Point plus(int xInc, int zInc) {
+		return new Point(x + xInc, z + zInc);
+	}
+
 	@Override
 	public int compareTo(Point arg0) {
 		return (new Integer(x)).compareTo(arg0.x);
