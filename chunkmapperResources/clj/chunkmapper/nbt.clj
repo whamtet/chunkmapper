@@ -72,23 +72,14 @@
        DoubleTag :double} (class tag)) (.getData tag)]))
 
 
-(def edn
-  (into
-    {:seq (list "seq1")
-     :string "string"}
-    (concat
-      (for [k [:byte :short :int :long]]
-        [k [k 1]])
-      (for [k [:float :double]]
-        [k [k 1.0]])
-      (for [k [:byte-array :int-array :long-array]]
-        [k [k [1]]]))))
-
-(use 'clojure.pprint)
-
-(def edn2 (-> edn ->nbt ->edn))
-
-(pprint edn)
-(pprint edn2)
-
-(println "fuck" (= edn edn2))
+;; (def edn
+;;   (into
+;;     {:seq (list "seq1")
+;;      :string "string"}
+;;     (concat
+;;       (for [k [:byte :short :int :long]]
+;;         [k [k 1]])
+;;       (for [k [:float :double]]
+;;         [k [k 1.0]])
+;;       (for [k [:byte-array :int-array :long-array]]
+;;         [k [k [1]]]))))
