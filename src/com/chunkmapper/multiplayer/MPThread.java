@@ -11,8 +11,6 @@ import com.chunkmapper.Point;
 import com.chunkmapper.admin.BucketInfo;
 import com.chunkmapper.parser.Nominatim;
 import com.chunkmapper.rail.HeightsCache;
-import com.chunkmapper.security.MySecurityManager;
-import com.chunkmapper.security.MySecurityManager.Status;
 import com.chunkmapper.writer.NeutralRegionWriter;
 
 public class MPThread {
@@ -30,33 +28,6 @@ public class MPThread {
 		}
 		f.mkdir();
 		return f;
-	}
-	
-	private static void authenticate() {
-		if (!MySecurityManager.isOfflineValid()) {
-			System.out.println("Please Authenticate with your Chunkmapper account");
-			while(true) {
-				String email = InputAssistant.readLine("email: ");
-				String pw  = InputAssistant.readPassword("password: ");
-				System.out.println("One moment please...");
-				Status s = MySecurityManager.getStatus(email, pw);
-				switch(s) {
-				case OK:
-					return;
-				case HACKED:
-					System.out.println("Your account has been deactivated because of suspicious activity.");
-					System.out.println("Please email support@chunkmapper.com to reactivate your account.");
-					System.exit(0);
-				case UNPAID:
-					System.out.println("You have not paid for Chunkmapper yet.");
-					System.out.println("Please visit www.chunkmapper.com/buy");
-					System.exit(0);
-				case INVALID_PW:
-					System.out.println("Invalid email or password.  Please try again.");
-				}
-				
-			}
-		}
 	}
 	private static double[] getLatLon() {
 		System.out.println("Where would you like your map?");
@@ -90,7 +61,6 @@ public class MPThread {
 		System.out.println("Welcome to Chunkmapper Multiplayer");
 		checkNetwork();
 		checkSupported();
-		authenticate();
 		double lat = 0, lon = 0;
 		
 		final int verticalExaggeration = 1;

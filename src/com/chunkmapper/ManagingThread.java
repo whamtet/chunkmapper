@@ -25,7 +25,6 @@ import com.chunkmapper.math.Matthewmatics;
 import com.chunkmapper.parser.Nominatim;
 import com.chunkmapper.parser.POIParser;
 import com.chunkmapper.rail.HeightsCache;
-import com.chunkmapper.security.MySecurityManager;
 import com.chunkmapper.writer.LevelDat;
 import com.chunkmapper.writer.RegionWriter;
 
@@ -150,8 +149,6 @@ public class ManagingThread extends Thread {
 		int altitude = 128;
 		int absx = (int) (lon * 3600);
 		int absz = (int) (-lat * 3600);
-		if (!MySecurityManager.offlineValid)
-			absz = Matthewmatics.div(absz, 128) * 128 + 64;
 		levelDat.setPlayerPosition(absx - gameMetaInfo.rootPoint.x * 512, altitude, absz - gameMetaInfo.rootPoint.z * 512);
 		levelDat.save();
 

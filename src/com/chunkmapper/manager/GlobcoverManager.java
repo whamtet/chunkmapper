@@ -73,7 +73,6 @@ import com.chunkmapper.reader.XapiLakeReader;
 import com.chunkmapper.reader.XapiRailReader;
 import com.chunkmapper.reader.XapiRiverReader;
 import com.chunkmapper.sections.POI;
-import com.chunkmapper.security.MySecurityManager;
 import com.chunkmapper.writer.ArtifactWriter;
 import com.chunkmapper.writer.GenericWriter;
 import com.chunkmapper.writer.SchematicArtifactWriter;

@@ -23,7 +23,6 @@ import com.chunkmapper.manager.GlobcoverManager;
 import com.chunkmapper.math.Matthewmatics;
 import com.chunkmapper.nbt.NbtIo;
 import com.chunkmapper.nbt.RegionFile;
-import com.chunkmapper.security.MySecurityManager;
 
 public class RegionWriter extends Tasker {
 //	public static final int NUM_WRITING_THREADS = Runtime.getRuntime().availableProcessors() + 1;
@@ -150,8 +149,7 @@ public class RegionWriter extends Tasker {
 			}
 		}
 		regionFile.close();
-		if (MySecurityManager.offlineValid)
-			FileValidator.setSupervalid(f);
+		FileValidator.setSupervalid(f);
 		pointManager.flagPointCompletion(task);
 		gameMetaInfo.incrementChunksMade();
 		MyLogger.LOGGER.info("Wrote point at " + p.toString());

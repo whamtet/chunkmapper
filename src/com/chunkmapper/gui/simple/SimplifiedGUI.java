@@ -31,11 +31,9 @@ import com.chunkmapper.admin.BucketInfo;
 import com.chunkmapper.admin.MyLogger;
 import com.chunkmapper.admin.PreferenceManager;
 import com.chunkmapper.admin.Utila;
-import com.chunkmapper.gui.dialog.AccountDialog;
 import com.chunkmapper.gui.dialog.NewMapDialog;
 import com.chunkmapper.gui.dialog.NewMapDialog.NewGameInfo;
 import com.chunkmapper.gui.layer.GameAvailableInterface;
-import com.chunkmapper.security.MySecurityManager;
 
 public class SimplifiedGUI extends JFrame implements GameAvailableInterface {
 
@@ -103,9 +101,6 @@ public class SimplifiedGUI extends JFrame implements GameAvailableInterface {
 		final HashMap<String, NewGameInfo> gameInfoStore = new HashMap<String, NewGameInfo>();
 		btnNewChunkmap.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (defaultListModel.size() >= MySecurityManager.ALLOWED_GAMES && MySecurityManager.mustPurchase(SimplifiedGUI.this)) {
-					return;
-				}
 				NewMapDialog d = new NewMapDialog(SimplifiedGUI.this, SimplifiedGUI.this);
 				d.setVisible(true);
 				NewGameInfo i = d.getGameInfo();
@@ -122,17 +117,6 @@ public class SimplifiedGUI extends JFrame implements GameAvailableInterface {
 
 		scrollPane = new JScrollPane();
 		
-		final JButton btnAuthorizeAccount = new JButton("Authorize Account...");
-		btnAuthorizeAccount.setVisible(!MySecurityManager.isOfflineValid());
-		btnAuthorizeAccount.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				AccountDialog d = new AccountDialog(SimplifiedGUI.this);
-        		d.setVisible(true);
-        		if (d.ok) {
-        			btnAuthorizeAccount.setVisible(false);
-        		}
-			}
-		});
 
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
@@ -147,7 +131,6 @@ public class SimplifiedGUI extends JFrame implements GameAvailableInterface {
 									.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 212, GroupLayout.PREFERRED_SIZE)
 									.addGap(9)
 									.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-										.addComponent(btnAuthorizeAccount)
 										.addComponent(panel, GroupLayout.DEFAULT_SIZE, 493, Short.MAX_VALUE)))))
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addGap(34)
@@ -163,8 +146,7 @@ public class SimplifiedGUI extends JFrame implements GameAvailableInterface {
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addComponent(panel, GroupLayout.PREFERRED_SIZE, 377, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(btnAuthorizeAccount))
+							.addPreferredGap(ComponentPlacement.UNRELATED))
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 377, GroupLayout.PREFERRED_SIZE)
 							.addGap(12)

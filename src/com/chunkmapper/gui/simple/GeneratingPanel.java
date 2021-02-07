@@ -28,7 +28,6 @@ import com.chunkmapper.admin.GlobalSettings;
 import com.chunkmapper.admin.MyLogger;
 import com.chunkmapper.gui.dialog.NewMapDialog.NewGameInfo;
 import com.chunkmapper.gui.dialog.SettingsDialog;
-import com.chunkmapper.security.MySecurityManager;
 import com.chunkmapper.writer.LevelDat;
 
 public class GeneratingPanel extends JPanel {
@@ -159,8 +158,7 @@ public class GeneratingPanel extends JPanel {
 		btnGenerateMap.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (!generating) {
-					if (simplifiedGUI.numGames() < MySecurityManager.ALLOWED_GAMES + 1 || !MySecurityManager.mustPurchase(simplifiedGUI))
-						startGeneration();
+					startGeneration();
 				} else {
 					cancelGeneration();
 				}

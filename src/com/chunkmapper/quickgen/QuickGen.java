@@ -19,7 +19,6 @@ import com.chunkmapper.nbt.NbtIo;
 import com.chunkmapper.nbt.RegionFile;
 import com.chunkmapper.parser.Nominatim;
 import com.chunkmapper.reader.FileNotYetAvailableException;
-import com.chunkmapper.security.MySecurityManager;
 
 public class QuickGen {
 
@@ -47,8 +46,6 @@ public class QuickGen {
 	private static File gen(int regionx, int regionz, File tempDir) throws IOException, IllegalArgumentException, NoSuchElementException, FileNotYetAvailableException, InterruptedException, URISyntaxException, DataFormatException {
 		BucketInfo.initMap();
 		OsmosisParser.disableCache();
-		//MyLogger.LOGGER.info(String.format("Quick generating at %s, %s", regionx, regionz));
-		MySecurityManager.offlineValid = true;
 		
 		
 		(new File(tempDir, "level.dat")).createNewFile();
