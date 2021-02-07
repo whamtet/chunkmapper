@@ -22,7 +22,7 @@
      (seq? m)
      (let [t (ListTag. s)]
        (doseq [i m]
-         (.add t (->nbt "" i)))
+         (.add t (->nbt s i)))
        t)
      (map? m)
      (let [t (CompoundTag. s)]
