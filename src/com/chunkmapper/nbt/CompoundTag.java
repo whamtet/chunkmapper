@@ -30,10 +30,6 @@ public class CompoundTag extends Tag {
         dos.writeByte(Tag.TAG_End);
     }
 
-    Map<String, Tag> getTags() {
-        return tags;
-    }
-
     void load(DataInput dis) throws IOException {
         tags.clear();
         Tag tag;
