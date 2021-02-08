@@ -14,7 +14,7 @@ public class Clojure {
 //    public static Object getVar(String ns, String v) {
 //        return ((Var) var(ns, v)).get();
 //    }
-    static {
+    public static void init() {
         load("/chunkmapper/level_dat");
     }
 

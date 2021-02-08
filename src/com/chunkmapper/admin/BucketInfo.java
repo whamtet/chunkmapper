@@ -16,23 +16,14 @@ public class BucketInfo {
 
 	public static void main(String[] args) {
 		initMap();
-		System.out.println(imageEndpoint());
+		System.out.println(map.get("chunkmapper-admin"));
 	}
 	public static boolean allowLive() throws IOException {
 		if (map == null) return true;
 		return "yes".equals(map.get("allow-live"));
 	}
-	public static boolean mustUpgrade() {
-		return "yes".equals(map.get("mu"));
-	}
 	public static boolean versionSupported() {
 		return map.get("supported-versions").contains(Utila.VERSION);
-	}
-	public static boolean spUpgradeAvailable() {
-		return !Utila.VERSION.equals(map.get("latest-sp"));
-	}
-	public static boolean mpUpgradeAvailable() {
-		return !Utila.VERSION.equals(map.get("latest-mp"));
 	}
 	public static String imageEndpoint() {
 		return map.get("image-endpoint");
