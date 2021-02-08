@@ -11,11 +11,24 @@ import static clojure.java.api.Clojure.var;
 
 public class Clojure {
 
-    public static Object getVar(String ns, String v) {
-        return ((Var) var(ns, v)).get();
+//    public static Object getVar(String ns, String v) {
+//        return ((Var) var(ns, v)).get();
+//    }
+    static {
+        load("/chunkmapper/level_dat");
+    }
+
+    private static void load(String s) {
+        var("clojure.core", "load").invoke(s);
+    }
+
+    public static IFn levelDat() {
+        return var("chunkmapper.level-dat", "level-dat");
     }
 
     public static void main(String[] args) throws Exception {
-        var("clojure.core", "load").invoke("/clj/chunkmapper/nbt");
+        System.out.println(levelDat().invoke());
     }
+
+
 }

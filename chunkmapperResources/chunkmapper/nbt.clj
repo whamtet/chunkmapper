@@ -1,4 +1,7 @@
 (ns chunkmapper.nbt
+  (:require
+    [clojure.java.io :as io]
+    clojure.pprint)
   (:import
     [com.chunkmapper.nbt
      ByteArrayTag
@@ -13,7 +16,8 @@
      LongArrayTag
      LongTag
      ShortTag
-     StringTag]))
+     StringTag
+     NbtIo]))
 
 (defn ->nbt
   ([m] (->nbt "" m))
@@ -71,6 +75,25 @@
        FloatTag :float
        DoubleTag :double} (class tag)) (.getData tag)]))
 
+(defn copy->edn [f]
+  (->> f
+       io/input-stream
+       NbtIo/readCompressed
+       ->edn
+       clojure.pprint/pprint
+       with-out-str
+       (spit (.replace f ".dat" ".edn"))))
+
+(defn copy-dats [f]
+  (->> f
+       java.io.File.
+       file-seq
+       (map #(.getAbsolutePath %))
+       (filter #(.endsWith % ".dat"))
+       (map copy->edn)
+       dorun))
+
+; (copy-dats "/Users/matthew/Library/Application Support/minecraft/saves/New World")
 
 ;; (def edn
 ;;   (into
