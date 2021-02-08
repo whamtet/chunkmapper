@@ -8,9 +8,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
 
-import javax.swing.JOptionPane;
 import com.chunkmapper.admin.MyLogger;
 
 
@@ -58,7 +56,6 @@ public abstract class Tasker {
 			@Override
 			public Thread newThread(Runnable arg0) {
 				Thread t = new Thread(arg0);
-				//				t.setPriority(Thread.MIN_PRIORITY);
 				// TODO Auto-generated method stub
 				t.setName(threadName);
 				return t;

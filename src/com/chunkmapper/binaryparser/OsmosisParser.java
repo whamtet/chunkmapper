@@ -48,19 +48,13 @@ public class OsmosisParser implements OverpassObjectSource {
 	private static final HashMap<URL, URL> lockMap = new HashMap<URL, URL>();
 	private static Object masterLock = new Object();
 	private static DefaultHttpClient httpclient = Downloader.getHttpClient();
-//	private static ConcurrentHashMap<Point, OverpassObject> cache = new ConcurrentHashMap<Point, OverpassObject>();
-	//still being accessed concurrently so best to be safe.
 	private static ConcurrentHashMap<URL, FileContents> cache2 = new ConcurrentHashMap<URL, FileContents>();
 	private static ArrayList<Rectangle> rectangles;
 	private static Object key = new Object();
 	public static final File CACHE = new File(Utila.CACHE, "Osmosis");
 	
 	public static void flushCache() {
-//		cache = new ConcurrentHashMap<Point, OverpassObject>();
 		cache2 = new ConcurrentHashMap<URL, FileContents>();
-	}
-	public static void disableCache() {
-		cache2 = null;
 	}
 	
 	static {
@@ -87,14 +81,6 @@ public class OsmosisParser implements OverpassObjectSource {
 	 */
 	@Override
 	public OverpassObject getObject(int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
-//		Point p = new Point(regionx, regionz);
-//		if (cache.containsKey(p)) {
-//			return cache.get(p);
-//		} else {
-//			OverpassObject o = doGetObject(regionx, regionz);
-//			cache.put(p, o);
-//			return o;
-//		}
 		return doGetObject(regionx, regionz);
 	}
 
@@ -162,7 +148,6 @@ public class OsmosisParser implements OverpassObjectSource {
 		try {
 			URL url = new URL(URLs.OSM);
 			BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
-//			BufferedReader br = new BufferedReader(new FileReader(new File("/Users/matthewmolloy/python/webstore/static/osm.txt")));
 			ArrayList<Rectangle> out = new ArrayList<Rectangle>();
 			String line;
 			while ((line = br.readLine()) != null) {
@@ -179,9 +164,6 @@ public class OsmosisParser implements OverpassObjectSource {
 			MyLogger.LOGGER.warning(MyLogger.printException(e));
 			return null;
 		}
-	}
-	public static void main(String[] args) throws Exception {
-		System.out.println((new URL("http://www.google.com/you")).getPath());
 	}
 
 	private static FileContents getFileContents(int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {

@@ -18,21 +18,10 @@ public class OverpassParser extends Parser implements OverpassObjectSource {
 	public static OverpassObject getTestObject(int regionx, int regionz) throws IOException {
 		return doGetObject(regionx, regionz, true);
 	}
-//	private static void spit(ArrayList<String> lines) throws IOException {
-//		PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter("test.xml")));
-//		for (String line : lines) {
-//			pw.println(line);
-//		}
-//		pw.close();
-//		Runtime.getRuntime().exec("open test.xml");
-//		//		System.exit(0);
-//	}
 
 	private static OverpassObject doGetObject(int regionx, int regionz, boolean test) throws IOException {
 		ArrayList<String> lines = OverpassDownloader.getLines(regionx, regionz, test);
 
-//		spit(lines);
-		//		ArrayList<String> lines = getLines();
 		HashMap<Long, Point> locations = getLocations(lines);
 		OverpassObject out = new OverpassObject();
 		//		ArrayList<Way> ways = new ArrayList<Way>();

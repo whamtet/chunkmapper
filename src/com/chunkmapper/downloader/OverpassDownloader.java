@@ -31,12 +31,7 @@ import com.chunkmapper.admin.MyLogger;
 public class OverpassDownloader {
 	private static final int NUM_DOWNLOADING_THREADS = 6;
 	private static DefaultHttpClient httpclient = Downloader.getHttpClient();
-	//	private static ConcurrentHashMap<Point, ArrayList<String>> generalCache = new ConcurrentHashMap<Point, ArrayList<String>>();
-	private static final String generalQuery, testQuery;
-
-	//	public static void flushCache() {
-	//		generalCache = new ConcurrentHashMap<Point, ArrayList<String>>();
-	//	}
+	private static final String generalQuery;
 	
 	public static void shutdown() {
 		httpclient.close();
@@ -54,7 +49,6 @@ public class OverpassDownloader {
 			MyLogger.LOGGER.severe(MyLogger.printException(e));
 		}
 		generalQuery = q1;
-		testQuery = q2;
 	}
 	public static void main(String[] args) throws Exception {
 		int regionx = 1060, regionz = 238;
@@ -62,15 +56,6 @@ public class OverpassDownloader {
 	}
 
 	public static ArrayList<String> getLines(int regionx, int regionz, boolean test) throws IOException {
-		//			Point p = new Point(regionx, regionz);
-		//			if (generalCache.containsKey(p)) {
-		//				return generalCache.get(p);
-		//			} else {
-		//				String query = test ? testQuery : generalQuery;
-		//				ArrayList<String> lines = doGetLines(query, regionx, regionz);
-		//				generalCache.put(p, lines);
-		//				return lines;
-		//			}
 		return doGetLines(generalQuery, regionx, regionz);
 	}
 

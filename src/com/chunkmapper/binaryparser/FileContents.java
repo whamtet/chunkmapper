@@ -17,9 +17,6 @@ public class FileContents {
 	public ArrayList<Node> nodes = new ArrayList<Node>();
 	public Collection<Way> ways = new ArrayList<Way>();
 	public Collection<Relation> relations = new ArrayList<Relation>();
-	public boolean isNonEmpty() {
-		return nodes.size() > 0 || ways.size() > 0 || relations.size() > 0;
-	}
 	public int size() {
 		return nodes.size() + ways.size() + relations.size();
 	}

@@ -49,12 +49,4 @@ public class BucketInfo {
 		}
 		return map != null;
 	}
-	public static String getLogUserUrl() {
-		return map.get("log-user-url");
-	}
-
-	/**
-	 * @param args
-	 */
-
 }
