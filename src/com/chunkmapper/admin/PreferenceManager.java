@@ -63,44 +63,5 @@ public class PreferenceManager {
 			MyLogger.LOGGER.severe(MyLogger.printException(e));
 		}
 	}
-	public static boolean getNoPurchaseShown() {
-		return "yes".equals(data.get("no-purchase-shown"));
-	}
-	public static void setNoPurchaseShown() {
-		data.put("no-purchase-shown", "yes");
-		spit();
-	}
-	public static boolean getIgnoreUpgrade() {
-		return "yes".equals(data.get("ignore-upgrade"));
-	}
-	public static void setIgnoreUpgrade() {
-		data.put("ignore-upgrade", "yes");
-		spit();
-	}
-	public static boolean getIgnoreFeedback() {
-		return "yes".equals(data.get("ignore-feedback"));
-	}
-	public static void setIgnoreFeedback() {
-		data.put("ignore-feedback", "yes");
-		spit();
-	}
-	public static void setAllowUsageReports() {
-		data.put("submit-usage", "yes");
-		spit();
-	}
-	public static boolean getAllowUsageReports() {
-		return "yes".equals(data.get("submit-usage"));
-	}
-	public static String getInitLog() {
-		return data.get("init-log");
-	}
-	public static void setInitLog(String s) {
-		data.put("init-log", s);
-		spit();
-	}
-	public static void main(String[] args) {
-		BucketInfo.initMap();
-		System.out.println(getIgnoreUpgrade());
-	}
 
 }

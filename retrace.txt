@@ -1,5 +1,0 @@
-at com.chunkmapper.r.d.a(Unknown Source)
-	at com.chunkmapper.d.e.a(Unknown Source)
-	at com.chunkmapper.j.a.a(Unknown Source)
-	at com.chunkmapper.r.g.b(Unknown Source)
-	at com.chunkmapper.f.run(Unknown Source)

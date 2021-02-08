@@ -49,11 +49,6 @@ public class Utila {
 		}
 		return null;
 	}
-	public static void main(String[] args) throws Exception {
-		(new File("c")).mkdir();
-		File f = File.createTempFile("launch4j", "beebee", new File("c"));
-		System.out.println(f);
-	}
 
 	//spit and slurp have something to do with a custom Minecraft location
 	private static String slurp(File f) {

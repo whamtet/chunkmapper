@@ -54,7 +54,7 @@ public class OsmosisParser implements OverpassObjectSource {
 	public static final File CACHE = new File(Utila.CACHE, "Osmosis");
 	
 	public static void flushCache() {
-		cache2 = new ConcurrentHashMap<URL, FileContents>();
+		cache2 = new ConcurrentHashMap<>();
 	}
 	
 	static {

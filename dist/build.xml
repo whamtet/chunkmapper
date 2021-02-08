@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project default="exe" name="Create Runnable Jar for Project chunkmapper with Jar-in-Jar Loader">
-
-  <target name="exe">
-    <taskdef name="launch4j" classname="net.sf.launch4j.ant.Launch4jTask" classpath="launch4j.jar:xstream.jar" />
-    <launch4j configFile="launch4j.xml" />
-  </target>
-
-</project>

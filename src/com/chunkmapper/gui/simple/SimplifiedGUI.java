@@ -84,11 +84,6 @@ public class SimplifiedGUI extends JFrame implements GameAvailableInterface {
 			}
 		});
 		setTitle("Chunkmapper - Simple Interface");
-		this.addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
-				PreferenceManager.setNoPurchaseShown();
-			}
-		});
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 736, 500);
 		contentPane = new JPanel();

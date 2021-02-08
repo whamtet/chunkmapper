@@ -26,24 +26,6 @@ import com.chunkmapper.admin.PreferenceManager;
 public class UpgradeAvailableDialog extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
-	private JCheckBox chckbxDontAskAgain;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		if (PreferenceManager.getIgnoreUpgrade()) {
-			System.out.println("ignoring");
-			System.exit(0);
-		}
-		try {
-			UpgradeAvailableDialog dialog = new UpgradeAvailableDialog(null);
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 
 	private void openWebpage() {
 		Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
@@ -62,15 +44,6 @@ public class UpgradeAvailableDialog extends JDialog {
 	 */
 	public UpgradeAvailableDialog(JFrame f) {
 		super(f);
-		this.addWindowListener(new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
-				System.out.println("closing");
-				if (chckbxDontAskAgain.isSelected()) {
-					PreferenceManager.setIgnoreUpgrade();
-				}
-			}
-			
-		});
 		
 		setTitle("Upgrade Available");
 		setModal(true);
@@ -81,16 +54,14 @@ public class UpgradeAvailableDialog extends JDialog {
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		JLabel lblANewVersion = new JLabel("Upgrade Chunkmapper for the latest features and best performance.");
-		
-		chckbxDontAskAgain = new JCheckBox("Don't ask again");
+
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
 		gl_contentPanel.setHorizontalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPanel.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblANewVersion)
-						.addComponent(chckbxDontAskAgain))
+						.addComponent(lblANewVersion))
 					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
 		gl_contentPanel.setVerticalGroup(
@@ -99,7 +70,6 @@ public class UpgradeAvailableDialog extends JDialog {
 					.addContainerGap()
 					.addComponent(lblANewVersion)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(chckbxDontAskAgain)
 					.addContainerGap(7, Short.MAX_VALUE))
 		);
 		contentPanel.setLayout(gl_contentPanel);
@@ -111,9 +81,6 @@ public class UpgradeAvailableDialog extends JDialog {
 				JButton okButton = new JButton("OK");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						if (chckbxDontAskAgain.isSelected()) {
-							PreferenceManager.setIgnoreUpgrade();
-						}
 						openWebpage();
 						System.exit(0);
 					}
@@ -126,9 +93,6 @@ public class UpgradeAvailableDialog extends JDialog {
 				JButton cancelButton = new JButton("Later");
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						if (chckbxDontAskAgain.isSelected()) {
-							PreferenceManager.setIgnoreUpgrade();
-						}
 						dispose();
 					}
 				});
