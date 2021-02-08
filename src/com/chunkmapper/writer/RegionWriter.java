@@ -12,7 +12,6 @@ import com.chunkmapper.GameMetaInfo;
 import com.chunkmapper.Point;
 import com.chunkmapper.PointManagerImpl;
 import com.chunkmapper.Tasker;
-import com.chunkmapper.admin.GlobalSettings;
 import com.chunkmapper.admin.MyLogger;
 import com.chunkmapper.binaryparser.OsmosisParser;
 import com.chunkmapper.chunk.Chunk;

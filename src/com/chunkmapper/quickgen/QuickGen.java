@@ -10,8 +10,6 @@ import java.util.zip.DataFormatException;
 
 import com.chunkmapper.Point;
 import com.chunkmapper.admin.BucketInfo;
-import com.chunkmapper.admin.GlobalSettings;
-import com.chunkmapper.admin.MyLogger;
 import com.chunkmapper.binaryparser.OsmosisParser;
 import com.chunkmapper.chunk.Chunk;
 import com.chunkmapper.manager.GlobcoverManager;

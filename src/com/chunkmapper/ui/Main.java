@@ -4,7 +4,6 @@ import com.chunkmapper.GameMetaInfo;
 import com.chunkmapper.ManagingThread;
 import com.chunkmapper.Point;
 import com.chunkmapper.admin.BucketInfo;
-import com.chunkmapper.admin.GlobalSettings;
 import com.chunkmapper.gui.dialog.NewMapDialog;
 import com.chunkmapper.interfaces.GeneratingLayer;
 import com.chunkmapper.interfaces.MappedSquareManager;
@@ -93,18 +92,6 @@ public class Main {
         logback(o.toJSONString());
     }
 
-    private static File prepareDir(File f, boolean delete) {
-        if (delete && f.exists()) {
-            try {
-                FileUtils.deleteDirectory(f);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        f.mkdir();
-        return f;
-    }
-
     public static void main(String[] args) throws IOException {
         Map<String, String> parsed = parseArgs(args);
         double lat = Double.parseDouble(parsed.get("lat"));
@@ -116,7 +103,6 @@ public class Main {
 //        String name = "asdf";
         int verticalExaggeration = 1;
 
-        GlobalSettings globalSettings = new GlobalSettings();
         NewMapDialog.NewGameInfo newGameInfo = new NewMapDialog.NewGameInfo(name);
         File saves = new File("/Users/matthew/Library/Application Support/minecraft/saves");
         File gameFolder = new File(saves, name);
@@ -124,9 +110,9 @@ public class Main {
             gameFolder.mkdirs();
         }
 
-        prepareDir(new File(gameFolder, "chunkmapper"), false);
-        prepareDir(new File(gameFolder, "region"), false);
-        prepareDir(new File(gameFolder, "players"), false);
+        (new File(gameFolder, "chunkmapper")).mkdir();
+        (new File(gameFolder, "region")).mkdir();
+        (new File(gameFolder, "players")).mkdir();
 
         BucketInfo.initMap();
 
@@ -136,7 +122,6 @@ public class Main {
                 gameFolder,
                 mappedSquareManager,
                 playerIconManager,
-                globalSettings,
                 generatingLayer,
                 newGameInfo);
         t.start();

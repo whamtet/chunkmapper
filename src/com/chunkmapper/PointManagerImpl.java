@@ -12,7 +12,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import com.chunkmapper.admin.GlobalSettings;
 import com.chunkmapper.admin.MyLogger;
 import com.chunkmapper.interfaces.MappedSquareManager;
 import com.chunkmapper.interfaces.PlayerIconManager;
@@ -38,11 +37,9 @@ public class PointManagerImpl implements PointManager {
 	private final File store;
 	private volatile Point currentPlayerPosition;
 	private final MappedSquareManager mappedSquareManager;
-	private final GlobalSettings globalSettings;
 
-	public PointManagerImpl(File chunkmapperFolder, MappedSquareManager mappedSquareManager, Point rootPoint, GlobalSettings globalSettings) {
+	public PointManagerImpl(File chunkmapperFolder, MappedSquareManager mappedSquareManager, Point rootPoint) {
 		this.mappedSquareManager = mappedSquareManager;
-		this.globalSettings = globalSettings;
 		store = new File(chunkmapperFolder, "regionsMade.txt");
 		if (store.exists()) {
 			try {
@@ -51,15 +48,11 @@ public class PointManagerImpl implements PointManager {
 				while ((line = reader.readLine()) != null) {
 					String[] s = line.split(" ");
 					Point p = new Point(Integer.parseInt(s[0]), Integer.parseInt(s[1]));
-					if (globalSettings != null && globalSettings.refreshNext) {
-						refreshPoints.add(p);
-						
-					} else {
-						pointsFinished.add(p);
-						pointsAssigned.add(p);
-						if (mappedSquareManager != null)
-							mappedSquareManager.addFinishedPoint(new Point(p.x + rootPoint.x, p.z + rootPoint.z));
-					}
+
+					pointsFinished.add(p);
+					pointsAssigned.add(p);
+					if (mappedSquareManager != null)
+						mappedSquareManager.addFinishedPoint(new Point(p.x + rootPoint.x, p.z + rootPoint.z));
 				}
 				reader.close();
 			} catch (IOException e) {
@@ -68,14 +61,6 @@ public class PointManagerImpl implements PointManager {
 				MyLogger.LOGGER.warning(MyLogger.printException(e));
 			}
 		}
-	}
-	
-	public static void main(String[] args) throws Exception {
-		File f = new File("/Users/matthewmolloy/Library/Application Support/minecraft/saves/Alps/chunkmapper");
-		Point rootPoint = new Point(0, 0);
-		PointManager m = new PointManagerImpl(f, null, rootPoint, null);
-		File gameFolder = new File("/Users/matthewmolloy/Library/Application Support/minecraft/saves/Alps");
-		System.out.println(m.getNewPoints(gameFolder, rootPoint, f, null).size());
 	}
 
 	public Point getCurrentPlayerPosition() {
@@ -151,8 +136,9 @@ public class PointManagerImpl implements PointManager {
 	private HashSet<Point> getSurroundingPoints(int regionx0, int regionz0, Point rootPoint) {
 
 		HashSet<Point> newPoints = new HashSet<Point>();
-		int regionx1 = regionx0 - globalSettings.generationRadius, regionx2 = regionx0 + globalSettings.generationRadius;
-		int regionz1 = regionz0 - globalSettings.generationRadius, regionz2 = regionz0 + globalSettings.generationRadius;
+		int generationRadius = 3;
+		int regionx1 = regionx0 - generationRadius, regionx2 = regionx0 + generationRadius;
+		int regionz1 = regionz0 - generationRadius, regionz2 = regionz0 + generationRadius;
 		if (regionx1 <= -LON_RAD) regionx1 = -LON_RAD + 1;
 		if (regionz1 <= -LON_RAD / 2) regionz1 = -LON_RAD / 2 + 1;
 		if (regionx2 >= LON_RAD) regionx2 = LON_RAD - 1;
@@ -167,15 +153,6 @@ public class PointManagerImpl implements PointManager {
 					mappedSquareManager.addUnfinishedPoint(new Point(p.x + rootPoint.x, p.z + rootPoint.z));
 					newPoints.add(p);
 				}
-			}
-		}
-
-		if (globalSettings.refreshNext) {
-			globalSettings.refreshNext = false;
-			for (Point p : refreshPoints) {
-				pointsAssigned.add(p);
-				mappedSquareManager.addUnfinishedPoint(new Point(p.x + rootPoint.x, p.z + rootPoint.z));
-				newPoints.add(p);
 			}
 		}
 		return newPoints;

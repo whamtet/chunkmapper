@@ -24,7 +24,6 @@ import javax.swing.text.PlainDocument;
 import com.chunkmapper.GameMetaInfo;
 import com.chunkmapper.ManagingThread;
 import com.chunkmapper.Point;
-import com.chunkmapper.admin.GlobalSettings;
 import com.chunkmapper.admin.MyLogger;
 import com.chunkmapper.gui.dialog.NewMapDialog.NewGameInfo;
 import com.chunkmapper.gui.dialog.SettingsDialog;
@@ -36,7 +35,6 @@ public class GeneratingPanel extends JPanel {
 	private MapPanel panel;
 	private double lat = 0d, lon = 0d;
 	private JButton btnGenerateMap, btnFindLatLon, btnSettings, btnDeleteMap;
-	private GlobalSettings globalSettings = new GlobalSettings();
 	private boolean generating;
 	private final File gameFolder;
 	private final SimplifiedGUI simplifiedGUI;
@@ -64,7 +62,7 @@ public class GeneratingPanel extends JPanel {
 			return;
 		}
 
-		t = new ManagingThread(lat, lon, gameFolder, panel, panel, globalSettings, null, newGameInfo);
+		t = new ManagingThread(lat, lon, gameFolder, panel, panel,null, newGameInfo);
 		t.start();
 		btnGenerateMap.setText("Cancel...");
 		setAllEnabled(false);
@@ -172,7 +170,7 @@ public class GeneratingPanel extends JPanel {
 		btnSettings = new JButton("Settings...");
 		btnSettings.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				SettingsDialog d = new SettingsDialog(simplifiedGUI, globalSettings);
+				SettingsDialog d = new SettingsDialog(simplifiedGUI);
 				d.setVisible(true);
 			}
 		});

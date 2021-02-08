@@ -10,8 +10,6 @@ import java.net.URISyntaxException;
 import java.util.HashSet;
 
 import org.apache.commons.io.FileUtils;
-
-import com.chunkmapper.admin.GlobalSettings;
 import com.chunkmapper.admin.MyLogger;
 import com.chunkmapper.binaryparser.OSMRouter;
 import com.chunkmapper.binaryparser.OsmosisParser;
@@ -33,7 +31,6 @@ public class ManagingThread extends Thread {
 	private final File gameFolder;
 	private final MappedSquareManager mappedSquareManager;
 	private final PlayerIconManager playerIconManager;
-	private final GlobalSettings globalSettings;
 	private final GeneratingLayer generatingLayer;
 	public RegionWriter regionWriter;
 	public PostingThread postingThread;
@@ -43,14 +40,6 @@ public class ManagingThread extends Thread {
 
 	{
 		setName("Managing Thread");
-	}
-
-	public static void main(String[] args) throws MalformedURLException, URISyntaxException, IOException {
-		double[] latlon = Nominatim.getPoint("Hollywood");
-		File gameFolder = new File("/Users/matthewmolloy/Library/Application Support/minecraft/saves/Hollywood");
-		GlobalSettings globalSettings = new GlobalSettings();
-		//		ManagingThread t = new ManagingThread(latlon[0], latlon[1], gameFolder, null, null, globalSettings, null);
-		//		t.run();
 	}
 
 	public static void setNetworkProblems() {
@@ -72,13 +61,12 @@ public class ManagingThread extends Thread {
 	}
 
 	public ManagingThread(double lat, double lon, File gameFolder, MappedSquareManager mappedSquareManager,
-			PlayerIconManager playerIconManager, GlobalSettings globalSettings,
+			PlayerIconManager playerIconManager,
 			GeneratingLayer generatingLayer, NewGameInfo newGameInfo) {
 		clearNetworkProblems();
 
 		this.newGameInfo = newGameInfo;
 		this.generatingLayer = generatingLayer;
-		this.globalSettings = globalSettings;
 		this.mappedSquareManager = mappedSquareManager;
 		this.playerIconManager = playerIconManager;
 		this.lat = lat;
@@ -108,16 +96,10 @@ public class ManagingThread extends Thread {
 	@Override
 	public void run() {
 
-		if (globalSettings.isLive()) {
-			OSMRouter.setLive();
-		}
-
 		if (generatingLayer != null)
 			generatingLayer.zoomTo();
 
 		MyLogger.LOGGER.info(String.format("Generating %s at %s, %s", gameFolder.getName(), lat, lon));
-		MyLogger.LOGGER.info("Vertical Exaggeration: " + globalSettings.getVerticalExaggeration());
-		MyLogger.LOGGER.info("Live Mode: " + globalSettings.isLive());
 
 		if (!gameFolder.exists()) {
 			gameFolder.mkdirs();
@@ -129,7 +111,7 @@ public class ManagingThread extends Thread {
 		GameMetaInfo gameMetaInfo = null;
 		try {
 			boolean isGaia = newGameInfo == null ? false : newGameInfo.isGaia;
-			gameMetaInfo = new GameMetaInfo(gameFolder, lat, lon, globalSettings.getVerticalExaggeration(), isGaia);
+			gameMetaInfo = new GameMetaInfo(gameFolder, lat, lon, 1, isGaia);
 			gameMetaInfo.save();
 		} catch (IOException e1) {
 			MyLogger.LOGGER.severe(MyLogger.printException(e1));
@@ -162,12 +144,11 @@ public class ManagingThread extends Thread {
 //				globalSettings.nz = false;
 //				pointManager = new BoundedPointManager(chunkmapperDir, mappedSquareManager, gameMetaInfo.rootPoint);
 //			} else {
-				pointManager = new PointManagerImpl(chunkmapperDir, mappedSquareManager, gameMetaInfo.rootPoint,
-						globalSettings);
+				pointManager = new PointManagerImpl(chunkmapperDir, mappedSquareManager, gameMetaInfo.rootPoint);
 //			}
 
 			regionWriter = new RegionWriter(pointManager, gameMetaInfo.rootPoint, regionFolder, 
-					gameMetaInfo, mappedSquareManager, gameMetaInfo.isGaia, globalSettings.getVerticalExaggeration(),
+					gameMetaInfo, mappedSquareManager, gameMetaInfo.isGaia, 1,
 					levelDat
 					);
 

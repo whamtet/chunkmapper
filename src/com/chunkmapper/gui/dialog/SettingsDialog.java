@@ -22,7 +22,6 @@ import javax.swing.border.EmptyBorder;
 
 import com.chunkmapper.admin.BucketInfo;
 import com.chunkmapper.admin.FeedbackManager;
-import com.chunkmapper.admin.GlobalSettings;
 import com.chunkmapper.admin.Utila;
 import javax.swing.JTextField;
 
@@ -35,15 +34,7 @@ public class SettingsDialog extends JDialog {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		try {
-			SettingsDialog dialog = new SettingsDialog(null, new GlobalSettings());
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+
 
 	/**
 	 * Create the dialog.
@@ -51,7 +42,7 @@ public class SettingsDialog extends JDialog {
 	 * @param globalSettings3 
 	 * @throws  
 	 */
-	public SettingsDialog(final JFrame appFrame, final GlobalSettings globalSettings) {
+	public SettingsDialog(final JFrame appFrame) {
 		super(appFrame);
 		setResizable(false);
 		setTitle("Settings");
@@ -72,16 +63,13 @@ public class SettingsDialog extends JDialog {
 		}
 		final JCheckBox checkBox = new JCheckBox("Live Mode");
 		checkBox.setEnabled(allowLive);
-		if (allowLive) {
-			checkBox.setSelected(globalSettings.isLive());
-		}
 		
 		String color = allowLive ? "black" : "gray";
 		JLabel lblNewLabel = new JLabel(String.format("<html><font color=\"%s\">Include the latest changes from Open Street Map.  Map may generate slowly.\n</html>", color));
 		
 		final JSpinner spinner = new JSpinner();
 		spinner.setModel(new SpinnerNumberModel(1, 0, 10, 1));
-		spinner.setValue(globalSettings.getVerticalExaggeration());
+		spinner.setValue(1);
 		
 		JLabel lblNewLabel_1 = new JLabel("<html>\nVertical Exaggeration\n(New maps only)\n</html>");
 		
@@ -118,7 +106,7 @@ public class SettingsDialog extends JDialog {
 		textField.setColumns(10);
 		
 		final JSpinner spinner_1 = new JSpinner();
-		spinner_1.setModel(new SpinnerNumberModel(globalSettings.generationRadius, new Integer(1), null, new Integer(1)));
+		spinner_1.setModel(new SpinnerNumberModel(3, new Integer(1), null, new Integer(1)));
 		
 		JLabel lblGenerationRadius = new JLabel("Generation Radius");
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
@@ -194,15 +182,10 @@ public class SettingsDialog extends JDialog {
 				JButton okButton = new JButton("OK");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						globalSettings.setIsLive(checkBox.isSelected());
-						globalSettings.setVerticalExaggeration((Integer) spinner.getValue());
-						globalSettings.generationRadius = (Integer) spinner_1.getValue();
 						String command = textField.getText().trim().toLowerCase();
 						if (command.equals("refresh")) {
-							globalSettings.refreshNext = true;
 						}
 						if (command.equals("nz")) {
-							globalSettings.nz = true;
 						}
 						dispose();
 					}
