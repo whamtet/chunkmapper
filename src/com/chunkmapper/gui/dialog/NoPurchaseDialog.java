@@ -24,7 +24,6 @@ import javax.swing.border.EmptyBorder;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
-import com.chunkmapper.admin.FeedbackManager;
 import com.chunkmapper.admin.PreferenceManager;
 
 public class NoPurchaseDialog extends JDialog {
@@ -59,8 +58,7 @@ public class NoPurchaseDialog extends JDialog {
 		l.add(new BasicNameValuePair("dont-want-to-pay", "" + dontwanttopay.isSelected()));
 		l.add(new BasicNameValuePair("not-interesting-enough", "" + chckbxTheMapsWere.isSelected()));
 		l.add(new BasicNameValuePair("comments", textArea.getText()));
-		
-		FeedbackManager.submitFeedback(l);
+
 	}
 	public NoPurchaseDialog() {
 		setModal(true);

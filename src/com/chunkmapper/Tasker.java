@@ -11,8 +11,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 import javax.swing.JOptionPane;
-
-import com.chunkmapper.admin.FeedbackManager;
 import com.chunkmapper.admin.MyLogger;
 
 
