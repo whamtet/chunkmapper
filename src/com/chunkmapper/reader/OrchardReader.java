@@ -12,7 +12,6 @@ import java.util.zip.DataFormatException;
 import com.chunkmapper.Point;
 import com.chunkmapper.binaryparser.OSMRouter;
 import com.chunkmapper.math.Matthewmatics;
-import com.chunkmapper.parser.Nominatim;
 import com.chunkmapper.parser.OverpassObject;
 import com.chunkmapper.parser.OverpassObject.Way;
 import com.chunkmapper.sections.RenderingSection;
@@ -88,20 +87,6 @@ public class OrchardReader {
 				sections.add(new RenderingSection(previous, a, b));
 			}
 		}
-	}
-	public static void main(String[] args) throws Exception {
-//		double[] latlon = Nominatim.getPoint("motueka, nz");
-//		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
-//		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
-////		OrchardReader reader = new OrchardReader(regionx, regionz);
-//		PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(new File("/Users/matthewmolloy/python/wms/data.csv"))));
-//		for (int i = 0; i < 512; i++) {
-//			for (int j = 0; j < 512; j++) {
-//				pw.println(reader.hasOrchard[i][j] ? 1 : 0);
-//			}
-//		}
-//		pw.close();
-//		System.out.println("done");
 	}
 
 }

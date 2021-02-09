@@ -11,7 +11,6 @@ import java.util.zip.DataFormatException;
 
 import com.chunkmapper.admin.BucketInfo;
 import com.chunkmapper.admin.Utila;
-import com.chunkmapper.parser.Nominatim;
 import com.chunkmapper.parser.POIParser;
 import com.chunkmapper.sections.POI;
 
@@ -69,23 +68,6 @@ public class DensityReader {
 	}
 	public boolean isUrbanxz(int absx, int absz) {
 		return getDensityxz(absx, absz) > 1e-3;
-	}
-	public static void main(String[] args) throws Exception {
-		BucketInfo.initMap();
-		double[] latlon = Nominatim.getPoint("Hong Kong");
-		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
-		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
-		DensityReader reader = new DensityReader(null, regionx, regionz);
-		
-		PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter("/Users/matthewmolloy/python/plot2d/data.csv")));
-		for (int i = 0; i < 512; i++) {
-			for (int j = 0; j < 512; j++) {
-				pw.println(reader.getDensityij(i, j));
-			}
-		}
-		pw.close();
-		
-		System.out.println("done");
 	}
 
 }

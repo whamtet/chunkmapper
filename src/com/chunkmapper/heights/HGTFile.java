@@ -1,6 +1,7 @@
 package com.chunkmapper.heights;
 
 import java.awt.Point;
+import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.File;
@@ -8,9 +9,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.zip.ZipInputStream;
+import java.util.zip.DataFormatException;
 
 import com.chunkmapper.FileValidator;
 import com.chunkmapper.Zip;
@@ -55,10 +55,10 @@ public class HGTFile {
 		} else {
 			lonStr = "" + lon;
 		}
-		String fileName = latPrefix + latStr + lonPrefix + lonStr + ".hgt.zip";
+		String fileName = latPrefix + latStr + lonPrefix + lonStr + ".hgt";
 		return fileName;
 	}
-	private static byte[] getData(int lat, int lon) throws IOException, InterruptedException {
+	private static byte[] getData(int lat, int lon) throws IOException, InterruptedException, DataFormatException {
 
 		synchronized(getLock(lat, lon)) {
 			String fileName = getFilename(lat, lon);
@@ -71,11 +71,8 @@ public class HGTFile {
 				return data;
 			}
 			//need to read in
-			URL url = new URL(BucketInfo.map.get("chunkmapper-heights") + "/" + fileName);
-			ZipInputStream in = new ZipInputStream(url.openStream());
-			in.getNextEntry();
-			byte[] uncompressed = Zip.readFully(in);
-			in.close();
+			URL url = new URL(BucketInfo.map.get("chunkmapper-heights2") + "/" + fileName);
+			byte[] uncompressed = Zip.inflate(url.openStream());
 
 			FileOutputStream out = new FileOutputStream(f);
 			out.write(uncompressed);
@@ -84,7 +81,7 @@ public class HGTFile {
 			return uncompressed;
 		}
 	}
-	public static short[][] getHeights(int lat, int lon) throws IOException, InterruptedException {
+	public static short[][] getHeights(int lat, int lon) throws IOException, InterruptedException, DataFormatException {
 		short[][] out = new short[1201][1201];
 		DataInputStream in = new DataInputStream(new ByteArrayInputStream(getData(lat, lon)));
 		for (int i = 0; i < 1201; i++) {
@@ -98,6 +95,19 @@ public class HGTFile {
 		in.close();
 		return out;
 	}
-
+	public static void main(String[] args) throws Exception {
+		FileInputStream fin = new FileInputStream("/Users/matthewmolloy/Downloads/H58/S29E167.hgt");
+		DataInputStream in = new DataInputStream(new BufferedInputStream(fin));
+		short min = Short.MAX_VALUE, max = Short.MIN_VALUE;
+		try {
+			while (true) {
+				short s = in.readShort();
+				if (s < min) min = s;
+				if (s > max) max = s;
+			}
+		} catch (Exception e) {
+			System.out.println(min + ", " + max);
+		}
+	}
 
 }

@@ -10,9 +10,7 @@ import java.util.Collections;
 import java.util.zip.DataFormatException;
 
 import com.chunkmapper.Point;
-import com.chunkmapper.binaryparser.OSMRouter;
 import com.chunkmapper.math.Matthewmatics;
-import com.chunkmapper.parser.Nominatim;
 import com.chunkmapper.parser.OverpassObject;
 import com.chunkmapper.parser.OverpassObject.Way;
 import com.chunkmapper.sections.RenderingSection;

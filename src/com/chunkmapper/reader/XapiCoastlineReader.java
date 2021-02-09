@@ -11,10 +11,7 @@ import java.util.Stack;
 import java.util.zip.DataFormatException;
 
 import com.chunkmapper.Point;
-import com.chunkmapper.admin.BucketInfo;
-import com.chunkmapper.binaryparser.OSMRouter;
 import com.chunkmapper.parser.CoastlineParser;
-import com.chunkmapper.parser.Nominatim;
 import com.chunkmapper.parser.OverpassObject;
 import com.chunkmapper.sections.Coastline;
 
@@ -24,27 +21,6 @@ public class XapiCoastlineReader {
 	private static final int COAST = BAND_WIDTH + 2, DOWN_COAST = -BAND_WIDTH - 2, UP_COAST = BAND_WIDTH + 3;
 	private static final int FINAL_COAST = BAND_WIDTH + 4;
 	private static final int FORESHORE = BAND_WIDTH + 5;
-	
-	public static void main(String[] args) throws Exception {
-		BucketInfo.initMap();
-		double[] latlon = Nominatim.getPoint("Blenheim, nz");
-		int regionx = (int) Math.floor(latlon[1] * 3600 / 512)+2;
-		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
-		GlobcoverReader coverReader = new GlobcoverReaderImpl2(regionx, regionz);
-		System.out.println(coverReader.mostlyLand());
-		OverpassObject o = OSMRouter.getObject(regionx, regionz);
-		XapiCoastlineReader reader = new XapiCoastlineReader(o, regionx, regionz, coverReader);
-		
-//		PrintWriter pw = new PrintWriter((new FileWriter("/Users/matthewmolloy/python/plot2d/data.csv")));
-//		for (int i = 0; i < 512; i++) {
-//			for (int j = 0; j < 512; j++) {
-//				pw.println(i == 0 && j == 0 ? 0 : reader.data[i][j]);
-//			}
-//		}
-//		pw.close();
-		reader.print(new File("/Users/matthewmolloy/python/plot2d/data.csv"));
-		System.out.println("done");
-	}
 
 	public boolean isCoastij(int i, int j) {
 		return data[i][j] == FINAL_COAST;

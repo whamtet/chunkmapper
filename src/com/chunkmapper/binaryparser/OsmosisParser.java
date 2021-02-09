@@ -53,10 +53,6 @@ public class OsmosisParser implements OverpassObjectSource {
 	private static Object key = new Object();
 	public static final File CACHE = new File(Utila.CACHE, "Osmosis");
 	
-	public static void flushCache() {
-		cache2 = new ConcurrentHashMap<>();
-	}
-	
 	static {
 		CACHE.mkdirs();
 	}
@@ -177,7 +173,7 @@ public class OsmosisParser implements OverpassObjectSource {
 	private static FileContents readFile(URL url) throws IOException, DataFormatException {
 		synchronized(getLock(url)) {
 			
-			if (cache2 != null && cache2.containsKey(url)) {
+			if (cache2.containsKey(url)) {
 				return cache2.get(url);
 			}
 			
@@ -223,7 +219,7 @@ public class OsmosisParser implements OverpassObjectSource {
 
 			}
 			in.close();
-			if (cache2 != null) cache2.put(url, out);
+			cache2.put(url, out);
 			return out;
 		}
 	}

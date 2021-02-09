@@ -1,14 +1,8 @@
 package com.chunkmapper.reader;
 
-import java.awt.Rectangle;
 import java.util.ArrayList;
-
-import com.chunkmapper.Point;
-import com.chunkmapper.admin.Utila;
-import com.chunkmapper.binaryparser.OSMRouter;
 import com.chunkmapper.chunk.Chunk;
 import com.chunkmapper.enumeration.Blocka;
-import com.chunkmapper.parser.Nominatim;
 import com.chunkmapper.parser.OverpassObject;
 import com.chunkmapper.parser.OverpassObject.Node;
 import com.chunkmapper.writer.ArtifactWriter;

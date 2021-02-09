@@ -6,8 +6,7 @@ import java.util.zip.DataFormatException;
 
 import com.chunkmapper.admin.BucketInfo;
 import com.chunkmapper.admin.Utila;
-import com.chunkmapper.heights.HGTFile2;
-import com.chunkmapper.parser.Nominatim;
+import com.chunkmapper.heights.HGTFile;
 import com.chunkmapper.protoc.admin.HeightsInfo;
 
 public class HeightsReaderS3 implements HeightsReader {
@@ -30,18 +29,6 @@ public class HeightsReaderS3 implements HeightsReader {
 		}
 		return sumHeight > 0;
 	}
-	
-	public static void main(String[] args) throws Exception {
-		System.out.println("starting");
-		BucketInfo.initMap();
-		double[] latlon = Nominatim.getPoint("Scott Base");
-		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
-		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
-		System.out.printf("lat: %s, lon: %s", latlon[0], latlon[1]);
-		HeightsReaderS3 hr = new HeightsReaderS3(regionx, regionz, 1);
-		System.out.println("done");
-	}
-
 
 	public HeightsReaderS3(int regionx, int regionz, int verticalExaggeration) throws IOException, InterruptedException, DataFormatException {
 
@@ -64,7 +51,7 @@ public class HeightsReaderS3 implements HeightsReader {
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
 				if (HeightsInfo.hasPoint(lati2 - i, loni1 + j)) {
-					short[][] tempTempCache = HGTFile2.getHeights(lati2 - i, loni1 + j);
+					short[][] tempTempCache = HGTFile.getHeights(lati2 - i, loni1 + j);
 					for (int k = 0; k < 1200; k++) {
 						for (int l = 0; l < 1200; l++) {
 							tempCache[i*1200 + k][j * 1200 + l] = tempTempCache[k][l];

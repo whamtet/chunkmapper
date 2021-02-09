@@ -1,14 +1,8 @@
 package com.chunkmapper.reader;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.zip.DataFormatException;
-
 import com.chunkmapper.Point;
-import com.chunkmapper.binaryparser.OSMRouter;
 import com.chunkmapper.chunk.Chunk;
 import com.chunkmapper.enumeration.Blocka;
-import com.chunkmapper.parser.Nominatim;
 import com.chunkmapper.parser.OverpassObject;
 import com.chunkmapper.parser.OverpassObject.Way;
 
@@ -45,7 +39,7 @@ public class PathReader {
 			}
 		}
 	}
-	public PathReader(OverpassObject o, int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
+	public PathReader(OverpassObject o, int regionx, int regionz) {
 		for (Way way : o.ways) {
 			String highway = way.map.get("highway");
 			String foot = way.map.get("foot");
@@ -57,20 +51,6 @@ public class PathReader {
 			}
 		}
 	}
-//	public static void main(String[] args) throws Exception {
-//		double[] latlon = Nominatim.getPoint("cobb dam, nz");
-//		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
-//		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
-//		PathReader reader = new PathReader(regionx, regionz);
-//		PrintWriter pw = new PrintWriter("/Users/matthewmolloy/python/wms/data.csv");
-//		for (int i = 0; i < 512; i++) {
-//			for (int j = 0; j < 512; j++) {
-//				pw.println(reader.hasPath[i][j] ? 1 : 0);
-//			}
-//		}
-//		pw.close();
-//		System.out.println("done");
-//	}
 	public void addPath(Chunk chunk, int chunkx, int chunkz) {
 		for (int i = 0; i < 16; i++) {
 			for (int j = 0; j < 16; j++) {

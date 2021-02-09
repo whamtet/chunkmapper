@@ -22,9 +22,7 @@ import javax.swing.text.Document;
 import javax.swing.text.DocumentFilter;
 import javax.swing.text.PlainDocument;
 
-import com.chunkmapper.GameMetaInfo;
 import com.chunkmapper.Point;
-import com.chunkmapper.gui.simple.FindDialog;
 import com.chunkmapper.writer.LevelDat;
 
 public class TeleportDialog extends JDialog {
@@ -66,16 +64,6 @@ public class TeleportDialog extends JDialog {
 		doc2.setDocumentFilter(new MyFilter(lonTextField));
 		
 		JButton btnNewButton = new JButton("Find Lat Lon...");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				FindDialog d = new FindDialog(jFrame);
-				d.setVisible(true);
-				if (d.latlon != null) {
-					latTextField.setText(String.format("%.4f", d.latlon[0]));
-					lonTextField.setText(String.format("%.4f", d.latlon[1]));
-				}
-			}
-		});
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
 		gl_contentPanel.setHorizontalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)

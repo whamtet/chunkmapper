@@ -136,16 +136,6 @@ public class GeneratingPanel extends JPanel {
 
 
 		btnFindLatLon = new JButton("Find Lat Lon...");
-		btnFindLatLon.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				FindDialog d = new FindDialog(simplifiedGUI);
-				d.setVisible(true);
-				if (d.latlon != null) {
-					latTextField.setText(String.format("%.4f", d.latlon[0]));
-					lonTextField.setText(String.format("%.4f", d.latlon[1]));
-				}
-			}
-		});
 
 		btnGenerateMap = new JButton("Generate Map");
 		btnGenerateMap.addActionListener(new ActionListener() {

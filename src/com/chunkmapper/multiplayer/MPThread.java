@@ -9,7 +9,6 @@ import org.apache.commons.io.FileUtils;
 import com.chunkmapper.GameMetaInfo;
 import com.chunkmapper.Point;
 import com.chunkmapper.admin.BucketInfo;
-import com.chunkmapper.parser.Nominatim;
 import com.chunkmapper.rail.HeightsCache;
 import com.chunkmapper.writer.NeutralRegionWriter;
 
@@ -34,8 +33,7 @@ public class MPThread {
 		while(true) {
 			String name = InputAssistant.readLine("Enter any real place name: ");
 			try {
-				if (name.trim().equals("")) throw new RuntimeException();
-				return Nominatim.getPoint(name);
+				throw new RuntimeException("need to reimplement nominatim");
 			} catch (Exception e) {
 				System.out.println("Sorry there was a problem.  Please try again.");
 			}

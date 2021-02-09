@@ -5,7 +5,6 @@ import java.awt.image.DataBufferByte;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashSet;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
@@ -16,7 +15,6 @@ import com.chunkmapper.admin.MyLogger;
 import com.chunkmapper.admin.Utila;
 import com.chunkmapper.enumeration.Globcover;
 import com.chunkmapper.math.Matthewmatics;
-import com.chunkmapper.parser.Nominatim;
 
 public class GlobcoverReaderImpl2 implements GlobcoverReader {
 	public static final int REGION_WIDTH = 50;
@@ -137,36 +135,6 @@ public class GlobcoverReaderImpl2 implements GlobcoverReader {
 			mostlyLand = k > dataz * datax / 2;
 		}
 		return mostlyLand;
-		//		return true;
-	}
-	public static void main(String[] args) throws Exception {
-		double[] latlon = Nominatim.getPoint("Saigon");
-		//		double[] latlon = {-43.88, -176.15};
-		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
-		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
-		//		int globx = Matthewmatics.div(regionx, REGION_WIDTH), globz = Matthewmatics.div(regionz, REGION_WIDTH);
-		//		File cacheFile = new File(CACHE_DIR, "f_" + globx + "_" + globz + Utila.BINARY_SUFFIX);
-		//		File destFile = new File("image.png");
-		//		FileUtils.copyFile(cacheFile, destFile);
-		//		Runtime.getRuntime().exec("open " + destFile.toString());
-		GlobcoverReaderImpl2 reader = new GlobcoverReaderImpl2(regionx, regionz);
-		HashSet<Globcover> globcovers = new HashSet<Globcover>();
-		for (int i = 0; i < 512; i++) {
-			for (int j = 0; j < 512; j++) {
-				globcovers.add(reader.getGlobcover(i, j));
-			}
-		}
-		System.out.println(globcovers);
-		//		System.out.println(reader.getGlobcover(100, 100));
-
-		//		PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter("/Users/matthewmolloy/python/wms/data.csv")));
-		//		for (int i = 0; i < 512; i++) {
-		//			for (int j = 0; j < 512; j++) {
-		//				pw.println(reader.getValueij(i, j));
-		//			}
-		//		}
-		//		pw.close();
-
 	}
 	
 
