@@ -60,11 +60,6 @@ public class OsmosisParser implements OverpassObjectSource {
 	static {
 		CACHE.mkdirs();
 	}
-	public static void shutdown() {
-		httpclient.close();
-		//start new downloader
-		httpclient = Downloader.getHttpClient();
-	}
 
 	private static URL getLock(URL url) {
 		synchronized(masterLock) {
@@ -81,10 +76,6 @@ public class OsmosisParser implements OverpassObjectSource {
 	 */
 	@Override
 	public OverpassObject getObject(int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
-		return doGetObject(regionx, regionz);
-	}
-
-	private static OverpassObject doGetObject(int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
 		FileContents contents = getFileContents(regionx, regionz);
 		OverpassObject out = new OverpassObject();
 		for (OSMContainer.Node rawNode : contents.nodes) {

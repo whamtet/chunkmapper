@@ -113,8 +113,6 @@ public class MPThread {
 			}
 		} catch (InterruptedException e) {
 			e.printStackTrace();
-			if (regionWriter != null)
-				regionWriter.blockingShutdownNow();
 			return;
 		}
 

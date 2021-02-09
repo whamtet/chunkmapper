@@ -7,7 +7,7 @@ import java.util.HashSet;
 
 import com.chunkmapper.Point;
 
-public  class OverpassObject {
+public class OverpassObject {
 	
 	public static class Relation {
 		public final HashSet<Way> ways = new HashSet<Way>();

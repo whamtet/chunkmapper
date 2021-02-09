@@ -69,12 +69,7 @@ public class GeneratingPanel extends JPanel {
 		generating = true;
 	}
 	private void cancelGeneration() {
-		System.out.println("cancelling");
-		ManagingThread.blockingShutDown(t, false);
-		setAllEnabled(true);
-		btnGenerateMap.setText("Resume...");
-		generating = false;
-		repaint();
+		throw new RuntimeException("cancellation no longer supported");
 	}
 	private void setAllEnabled(boolean b) {
 		latTextField.setEnabled(b);

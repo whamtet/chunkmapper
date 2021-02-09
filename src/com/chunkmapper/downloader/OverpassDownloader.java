@@ -32,12 +32,6 @@ public class OverpassDownloader {
 	private static final int NUM_DOWNLOADING_THREADS = 6;
 	private static DefaultHttpClient httpclient = Downloader.getHttpClient();
 	private static final String generalQuery;
-	
-	public static void shutdown() {
-		httpclient.close();
-		//start new downloader
-		httpclient = Downloader.getHttpClient();
-	}
 
 	static {
 		String q1 = null;

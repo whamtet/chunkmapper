@@ -79,7 +79,6 @@ public class ProcessGlobcover {
 //		for (int i = 0; i < numThreads; i++) {
 //			executorService.execute(new Task());
 //		}
-//		executorService.shutdown();
 //	}
 //	private static class Task implements Runnable {
 //		public void run() {

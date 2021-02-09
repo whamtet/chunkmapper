@@ -86,11 +86,6 @@ public class RegionWriter extends Tasker {
 			taskQueue2.add(p);
 		}
 	}
-	public void blockingShutdownNow() {
-		OverpassDownloader.shutdown();
-		OsmosisParser.shutdown();
-		super.blockingShutdownNow();
-	}
 
 	public void addRegion(int regionx, int regionz) {
 		super.addTask(regionx, regionz);

@@ -21,20 +21,6 @@ public abstract class Tasker {
 	private final ExecutorService executorService;
 	protected final HashSet<Point> pointsAdded = new HashSet<Point>();
 
-	public void shutdownNow() {
-		executorService.shutdownNow();
-		MyLogger.LOGGER.info("shut down " + this.getClass().toString());
-	}
-	public void blockingShutdownNow() {
-		executorService.shutdownNow();
-		try {
-			executorService.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			MyLogger.LOGGER.info(MyLogger.printException(e));
-		}
-		MyLogger.LOGGER.info("shut down " + this.getClass().toString());
-	}
 	public synchronized void addTask(int regionx, int regionz) {
 		Point p = new Point(regionx, regionz);
 		if (!pointsAdded.contains(p)) {

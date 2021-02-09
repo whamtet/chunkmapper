@@ -172,8 +172,6 @@ public class ManagingThread extends Thread {
 			}
 		} catch (InterruptedException e) {
 			MyLogger.LOGGER.info(MyLogger.printException(e));
-			if (regionWriter != null)
-				regionWriter.blockingShutdownNow();
 			return;
 		}
 
@@ -192,30 +190,6 @@ public class ManagingThread extends Thread {
 		out[1] = Double.parseDouble(reader.readLine());
 		reader.close();
 		return out;
-	}
-	public static void blockingShutDown(ManagingThread thread, boolean selfCalled) {
-		MyLogger.LOGGER.info("Starting to shut down thread.");
-		if (!selfCalled) {
-			thread.interrupt();
-		}
-		if (thread.regionWriter != null)
-			thread.regionWriter.blockingShutdownNow();
-		if (thread.postingThread != null)
-			thread.postingThread.interrupt();
-		if (!selfCalled) {
-			while(thread.isAlive()) {
-				try {
-					Thread.sleep(100);
-				} catch (InterruptedException e) {
-					MyLogger.LOGGER.warning(MyLogger.printException(e));
-				}
-			}
-		}
-		HeightsCache.deleteCache();
-		OsmosisParser.flushCache();
-		POIParser.flushCache();
-		MyLogger.LOGGER.info("shut down thread");
-
 	}
 
 }
