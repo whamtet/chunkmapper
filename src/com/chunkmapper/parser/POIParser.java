@@ -15,22 +15,18 @@ import com.chunkmapper.sections.POI;
 public class POIParser extends Parser {
 	private static ConcurrentHashMap<Point, HashSet<POI>> cache = new ConcurrentHashMap<Point, HashSet<POI>>();
 	
-	public static void flushCache() {
-		cache = new ConcurrentHashMap<Point, HashSet<POI>>();
-	}
-	
 	public static HashSet<POI> getPois(OverpassObject o, int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
 		Point p = new Point(regionx, regionz);
 		if (cache.containsKey(p)) {
 			return cache.get(p);
 		} else {
-			HashSet<POI> pois = doGetPois(o, regionx, regionz);
+			HashSet<POI> pois = doGetPois(o);
 			cache.put(p, pois);
 			return pois;
 		}
 	}
-	private static HashSet<POI> doGetPois(OverpassObject o, int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
-		HashSet<POI> pois = new HashSet<POI>();
+	private static HashSet<POI> doGetPois(OverpassObject o) {
+		HashSet<POI> pois = new HashSet<>();
 		
 		for (Node node : o.nodes){
 			String type = node.map.get("place");
@@ -62,7 +58,7 @@ public class POIParser extends Parser {
 		if (cache.containsKey(p)) {
 			return cache.get(p);
 		} else {
-			HashSet<POI> pois = doGetPois(OSMRouter.getObject(regionx, regionz), regionx, regionz);
+			HashSet<POI> pois = doGetPois(OSMRouter.getObject(regionx, regionz));
 			cache.put(p, pois);
 			return pois;
 		}

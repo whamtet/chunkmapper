@@ -22,9 +22,7 @@ public class XapiHighwayReader {
 
 	public final boolean hasHighways;
 	private static final int MIN_BUMP_SIZE = 3, MIN_RUT_SIZE = 5;
-	/**
-	 * @param args
-	 */
+
 	private static short[] smoothHeights(short[] heights) {
 
 		for (int i = 1; i < heights.length; i++) {
@@ -93,7 +91,7 @@ public class XapiHighwayReader {
 
 	public XapiHighwayReader(OverpassObject o, int regionx, int regionz, HeightsReader heightsReader) throws IllegalArgumentException, NoSuchElementException, IOException, InterruptedException, FileNotYetAvailableException, URISyntaxException, DataFormatException {
 
-		Collection<HighwaySection> allSections = HighwayParser.getHighwaySections(o, regionx, regionz);
+		Collection<HighwaySection> allSections = HighwayParser.getHighwaySections(o);
 
 		hasHighways = allSections.size() > 0;
 

@@ -13,7 +13,7 @@ import com.chunkmapper.sections.RiverSection;
 
 public class RiverParser extends Parser {
 	
-	public static ArrayList<RiverSection> getRiverSections(OverpassObject o, int regionx, int regionz) throws IOException, InterruptedException, DataFormatException {
+	public static ArrayList<RiverSection> getRiverSections(OverpassObject o) {
 		ArrayList<RiverSection> out = new ArrayList<RiverSection>();
 		for (Way way : o.ways) {
 			if ("river".equals(way.map.get("waterway"))) {
@@ -21,37 +21,6 @@ public class RiverParser extends Parser {
 			}
 		}
 		return out;
-	}
-	
-	public static Collection<RiverSection> getRiverSections(ArrayList<String> lines) {
-		HashMap<Long, Point> locations = getLocations(lines);
-		ArrayList<RiverSection> riverSections = new ArrayList<RiverSection>();
-//		HashMap<String, RiverSection> riverSections = new HashMap<String, RiverSection>();
-		
-		boolean isCorrectWay = false;
-		ArrayList<Point> currentPoints = null;
-		for (String line : lines) {
-			String tag = RailParser.getTag(line);
-			if (tag == null)
-				continue;
-			if (tag.equals("way")) {
-				currentPoints = new ArrayList<Point>();
-				isCorrectWay = false;
-			}
-			if (tag.equals("nd")) {
-				long ref = Long.parseLong(RailParser.getValue(line, "ref"));
-				currentPoints.add(locations.get(ref));
-			}
-			if (tag.equals("tag")) {
-				String k = getValue(line, "k"), v = getValue(line, "v");
-				isCorrectWay |= k.equals("waterway") && v.equals("river");
-				
-			}
-			if (tag.equals("/way") && isCorrectWay ) {
-				riverSections.add(new RiverSection(currentPoints));
-			}
-		}
-		return riverSections;
 	}
 
 }

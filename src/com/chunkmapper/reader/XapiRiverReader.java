@@ -57,7 +57,7 @@ public class XapiRiverReader {
 
 	public XapiRiverReader(OverpassObject o, int regionx, int regionz, HeightsReader heightsReader) throws FileNotYetAvailableException, IOException, URISyntaxException, DataFormatException, InterruptedException {
 
-		Collection<RiverSection> riverSections = RiverParser.getRiverSections(o, regionx, regionz);
+		Collection<RiverSection> riverSections = RiverParser.getRiverSections(o);
 
 		for (RiverSection riverSection : riverSections) {
 			for (int i = 0; i < riverSection.points.size() - 1; i++) {

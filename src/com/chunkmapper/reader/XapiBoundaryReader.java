@@ -109,7 +109,7 @@ public class XapiBoundaryReader {
 	public XapiBoundaryReader(OverpassObject o, int regionx, int regionz) throws IOException, URISyntaxException, DataFormatException, InterruptedException {
 
 		
-		HashSet<Boundary> boundaries = BoundaryParser.getBoundaries(o, regionx, regionz);
+		HashSet<Boundary> boundaries = BoundaryParser.getBoundaries(o);
 		hasBorder = boundaries.size() > 0;
 
 		for (Boundary boundary : boundaries) {
