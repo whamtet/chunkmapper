@@ -2,12 +2,9 @@ package com.chunkmapper;
 
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.Comparator;
 import java.util.HashSet;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 import com.chunkmapper.admin.MyLogger;
 
@@ -19,32 +16,34 @@ public abstract class Tasker {
 	 */
 	
 	private final ExecutorService executorService;
-	protected final HashSet<Point> pointsAdded = new HashSet<Point>();
+	protected final HashSet<Point> pointsAdded = new HashSet<>();
+	private final Comparator<Point> comparator;
 
 	public synchronized void addTask(int regionx, int regionz) {
 		Point p = new Point(regionx, regionz);
 		if (!pointsAdded.contains(p)) {
 			pointsAdded.add(p);
-			executorService.execute(wrapRunnable(p));
+			executorService.execute(new Task(p));
 		}
 	}
 
-
-	public Tasker(int numThreads, final String threadName) {
-		executorService = Executors.newFixedThreadPool(numThreads, new ThreadFactory() {
-			@Override
-			public Thread newThread(Runnable arg0) {
-				Thread t = new Thread(arg0);
-				// TODO Auto-generated method stub
-				t.setName(threadName);
-				return t;
-			}
-
-		});
+	public Tasker(int numThreads) {
+		this(numThreads, (p1, p2) -> 0);
+	}
+	public Tasker(int numThreads, Comparator<Point> c) {
+		comparator = c;
+		executorService = new ThreadPoolExecutor(numThreads, numThreads,
+				0L, TimeUnit.MILLISECONDS, new PriorityBlockingQueue<>());
 	}
 
-	private Runnable wrapRunnable(Point p) {
-		return () -> {
+	private class Task implements Runnable, Comparable {
+		public final Point p;
+
+		Task(Point p) {
+			this.p = p;
+		}
+
+		public void run() {
 			while(true) {
 				try {
 					doTask(p);
@@ -78,6 +77,11 @@ public abstract class Tasker {
 				}
 			}
 		};
+
+		@Override
+		public int compareTo(Object o) {
+			return comparator.compare(p, ((Task) o).p);
+		}
 	}
 
 	protected abstract void doTask(Point p) throws Exception;

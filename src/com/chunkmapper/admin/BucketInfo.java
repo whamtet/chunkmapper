@@ -32,7 +32,7 @@ public class BucketInfo {
 			try {
 				URL url = new URL(URLs.BUCKET_INFO);
 				BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
-				localMap = new HashMap<String, String>();
+				localMap = new HashMap<>();
 				String line;
 				while ((line = br.readLine()) != null) {
 					String[] split = line.split(" ");

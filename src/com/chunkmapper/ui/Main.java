@@ -23,12 +23,12 @@ public class Main {
     private static final MappedSquareManager mappedSquareManager = new MappedSquareManager() {
         @Override
         public void addFinishedPoint(Point p) {
-            logRegion(p);
+            logRegion(p, 2);
         }
 
         @Override
         public void addUnfinishedPoint(Point p) {
-            // TODO
+            logRegion(p, 1);
         }
     };
 
@@ -81,14 +81,14 @@ public class Main {
         logback(o.toJSONString());
     }
 
-    public static void logRegion(Point p1) {
+    public static void logRegion(Point p1, int stage) {
         Point p2 = p1.plus(1, 1);
         JSONObject o = new JSONObject();
         o.put("lat1", p2.getRegionLat());
         o.put("lng1", p1.getRegionLng());
         o.put("lat2", p1.getRegionLat());
         o.put("lng2", p2.getRegionLng());
-        o.put("evt", "region");
+        o.put("evt", "region" + stage);
         logback(o.toJSONString());
     }
 

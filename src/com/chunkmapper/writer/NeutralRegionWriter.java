@@ -25,7 +25,7 @@ public class NeutralRegionWriter extends Tasker {
 
 	public NeutralRegionWriter(MPPointManager pointManager, Point rootPoint, File regionFolder, 
 			GameMetaInfo metaInfo, int verticalExaggeration, MappedSquareManager mappedSquareManager) {
-		super(NUM_WRITING_THREADS, "NeutralRegionWriter");
+		super(NUM_WRITING_THREADS);
 		this.mappedSquareManager = mappedSquareManager;
 		this.verticalExaggeration = verticalExaggeration;
 		this.rootPoint = rootPoint;

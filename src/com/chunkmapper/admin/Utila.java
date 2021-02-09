@@ -17,7 +17,6 @@ import com.chunkmapper.rail.HeightsCache;
 import com.chunkmapper.reader.GlobcoverReaderImpl;
 
 public class Utila {
-	public static final String VERSION = readVersion();
 	public static final int CHUNK_START = 4, CHUNK_END = 20;
 	public static final int HEIGHTS_START = 20;
 	public static final File CACHE;
@@ -35,19 +34,6 @@ public class Utila {
 		
 		return System.getProperty("user.dir").startsWith("/Users/matthewmolloy")
 				|| "matthewmolloy".equals(System.getProperty("user.name"));
-	}
-	
-	private static String readVersion() {
-		try {
-			InputStream in = Utila.class.getResource("/version.txt").openStream();
-			BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-			String version = reader.readLine();
-			reader.close();
-			return version;
-		} catch (IOException e) {
-			MyLogger.LOGGER.severe(MyLogger.printException(e));
-		}
-		return null;
 	}
 
 	//spit and slurp have something to do with a custom Minecraft location
