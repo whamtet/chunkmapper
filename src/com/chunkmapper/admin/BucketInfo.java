@@ -12,21 +12,10 @@ public class BucketInfo {
 	 * Class that queries Amazon S3 to get version info about Chunkmapper.
 	 */
 	public static HashMap<String, String> map;
-	private static Object key = new Object();
 
-	public static void main(String[] args) {
-		initMap();
-		System.out.println(map.get("chunkmapper-admin"));
-	}
 	public static boolean allowLive() throws IOException {
 		if (map == null) return true;
 		return "yes".equals(map.get("allow-live"));
-	}
-	public static boolean versionSupported() {
-		return map.get("supported-versions").contains(Utila.VERSION);
-	}
-	public static String imageEndpoint() {
-		return map.get("image-endpoint");
 	}
 
 	public static boolean initMap() {

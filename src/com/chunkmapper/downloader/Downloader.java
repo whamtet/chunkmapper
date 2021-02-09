@@ -1,43 +1,21 @@
 package com.chunkmapper.downloader;
 
-import java.net.SocketTimeoutException;
-
 import org.apache.http.Header;
 import org.apache.http.HeaderElement;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.entity.GzipDecompressingEntity;
-import org.apache.http.conn.ConnectTimeoutException;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.conn.PoolingClientConnectionManager;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 
-import com.chunkmapper.Point;
-import com.chunkmapper.Tasker;
-import com.chunkmapper.admin.MyLogger;
 
+public class Downloader {
 
-public abstract class Downloader extends Tasker {
+	// now only used for getHttpClient();
 
 	private static final int NUM_DOWNLOADING_THREADS = 6;
 	protected final DefaultHttpClient httpclient = getHttpClient();
-
-	protected abstract void download(Point p, boolean useBackupServer) throws Exception;
-	protected final void doTask(Point p) throws Exception {
-		try {
-			download(p, false);
-		} catch (ConnectTimeoutException e) {
-			MyLogger.LOGGER.warning(MyLogger.printException(e));
-			download(p, true);
-		} catch (SocketTimeoutException e) {
-			MyLogger.LOGGER.warning(MyLogger.printException(e));
-			download(p, true);
-		}
-	}
-
-	public Downloader() {
-		super(NUM_DOWNLOADING_THREADS, "Downloader");
-	}
 
 	public static DefaultHttpClient getHttpClient() {
 		System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.SimpleLog");

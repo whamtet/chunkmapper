@@ -39,13 +39,6 @@ public class MPThread {
 			}
 		}
 	}
-	private static void checkSupported() {
-		if (!BucketInfo.versionSupported()) {
-			System.out.println("Sorry, this version of Chunkmapper is no longer supported.");
-			System.out.println("Please download the latest version at www.chunkmapper.com");
-			System.exit(0);
-		}
-	}
 	private static void checkNetwork() {
 		if (!BucketInfo.initMap()) {
 			System.out.println("Chunkmapper could not connect with the internet.");
@@ -58,7 +51,6 @@ public class MPThread {
 	private static void start() throws Exception {
 		System.out.println("Welcome to Chunkmapper Multiplayer");
 		checkNetwork();
-		checkSupported();
 		double lat = 0, lon = 0;
 		
 		final int verticalExaggeration = 1;

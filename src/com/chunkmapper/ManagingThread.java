@@ -30,7 +30,6 @@ public class ManagingThread extends Thread {
 	private final PlayerIconManager playerIconManager;
 	private final GeneratingLayer generatingLayer;
 	public RegionWriter regionWriter;
-	public PostingThread postingThread;
 	private final NewGameInfo newGameInfo;
 	private static boolean networkProblems;
 	private static Object networkProblemsGuard = new Object();
@@ -175,11 +174,6 @@ public class ManagingThread extends Thread {
 
 	}
 
-	/**
-	 * @param args
-	 * @throws IOException 
-	 * @throws NumberFormatException 
-	 */
 	public static double[] getLatLon() throws NumberFormatException, IOException {
 		double[] out = new double[2];
 		BufferedReader reader = new BufferedReader(new FileReader("location.txt"));
