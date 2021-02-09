@@ -1,10 +1,7 @@
 package com.chunkmapper.reader;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.zip.DataFormatException;
-
-import com.chunkmapper.admin.BucketInfo;
 import com.chunkmapper.admin.Utila;
 import com.chunkmapper.heights.HGTFile;
 import com.chunkmapper.protoc.admin.HeightsInfo;
@@ -47,7 +44,6 @@ public class HeightsReaderS3 implements HeightsReader {
 				tempCache[i][j] = -1;
 			}
 		}
-//		System.out.println("b");
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
 				if (HeightsInfo.hasPoint(lati2 - i, loni1 + j)) {
@@ -60,9 +56,6 @@ public class HeightsReaderS3 implements HeightsReader {
 				}
 			}
 		}
-//		System.out.println("c");
-//		int rooti = (int) ((lati2 + 1 - lat2) * 1200);
-//		int rootj = (int) ((lon1 - loni1) * 1200);
 		double rooti = (lati2 + 1 - lat2) * 1200;
 		double rootj = (lon1 - loni1) * 1200;
 		int imax = height * 1200 - 1, jmax = width * 1200 - 1;
@@ -80,18 +73,8 @@ public class HeightsReaderS3 implements HeightsReader {
 				double h1 = tempCache[i1][j1] * (1-jfr) + tempCache[i1][j2] * jfr;
 				double h2 = tempCache[i2][j1] * (1-jfr) + tempCache[i2][j2] * jfr;
 				data[i][j] = (short) (h1 * (1-ifr) + h2*ifr);
-//				cache[i][j] = tempCache[i1][j1];
 			}
 		}
-//		PrintWriter pw = new PrintWriter("/Users/matthewmolloy/python/wms/data.csv");
-//		for (int i = 0; i < height * 1200; i++) {
-//			for (int j = 0; j < width * 1200; j++) {
-//				pw.println(tempCache[i][j]);
-//			}
-//		}
-//		pw.close();
-//		System.out.println("done");
-//		System.exit(0);
 		
 
 

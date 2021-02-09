@@ -14,7 +14,7 @@ import org.apache.commons.io.FileUtils;
 import com.chunkmapper.binaryparser.OsmosisParser;
 import com.chunkmapper.heights.HGTFile;
 import com.chunkmapper.rail.HeightsCache;
-import com.chunkmapper.reader.GlobcoverReaderImpl2;
+import com.chunkmapper.reader.GlobcoverReaderImpl;
 
 public class Utila {
 	public static final String VERSION = readVersion();
@@ -75,8 +75,8 @@ public class Utila {
 		
 		FileUtils.deleteDirectory(OsmosisParser.CACHE);
 		OsmosisParser.CACHE.mkdirs();
-		FileUtils.deleteDirectory(GlobcoverReaderImpl2.CACHE_DIR);
-		GlobcoverReaderImpl2.CACHE_DIR.mkdirs();
+		FileUtils.deleteDirectory(GlobcoverReaderImpl.CACHE_DIR);
+		GlobcoverReaderImpl.CACHE_DIR.mkdirs();
 		FileUtils.deleteDirectory(HeightsCache.HEIGHTS_CACHE);
 		HeightsCache.HEIGHTS_CACHE.mkdirs();
 		FileUtils.deleteDirectory(HGTFile.CACHE_DIR);

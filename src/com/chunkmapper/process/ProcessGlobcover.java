@@ -1,8 +1,5 @@
 package com.chunkmapper.process;
 
-import java.awt.Rectangle;
-import java.awt.image.BufferedImage;
-import java.awt.image.ColorModel;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -10,16 +7,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import javax.imageio.ImageIO;
-
 import org.apache.commons.io.FileUtils;
 
 import com.chunkmapper.Point;
-import com.chunkmapper.admin.Utila;
 import com.chunkmapper.protoc.FileContainer.FileInfo;
 import com.chunkmapper.protoc.FileContainer.FileList;
-import com.chunkmapper.reader.GlobcoverReaderImpl2;
-
 
 
 public class ProcessGlobcover {

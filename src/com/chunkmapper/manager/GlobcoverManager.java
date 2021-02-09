@@ -51,7 +51,7 @@ import com.chunkmapper.reader.FerryReader;
 import com.chunkmapper.reader.FileNotYetAvailableException;
 import com.chunkmapper.reader.GlacierReader;
 import com.chunkmapper.reader.GlobcoverReader;
-import com.chunkmapper.reader.GlobcoverReaderImpl2;
+import com.chunkmapper.reader.GlobcoverReaderImpl;
 import com.chunkmapper.reader.HasHouseReader;
 import com.chunkmapper.reader.HeightsReader;
 import com.chunkmapper.reader.HeightsReaderS3;
@@ -151,7 +151,7 @@ public class GlobcoverManager {
 		Thread.sleep(0);
 		hasHouseReader = gaiaMode ? null : new HasHouseReader(pois, regionx, regionz);
 		Thread.sleep(0);
-		GlobcoverReader coverReader = new GlobcoverReaderImpl2(regionx, regionz);
+		GlobcoverReader coverReader = new GlobcoverReaderImpl(regionx, regionz);
 		Thread.sleep(0);
 		GlacierReader glacierReader = new GlacierReader(o, regionx, regionz);
 		Thread.sleep(0);

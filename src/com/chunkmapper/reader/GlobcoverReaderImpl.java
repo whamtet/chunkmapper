@@ -2,18 +2,28 @@ package com.chunkmapper.reader;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
+import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
 
 import com.chunkmapper.FileValidator;
+import com.chunkmapper.admin.BucketInfo;
+import com.chunkmapper.admin.MyLogger;
+import com.chunkmapper.admin.Utila;
 import com.chunkmapper.enumeration.Globcover;
-import com.chunkmapper.resourceinfo.GlobcoverResourceInfo;
+import com.chunkmapper.math.Matthewmatics;
 
 public class GlobcoverReaderImpl implements GlobcoverReader {
-	private final short[][] data;
-	private final Globcover[] indices;
+	public static final int REGION_WIDTH = 50;
+	public static final File CACHE_DIR = new File(Utila.CACHE, "mat");
+	static {
+		CACHE_DIR.mkdirs();
+	}
+	private final int datax, dataz;
+	private Globcover[][] data;
 	private Boolean mostlyLand;
 	private final Random random = new Random();
 
@@ -27,74 +37,106 @@ public class GlobcoverReaderImpl implements GlobcoverReader {
 		}
 	}
 
-	public GlobcoverReaderImpl(int regionx, int regionz) throws FileNotYetAvailableException, IOException {
-		GlobcoverResourceInfo info = new GlobcoverResourceInfo(regionx, regionz);
+	public GlobcoverReaderImpl(int regionx, int regionz) throws FileNotYetAvailableException, IOException, InterruptedException {
+		int globx = Matthewmatics.div(regionx, REGION_WIDTH), globz = Matthewmatics.div(regionz, REGION_WIDTH);
+
+		File cacheFile = new File(CACHE_DIR, "f_" + globx + "_" + globz + Utila.BINARY_SUFFIX);
+		BufferedImage im;
 		
-		if (!FileValidator.checkValid(info.file))
-			throw new FileNotYetAvailableException();
+		int i = Matthewmatics.mod(regionz, REGION_WIDTH), j = Matthewmatics.mod(regionx, REGION_WIDTH);
+		int totalWidth = 512 * REGION_WIDTH / 10;
+		int x1 = j * totalWidth / REGION_WIDTH, x2 = (j + 1) * totalWidth / REGION_WIDTH;
+		int z1 = i * totalWidth / REGION_WIDTH, z2 = (i + 1) * totalWidth / REGION_WIDTH;
+		datax = x2 - x1;
+		dataz = z2 - z1;
+		data = new Globcover[dataz][datax];
+		
+		if (FileValidator.checkValid(cacheFile)) {
+			im = ImageIO.read(cacheFile);
+		} else {
+			String base = "/f_" + globx + "_" + globz + Utila.BINARY_SUFFIX;
+			URL url = new URL(BucketInfo.map.get("chunkmapper-mat") + base);
+			//			URL url = null;
+			//			//need to find matching root;
+			//			for (FileInfo info : FileListManager.getGlobcoverFileList().getFilesList()) {
+			//				if (info.getFile().equals(base)) {
+			//					url = new URL(ServerInfoManager.getServerInfo().getGlobcoverAddress() + "data/"
+			//							+ info.getParent() + info.getFile());
+			//				}
+			//			}
+			try {
+				im = ImageIO.read(url);
+				//now save it as well.
+				ImageIO.write(im, "png", cacheFile);
+				FileValidator.setValid(cacheFile);
+			} catch (Exception e) {
+				MyLogger.LOGGER.warning(String.format("No Globcover data at regionx: %s, regionz: %s", regionx, regionz));
+				//binaries need to be sorted.
+				for (int z = 0; z < dataz; z++) {
+					for (int x = 0; x < datax; x++) {
+						data[z][x] = Globcover.NoData;
+					}
+				}
+				return;
+			}
+		}
 
-		indices = Globcover.makeArray(info.file);
-		BufferedImage image = ImageIO.read(info.file);
-		byte[] buffer = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
-		data = new short[GlobcoverResourceInfo.PICTURE_SIZE][GlobcoverResourceInfo.PICTURE_SIZE];
-		for (int i = 0; i < GlobcoverResourceInfo.PICTURE_SIZE; i++) {
-			for (int j = 0; j < GlobcoverResourceInfo.PICTURE_SIZE; j++) {
-				short k = buffer[i*GlobcoverResourceInfo.PICTURE_SIZE + j];
-				if (k < 0) k += 256;
-				data[i][j] = k;
+		byte[] buffer = ((DataBufferByte) im.getRaster().getDataBuffer()).getData();
+
+
+		
+		int xdrag = regionx < 0 ? totalWidth - im.getWidth() : 0;
+		int zdrag = regionz < 0 ? totalWidth - im.getHeight() : 0;
+		x1 -= xdrag; x2 -= xdrag;
+		z1 -= zdrag; z2 -= zdrag;
+
+		int imWidth = im.getWidth(), imHeight = im.getHeight();
+		for (int z = z1; z < z2; z++) {
+			for (int x = x1; x < x2; x++) {
+				if (z < 0 || z >= imHeight || x < 0 || x >= imWidth) {
+					data[z-z1][x-x1] = Globcover.NoData;
+				} else {
+					data[z-z1][x-x1] = Globcover.getGlobcover(buffer[z*imWidth + x]);
+				}
 			}
 		}
 	}
-	/* (non-Javadoc)
-	 * @see com.chunkmapper.reader.GlobcoverReader#getGlobcover(int, int)
-	 */
-	@Override
 	public Globcover getGlobcover(int i, int j) {
-		i = probRound(i * 50 / 512.);
-		j = probRound(j * 50 / 512.);
-		return indices[data[i][j]];
+		i = probRound(i * dataz / 512.);
+		j = probRound(j * datax / 512.);
+		if (i == dataz)
+			i--;
+		if (j == datax)
+			j--;
+		return data[i][j];
 	}
-
-
-	public boolean mostlyWater(int z) {
-		int numWaters = 0;
-		z = z * 50 / 512;
-		for (int j = 0; j < 512; j++) {
-			int jd = j * 50 / 512;
-			int index = data[z][jd];
-			if (indices[index] == Globcover.Water) {
-				numWaters++;
+	public int getValueij(int i, int j) {
+		Globcover c = getGlobcover(i, j);
+		Globcover[] ds = Globcover.values();
+		for (int k = 0; k < ds.length; k++) {
+			if (ds[k].equals(c)) {
+				return k;
 			}
 		}
-		return numWaters > 256;
+		throw new RuntimeException("impossible");
 	}
 
-	/* (non-Javadoc)
-	 * @see com.chunkmapper.reader.GlobcoverReader#mostlyLand()
-	 */
-	@Override
+
 	public boolean mostlyLand() {
 		if (mostlyLand == null) {
 			//ook
 			int k = 0;
-			for (int i = 0; i < 50; i++) {
-				for (int j = 0; j < 50; j++) {
-					if (indices[data[i][j]] != Globcover.Water)
+			for (int i = 0; i < dataz; i++) {
+				for (int j = 0; j < datax; j++) {
+					if (data[i][j] != Globcover.Water)
 						k++;
 				}
 			}
-			mostlyLand = k > 1250;
+			mostlyLand = k > dataz * datax / 2;
 		}
 		return mostlyLand;
 	}
-	public static void main(String[] args) throws Exception {
-		double[] latlon = {-39.75, 174.277};
-		int regionx = (int) Math.floor(latlon[1] * 3600 / 512);
-		int regionz = (int) Math.floor(-latlon[0] * 3600 / 512);
-		GlobcoverReader reader = new GlobcoverReaderImpl(regionx, regionz);
-		System.out.println(reader.mostlyLand());
-		
-	}
+	
 
 
 
