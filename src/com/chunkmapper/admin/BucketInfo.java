@@ -11,11 +11,19 @@ public class BucketInfo {
 	/*
 	 * Class that queries Amazon S3 to get version info about Chunkmapper.
 	 */
-	public static HashMap<String, String> map;
+	private static HashMap<String, String> map;
 
-	public static boolean allowLive() throws IOException {
-		if (map == null) return true;
-		return "yes".equals(map.get("allow-live"));
+	public static String mat() {
+		return map.get("chunkmapper-mat");
+	}
+	public static String osm() {
+		return map.get("chunkmapper-osm2");
+	}
+	public static String heights() {
+		return map.get("chunkmapper-heights2");
+	}
+	public static String admin() {
+		return map.get("chunkmapper-admin");
 	}
 
 	public static boolean initMap() {

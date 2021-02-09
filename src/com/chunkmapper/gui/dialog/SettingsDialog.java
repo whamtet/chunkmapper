@@ -52,14 +52,7 @@ public class SettingsDialog extends JDialog {
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		
-		boolean allowLive;
-		try {
-			allowLive = BucketInfo.allowLive();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-			allowLive = false;
-		}
+		boolean allowLive = false;
 		final JCheckBox checkBox = new JCheckBox("Live Mode");
 		checkBox.setEnabled(allowLive);
 		
