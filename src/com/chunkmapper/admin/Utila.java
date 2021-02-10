@@ -29,12 +29,6 @@ public class Utila {
 	public static enum OSType {
 		WIN, MAC, OTHER;
 	}
-	
-	public static boolean isMatt() {
-		
-		return System.getProperty("user.dir").startsWith("/Users/matthewmolloy")
-				|| "matthewmolloy".equals(System.getProperty("user.name"));
-	}
 
 	//spit and slurp have something to do with a custom Minecraft location
 	private static String slurp(File f) {
@@ -46,15 +40,6 @@ public class Utila {
 		} catch (IOException e) {
 			MyLogger.LOGGER.severe(MyLogger.printException(e));
 			return null;
-		}
-	}
-	public static void spit(File f) {
-		try {
-			PrintWriter pw = new PrintWriter(new FileWriter(customDirStore));
-			pw.println(f.getAbsolutePath());
-			pw.close();
-		} catch (IOException e) {
-			MyLogger.LOGGER.severe(MyLogger.printException(e));
 		}
 	}
 	public static void clearCache() throws IOException {

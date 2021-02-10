@@ -50,16 +50,12 @@ public class Chunk {
 	}
 	public void setBlock(int y, int z, int x, byte val) {
 		x -= x0; z -= z0;
-//		x = Matthewmatics.mod(x, 512);
-//		z = Matthewmatics.mod(z, 512);
 		if (0 <= z && z < 16 && 0 <= x && x < 16 && y > 0)
 			Blocks[y][z][x] = val;
 	}
 	
 	public void setData(int y, int z, int x, byte val) {
 		x -= x0; z -= z0;
-//		x = Matthewmatics.mod(x, 512);
-//		z = Matthewmatics.mod(z, 512);
 		if (0 <= z && z < 16 && 0 <= x && x < 16 && y > 0)
 			Data[y][z][x] = val;
 	}

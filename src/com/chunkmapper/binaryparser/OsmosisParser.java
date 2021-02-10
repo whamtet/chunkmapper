@@ -16,12 +16,6 @@ import java.util.Iterator;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.zip.DataFormatException;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
-
 import com.chunkmapper.FileValidator;
 import com.chunkmapper.Point;
 import com.chunkmapper.Zip;
@@ -47,7 +41,6 @@ public class OsmosisParser implements OverpassObjectSource {
 	public static final int NODE = 0, WAY = 1, RELATION = 2;
 	private static final HashMap<URL, URL> lockMap = new HashMap<URL, URL>();
 	private static Object masterLock = new Object();
-	private static DefaultHttpClient httpclient = Downloader.getHttpClient();
 	private static ConcurrentHashMap<URL, FileContents> cache2 = new ConcurrentHashMap<URL, FileContents>();
 	private static ArrayList<Rectangle> rectangles;
 	private static Object key = new Object();
@@ -183,14 +176,7 @@ public class OsmosisParser implements OverpassObjectSource {
 			if (FileValidator.checkValid(cache)) {
 				data = Zip.readFully(new FileInputStream(cache));
 			} else {
-				HttpGet httpGet = new HttpGet(url.toString());
-				HttpResponse response = httpclient.execute(httpGet);
-				HttpEntity entity = response.getEntity();
-				data = Zip.inflate(entity.getContent());
-				
-				EntityUtils.consumeQuietly(entity);
-				httpGet.releaseConnection();
-				
+				data = Zip.inflate(url.openStream());
 				Zip.writeFully(cache, data);
 				FileValidator.setValid(cache);
 			}
