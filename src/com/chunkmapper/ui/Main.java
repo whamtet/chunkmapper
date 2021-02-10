@@ -5,12 +5,9 @@ import com.chunkmapper.ManagingThread;
 import com.chunkmapper.Point;
 import com.chunkmapper.admin.BucketInfo;
 import com.chunkmapper.gui.dialog.NewMapDialog;
-import com.chunkmapper.interfaces.GeneratingLayer;
 import com.chunkmapper.interfaces.MappedSquareManager;
 import com.chunkmapper.interfaces.PlayerIconManager;
-import com.chunkmapper.multiplayer.LocServer;
-import com.chunkmapper.multiplayer.MPLevelDat;
-import org.apache.commons.io.FileUtils;
+import com.chunkmapper.writer.LevelDat;
 import org.json.simple.JSONObject;
 
 import java.io.File;
@@ -32,34 +29,7 @@ public class Main {
         }
     };
 
-    private static final PlayerIconManager playerIconManager = new PlayerIconManager() {
-        @Override
-        public void setLocation(double lat, double lon) {
-            logSteve(lat, lon);
-        }
-    };
-
-    private static final GeneratingLayer generatingLayer = new GeneratingLayer() {
-        @Override
-        public void zoomTo() {
-
-        }
-
-        @Override
-        public void zoomTo(double lat, double lon) {
-
-        }
-
-        @Override
-        public void cancel(boolean selfCalled) {
-
-        }
-
-        @Override
-        public void cancel() {
-
-        }
-    };
+    private static final PlayerIconManager playerIconManager = (lat, lon) -> logSteve(lat, lon);
 
     private static Map<String, String> parseArgs(String[] args) {
         Map<String, String> out = new HashMap<String, String>();
@@ -73,7 +43,7 @@ public class Main {
         System.out.println("logback: " + s);
     }
 
-    public static void logSteve(double lat, double lng) {
+    private static void logSteve(double lat, double lng) {
         JSONObject o = new JSONObject();
         o.put("lat", lat);
         o.put("lng", lng);
@@ -81,7 +51,7 @@ public class Main {
         logback(o.toJSONString());
     }
 
-    public static void logRegion(Point p1, int stage) {
+    private static void logRegion(Point p1, int stage) {
         Point p2 = p1.plus(1, 1);
         JSONObject o = new JSONObject();
         o.put("lat1", p2.getRegionLat());
@@ -92,20 +62,30 @@ public class Main {
         logback(o.toJSONString());
     }
 
+    private static void logGoto(double lat, double lng) {
+        JSONObject o = new JSONObject();
+        o.put("lat1", lat);
+        o.put("lng1", lng);
+        o.put("evt", "goto");
+        logback(o.toJSONString());
+    }
+
     public static void main(String[] args) throws IOException {
         Map<String, String> parsed = parseArgs(args);
-        double lat = Double.parseDouble(parsed.get("lat"));
-        double lng = Double.parseDouble(parsed.get("lng"));
-        String name = parsed.get("name");
+        File gameFolder = new File(parsed.get("name"));
+        double lat, lng;
+        if (parsed.containsKey("lat")) {
+            lat = Double.parseDouble(parsed.get("lat"));
+            lng = Double.parseDouble(parsed.get("lng"));
+        } else {
+            GameMetaInfo info = new GameMetaInfo(gameFolder, 0, 0, 0, false);
+            LevelDat lLevelDat = LevelDat.getFromGameFolder(gameFolder);
+            Point relativePlayerPoint = lLevelDat.getPlayerPosition();
+            lat = - (relativePlayerPoint.z + info.rootPoint.z * 512) / 3600.;
+            lng = (relativePlayerPoint.x + info.rootPoint.x * 512) / 3600.;
+            logGoto(lat, lng);
+        }
 
-//        double lat = 13.7563;
-//        double lng = 100.5018;
-//        String name = "asdf";
-        int verticalExaggeration = 1;
-
-        NewMapDialog.NewGameInfo newGameInfo = new NewMapDialog.NewGameInfo(name);
-        File saves = new File("/Users/matthew/Library/Application Support/minecraft/saves");
-        File gameFolder = new File(saves, name);
         if (!gameFolder.exists()) {
             gameFolder.mkdirs();
         }
@@ -122,8 +102,8 @@ public class Main {
                 gameFolder,
                 mappedSquareManager,
                 playerIconManager,
-                generatingLayer,
-                newGameInfo);
+                null,
+                null);
         t.start();
     }
 }
