@@ -4,7 +4,6 @@ import com.chunkmapper.GameMetaInfo;
 import com.chunkmapper.ManagingThread;
 import com.chunkmapper.Point;
 import com.chunkmapper.admin.BucketInfo;
-import com.chunkmapper.gui.dialog.NewMapDialog;
 import com.chunkmapper.interfaces.MappedSquareManager;
 import com.chunkmapper.interfaces.PlayerIconManager;
 import com.chunkmapper.writer.LevelDat;
@@ -74,7 +73,9 @@ public class Main {
         Map<String, String> parsed = parseArgs(args);
         File gameFolder = new File(parsed.get("name"));
         double lat, lng;
+        NewGameInfo newGameInfo = null;
         if (parsed.containsKey("lat")) {
+            newGameInfo = new NewGameInfo(gameFolder.getName(), parsed);
             lat = Double.parseDouble(parsed.get("lat"));
             lng = Double.parseDouble(parsed.get("lng"));
         } else {
@@ -103,7 +104,7 @@ public class Main {
                 mappedSquareManager,
                 playerIconManager,
                 null,
-                null);
+                newGameInfo);
         t.start();
     }
 }

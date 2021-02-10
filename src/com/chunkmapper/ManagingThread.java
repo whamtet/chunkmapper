@@ -11,9 +11,7 @@ import java.util.HashSet;
 
 import org.apache.commons.io.FileUtils;
 import com.chunkmapper.admin.MyLogger;
-import com.chunkmapper.binaryparser.OSMRouter;
-import com.chunkmapper.binaryparser.OsmosisParser;
-import com.chunkmapper.gui.dialog.NewMapDialog.NewGameInfo;
+import com.chunkmapper.ui.NewGameInfo;
 import com.chunkmapper.gui.dialog.NoNetworkDialog;
 import com.chunkmapper.interfaces.GeneratingLayer;
 import com.chunkmapper.interfaces.MappedSquareManager;

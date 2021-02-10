@@ -4,8 +4,7 @@ import java.io.*;
 
 import com.chunkmapper.Point;
 import com.chunkmapper.admin.MyLogger;
-import com.chunkmapper.gui.dialog.NewMapDialog.GameMode;
-import com.chunkmapper.gui.dialog.NewMapDialog.NewGameInfo;
+import com.chunkmapper.ui.NewGameInfo;
 import com.chunkmapper.nbt.ByteTag;
 import com.chunkmapper.nbt.CompoundTag;
 import com.chunkmapper.nbt.DoubleTag;
@@ -183,7 +182,7 @@ public class LevelDat {
 //	     mayBuild: 1 or 0 (true/false) - true if the player can place and destroy blocks.
 //	     instabuild: 1 or 0 (true/false) - true if the player can instantly destroy blocks.
 		
-		byte playerByte = (byte) (newGameInfo.gameMode == GameMode.Creative_Mode ? 1 : 0);
+		byte playerByte = (byte) (newGameInfo.gameMode == NewGameInfo.GameMode.Creative_Mode ? 1 : 0);
 		
 		CompoundTag abilities1 = new CompoundTag();
 		abilities1.putByte("flying", (byte) playerByte);
@@ -231,7 +230,7 @@ public class LevelDat {
 		default:
 			difficulty = 3; break;
 		}
-		byte difficultyLocked = (byte) (newGameInfo.gameMode == GameMode.Hardcore_Mode ? 1 : 0);
+		byte difficultyLocked = (byte) (newGameInfo.gameMode == NewGameInfo.GameMode.Hardcore_Mode ? 1 : 0);
 		
 		Data1.putInt("GameType", gameType);
 		//and also
@@ -248,7 +247,7 @@ public class LevelDat {
 		Data1.putInt("SpawnX", -1354);
 		Data1.putInt("thunderTime", 48369);
 		Data1.putInt("SpawnY", 4);
-		byte hardcoreByte = (byte) (newGameInfo.gameMode == GameMode.Hardcore_Mode ? 1 : 0);
+		byte hardcoreByte = (byte) (newGameInfo.gameMode == NewGameInfo.GameMode.Hardcore_Mode ? 1 : 0);
 		Data1.putByte("hardcore", hardcoreByte);
 		Data1.putInt("SpawnZ", 307);
 		Data1.putString("LevelName", "base");
