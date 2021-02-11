@@ -13,7 +13,6 @@ import com.chunkmapper.Point;
 import com.chunkmapper.protoc.FileContainer.FileInfo;
 import com.chunkmapper.protoc.FileContainer.FileList;
 
-
 public class ProcessGlobcover {
 	private static final int numThreads = 5;
 	private final static ExecutorService executorService = Executors.newFixedThreadPool(numThreads);

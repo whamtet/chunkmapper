@@ -2,7 +2,6 @@ package com.chunkmapper.writer;
 
 import java.io.DataOutputStream;
 import java.io.File;
-
 import com.chunkmapper.GameMetaInfo;
 import com.chunkmapper.Point;
 import com.chunkmapper.Tasker;

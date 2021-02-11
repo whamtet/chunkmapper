@@ -2,25 +2,15 @@ package com.chunkmapper;
 
 import java.io.DataOutputStream;
 import java.io.File;
-import java.io.IOException;
 import java.util.Random;
 
 import org.apache.commons.io.FileUtils;
 
 import com.chunkmapper.chunk.Chunk;
-import com.chunkmapper.enumeration.Biome;
-import com.chunkmapper.enumeration.LenteTree;
-import com.chunkmapper.enumeration.Villager;
 import com.chunkmapper.nbt.NbtIo;
 import com.chunkmapper.nbt.RegionFile;
-import com.chunkmapper.reader.HeightsReader;
-import com.chunkmapper.reader.UniformHeightsReader;
-import com.chunkmapper.writer.ArtifactWriter;
 import com.chunkmapper.writer.GenericWriter;
-import com.chunkmapper.writer.LenteTreeWriter;
 import com.chunkmapper.writer.LevelDat;
-import com.chunkmapper.writer.MobWriter;
-import com.chunkmapper.writer.SchematicArtifactWriter;
 
 public class TestArtifact {
 	

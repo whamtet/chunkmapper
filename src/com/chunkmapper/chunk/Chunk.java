@@ -150,21 +150,17 @@ public class Chunk {
 			if (allEmpty) continue;
 			byte[] Data = new byte[2048];
 			byte[] BlockLight = new byte[2048];
-//			byte[] Add = new byte[2048];
 			for (int i = 0; i < 2048; i++) {
 				Data[i] = (byte) (this.Data[i/128 + y*16][i/8%16][i*2%16 + 1] << 4
 						| this.Data[i/128 + y*16][i/8%16][i*2%16]);
 				BlockLight[i] = (byte) (allBlockLights[i/128 + y*16][i/8%16][i*2%16 + 1] << 4
 						| allBlockLights[i/128 + y*16][i/8%16][i*2%16]);
-//				Add[i] = (byte) (this.Add[i/128 + y*16][i/8%16][i*2%16 + 1] << 4
-//						| this.Add[i/128 + y*16][i/8%16][i*2%16]);
 			}
 			thisSection.putByte("Y", y);
 			thisSection.putByteArray("Blocks", Blocks);
 			thisSection.putByteArray("Data", Data);
 			thisSection.putByteArray("BlockLight", BlockLight);
 			thisSection.putByteArray("SkyLight", SkyLight);
-//			thisSection.putByteArray("Add", Add);
 			Sections.add(thisSection);
 		}
 		Level.put("Sections", Sections);

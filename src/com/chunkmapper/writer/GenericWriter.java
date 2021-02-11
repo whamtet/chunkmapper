@@ -1,7 +1,6 @@
 package com.chunkmapper.writer;
 
 import java.util.Random;
-
 import com.chunkmapper.admin.PreferenceManager;
 import com.chunkmapper.chunk.Chunk;
 import com.chunkmapper.enumeration.Block;

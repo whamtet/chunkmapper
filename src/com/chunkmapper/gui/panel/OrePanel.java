@@ -1,10 +1,6 @@
 package com.chunkmapper.gui.panel;
 
-import java.awt.BorderLayout;
 import java.net.URL;
-
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;

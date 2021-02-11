@@ -9,16 +9,7 @@ public class RailSection extends Section {
 	public final ArrayList<Point> points;
 	public final boolean isPreserved, hasBridge, hasCutting, hasEmbankment, hasTunnel;
 	public final Rectangle bbox;
-//	public RailSection(ArrayList<Point> points,
-//			boolean isPreserved, boolean hasBridge, boolean hasCutting, boolean hasEmbankment, boolean hasTunnel) {
-//		this.isPreserved = isPreserved;
-//		this.hasBridge = hasBridge;
-//		this.hasCutting = hasCutting;
-//		this.hasEmbankment = hasEmbankment;
-//		this.hasTunnel = hasTunnel;
-//		this.points = points;
-//		bbox = null;
-//	}
+
 	public RailSection(ArrayList<Point> points,
 			boolean isPreserved, boolean hasBridge, boolean hasCutting, boolean hasEmbankment, boolean hasTunnel,
 			Rectangle bbox) {

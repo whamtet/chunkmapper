@@ -1,12 +1,8 @@
 package com.chunkmapper.sections;
 
 import java.awt.Rectangle;
-import java.io.File;
 import java.util.ArrayList;
-
-import com.chunkmapper.GameMetaInfo;
 import com.chunkmapper.Point;
-import com.chunkmapper.admin.Utila;
 
 public class Glacier extends Section {
 	public ArrayList<Point> points;

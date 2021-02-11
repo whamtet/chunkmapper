@@ -1,11 +1,7 @@
 package com.chunkmapper.column;
 
-import java.io.IOException;
-
 import com.chunkmapper.chunk.Chunk;
 import com.chunkmapper.enumeration.Block;
-import com.chunkmapper.reader.HeightsReader;
-import com.chunkmapper.writer.LenteTreeWriter;
 
 public class Foreshore extends AbstractColumn {
 

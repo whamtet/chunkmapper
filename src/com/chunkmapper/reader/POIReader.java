@@ -6,8 +6,6 @@ import java.util.Collection;
 import java.util.zip.DataFormatException;
 
 import com.chunkmapper.chunk.Chunk;
-import com.chunkmapper.parser.OverpassObject;
-import com.chunkmapper.parser.POIParser;
 import com.chunkmapper.sections.POI;
 import com.chunkmapper.writer.ArtifactWriter;
 

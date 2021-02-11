@@ -1,15 +1,11 @@
 package com.chunkmapper.reader;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.zip.DataFormatException;
 
-import com.chunkmapper.admin.BucketInfo;
 import com.chunkmapper.admin.Utila;
 import com.chunkmapper.parser.POIParser;
 import com.chunkmapper.sections.POI;

@@ -2,7 +2,6 @@ package com.chunkmapper.sections;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
-
 import com.chunkmapper.Point;
 
 public class Lake extends Section {

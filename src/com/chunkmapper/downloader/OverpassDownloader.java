@@ -5,27 +5,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.concurrent.ConcurrentHashMap;
-
-import org.apache.http.Header;
-import org.apache.http.HeaderElement;
 import org.apache.http.HttpEntity;
-import org.apache.http.HttpException;
-import org.apache.http.HttpRequest;
-import org.apache.http.HttpRequestInterceptor;
 import org.apache.http.HttpResponse;
-import org.apache.http.HttpResponseInterceptor;
-import org.apache.http.client.entity.GzipDecompressingEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.conn.PoolingClientConnectionManager;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
-
-import com.chunkmapper.Point;
 import com.chunkmapper.admin.MyLogger;
 
 public class OverpassDownloader {
@@ -35,21 +20,15 @@ public class OverpassDownloader {
 
 	static {
 		String q1 = null;
-		String q2 = null;
 		try {
 			q1 = getQuery("/mainQuery.xml");
-			q2 = getQuery("/testQuery.xml");
 		} catch (IOException e) {
 			MyLogger.LOGGER.severe(MyLogger.printException(e));
 		}
 		generalQuery = q1;
 	}
-	public static void main(String[] args) throws Exception {
-		int regionx = 1060, regionz = 238;
-		System.out.println(getLines(regionx, regionz, false).size());
-	}
 
-	public static ArrayList<String> getLines(int regionx, int regionz, boolean test) throws IOException {
+	public static ArrayList<String> getLines(int regionx, int regionz) throws IOException {
 		return doGetLines(generalQuery, regionx, regionz);
 	}
 
@@ -63,7 +42,7 @@ public class OverpassDownloader {
 		String queryString = header + query + "</osm-script>";
 
 		HttpPost httpPost = null;
-		HttpResponse response = null;
+		HttpResponse response;
 		HttpEntity entity = null;
 		BufferedReader in = null;
 
@@ -105,58 +84,6 @@ public class OverpassDownloader {
 			out.append(line + "\n");
 		}
 		return out.toString();
-	}
-	public static DefaultHttpClient getHttpClient() {
-		System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.SimpleLog");
-		//		System.setProperty("org.apache.commons.logging.simplelog.showdatetime", "true");
-		//		System.setProperty("org.apache.commons.logging.simplelog.log.httpclient.wire.header", "debug");
-		System.setProperty("org.apache.commons.logging.simplelog.log.org.apache.commons.httpclient", "debug");
-
-		PoolingClientConnectionManager cm = new PoolingClientConnectionManager();
-		cm.setMaxTotal(NUM_DOWNLOADING_THREADS);
-		cm.setDefaultMaxPerRoute(NUM_DOWNLOADING_THREADS);
-
-		DefaultHttpClient httpclient = new DefaultHttpClient(cm);
-
-		//timeout
-		int timeout = 1000000;
-		HttpParams params = httpclient.getParams();
-		HttpConnectionParams.setConnectionTimeout(params, timeout);
-		HttpConnectionParams.setSoTimeout(params, timeout);
-		params.setParameter("http.socket.timeout", timeout);
-
-		httpclient.addRequestInterceptor(new HttpRequestInterceptor() {
-			public void process(
-					final HttpRequest request,
-					final HttpContext context) throws HttpException, IOException {
-				if (!request.containsHeader("Accept-Encoding")) {
-					request.addHeader("Accept-Encoding", "gzip");
-				}
-			}
-
-		});
-
-		httpclient.addResponseInterceptor(new HttpResponseInterceptor() {
-			public void process(
-					final HttpResponse response,
-					final HttpContext context) throws HttpException, IOException {
-				HttpEntity entity = response.getEntity();
-				if (entity != null) {
-					Header ceheader = entity.getContentEncoding();
-					if (ceheader != null) {
-						HeaderElement[] codecs = ceheader.getElements();
-						for (int i = 0; i < codecs.length; i++) {
-							if (codecs[i].getName().equalsIgnoreCase("gzip")) {
-								response.setEntity(
-										new GzipDecompressingEntity(response.getEntity()));
-								return;
-							}
-						}
-					}
-				}
-			}
-		});
-		return httpclient;
 	}
 
 

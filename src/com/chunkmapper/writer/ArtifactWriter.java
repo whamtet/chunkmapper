@@ -1,11 +1,5 @@
 package com.chunkmapper.writer;
 
-import java.io.File;
-import java.util.logging.Logger;
-
-import org.apache.commons.io.FileUtils;
-
-import com.chunkmapper.admin.MyLogger;
 import com.chunkmapper.chunk.Chunk;
 import com.chunkmapper.enumeration.Block;
 import com.chunkmapper.enumeration.Blocka;
@@ -17,7 +11,6 @@ import com.chunkmapper.enumeration.Villager;
 import com.chunkmapper.enumeration.BlockColor;
 import com.chunkmapper.math.Matthewmatics;
 import com.chunkmapper.nbt.CompoundTag;
-import com.chunkmapper.protoc.wrapper.SchematicProtocolWrapper;
 import com.chunkmapper.reader.RugbyReader.RugbyField;
 
 public class ArtifactWriter {

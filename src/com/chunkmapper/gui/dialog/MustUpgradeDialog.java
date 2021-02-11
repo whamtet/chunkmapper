@@ -11,8 +11,6 @@ import javax.swing.JLabel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 
-import com.chunkmapper.OpenURL;
-
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 @Deprecated

@@ -12,23 +12,19 @@ import com.chunkmapper.parser.OverpassObject.Relation;
 import com.chunkmapper.parser.OverpassObject.Way;
 
 public class OverpassParser extends Parser implements OverpassObjectSource {
+	// wraps static
 	public OverpassObject getObject(int regionx, int regionz) throws IOException {
-		return doGetObject(regionx, regionz, false);
-	}
-	public static OverpassObject getTestObject(int regionx, int regionz) throws IOException {
-		return doGetObject(regionx, regionz, true);
+		return doGetObject(regionx, regionz);
 	}
 
-	private static OverpassObject doGetObject(int regionx, int regionz, boolean test) throws IOException {
-		ArrayList<String> lines = OverpassDownloader.getLines(regionx, regionz, test);
+	private static OverpassObject doGetObject(int regionx, int regionz) throws IOException {
+		ArrayList<String> lines = OverpassDownloader.getLines(regionx, regionz);
 
 		HashMap<Long, Point> locations = getLocations(lines);
 		OverpassObject out = new OverpassObject();
-		//		ArrayList<Way> ways = new ArrayList<Way>();
-		HashMap<Long, Way> wayMap = new HashMap<Long, Way>();
+		HashMap<Long, Way> wayMap = new HashMap<>();
 		long wayKey = 0;
 		Way currWay = null;
-		//		ArrayList<Node> nodes = new ArrayList<Node>();
 		Node currNode = null;
 
 		for (String line : lines) {

@@ -1,24 +1,12 @@
 package com.chunkmapper.writer;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.HashMap;
-import java.util.logging.Logger;
-
-import org.apache.commons.io.FileUtils;
-
-import com.chunkmapper.ManagingThread;
-import com.chunkmapper.Zip;
 import com.chunkmapper.admin.MyLogger;
 import com.chunkmapper.chunk.Chunk;
 import com.chunkmapper.enumeration.LenteTree;
-import com.chunkmapper.protoc.SchematicProtocol;
 import com.chunkmapper.protoc.wrapper.SchematicProtocolWrapper;
 import com.chunkmapper.reader.HeightsReader;
-import com.chunkmapper.reader.UniformHeightsReader;
 
 public class LenteTreeWriter {
 	private static final HashMap<LenteTree, SchematicProtocolWrapper> protocols =

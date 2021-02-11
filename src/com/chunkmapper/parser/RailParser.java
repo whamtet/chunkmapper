@@ -1,10 +1,8 @@
 package com.chunkmapper.parser;
 
-import java.awt.Rectangle;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.zip.DataFormatException;
 
 import com.chunkmapper.Point;

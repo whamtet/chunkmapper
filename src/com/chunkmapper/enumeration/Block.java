@@ -10,7 +10,7 @@ public enum Block {
 	Birch_Stairs ((byte) 135), Nether_Fence ((byte) 113), Block_Of_Quartz ((byte) 155),
 	Stone_Stairs ((byte) 109);
 	public final byte val;
-	private Block(byte b) {
+	Block(byte b) {
 		val = b;
 	}
 

@@ -3,7 +3,6 @@ package com.chunkmapper.resourceinfo;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.logging.Logger;
 
 import com.chunkmapper.admin.MyLogger;
 

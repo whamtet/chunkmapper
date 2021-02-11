@@ -1,6 +1,5 @@
 package com.chunkmapper.nbt;
 
-
 public interface ProgressListener {
     public void progressStartNoAbort(String string);
 

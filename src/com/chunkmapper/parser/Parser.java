@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.chunkmapper.Point;
-import com.chunkmapper.reader.FileNotYetAvailableException;
 
 public class Parser {
 	protected static String getTag(String s) {

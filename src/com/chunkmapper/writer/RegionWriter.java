@@ -2,21 +2,12 @@ package com.chunkmapper.writer;
 
 import java.io.DataOutputStream;
 import java.io.File;
-import java.util.Comparator;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.PriorityBlockingQueue;
-
-import javax.swing.JOptionPane;
-
 import com.chunkmapper.FileValidator;
 import com.chunkmapper.GameMetaInfo;
 import com.chunkmapper.Point;
-import com.chunkmapper.PointManagerImpl;
 import com.chunkmapper.Tasker;
 import com.chunkmapper.admin.MyLogger;
-import com.chunkmapper.binaryparser.OsmosisParser;
 import com.chunkmapper.chunk.Chunk;
-import com.chunkmapper.downloader.OverpassDownloader;
 import com.chunkmapper.interfaces.MappedSquareManager;
 import com.chunkmapper.interfaces.PointManager;
 import com.chunkmapper.manager.GlobcoverManager;

@@ -1,7 +1,6 @@
 package com.chunkmapper.writer;
 
 import java.io.*;
-
 import com.chunkmapper.Point;
 import com.chunkmapper.admin.MyLogger;
 import com.chunkmapper.ui.NewGameInfo;

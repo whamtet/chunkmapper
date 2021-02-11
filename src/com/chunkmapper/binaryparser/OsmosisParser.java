@@ -23,7 +23,6 @@ import com.chunkmapper.admin.BucketInfo;
 import com.chunkmapper.admin.MyLogger;
 import com.chunkmapper.admin.URLs;
 import com.chunkmapper.admin.Utila;
-import com.chunkmapper.downloader.Downloader;
 import com.chunkmapper.parser.OverpassObject;
 import com.chunkmapper.parser.OverpassObject.Node;
 import com.chunkmapper.parser.OverpassObject.Relation;

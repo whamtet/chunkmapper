@@ -1,10 +1,6 @@
 package com.chunkmapper.reader;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,7 +14,6 @@ import com.chunkmapper.parser.OverpassObject.Relation;
 import com.chunkmapper.parser.OverpassObject.Way;
 import com.chunkmapper.sections.Lake;
 import com.chunkmapper.sections.RenderingSection;
-
 
 public class XapiLakeReader implements LakeReader {
 	private boolean[][] hasWater = new boolean[512][512];

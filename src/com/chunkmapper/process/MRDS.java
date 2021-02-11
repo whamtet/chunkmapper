@@ -3,17 +3,14 @@ package com.chunkmapper.process;
 import java.awt.Point;
 import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.HashSet;
 
 import com.chunkmapper.Zip;
 import com.chunkmapper.protoc.MineContainer.MineInfo;
 import com.chunkmapper.protoc.MineContainer.MineList;
 
 import au.com.bytecode.opencsv.CSVReader;
-import au.com.bytecode.opencsv.CSVWriter;
 
 public class MRDS {
 

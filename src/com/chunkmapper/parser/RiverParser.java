@@ -1,13 +1,6 @@
 package com.chunkmapper.parser;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.zip.DataFormatException;
-
-import com.chunkmapper.Point;
-import com.chunkmapper.binaryparser.OSMRouter;
 import com.chunkmapper.parser.OverpassObject.Way;
 import com.chunkmapper.sections.RiverSection;
 

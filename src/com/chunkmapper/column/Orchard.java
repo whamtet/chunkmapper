@@ -4,9 +4,6 @@ import java.io.IOException;
 
 import com.chunkmapper.chunk.Chunk;
 import com.chunkmapper.enumeration.Biome;
-import com.chunkmapper.enumeration.Block;
-import com.chunkmapper.enumeration.Blocka;
-import com.chunkmapper.enumeration.DataSource;
 import com.chunkmapper.reader.HeightsReader;
 import com.chunkmapper.writer.TreeWriter;
 

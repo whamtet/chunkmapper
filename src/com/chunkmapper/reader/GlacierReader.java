@@ -1,6 +1,5 @@
 package com.chunkmapper.reader;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -8,18 +7,13 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.zip.DataFormatException;
 
-import com.chunkmapper.GameMetaInfo;
 import com.chunkmapper.Point;
-import com.chunkmapper.admin.BucketInfo;
-import com.chunkmapper.admin.Utila;
-import com.chunkmapper.binaryparser.OSMRouter;
 import com.chunkmapper.math.Matthewmatics;
 import com.chunkmapper.parser.OverpassObject;
 import com.chunkmapper.parser.OverpassObject.Relation;
 import com.chunkmapper.parser.OverpassObject.Way;
 import com.chunkmapper.sections.Glacier;
 import com.chunkmapper.sections.RenderingSection;
-
 
 public class GlacierReader {
 	private boolean[][] hasGlacier = new boolean[512][512];

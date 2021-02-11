@@ -19,8 +19,6 @@ import javax.swing.JSpinner;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.EmptyBorder;
-
-import com.chunkmapper.admin.BucketInfo;
 import com.chunkmapper.admin.Utila;
 import javax.swing.JTextField;
 

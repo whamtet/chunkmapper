@@ -1,11 +1,6 @@
 package com.chunkmapper.clj;
 
 import clojure.lang.IFn;
-import clojure.lang.Var;
-import com.chunkmapper.nbt.CompoundTag;
-
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
 
 import static clojure.java.api.Clojure.var;
 

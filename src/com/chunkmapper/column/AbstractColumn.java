@@ -8,7 +8,6 @@ import com.chunkmapper.enumeration.Biome;
 import com.chunkmapper.enumeration.Block;
 import com.chunkmapper.enumeration.Blocka;
 import com.chunkmapper.enumeration.DataSource;
-import com.chunkmapper.enumeration.Globcover;
 import com.chunkmapper.enumeration.LenteTree;
 import com.chunkmapper.reader.HeightsReader;
 

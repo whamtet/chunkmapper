@@ -6,7 +6,6 @@ import java.util.Collection;
 import java.util.Random;
 import java.util.zip.DataFormatException;
 
-import com.chunkmapper.parser.POIParser;
 import com.chunkmapper.sections.POI;
 
 public class HasHouseReader {
