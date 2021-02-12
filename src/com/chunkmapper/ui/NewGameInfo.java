@@ -13,6 +13,17 @@ public class NewGameInfo {
     public final Difficulty difficulty;
     public final GameMode gameMode;
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("NewGameInfo: " + gameName + "\n");
+        sb.append("hasCheats: " + hasCheats + "\n");
+        sb.append("isGaia: " + isGaia + "\n");
+        sb.append("difficulty: " + difficulty + "\n");
+        sb.append("gameMode: " + gameMode + "\n");
+        return sb.toString();
+    }
+
     public NewGameInfo(String gameName, Map<String, String> options) {
         this.gameName = gameName;
         hasCheats = !("false".equals(options.get("cheats")));

@@ -76,6 +76,7 @@ public class Main {
         NewGameInfo newGameInfo = null;
         if (parsed.containsKey("lat")) {
             newGameInfo = new NewGameInfo(gameFolder.getName(), parsed);
+            System.out.println(newGameInfo);
             lat = Double.parseDouble(parsed.get("lat"));
             lng = Double.parseDouble(parsed.get("lng"));
         } else {
