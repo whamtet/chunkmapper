@@ -7,17 +7,18 @@ import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.util.HashMap;
 
-import org.simpleframework.http.Request;
-import org.simpleframework.http.Response;
-import org.simpleframework.http.core.Container;
-import org.simpleframework.http.core.ContainerServer;
-import org.simpleframework.transport.Server;
-import org.simpleframework.transport.connect.Connection;
-import org.simpleframework.transport.connect.SocketConnection;
+//import org.simpleframework.http.Request;
+//import org.simpleframework.http.Response;
+//import org.simpleframework.http.core.Container;
+//import org.simpleframework.http.core.ContainerServer;
+//import org.simpleframework.transport.Server;
+//import org.simpleframework.transport.connect.Connection;
+//import org.simpleframework.transport.connect.SocketConnection;
 
 import com.chunkmapper.Point;
 
-public class LocServer implements Container {
+//public class LocServer implements Container {
+public class LocServer {
 	private final Point rootPoint;
 	private final File parentFolder;
 	private static final String USER_NOT_FOUND = "<html><head></head>" +
@@ -52,37 +53,33 @@ public class LocServer implements Container {
 		this.parentFolder = parentFolder;
 	}
 
-	public void handle(Request request, Response response) {
-		try {
-			HashMap<String, Point> playerPositions = MPPointManager.readPositions(parentFolder);
-			String user = request.getPath().toString().substring(1);
-			PrintStream body = response.getPrintStream();
-			if (playerPositions.containsKey(user)) {
-				Point p = playerPositions.get(user);
-				double lon = (p.x + rootPoint.x * 512) / 3600.;
-				double lat = -(p.z + rootPoint.z * 512) / 3600.;
-				body.print(getBody(lat, lon));
-			} else {
-				body.print(USER_NOT_FOUND);
-			}
-			body.close();
-			
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-	} 
-
-//	public static void main(String[] list) throws Exception {
-//		Point rootPoint = new Point(611, -197);
-//		File parentFolder = new File("game/world");
+//	public void handle(Request request, Response response) {
+//		try {
+//			HashMap<String, Point> playerPositions = MPPointManager.readPositions(parentFolder);
+//			String user = request.getPath().toString().substring(1);
+//			PrintStream body = response.getPrintStream();
+//			if (playerPositions.containsKey(user)) {
+//				Point p = playerPositions.get(user);
+//				double lon = (p.x + rootPoint.x * 512) / 3600.;
+//				double lat = -(p.z + rootPoint.z * 512) / 3600.;
+//				body.print(getBody(lat, lon));
+//			} else {
+//				body.print(USER_NOT_FOUND);
+//			}
+//			body.close();
+//
+//		} catch(Exception e) {
+//			e.printStackTrace();
+//		}
 //	}
-	public static void startLocServer(Point rootPoint, File parentFolder) throws IOException {
-		Container container = new LocServer(rootPoint, parentFolder);
-		Server server = new ContainerServer(container);
-		Connection connection = new SocketConnection(server);
-		SocketAddress address = new InetSocketAddress(1234);
 
-		connection.connect(address);
-		System.out.println("started LocServer");
+	public static void startLocServer(Point rootPoint, File parentFolder) throws IOException {
+//		Container container = new LocServer(rootPoint, parentFolder);
+//		Server server = new ContainerServer(container);
+//		Connection connection = new SocketConnection(server);
+//		SocketAddress address = new InetSocketAddress(1234);
+//
+//		connection.connect(address);
+//		System.out.println("started LocServer");
 	}
 }
