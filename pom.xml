@@ -60,7 +60,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>com.chunkmapper.ui.Main</mainClass>
+							<mainClass>${main}</mainClass>
 						</manifest>
 					</archive>
 				</configuration>

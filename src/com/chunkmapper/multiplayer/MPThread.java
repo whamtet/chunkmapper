@@ -30,14 +30,14 @@ public class MPThread {
 	}
 	private static double[] getLatLon() {
 		System.out.println("Where would you like your map?");
-		while(true) {
-			String name = InputAssistant.readLine("Enter any real place name: ");
-			try {
-				throw new RuntimeException("need to reimplement nominatim");
-			} catch (Exception e) {
-				System.out.println("Sorry there was a problem.  Please try again.");
-			}
-		}
+
+		String name = InputAssistant.readLine("Enter OpenStreetMap URL: ");
+		String[] split = name.split("/");
+		double[] latlon = new double[2];
+		latlon[0] = Double.parseDouble(split[split.length - 2]);
+		latlon[1] = Double.parseDouble(split[split.length - 1]);
+
+		return latlon;
 	}
 	private static void checkNetwork() {
 		if (!BucketInfo.initMap()) {
